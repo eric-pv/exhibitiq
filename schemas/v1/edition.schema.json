@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/edition.schema.json",
+  "title": "Edition",
+  "description": "屆次",
+  "type": "object",
+  "required": [
+    "edition_id",
+    "exhibition_id",
+    "year",
+    "source_ids",
+    "verification_status"
+  ],
+  "properties": {
+    "edition_id": {
+      "$ref": "common.schema.json#/$defs/edition_id"
+    },
+    "exhibition_id": {
+      "$ref": "common.schema.json#/$defs/exhibition_id"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1900,
+      "maximum": 2100
+    },
+    "name": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "start_date": {
+      "$ref": "common.schema.json#/$defs/date"
+    },
+    "end_date": {
+      "$ref": "common.schema.json#/$defs/date"
+    },
+    "venue": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "city": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "country": {
+      "$ref": "common.schema.json#/$defs/country_code"
+    },
+    "website": {
+      "$ref": "common.schema.json#/$defs/http_url"
+    },
+    "source_ids": {
+      "$ref": "common.schema.json#/$defs/source_ids"
+    },
+    "field_sources": {
+      "$ref": "common.schema.json#/$defs/field_sources"
+    },
+    "verification_status": {
+      "$ref": "common.schema.json#/$defs/fact_verification_status"
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  },
+  "additionalProperties": false
+}

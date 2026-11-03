@@ -8,7 +8,10 @@
 
 ## 目前狀態
 
-尚未有任何 Schema 檔。第一版核心資料契約由 **P1-AI-04** 建立在 `schemas/v1/`，版本號 `1.0.0-draft.1`。
+- 版本：`1.0.0-draft.1`（Phase 1 草案期）
+- 核心資料契約（P1-AI-04）：`common`、`exhibition`、`edition`、`company`、`participation`、`source`、`crawl_run`、`manifest`、`change`
+- 人看的規格：[`docs/specs/data-package-contract.md`](../docs/specs/data-package-contract.md)
+- AI 分析結果與證據引用契約：尚未建立（P1-AI-05）
 
 ## 預定結構
 
@@ -17,9 +20,13 @@ schemas/
 ├── README.md         # 本文件
 ├── VERSIONING.md     # 版本、相容性與變更程序
 ├── CHANGELOG.md      # 每次版本變更的紀錄
-└── v1/               # P1-AI-04 建立
-    ├── VERSION       # 整組 Schema 的完整版本號
-    └── <entity>.schema.json
+└── v1/
+    ├── VERSION                # 整組 Schema 的完整版本號
+    ├── common.schema.json     # 共用定義（ID、時間、雜湊、列舉）
+    ├── <entity>.schema.json   # 各實體
+    └── examples/              # 合成範例（測試向量）
+        ├── package/           # 完整資料包
+        └── change.example.json
 ```
 
 ## 使用方式
