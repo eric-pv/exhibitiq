@@ -2,6 +2,7 @@
 
 > 工作項目：D1-10｜負責人：data｜調查日期：2026-11-03
 > **結論先講：目前無法確認 MSPO 參展商名單能否取得，也無法建立完整度。** 原因不是網站拒絕，而是這次調查所用的工具讀不到主辦單位的名單頁面與 `robots.txt`（見第 1 節）。依 `CLAUDE.md`，這種情況要停下來回報專案負責人，本文件就是回報內容。
+> **更新（2026-11-03，Albert 人工確認）：在主辦單位網頁上無法直接看到參展商名單。** 這排除了「名單公開列在網頁上、可以直接擷取」的最樂觀情況，細節與限制見第 4.1 節。
 
 ## 0. 這份調查做了什麼、沒做什麼
 
@@ -58,6 +59,24 @@
 5. 是否有波蘭文與英文版本，欄位是否一致。
 6. 名單是否含個人資料（聯絡人姓名、Email、電話）。若有，只能取公司層級欄位，契約的 `company` 也沒有個人欄位。
 
+### 4.1 人工確認結果（2026-11-03，Albert 回報）
+
+**回報內容：在網頁上無法直接看到參展商名單。**
+
+這個回報**能說明**的事：
+
+- 名單不是以公開頁面直接列出；從網頁入口看不到。這與 F5、F6 一致：主辦單位的說明把名單描述為「B2B 媒合平台」與參觀者 App 的一部分，而不是獨立的公開名錄頁。
+
+這個回報**不能說明**的事（回報中沒有提供）：
+
+- 看的是哪個網址、頁面上有沒有「名單」按鈕、按下去出現什麼（登入、註冊、下載 App，或空白）。
+- 名單是「本來就要登入或在 App 內才看得到」，還是「活動結束後已下架」。兩者的處理方式不同，目前**無法區分**。
+- 參觀者 App 內現在是否還有名單。
+
+三種可能（**都未證實**）：(a) 名單只在 App 或需註冊的平台內；(b) 活動結束後已下架；(c) 網頁入口有，但需要特定頁面或操作才看得到。
+
+另外：主辦單位的 MSPO 2026 參展條款文件（英文版）存在於加拿大政府招標附件清單中（搜尋摘要），內容我沒有讀到，可作為日後查證資料使用條款的線索。
+
 ## 5. 取得限制：已知與未知
 
 **已知：** 沒有任何限制被證實，也沒有任何限制被排除。
@@ -81,11 +100,19 @@ Expolista、ExpoCaptive、jufair、10times 等網站販售或展示 MSPO 參展�
 | **時間：名單可能在下一屆開放後被取代或移除。** 下一屆（據第三方報導為 2027-08-31 至 09-03，主辦單位日期未查證）的資料可能覆蓋這一屆 | 原始證據一旦消失就無法補抓；越早保存越好（前提是第 5 節的使用條款允許） |
 | 完整度口徑不明（直接參展商 vs 含被代表企業） | 無法宣稱 `complete`；`official_exhibitor_count` 填哪個數字需要決定 |
 | 名單可能需要登入，或有反爬機制 | 全量取得可能做不到，要改走備案 |
+| **網頁上看不到名單（4.1，人工確認）** | 自動擷取公開網頁這條路目前沒有證據可行；若名單只在 App 或登入後才有，自動擷取可能不適當，也可能違反使用條款；真實資料展示（Phase 2）的取得方式要重新決定 |
 | Actions 能否連到來源網站未測 | 即使來源可用，自動化也可能被擋 |
 
 ## 8. 建議的下一步與需要決定的事
 
-**需要 Albert 做（人工，約 10 分鐘，不需要寫程式）：** 用瀏覽器從 `targikielce.pl/en/mspo` 找到參展商名單並打開，把以下資訊貼給我：最終網址、是否需要登入、頁面顯示的總筆數、每筆有哪些欄位、有沒有分頁；另外打開 `targikielce.pl/robots.txt` 與「Regulations and Declarations」頁面，貼出內容或網址。我再依結果更新本文件。
+**已完成：** Albert 回報網頁上看不到名單（4.1）。
+
+**還需要 Albert 提供（不需要寫程式）：**
+
+1. 他看的頁面網址，以及頁面上「名單」相關按鈕或文字的原樣內容（例如 `targikielce.pl/en/mspo/exhibit` 的「B2B Matchmaking Platform」區塊、`.../visit/` 的「Map of the exhibition」區塊）；按下去之後出現什麼。
+2. `targikielce.pl/robots.txt` 與「Regulations and Declarations」頁面的內容或網址。
+
+我拿到後再更新第 4.1 節，區分 (a)(b)(c) 三種情況。
 
 **需要專案負責人（Eric）決定：**
 
@@ -94,6 +121,8 @@ Expolista、ExpoCaptive、jufair、10times 等網站販售或展示 MSPO 參展�
 3. **是否同意先保存快照：** 名單有被取代的風險（第 7 節）；條款確認允許後，盡快保存為不可變的原始證據。
 
 **備案：** D2-04（HTML／PDF／CSV／Excel 匯入轉換）本來就是 MSPO 無法自動擷取時的備案；若名單只能人工取得，Phase 2 改走匯入。
+
+**依 4.1 的建議（不是已查證的事實）：** 在確認名單到底在哪裡、使用條款怎麼寫之前，**不要為 MSPO 開發自動擷取器**（D2-02）。上面第 1 項決定因此更急：若名單只在 App 或登入後才有，最直接的路徑是向主辦單位詢問授權或匯出檔，而不是擷取。
 
 ## 9. 對資料契約的影響
 
@@ -111,7 +140,9 @@ Expolista、ExpoCaptive、jufair、10times 等網站販售或展示 MSPO 參展�
 搜尋摘要（未開啟全文）：
 
 - Defence24 閉幕報導：`https://defence24.pl/polityka-obronna/co-przynioslo-mspo-2026-kontrakty-premiery-i-wspolpraca-z-zagranica`、`https://defence24.pl/przemysl/rekordowe-mspo-2026-cztery-dni-ktore-potwierdzily-pozycje-kielc-jako-jednego-z-najwazniejszych-centrow-swiatowego-przemyslu-obronnego`
-- 主辦單位 2026 年手冊（含 2025 年數字）：`https://www.targikielce.pl/mspo-2026-folder-en.pdf`
+- 主辦單位 2026 年手冊（含 2025 年數字；英文與波蘭文版一致）：`https://www.targikielce.pl/mspo-2026-folder-en.pdf`、`https://www.targikielce.pl/mspo-2026-folder-pl.pdf`
+- 主辦單位 MSPO 參觀頁：`https://www.targikielce.pl/en/mspo/visit/`
+- 加拿大政府招標附件清單（列有主辦單位 MSPO 2026 參展條款文件，內容未讀）：`https://canadabuys.canada.ca/en/tender-opportunities/tender-notice/cb-100-54125791`
 - 日本貿易振興機構展覽資料庫：`https://www.jetro.go.jp/en/database/j-messe/tradefair/detail/159998`、`https://www.jetro.go.jp/en/database/j-messe/tradefair/detail/152681`（含 2024 年數字）、`https://www.jetro.go.jp/en/database/j-messe/tradefair/detail/135329`（含 2023 年數字）
 - Wikipedia：`https://en.wikipedia.org/wiki/MSPO`
 - Strefa Obrony 開展當天刊物：`https://fliphtml5.com/evzxj/bpoe/10/`
