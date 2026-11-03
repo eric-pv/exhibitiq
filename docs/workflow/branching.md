@@ -35,12 +35,18 @@
 - 從 `main` 建立 `integration/phase-N`，整合兩條 dev 主線並執行端到端測試（含 Dashboard 與截圖），再建立 base=`main` 的 PR。
 - 只有專案負責人驗收通過後才能合併 `main`；合併後，兩條 `dev/*` 以安全合併方式同步 `main`，不得丟棄未合併的工作。
 
+## 共用規範同步
+
+- 一般情況：`dev/ai-intelligence` → `dev/data-platform` 單向同步，Albert 合併（[`module-boundaries.md`](../architecture/module-boundaries.md) §4.3）。
+- 專案負責人明確授權 Albert 修改共用文件時：先在 `dev/data-platform` 完成並由 Albert 合併，再以同步 PR 送到 `dev/ai-intelligence`，**只由 Eric 合併**（§4.6）。授權不改變模組所有權。
+
 ## 禁止事項
 
 - 功能 PR 指向 `main`，或在階段進行中把 `dev/*` 合併進 `main`。
 - 修改他人負責的開發主線或模組路徑。
 - 未經專案負責人核准修改 `schemas/` 共用契約。
 - GitHub Actions 自動寫入 `main`。
+- 在核心程式（`etl/` 標準化與驗證、`schemas/`、`skills/` 分析邏輯、`site/` 頁面與元件）寫死特定展覽。
 
 ## 相關文件
 

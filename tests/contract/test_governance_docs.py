@@ -1,4 +1,4 @@
-"""Governance document checks for P1-AI-03 (Issue #3).
+"""Governance document checks for P1-AI-03 (Issue #3), V2.1 and V2.2.
 
 Verifies that the module-boundary table covers every directory in the
 project spec (§5), that each path has exactly one owner, that the owner's
@@ -109,6 +109,8 @@ def test_every_spec_directory_has_owner(path):
         ("data/samples/golden/", "ai"),
         ("data/samples/golden/v1/manifest.json", "ai"),
         ("data/samples/mspo/", "data"),
+        # V2.2: test data for any exhibition lives under data/samples/<exhibition_id>/.
+        ("data/samples/synthetic-expo-a/companies.csv", "data"),
         ("data/packages/", "data"),
         ("data/raw/", "data"),
         (".github/ISSUE_TEMPLATE/", "ai"),
@@ -126,6 +128,7 @@ def test_every_spec_directory_has_owner(path):
         ("docs/DEVELOPMENT_PLAN.md", "ai"),
         ("docs/data-platform/environment.md", "data"),
         ("data/index/", "data"),
+        ("README.md", "ai"),
     ],
 )
 def test_owner_decisions(path, owner):
@@ -216,3 +219,82 @@ def test_progress_references_existing_plan_ids():
     ids = set(_plan_ids())
     for ref in re.findall(r"\b([AWD][1-4]-\d{2})\b", _read(PROGRESS)):
         assert ref in ids, f"PROGRESS.md references unknown work item {ref}"
+
+
+# ---------------------------------------------------------------- V2.2 generic platform
+SPECIFIC_EXHIBITIONS = re.compile(r"MSPO|TADTE", re.IGNORECASE)
+
+
+def _section(text: str, start: str, end: str) -> str:
+    return text.split(start, 1)[1].split(end, 1)[0]
+
+
+def test_claude_md_defines_generic_platform():
+    text = _read(CLAUDE)
+    for needle in ["general-purpose", "only a test case", "No exhibition is hard-coded in core code",
+                   "Generality acceptance", "Data Platform, AI Intelligence and the Web Dashboard"]:
+        assert needle in text, f"CLAUDE.md missing {needle!r}"
+    # The only mention of a specific exhibition is the statement that it is not one.
+    for line in text.splitlines():
+        if SPECIFIC_EXHIBITIONS.search(line):
+            assert "NOT an MSPO- or TADTE-specific system" in line, line
+
+
+def test_spec_generic_principles_and_acceptance():
+    text = _read(SPEC)
+    for heading in ["### 1.1 通用性原則", "### 4.1 Dashboard 能直接做與不能直接做的事", "### 8.1 通用性驗收"]:
+        assert heading in text, f"spec missing {heading!r}"
+    assert "通用型 AI 展會情報搜尋、蒐集、分析與可視化平台" in text
+    # Phase gates must not name a specific exhibition.
+    gates = _section(text, "## 8.", "### 8.1")
+    assert not SPECIFIC_EXHIBITIONS.search(gates), "spec §8 phase gates name a specific exhibition"
+    acceptance = _section(text, "### 8.1", "\n## 9.")
+    for needle in ["不修改核心程式", "兩組不同結構", "synthetic", "真實資料"]:
+        assert needle in acceptance, f"spec §8.1 missing {needle!r}"
+
+
+def test_spec_does_not_claim_static_site_runs_backend_tasks():
+    s41 = _section(_read(SPEC), "### 4.1", "\n## 5.")
+    for needle in ["靜態 SPA", "不能", "workflow_dispatch", "Token", "核准"]:
+        assert needle in s41, f"spec §4.1 missing {needle!r}"
+
+
+def test_plan_items_mention_specific_exhibitions_only_as_test_cases():
+    for line in _read(PLAN).splitlines():
+        if re.match(r"^\| [AWD][1-4]-\d{2} \|", line) and SPECIFIC_EXHIBITIONS.search(line):
+            assert "測試案例" in line, f"work item hard-codes an exhibition: {line}"
+
+
+@pytest.mark.parametrize("phase", [1, 2, 3, 4])
+def test_visual_gates_are_exhibition_agnostic(phase):
+    plan = _read(PLAN)
+    gate = plan.split(f"### Phase {phase} 可視化成果", 1)[1].split("\n## ", 1)[0]
+    assert not SPECIFIC_EXHIBITIONS.search(gate), f"Phase {phase} visual gate names a specific exhibition"
+
+
+def test_plan_generality_acceptance_covers_every_phase():
+    s6 = _section(_read(PLAN), "## 6. 通用性驗收", "\n## Phase ")
+    for phase in [1, 2, 3, 4]:
+        assert f"| Phase {phase} |" in s6, f"plan §6 has no Phase {phase} row"
+    for needle in ["不修改核心程式", "partial", "unknown", "匯入"]:
+        assert needle in s6, f"plan §6 missing {needle!r}"
+
+
+def test_dashboard_menu_has_required_pages():
+    plan = _read(PLAN)
+    menu = re.search(r"\*\*主選單（(\d+) 項）：\*\*(.+)", plan)
+    assert menu, "main menu not found in plan §3"
+    pages = [p.strip(" 。") for p in menu.group(2).split("。")[0].split("、")]
+    assert len(pages) == int(menu.group(1)), "menu count does not match listed pages"
+    for page in ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分",
+                 "BXR 產品推薦", "AI 報告中心", "資料及系統狀態"]:
+        assert page in pages, f"menu missing {page}"
+    assert "PDF／CSV 匯出" in plan
+    assert f"{menu.group(1)} 個主選單" in plan, "W1-02 / Phase 1 gate menu count out of date"
+
+
+def test_three_core_modules_and_reverse_sync_documented():
+    text = _read(BOUNDARIES)
+    assert "**Data Platform**（`data`）、**AI Intelligence**（`ai`）、**Web Dashboard**（`ai`）" in text
+    assert "### 4.6" in text and "只由專案負責人確認並合併" in text
+    assert "README.md" in re.search(r"git checkout origin/dev/ai-intelligence -- (.+)", text).group(1)

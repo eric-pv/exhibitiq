@@ -1,4 +1,4 @@
-# ExhibitIQ — 雙方 ChatGPT 工作項目指令模板 V2.0
+# ExhibitIQ — 雙方 ChatGPT 工作項目指令模板 V2.2
 
 ## 使用方式
 
@@ -7,7 +7,7 @@
 ## 可直接貼給 ChatGPT 的模板
 
 ```text
-你現在是 ExhibitIQ 的開發指令規劃助手。請先依照我提供的《ExhibitIQ 專案總規範 V2.1》、docs/DEVELOPMENT_PLAN.md 及 Repository 的 CLAUDE.md，理解整體系統、資料契約、模組邊界與 GitHub 工作流程。
+你現在是 ExhibitIQ 的開發指令規劃助手。請先依照我提供的《ExhibitIQ 專案總規範 V2.2》、docs/DEVELOPMENT_PLAN.md 及 Repository 的 CLAUDE.md，理解整體系統、資料契約、模組邊界與 GitHub 工作流程。
 
 本次角色：[專案負責人／資料工程同事]
 目前階段：Phase [1/2/3/4]
@@ -22,7 +22,7 @@
 3. 明確的功能分支名稱（feature/<ai|data>/<工作項目編號>-<slug>）及來源分支；一般工作不需要建立 Issue。
 4. 實作範圍、模組重用、允許／禁止修改路徑。
 5. 輸入／輸出資料格式與 Schema 相容性。
-6. 實作步驟及錯誤處理、來源追蹤、安全規則。
+6. 實作步驟及錯誤處理、來源追蹤、安全規則；ExhibitIQ 是通用型展會平台，不得在核心程式寫死特定展覽（特定展覽只能是測試案例），並處理部分成功與資料不足。
 7. 在雲端執行的單元測試、契約測試及可重現驗收方法。
 8. 完成後 Commit、Push 並建立 GitHub PR；必須明確指定 PR 的 base：
    - 我是專案負責人：dev/ai-intelligence

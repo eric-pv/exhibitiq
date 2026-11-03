@@ -2,7 +2,17 @@
 
 AI-powered exhibition intelligence and strategic analysis platform（Big x Reality 內部 AI 應用實戰挑戰賽 — 競賽版）。
 
-ExhibitIQ 以爬蟲與 ETL 蒐集展會參展商公開資料，經清理與標準化後打包成資料包，再由 Claude Code ExhibitIQ Skill 分析，產出有來源、可追溯的展會與市場情報；所有資料、分析結果與系統狀態都在 **Web Dashboard** 上搜尋、篩選、比較並匯出報告。
+ExhibitIQ 是**可支援不同展覽的通用型** AI 展會情報搜尋、蒐集、分析與可視化平台：使用者搜尋或新增展覽（名稱、國家、年份或官網），經來源評估後擷取或匯入參展商資料，以共用 Schema 標準化並打包成資料包，再由 Claude Code ExhibitIQ Skill 進行企業情報、商機、競品、合作及產品適配分析；結果在 **Web Dashboard** 上搜尋、篩選、跨展覽與跨年度比較，並匯出 PDF／CSV 報告。
+
+任何特定展覽（例如 MSPO、TADTE）都只是測試案例，不寫死在核心架構；並非每個展覽都能自動取得完整資料，系統保留來源適配、檔案匯入、部分成功與資料不足的處理（見總規範 §1.1、§4.1）。
+
+## 三個核心模組
+
+| 模組 | 負責人 | 主要路徑 |
+|---|---|---|
+| Data Platform | data（Albert） | `crawler/`、`etl/`、`data/`、`.github/workflows/`、`tests/data/` |
+| AI Intelligence | ai（Eric） | `schemas/`、`skills/`、`knowledge/`、`reports/`、`tests/contract/` |
+| Web Dashboard | ai（Eric） | `site/` |
 
 ## 從這裡開始
 
@@ -25,7 +35,7 @@ ExhibitIQ 以爬蟲與 ETL 蒐集展會參展商公開資料，經清理與標�
 
 - `main`：只保存階段驗收通過的整合版本。
 - `dev/ai-intelligence`：AI Skill、分析、產品知識、報告與 Web Dashboard（專案負責人）。
-- `dev/data-platform`：爬蟲、ETL、資料品質與 GitHub Actions（資料工程）。
+- `dev/data-platform`：爬蟲、來源評估與匯入、ETL、資料品質與 GitHub Actions（資料工程）。
 - 每個工作項目一條 `feature/<ai|data>/<工作項目編號>-<slug>`，PR base 指向自己的 `dev/*`；一般工作不需要 Issue。
 
 ## 目前狀態

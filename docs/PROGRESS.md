@@ -2,7 +2,7 @@
 
 > 最後更新：2026-11-03｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
-> **更新方式：** 本檔只由 `ai` 修改（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
+> **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
 
 ## 目前階段
 
@@ -28,14 +28,17 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A1-06 | 分析結果與證據契約（Schema 升到 `1.0.0-draft.2`）；同時把合併人標記規則（Issue #15）寫進 `CLAUDE.md`、`branching.md`、PR 模板 | PR 待合併 |
+| A1-06 | 分析結果與證據契約（Schema 升到 `1.0.0-draft.2`）；同時把合併人標記規則（Issue #15）寫進 `CLAUDE.md`、`branching.md`、PR 模板 | 已合併到 `dev/ai-intelligence`（[#16](https://github.com/magician-eric/exhibitiq/pull/16)）；已同步到 `dev/data-platform`（[#17](https://github.com/magician-eric/exhibitiq/pull/17)） |
+| D1-07 | 來源設定、執行日誌與錯誤格式 | 已合併到 `dev/data-platform`（[#18](https://github.com/magician-eric/exhibitiq/pull/18)） |
+| D1-10 | 測試案例 MSPO 資料來源評估 | 已合併到 `dev/data-platform`（[#19](https://github.com/magician-eric/exhibitiq/pull/19)、[#20](https://github.com/magician-eric/exhibitiq/pull/20)）；結論：主辦單位網頁上看不到參展商名單，等專案負責人決定取得方式 |
+| — | V2.2 共用規範修訂：通用展覽平台定位、Dashboard 必要模組（8 個主選單）、通用性驗收、靜態 Dashboard 的執行邊界 | 在 `dev/data-platform` 的 PR 待 Albert 合併；同步到 `dev/ai-intelligence` 的 PR 待 Eric 合併 |
 
 ## 待處理（Phase 1）
 
 | 負責 | 編號 |
 |---|---|
-| ai | A1-01、A1-07、A1-09、W1-01、W1-02、W1-03 |
-| data | D1-02、D1-04、D1-05、D1-06、D1-07、D1-08、D1-09、D1-10 |
+| ai | A1-01、A1-07、A1-09、A1-10、W1-01、W1-02、W1-03 |
+| data | D1-02、D1-04、D1-05、D1-06、D1-08、D1-09、D1-11 |
 | ai 準備、Albert 合併 | 第四次共用規範同步：A1-06 的 Schema、規格與合併人規則（A1-06 合併後） |
 | data | A1-06 同步後，資料包 manifest 的 `schema_version` 改為 `1.0.0-draft.2`（草案期必須完全相同） |
 
@@ -43,7 +46,7 @@
 
 | 項目 | 影響 | 狀態 |
 |---|---|---|
-| MSPO 資料來源還沒確認能否取得 | Phase 2 真實資料展示；最大時程風險 | D1-10 |
+| 第一組可合法取得的真實展覽資料尚未確定（測試案例 MSPO 網頁上看不到名單） | Phase 2 真實資料展示與 §6 通用性驗收；最大時程風險 | D1-10 已評估；待 D1-11 與專案負責人決定 |
 | BXR 產品資料尚未提供 | A1-09 之後的 A2-05、W3-03 | 等專案負責人提供 |
 
 ## 待專案負責人決定
@@ -52,6 +55,10 @@
 |---|---|
 | Phase 4 給評審的操作網址：公開的去敏感版 GitHub Pages（需確認帳號方案）、受保護的外部託管（新服務）、或只做現場操作 | Phase 3 結束前 |
 | 根目錄 `.gitignore` 的負責人 | W1-01 開始前（前端會產生 `node_modules/`、`dist/`） |
+| 真實資料的第一個測試展覽與取得方式（自動擷取、匯入、向主辦單位取得授權） | Phase 2 開始前 |
+| 展覽登錄資料的存放位置（`data/index/` 或其他；A1-10） | D1-06、D2-13 開始前 |
+| 是否需要網頁一鍵執行（新增展覽、觸發擷取、執行分析）：需要後端代理或 GitHub App 等新服務；預設不做，改用 Actions 手動執行（總規範 §4.1） | Phase 3 開始前 |
+| 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用） | Phase 3 開始前 |
 
 ## 已存在的 Issue（歷史紀錄）
 
