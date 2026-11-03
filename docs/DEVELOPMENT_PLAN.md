@@ -7,7 +7,7 @@
 
 - 每個工作項目有一個編號：`A`＝AI（專案負責人）、`W`＝Web Dashboard（專案負責人）、`D`＝Data（同事）；數字是 Phase。
 - 一般工作**不需要建立 GitHub Issue**，直接依本計畫的編號開發。Issue 只用於：Bug、重大需求變更、跨人協調、需要追蹤的問題。
-- 分支：`feature/<ai|data>/<編號小寫>-<slug>`，例如 `feature/ai/w1-01-frontend-scaffold`。PR 標題以 `[<編號>]` 開頭。
+- 分支：`feature/<ai|data>/<編號小寫>-<slug>`，例如 `feature/ai/w1-01-frontend-scaffold`。PR 標題格式：`【Eric 合併】[A1-06] …` 或 `【Albert 合併】[D1-05] …`（合併人規則見 [`workflow/branching.md`](workflow/branching.md)）。
 - 每個可以獨立驗收的工作項目建立一個 PR，base 是自己的 dev 分支，自己合併。
 - 依賴欄寫的是**真正需要先完成的項目**；沒有依賴的項目可以平行進行。
 - 本計畫的項目只能由專案負責人新增、刪除或改變負責人。

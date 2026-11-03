@@ -18,8 +18,13 @@
 1. 從 [`DEVELOPMENT_PLAN.md`](../DEVELOPMENT_PLAN.md) 選定工作項目。一般工作**不需要建立 Issue**；Issue 只用於 Bug、重大需求變更、跨人協調或需要追蹤的問題（使用 `.github/ISSUE_TEMPLATE/task.md`）。
 2. 從自己的 `dev/*` 建立 `feature/<role>/<工作項目編號小寫>-<slug>`，例如 `feature/ai/w1-01-frontend-scaffold`。
 3. 只實作該工作項目的範圍，只修改自己負責的路徑；在雲端執行測試。
-4. Push 並建立 PR（使用 `.github/pull_request_template.md`），標題以 `[<工作項目編號>]` 開頭，base 設為自己的 `dev/*`。
+4. Push 並建立 PR（使用 `.github/pull_request_template.md`），標題格式為 `【<合併人> 合併】[<工作項目編號>] <摘要>`，base 設為自己的 `dev/*`。
 5. 任務擁有者自行確認並合併。PR 存在不等於工作完成；測試未通過不得合併。
+   **每個 PR 都要標明合併人**（Issue #15）：
+   | PR base | 合併人 | 標題開頭 | 內文第一行 | Assignee |
+   |---|---|---|---|---|
+   | `dev/ai-intelligence`、`main` | Eric | `【Eric 合併】` | `> **合併人：Eric**` | `magician-eric` |
+   | `dev/data-platform`（含同步 PR） | Albert | `【Albert 合併】` | `> ⚠️ **合併人：Albert。Eric 請勿合併。**` | `acyihung-infinityandbeyond` |
 6. 前一項合併後，再從更新後的 `dev/*` 開始下一項（除非另有指示）。
 7. 專案負責人依已合併的 PR 更新 [`PROGRESS.md`](../PROGRESS.md)；同事在 PR 描述中回報進度，不修改 `PROGRESS.md`。
 

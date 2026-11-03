@@ -1,9 +1,9 @@
 # ExhibitIQ 資料包契約 v1（核心資料）
 
-> 狀態：`1.0.0-draft.1`（Phase 1 草案期，依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) §3.1，任何變更都可能不相容）
+> 狀態：`1.0.0-draft.2`（Phase 1 草案期，依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) §3.1，任何變更都可能不相容）
 > 負責人：專案負責人（`ai`）。Issue #7（P1-AI-04）。
 > 機器可讀契約：[`schemas/v1/`](../../schemas/v1/)。本文件與 Schema 檔衝突時，以 Schema 檔為準，並視為需要修正的錯誤。
-> AI 分析結果與證據引用契約不在本文件範圍，屬於 P1-AI-05。
+> AI 分析結果與證據引用契約見 [`analysis-result-contract.md`](analysis-result-contract.md)。
 
 ## 1. 範圍與讀者
 
@@ -140,7 +140,7 @@ data/packages/<exhibition_id>/<edition_year>/<dataset_id>/
 ## 10. Schema 版本宣告
 
 - `manifest.schema_version` 是整個資料包的版本宣告；JSONL 紀錄**不**逐筆攜帶 `schema_version`。
-- 草案期必須與 [`schemas/v1/VERSION`](../../schemas/v1/VERSION) 完全相同（目前 `1.0.0-draft.1`），`manifest.schema.json` 以 `const` 強制。
+- 草案期必須與 [`schemas/v1/VERSION`](../../schemas/v1/VERSION) 完全相同（目前 `1.0.0-draft.2`），`manifest.schema.json` 以 `const` 強制。
 - `manifest.data_origin`：`collected`（實際擷取）或 `synthetic`（合成測試資料）。**合成資料不得作為分析事實。**
 
 ## 11. 變更紀錄
