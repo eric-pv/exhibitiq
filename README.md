@@ -11,6 +11,8 @@ ExhibitIQ 以爬蟲與 ETL 蒐集展會參展商公開資料，經清理與標�
 | [`docs/ExhibitIQ_專案總規範.md`](docs/ExhibitIQ_專案總規範.md) | 最高層規格：架構、分工、資料契約、四階段規劃 |
 | [`CLAUDE.md`](CLAUDE.md) | Claude Code 工作規則 |
 | [`docs/workflow/branching.md`](docs/workflow/branching.md) | 分支、PR 與階段整合規則 |
+| [`docs/architecture/module-boundaries.md`](docs/architecture/module-boundaries.md) | 目錄負責人、跨範圍修改、共用規範同步 |
+| [`schemas/VERSIONING.md`](schemas/VERSIONING.md) | Schema 版本、相容性與變更程序 |
 | [`docs/workflow/ChatGPT_工作指令模板.md`](docs/workflow/ChatGPT_工作指令模板.md) | 單一 Issue 的 ChatGPT 指令模板 |
 | [`docs/workflow/階段整合_ChatGPT指令模板.md`](docs/workflow/階段整合_ChatGPT指令模板.md) | 階段整合指令模板（僅專案負責人） |
 | [`docs/workflow/工作流程與驗收檢查表.md`](docs/workflow/工作流程與驗收檢查表.md) | PR、階段與安全檢查表 |
@@ -24,4 +26,4 @@ ExhibitIQ 以爬蟲與 ETL 蒐集展會參展商公開資料，經清理與標�
 
 ## 目前狀態
 
-Phase 1（架構與雲端開發基礎）進行中。程式模組、`schemas/` 與 Skill 尚未建立。
+Phase 1（架構與雲端開發基礎）進行中。`schemas/` 目前只有版本政策，尚無 Schema 檔；程式模組與 Skill 尚未建立。
