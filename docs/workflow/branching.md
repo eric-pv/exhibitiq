@@ -38,6 +38,8 @@
 
 ## 相關文件
 
+- [模組邊界與目錄負責人](../architecture/module-boundaries.md)（含共用規範同步程序）
+- [Schema 版本政策](../../schemas/VERSIONING.md)
 - [ChatGPT 工作指令模板](ChatGPT_工作指令模板.md)
 - [階段整合 ChatGPT 指令模板](階段整合_ChatGPT指令模板.md)
 - [工作流程與驗收檢查表](工作流程與驗收檢查表.md)
