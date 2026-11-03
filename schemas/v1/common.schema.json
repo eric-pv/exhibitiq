@@ -175,6 +175,12 @@
           "$ref": "#/$defs/source_ids"
         }
       }
+    },
+    "bxr_product_id": {
+      "type": "string",
+      "pattern": "^bxr-[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 60,
+      "description": "BXR 產品 ID：bxr- 加小寫英數與連字號，例如 bxr-police-box。產品卡定義屬於 A1-09。"
     }
   }
 }

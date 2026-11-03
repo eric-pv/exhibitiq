@@ -1,3 +1,5 @@
+> **合併人：Eric** ／ > ⚠️ **合併人：Albert。Eric 請勿合併。**（擇一保留；標題開頭同樣加上【Eric 合併】或【Albert 合併】）
+
 <!--
 ExhibitIQ PR 模板（依《ExhibitIQ 專案總規範》§9）
 - 功能 PR 的 base 必須是任務擁有者自己的 dev 分支：

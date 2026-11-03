@@ -15,12 +15,16 @@ ExhibitIQ is a cloud-only, GitHub-first AI exhibition intelligence competition p
    - AI: `feature/ai/<work-item-id>-<slug>` from `dev/ai-intelligence` (e.g. `feature/ai/w1-01-frontend-scaffold`).
    - Data: `feature/data/<work-item-id>-<slug>` from `dev/data-platform`.
 3. Implement only that work item. Run the relevant cloud tests, validate schema compatibility, document limitations.
-4. **Every independently verifiable work item gets its own GitHub PR**, base = your OWN dev branch (never `main`). Title starts with `[<work-item-id>]`. Include changed files, tests and results, schema impact, evidence (screenshots or preview for any `site/` change) and limitations.
+4. **Every independently verifiable work item gets its own GitHub PR**, base = your OWN dev branch (never `main`). Title format: `【<merger> 合併】[<work-item-id>] <summary>` (see item 6). Include changed files, tests and results, schema impact, evidence (screenshots or preview for any `site/` change) and limitations.
 5. **Merge your own PR** into your own dev branch. No review by the other developer is required.
-6. The project owner keeps `docs/PROGRESS.md` up to date from merged PRs. The colleague reports progress through her PR descriptions and does not edit `PROGRESS.md`.
-7. **Do not merge `dev/*` into `main` during an active phase.** Only after BOTH developers finish their phase work does the project owner run the phase integration (see below).
-8. After a phase is integrated, synchronize both development branches with the newly accepted `main` before the next phase. Never discard unmerged work.
-9. Shared rules and contracts reach `dev/data-platform` only through the one-way sync in `module-boundaries.md` §4; the colleague merges the sync PR.
+6. **Every PR names its merger (Issue #15).** People: **Eric** = project owner (`ai`, GitHub `magician-eric`); **Albert** = colleague (`data`, GitHub `acyihung-infinityandbeyond`).
+   - Base `dev/ai-intelligence` or `main` → title starts with `【Eric 合併】`, first body line `> **合併人：Eric**`, assignee `magician-eric`.
+   - Base `dev/data-platform` (including shared-file sync PRs) → title starts with `【Albert 合併】`, first body line `> ⚠️ **合併人：Albert。Eric 請勿合併。**`, assignee `acyihung-infinityandbeyond`.
+   - When reporting to the user, the first line states the merger, e.g. `合併人：Albert（請轉給 Albert，Eric 不要按合併）`.
+7. The project owner keeps `docs/PROGRESS.md` up to date from merged PRs. Albert reports progress through PR descriptions and does not edit `PROGRESS.md`.
+8. **Do not merge `dev/*` into `main` during an active phase.** Only after BOTH developers finish their phase work does the project owner run the phase integration (see below).
+9. After a phase is integrated, synchronize both development branches with the newly accepted `main` before the next phase. Never discard unmerged work.
+10. Shared rules and contracts reach `dev/data-platform` only through the one-way sync in `module-boundaries.md` §4; the colleague merges the sync PR.
 
 ## Architecture boundaries
 - One GitHub Private Monorepo. All development, execution, testing and crawling in cloud workspaces/GitHub Actions; no local computer compute requirement.
@@ -42,7 +46,7 @@ ExhibitIQ is a cloud-only, GitHub-first AI exhibition intelligence competition p
 - The requested feature depends on unavailable cloud permissions, credentials or execution capabilities.
 
 ## Required final task response
-- Work item ID and phase; feature branch and PR URL; **PR base branch**.
+- **Merger (Eric or Albert) on the first line**; work item ID and phase; feature branch and PR URL; **PR base branch**.
 - Files changed; behavior implemented; tests and results; sample input/output; screenshots for `site/` changes.
 - Schema compatibility; known limitations; manual verification steps.
 - Whether the task owner has merged the PR (do not claim a merge without verification).

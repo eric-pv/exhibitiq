@@ -16,6 +16,7 @@ ExhibitIQ 以爬蟲與 ETL 蒐集展會參展商公開資料，經清理與標�
 | [`docs/architecture/module-boundaries.md`](docs/architecture/module-boundaries.md) | 目錄負責人、跨範圍修改、共用規範同步 |
 | [`schemas/VERSIONING.md`](schemas/VERSIONING.md) | Schema 版本、相容性與變更程序 |
 | [`docs/specs/data-package-contract.md`](docs/specs/data-package-contract.md) | 資料包契約 v1：ID、目錄、序列化、雜湊、來源追溯、完整度 |
+| [`docs/specs/analysis-result-contract.md`](docs/specs/analysis-result-contract.md) | 分析結果契約 v1：結論類型、不確定性、可拆解評分、關係分類、建議 |
 | [`docs/workflow/ChatGPT_工作指令模板.md`](docs/workflow/ChatGPT_工作指令模板.md) | 單一工作項目的 ChatGPT 指令模板 |
 | [`docs/workflow/階段整合_ChatGPT指令模板.md`](docs/workflow/階段整合_ChatGPT指令模板.md) | 階段整合指令模板（僅專案負責人） |
 | [`docs/workflow/工作流程與驗收檢查表.md`](docs/workflow/工作流程與驗收檢查表.md) | PR、階段與安全檢查表 |
