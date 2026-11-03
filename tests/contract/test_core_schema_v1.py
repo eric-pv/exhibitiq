@@ -121,7 +121,7 @@ _DEL = object()
 NEGATIVE = [
     # (id, entity, mutation)
     ("exhibition-missing-name", "exhibition", _set("name", _DEL)),
-    ("exhibition-uppercase-id", "exhibition", _set("exhibition_id", "MSPO")),
+    ("exhibition-uppercase-id", "exhibition", _set("exhibition_id", "EXPO")),
     ("exhibition-unknown-field", "exhibition", _set("exhibitor_count", 10)),
     ("exhibition-empty-source_ids", "exhibition", _set("source_ids", [])),
     ("exhibition-ai-inferred", "exhibition", _set("verification_status", "ai_inferred")),

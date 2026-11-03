@@ -108,7 +108,7 @@ def test_every_spec_directory_has_owner(path):
         ("tests/data/", "data"),
         ("data/samples/golden/", "ai"),
         ("data/samples/golden/v1/manifest.json", "ai"),
-        ("data/samples/mspo/", "data"),
+        ("data/samples/sample-fair/", "data"),
         # V2.2: test data for any exhibition lives under data/samples/<exhibition_id>/.
         ("data/samples/synthetic-expo-a/companies.csv", "data"),
         ("data/packages/", "data"),
@@ -118,7 +118,7 @@ def test_every_spec_directory_has_owner(path):
         (".github/workflows/", "data"),
         (".github/workflows/validate.yml", "data"),
         ("skills/exhibitiq/SKILL.md", "ai"),
-        ("crawler/mspo/", "data"),
+        ("crawler/sample-fair/", "data"),
         # V2.1 (2026-11-03): Web Dashboard owned by ai; its workflows stay with data.
         ("site/", "ai"),
         ("site/src/components/KpiCard.tsx", "ai"),
@@ -223,6 +223,8 @@ def test_progress_references_existing_plan_ids():
 
 # ---------------------------------------------------------------- V2.2 generic platform
 SPECIFIC_EXHIBITIONS = re.compile(r"MSPO|TADTE", re.IGNORECASE)
+MANDATORY_RULE = ("ExhibitIQ 嚴禁將任何特定展覽列為預設開發目標、主要資料來源、必要驗收對象或專案負責人必須指定的測試案例。"
+                  "所有展覽資料來源均由通用探索與評估流程決定。特定展覽的取得失敗，不得阻礙通用系統繼續開發。")
 
 
 def _section(text: str, start: str, end: str) -> str:
@@ -231,13 +233,11 @@ def _section(text: str, start: str, end: str) -> str:
 
 def test_claude_md_defines_generic_platform():
     text = _read(CLAUDE)
-    for needle in ["general-purpose", "only a test case", "No exhibition is hard-coded in core code",
+    for needle in ["general-purpose", MANDATORY_RULE, "No exhibition is hard-coded in core code",
                    "Generality acceptance", "Data Platform, AI Intelligence and the Web Dashboard"]:
         assert needle in text, f"CLAUDE.md missing {needle!r}"
-    # The only mention of a specific exhibition is the statement that it is not one.
-    for line in text.splitlines():
-        if SPECIFIC_EXHIBITIONS.search(line):
-            assert "NOT an MSPO- or TADTE-specific system" in line, line
+    # V2.3: CLAUDE.md names no specific exhibition at all.
+    assert not SPECIFIC_EXHIBITIONS.search(text), "CLAUDE.md names a specific exhibition"
 
 
 def test_spec_generic_principles_and_acceptance():
@@ -249,7 +249,7 @@ def test_spec_generic_principles_and_acceptance():
     gates = _section(text, "## 8.", "### 8.1")
     assert not SPECIFIC_EXHIBITIONS.search(gates), "spec §8 phase gates name a specific exhibition"
     acceptance = _section(text, "### 8.1", "\n## 9.")
-    for needle in ["不修改核心程式", "兩組不同結構", "synthetic", "真實資料"]:
+    for needle in ["不修改核心程式", "兩組不同結構", "synthetic", "合法取得的公開資料"]:
         assert needle in acceptance, f"spec §8.1 missing {needle!r}"
 
 
@@ -262,7 +262,7 @@ def test_spec_does_not_claim_static_site_runs_backend_tasks():
 def test_plan_items_mention_specific_exhibitions_only_as_test_cases():
     for line in _read(PLAN).splitlines():
         if re.match(r"^\| [AWD][1-4]-\d{2} \|", line) and SPECIFIC_EXHIBITIONS.search(line):
-            assert "測試案例" in line, f"work item hard-codes an exhibition: {line}"
+            assert "歷史紀錄" in line and "不是任何工作項目的依賴" in line, f"work item depends on an exhibition: {line}"
 
 
 @pytest.mark.parametrize("phase", [1, 2, 3, 4])
@@ -298,3 +298,41 @@ def test_three_core_modules_and_reverse_sync_documented():
     assert "**Data Platform**（`data`）、**AI Intelligence**（`ai`）、**Web Dashboard**（`ai`）" in text
     assert "### 4.6" in text and "只由專案負責人確認並合併" in text
     assert "README.md" in re.search(r"git checkout origin/dev/ai-intelligence -- (.+)", text).group(1)
+
+
+# ---------------------------------------------------------------- V2.3 no fixed exhibition
+GENERAL_DOCS = [CLAUDE, ROOT / "README.md", SPEC, PLAN, PROGRESS]
+
+
+@pytest.mark.parametrize("doc", GENERAL_DOCS, ids=lambda p: p.name)
+def test_specific_exhibitions_only_as_history(doc):
+    for line in _read(doc).splitlines():
+        if SPECIFIC_EXHIBITIONS.search(line):
+            assert "歷史" in line, f"{doc.name}: specific exhibition outside a historical note: {line}"
+        assert "1,209" not in line and "1209" not in line, f"{doc.name}: exhibition-specific count: {line}"
+
+
+def test_spec_states_mandatory_rule_and_capability_acceptance():
+    text = _read(SPEC)
+    assert MANDATORY_RULE in text, "spec §1.1 missing the mandatory rule"
+    acceptance = _section(text, "### 8.1", "\n## 9.")
+    for needle in ["可重用的系統能力", "參展商數量", "不阻礙"]:
+        assert needle in acceptance, f"spec §8.1 missing {needle!r}"
+
+
+def test_plan_does_not_require_owner_to_pick_exhibitions():
+    plan = _read(PLAN)
+    s6 = plan.split("## 6. 通用性驗收", 1)[1].split("\n## ", 1)[0]
+    for needle in ["不需要專案負責人指定展覽", "參展商數量都不是驗收指標", "至少一組真實、合法取得的公開資料"]:
+        assert needle in s6, f"DEVELOPMENT_PLAN §6 missing {needle!r}"
+    for item in ("D1-11", "D2-02"):
+        row = next(l for l in plan.splitlines() if l.startswith(f"| {item} |"))
+        assert "D1-10" not in row, f"{item} still depends on D1-10"
+
+
+def test_progress_has_no_exhibition_blocker_or_owner_pick():
+    text = _read(PROGRESS)
+    blockers = _section(text, "## 阻礙事項", "## 待專案負責人決定")
+    decisions = _section(text, "## 待專案負責人決定", "## 已存在的 Issue")
+    assert not SPECIFIC_EXHIBITIONS.search(blockers)
+    assert "第一組" not in blockers and "測試展覽" not in decisions

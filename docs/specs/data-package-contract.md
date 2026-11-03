@@ -15,9 +15,9 @@
 
 | ID | 格式 | 範例 | 產生方式 |
 |---|---|---|---|
-| `exhibition_id` | 小寫英數＋連字號，≤40 字元 | `mspo`、`tadte` | 人工指定，永不變更 |
-| `edition_id` | `<exhibition_id>-<西元年>`，同年多屆可加小寫後綴 | `mspo-2026` | 由規則組成 |
-| `dataset_id` | `<edition_id>.<UTC 建立時間 YYYYMMDDTHHMMSSZ>` | `mspo-2026.20261103T060000Z` | 由規則組成 |
+| `exhibition_id` | 小寫英數＋連字號，≤40 字元 | `example-expo`、`sample-fair` | 人工指定，永不變更 |
+| `edition_id` | `<exhibition_id>-<西元年>`，同年多屆可加小寫後綴 | `example-expo-2026` | 由規則組成 |
+| `dataset_id` | `<edition_id>.<UTC 建立時間 YYYYMMDDTHHMMSSZ>` | `example-expo-2026.20261103T060000Z` | 由規則組成 |
 | `company_id` | `co_` + ULID | `co_01JCC000000000000000000001` | ETL 指派 |
 | `participation_id` | `pt_` + ULID | `pt_01JCP000000000000000000001` | ETL 指派 |
 | `source_id` | `src_` + ULID | `src_01JCS000000000000000000001` | 擷取時指派 |
