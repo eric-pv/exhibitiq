@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/source.schema.json",
+  "title": "Source",
+  "description": "來源",
+  "type": "object",
+  "required": [
+    "source_id",
+    "source_type",
+    "retrieved_at",
+    "content_sha256",
+    "snapshot"
+  ],
+  "properties": {
+    "source_id": {
+      "$ref": "common.schema.json#/$defs/source_id"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "official_exhibitor_list",
+        "official_website",
+        "official_document",
+        "exhibitor_website",
+        "press_release",
+        "pdf_import",
+        "csv_import",
+        "excel_import",
+        "manual_entry",
+        "other"
+      ]
+    },
+    "url": {
+      "$ref": "common.schema.json#/$defs/http_url"
+    },
+    "title": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "publisher": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "retrieved_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "crawl_run_id": {
+      "$ref": "common.schema.json#/$defs/crawl_run_id"
+    },
+    "content_sha256": {
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/$defs/sha256"
+        }
+      ],
+      "description": "來源快照原始位元組的 sha256。"
+    },
+    "media_type": {
+      "type": "string",
+      "pattern": "^[a-z]+/[a-z0-9.+-]+$"
+    },
+    "language": {
+      "$ref": "common.schema.json#/$defs/language_tag"
+    },
+    "http_status": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 599
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "storage"
+      ],
+      "description": "原始快照存放位置。not_stored 表示未保存快照（必須在 notes 說明原因）。",
+      "properties": {
+        "storage": {
+          "type": "string",
+          "enum": [
+            "git",
+            "release",
+            "actions_artifact",
+            "external",
+            "not_stored"
+          ]
+        },
+        "locator": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        },
+        "retained_until": {
+          "$ref": "common.schema.json#/$defs/date"
+        }
+      },
+      "if": {
+        "properties": {
+          "storage": {
+            "const": "not_stored"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "locator"
+          ]
+        }
+      },
+      "else": {
+        "required": [
+          "locator"
+        ]
+      }
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_type": {
+            "const": "manual_entry"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "notes"
+        ]
+      },
+      "else": {
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "snapshot": {
+            "properties": {
+              "storage": {
+                "const": "not_stored"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "notes"
+        ]
+      }
+    }
+  ]
+}

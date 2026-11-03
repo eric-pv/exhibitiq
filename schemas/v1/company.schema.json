@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/company.schema.json",
+  "title": "Company",
+  "description": "企業",
+  "type": "object",
+  "required": [
+    "company_id",
+    "name",
+    "status",
+    "source_ids",
+    "verification_status"
+  ],
+  "properties": {
+    "company_id": {
+      "$ref": "common.schema.json#/$defs/company_id"
+    },
+    "name": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "name_en": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "name_zh_hant": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/alias"
+      }
+    },
+    "country": {
+      "$ref": "common.schema.json#/$defs/country_code"
+    },
+    "website": {
+      "$ref": "common.schema.json#/$defs/http_url"
+    },
+    "domains": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "common.schema.json#/$defs/hostname"
+      }
+    },
+    "description": {
+      "$ref": "common.schema.json#/$defs/text"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "merged"
+      ],
+      "description": "merged=已確認與另一家為同一企業，以 merged_into 指向保留的 company_id。"
+    },
+    "merged_into": {
+      "$ref": "common.schema.json#/$defs/company_id"
+    },
+    "first_seen_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "source_ids": {
+      "$ref": "common.schema.json#/$defs/source_ids"
+    },
+    "field_sources": {
+      "$ref": "common.schema.json#/$defs/field_sources"
+    },
+    "verification_status": {
+      "$ref": "common.schema.json#/$defs/fact_verification_status"
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "merged"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "merged_into"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "merged_into"
+          ]
+        }
+      }
+    }
+  ]
+}
