@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[2]
 SPEC = ROOT / "docs" / "ExhibitIQ_專案總規範.md"
 BOUNDARIES = ROOT / "docs" / "architecture" / "module-boundaries.md"
 VERSIONING = ROOT / "schemas" / "VERSIONING.md"
+PLAN = ROOT / "docs" / "DEVELOPMENT_PLAN.md"
+PROGRESS = ROOT / "docs" / "PROGRESS.md"
+CLAUDE = ROOT / "CLAUDE.md"
 
 OWNERS = {"ai", "data"}
 
@@ -114,6 +117,15 @@ def test_every_spec_directory_has_owner(path):
         (".github/workflows/validate.yml", "data"),
         ("skills/exhibitiq/SKILL.md", "ai"),
         ("crawler/mspo/", "data"),
+        # V2.1 (2026-11-03): Web Dashboard owned by ai; its workflows stay with data.
+        ("site/", "ai"),
+        ("site/src/components/KpiCard.tsx", "ai"),
+        ("site/package.json", "ai"),
+        (".github/workflows/site-build.yml", "data"),
+        ("docs/PROGRESS.md", "ai"),
+        ("docs/DEVELOPMENT_PLAN.md", "ai"),
+        ("docs/data-platform/environment.md", "data"),
+        ("data/index/", "data"),
     ],
 )
 def test_owner_decisions(path, owner):
@@ -163,3 +175,44 @@ def test_internal_links_resolve(md):
         if re.match(r"^[a-z]+://", target):
             continue
         assert (md.parent / target).resolve().exists(), f"{md.name}: broken link {target}"
+
+
+# ---------------------------------------------------------------- V2.1 process
+def test_claude_md_points_to_plan_and_progress():
+    text = _read(CLAUDE)
+    for needle in ["docs/DEVELOPMENT_PLAN.md", "docs/PROGRESS.md", "docs/ExhibitIQ_專案總規範.md",
+                   "docs/architecture/module-boundaries.md", "No GitHub Issue is needed for normal work"]:
+        assert needle in text, f"CLAUDE.md missing {needle!r}"
+    assert "for EVERY Issue" not in text
+
+
+def test_spec_defers_work_items_to_plan():
+    s8 = _read(SPEC).split("## 8.", 1)[1].split("\n## 9.", 1)[0]
+    assert "DEVELOPMENT_PLAN.md" in s8
+    # No numbered work lists left in §8: the plan is the only work list.
+    assert not re.search(r"^\d+\. ", s8, flags=re.M)
+
+
+def _plan_ids() -> list[str]:
+    return re.findall(r"^\| ([AWD][1-4]-\d{2}) \|", _read(PLAN), flags=re.M)
+
+
+def test_plan_work_item_ids_unique_and_well_formed():
+    ids = _plan_ids()
+    assert ids, "no work items found in DEVELOPMENT_PLAN.md"
+    assert len(ids) == len(set(ids)), "duplicate work item IDs"
+
+
+@pytest.mark.parametrize("phase", [1, 2, 3, 4])
+def test_every_phase_has_items_for_all_roles_and_visual_gate(phase):
+    ids = _plan_ids()
+    for role in "AWD":
+        assert any(i.startswith(f"{role}{phase}-") for i in ids), f"Phase {phase} has no {role} items"
+    section = _read(PLAN).split(f"## Phase {phase} ", 1)[1].split("\n## Phase ", 1)[0]
+    assert f"### Phase {phase} 可視化成果" in section
+
+
+def test_progress_references_existing_plan_ids():
+    ids = set(_plan_ids())
+    for ref in re.findall(r"\b([AWD][1-4]-\d{2})\b", _read(PROGRESS)):
+        assert ref in ids, f"PROGRESS.md references unknown work item {ref}"
