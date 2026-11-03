@@ -1,0 +1,13 @@
+# ExhibitIQ 資料工程（data）Python 專案設定 — P1-DATA-01
+# 依賴清單以 requirements.txt 為準，這裡不重複列出。
+# 目前沒有可安裝的套件（crawler/、etl/ 骨架屬 P1-DATA-02），所以不設定 build-system。
+
+[project]
+name = "exhibitiq-data-platform"
+version = "0.0.0"
+description = "ExhibitIQ data platform: crawler, ETL, validation (Phase 1 environment baseline)"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/data"]
+addopts = "-ra"
