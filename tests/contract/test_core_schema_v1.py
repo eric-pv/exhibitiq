@@ -24,7 +24,8 @@ def test_version_file():
 
 
 def test_all_core_entities_present():
-    assert set(ENTITIES) | {"common"} == set(pc.load_schemas())
+    # Core data entities (A1-05) + analysis result (A1-06) + shared defs.
+    assert set(ENTITIES) | {"common", "analysis_result"} == set(pc.load_schemas())
 
 
 @pytest.mark.parametrize("name", sorted(pc.load_schemas()))

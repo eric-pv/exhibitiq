@@ -8,10 +8,10 @@
 
 ## 目前狀態
 
-- 版本：`1.0.0-draft.1`（Phase 1 草案期）
+- 版本：`1.0.0-draft.2`（Phase 1 草案期）
 - 核心資料契約（P1-AI-04）：`common`、`exhibition`、`edition`、`company`、`participation`、`source`、`crawl_run`、`manifest`、`change`
 - 人看的規格：[`docs/specs/data-package-contract.md`](../docs/specs/data-package-contract.md)
-- AI 分析結果與證據引用契約：尚未建立（P1-AI-05）
+- AI 分析結果與證據契約（A1-06）：`analysis_result`；規格 [`docs/specs/analysis-result-contract.md`](../docs/specs/analysis-result-contract.md)
 
 ## 預定結構
 
@@ -26,6 +26,7 @@ schemas/
     ├── <entity>.schema.json   # 各實體
     └── examples/              # 合成範例（測試向量）
         ├── package/           # 完整資料包
+        ├── analysis/          # 分析結果範例（以 package/ 為輸入）
         └── change.example.json
 ```
 
