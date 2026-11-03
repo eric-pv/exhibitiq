@@ -43,4 +43,5 @@ ExhibitIQ PR 模板（依《ExhibitIQ 專案總規範》§9）
 - [ ] 只修改自己負責的路徑（`docs/architecture/module-boundaries.md` §2）
 - [ ] 未提交帳密、Token 或未核准的機密資料
 - [ ] 沒有虛構資料、筆數、來源或測試結果
+- [ ] 沒有在核心程式寫死特定展覽（總規範 §1.1）
 - [ ] Base 分支正確，未指向 `main`（階段整合 PR 除外）

@@ -1,6 +1,6 @@
 # ExhibitIQ 模組邊界與目錄負責人
 
-> 狀態：Phase 1 核定版（P1-AI-03，Issue #3）；V2.1（2026-11-03）修訂：`site/` 改由 `ai` 負責，同步範圍加入 `docs/specs/`、開發計畫與進度檔
+> 狀態：Phase 1 核定版（P1-AI-03，Issue #3）；V2.1（2026-11-03）修訂：`site/` 改由 `ai` 負責，同步範圍加入 `docs/specs/`、開發計畫與進度檔；V2.2（2026-11-03）修訂：三個核心模組、通用測試資料路徑、`README.md` 列入同步範圍、授權反向同步（4.6）。本次修訂由 `data` 經專案負責人特別授權執行，**不改變任何路徑的負責人**
 > 依據：[`docs/ExhibitIQ_專案總規範.md`](../ExhibitIQ_專案總規範.md) §5、§6，以及專案負責人 2026-11-03 的分工決定。
 > 本文件與總規範衝突時，以總規範及專案負責人當次決策為準。
 
@@ -8,8 +8,10 @@
 
 | 代號 | 角色 | 長期開發主線 | 功能分支 |
 |---|---|---|---|
-| `ai` | 專案負責人：架構、Schema 契約、AI Skill、產品知識、分析、報告、Web Dashboard、階段整合 | `dev/ai-intelligence` | `feature/ai/<issue>-<slug>` |
-| `data` | 資料工程同事：爬蟲、ETL、資料驗證程式、資料儲存、資料集索引、GitHub Actions（含前端建置與預覽 workflow） | `dev/data-platform` | `feature/data/<issue>-<slug>` |
+| `ai` | 專案負責人：架構決策、Schema 契約、AI Skill、產品知識、分析、報告、Web Dashboard、階段整合與驗收 | `dev/ai-intelligence` | `feature/ai/<工作項目編號>-<slug>` |
+| `data` | 資料工程同事：爬蟲、來源評估與適配、匯入、ETL、資料驗證程式、資料品質、資料儲存、資料集索引、GitHub Actions（含前端建置與預覽 workflow）、自動化與發布流程 | `dev/data-platform` | `feature/data/<工作項目編號>-<slug>` |
+
+三個核心模組與負責人：**Data Platform**（`data`）、**AI Intelligence**（`ai`）、**Web Dashboard**（`ai`）。
 
 ## 2. 目錄負責人（唯一負責人）
 
@@ -27,11 +29,11 @@
 | `.github/pull_request_template.md` | ai | PR 模板 | 共用規範，需同步 |
 | `.github/workflows/` | data | crawl、validate、publish workflow | 權限與 concurrency 依總規範 §4 |
 | `schemas/` | ai | **唯一資料契約**（JSON Schema Draft 2020-12）、版本政策、變更紀錄 | 共用契約，需同步；變更程序見 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) |
-| `crawler/` | data | 各展覽來源擷取器 | |
+| `crawler/` | data | 通用擷取框架、各展覽的來源設定與來源適配器 | 展覽相關差異只能放在來源設定、適配器或匯入對應設定，不得寫死在共用框架 |
 | `etl/` | data | 清洗、去重、品質檢查、**資料驗證程式** | 驗證程式讀取 `schemas/`，不得另行定義契約 |
 | `data/` | data | `raw/`、`normalized/`、`packages/`、`history/` 等資料產物 | Raw evidence 不可變更 |
 | `data/samples/golden/` | ai | 整合測試用的黃金樣本（預期輸入／輸出） | 合成資料，須明確標示 |
-| `data/samples/mspo/` | data | MSPO 格式的公開或合成測試資料 | 合成資料，須明確標示 |
+| `data/samples/` | data | 各展覽的公開或合成測試資料，依 `data/samples/<exhibition_id>/` 分目錄 | 合成資料須明確標示；`golden/` 例外（見上一列） |
 | `knowledge/` | ai | BXR 產品知識庫與分析分類架構 | 只收錄經專案負責人確認的產品資料 |
 | `skills/exhibitiq/` | ai | Claude Code Skill、references、scripts | |
 | `reports/` | ai | 分析結果與報告 | |
@@ -55,11 +57,11 @@
 
 ### 4.1 為什麼需要
 
-兩條 dev 主線在階段整合前不會合併；但 `data` 必須依照 `ai` 制定的規範與 Schema 開發。總規範 §3 允許「共用 Schema 變更先由你批准，並在兩邊以相同契約實作；不必提前做程式整合」。因此共用檔案以**單向、只限共用檔案**的方式同步到 `dev/data-platform`。
+兩條 dev 主線在階段整合前不會合併；但 `data` 必須依照 `ai` 制定的規範與 Schema 開發。總規範 §3 允許「共用 Schema 變更先由你批准，並在兩邊以相同契約實作；不必提前做程式整合」。因此共用檔案以**單向、只限共用檔案**的方式同步到 `dev/data-platform`（經專案負責人授權的反向同步見 4.6）。
 
 ### 4.2 同步範圍（只有這些路徑）
 
-- `CLAUDE.md`
+- `CLAUDE.md`、`README.md`
 - `docs/`（**不含** `docs/data-platform/`）
 - `.github/ISSUE_TEMPLATE/`、`.github/pull_request_template.md`
 - `schemas/`
@@ -74,7 +76,7 @@
 3. 只取共用路徑（不使用 merge／cherry-pick 整條 commit，避免帶入功能程式）：
 
    ```bash
-   git checkout origin/dev/ai-intelligence -- CLAUDE.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
+   git checkout origin/dev/ai-intelligence -- CLAUDE.md README.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
    ```
 
    第一次同步另外刪除舊版編號規範檔（4.2 所列）。之後若 `docs/` 新增其他共用子目錄，一併列入上述命令並更新本節。`git checkout` 不會刪除來源端已移除的檔案；這類檔案要另外 `git rm`，4.4 的檢查會列出它們。
@@ -87,7 +89,7 @@
 
 ```bash
 git fetch origin dev/ai-intelligence dev/data-platform
-git diff --stat origin/dev/ai-intelligence origin/dev/data-platform -- CLAUDE.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
+git diff --stat origin/dev/ai-intelligence origin/dev/data-platform -- CLAUDE.md README.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
 ```
 
 ### 4.5 限制
@@ -95,11 +97,26 @@ git diff --stat origin/dev/ai-intelligence origin/dev/data-platform -- CLAUDE.md
 - 同步不是階段整合：不合併任何功能程式，不更動 `main`。
 - `main` 在 Phase 1 整合前仍保留舊版檔名；GitHub 只會在 `main` 上自動套用 Issue／PR 模板。
 
+### 4.6 經授權的反向同步（`dev/data-platform` → `dev/ai-intelligence`）
+
+只有專案負責人**明確授權** `data` 修改共用文件時才適用（第一次：2026-11-03 的 V2.2 規範修訂）。授權只涵蓋該次指定的文件，不改變任何路徑的負責人。
+
+1. `data` 從 `dev/data-platform` 建立功能分支修改 4.2 的共用路徑，PR base=`dev/data-platform`，由 `data` 自行合併。`ai` 負責的非共用路徑（例如 `tests/contract/`）不在 `dev/data-platform` 修改。
+2. 從 `dev/ai-intelligence` 建立同步分支，只取共用路徑（與 4.3 相同，方向相反）：
+
+   ```bash
+   git checkout origin/dev/data-platform -- <4.3 的共用路徑>
+   ```
+
+   授權範圍內需要的 `ai` 路徑修改（例如 `tests/contract/` 的文件檢查測試）只放在這個同步 PR。
+3. PR base=`dev/ai-intelligence`，**只由專案負責人確認並合併**；`data` 不得代替合併。
+4. 合併後以 4.4 的命令確認兩邊共用檔案一致。
+
 ## 5. 資料工程獨立開發指引
 
 `data` 不需要等待 `ai` 即可進行的 Phase 1 工作：雲端 Python 環境、PR 驗證 workflow、爬蟲／ETL 目錄骨架、資料輸出不直接覆蓋 `main` 的 workflow、來源設定與錯誤格式的程式結構。
 
-依賴 Schema（P1-AI-04）的工作：JSONL／manifest／來源索引讀寫工具、資料驗證程式、MSPO 合成測試資料。在 Schema 進入 `dev/data-platform` 之前：
+依賴 Schema（P1-AI-04）的工作：JSONL／manifest／來源索引讀寫工具、資料驗證程式、合成展覽測試資料。在 Schema 進入 `dev/data-platform` 之前：
 
 - 可以先寫讀寫與驗證的**程式框架**，以「從 `schemas/v<MAJOR>/` 載入 Schema 檔」的方式設計，不要把欄位寫死在程式裡。
 - 不得在 `etl/`、`crawler/` 或 `tests/data/` 另外定義一份平行的 Schema 或欄位清單。暫時性的測試資料只能放在 `tests/data/`，且不得被當作契約。

@@ -189,7 +189,7 @@ Schema 載入方式：從本機 `schemas/v1/` 載入全部 `*.schema.json`，依
 - [ ] `company_id` 指派與對照機制能跨資料包保持穩定
 - [ ] 下架的參展紀錄以 `listing_status: "removed"` 保留
 - [ ] 官方筆數有來源才填寫；否則 `null` 並標示 `unknown` 或 `partial`
-- [ ] `data/samples/mspo/` 的合成資料標示 `data_origin: "synthetic"`
+- [ ] `data/samples/<exhibition_id>/` 的合成資料標示 `data_origin: "synthetic"`
 
 ## 15. 已知限制與待決事項
 
