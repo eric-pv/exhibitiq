@@ -2,24 +2,24 @@
 
 ## 使用方式
 
-專案負責人和同事**都使用這一份模板**，差別只在角色、工作項目及目標分支。先讓 ChatGPT 閱讀《專案總規範》，再貼入下方內容並填寫本次 Issue。每次只產生一個 Issue 的 Claude Code 指令。
+專案負責人和同事**都使用這一份模板**，差別只在角色、工作項目及目標分支。先讓 ChatGPT 閱讀《專案總規範》，再貼入下方內容並填寫本次工作項目（`docs/DEVELOPMENT_PLAN.md` 的編號）。每次只產生一個工作項目的 Claude Code 指令。
 
 ## 可直接貼給 ChatGPT 的模板
 
 ```text
-你現在是 ExhibitIQ 的開發指令規劃助手。請先依照我提供的《ExhibitIQ 專案總規範 V2.0》及 Repository 的 CLAUDE.md，理解整體系統、資料契約、模組邊界與 GitHub 工作流程。
+你現在是 ExhibitIQ 的開發指令規劃助手。請先依照我提供的《ExhibitIQ 專案總規範 V2.1》、docs/DEVELOPMENT_PLAN.md 及 Repository 的 CLAUDE.md，理解整體系統、資料契約、模組邊界與 GitHub 工作流程。
 
 本次角色：[專案負責人／資料工程同事]
 目前階段：Phase [1/2/3/4]
-GitHub Issue：[編號、標題、完整工作內容]
+工作項目：[DEVELOPMENT_PLAN.md 的編號、名稱、依賴與驗收條件]
 本次可修改目錄：[填入]
 本次禁止修改目錄：[填入]
-本次依賴：[Schema、資料樣本、其他 Issue 或 PR]
+本次依賴：[Schema、資料樣本、其他工作項目或 PR]
 
 請產生一份可直接貼給 Claude Code 的完整指令，必須包含：
 1. 本次工作目標及完成定義。
-2. 開始前檢查 GitHub Repository 的實際檔案、最新規格、Issue、既有測試及目前分支；不得假設檔案已存在。
-3. 明確的功能分支名稱及來源分支。
+2. 開始前檢查 GitHub Repository 的實際檔案、最新規格、開發計畫、進度、既有測試及目前分支；不得假設檔案已存在。
+3. 明確的功能分支名稱（feature/<ai|data>/<工作項目編號>-<slug>）及來源分支；一般工作不需要建立 Issue。
 4. 實作範圍、模組重用、允許／禁止修改路徑。
 5. 輸入／輸出資料格式與 Schema 相容性。
 6. 實作步驟及錯誤處理、來源追蹤、安全規則。
@@ -27,7 +27,7 @@ GitHub Issue：[編號、標題、完整工作內容]
 8. 完成後 Commit、Push 並建立 GitHub PR；必須明確指定 PR 的 base：
    - 我是專案負責人：dev/ai-intelligence
    - 我是資料工程同事：dev/data-platform
-9. PR 描述必須包含 Issue、變更、測試、資料格式影響、限制、成果證據。
+9. PR 標題以 [工作項目編號] 開頭；描述必須包含變更、測試、資料格式影響、限制、成果證據（修改 site/ 時附截圖或預覽）。
 10. PR 由我本人自行確認並合併到自己的 dev 分支；不需要對方審查每個 PR。
 11. 不得直接修改 main；不得擅自執行階段整合。
 12. 完成後回報 PR 連結、測試結果及是否已確認合併。
@@ -37,12 +37,13 @@ GitHub Issue：[編號、標題、完整工作內容]
 
 ## 專案負責人的額外原則
 
-- 你是 AI Skill、分析、產品知識、報告工作的 Issue 擁有者；自行合併自己的 PR。
-- 每個階段兩邊全部 Issue 完成後，**另外**請 ChatGPT 根據兩邊最新 PR／分支產生階段整合指令。
-- 你負責階段整合後的驗收、是否合併 `main`、是否開始下一階段。
+- 你是 AI Skill、分析、產品知識、報告與 Web Dashboard 工作的擁有者；自行合併自己的 PR。
+- 每個階段兩邊在開發計畫中的工作全部完成後，**另外**請 ChatGPT 根據兩邊最新 PR／分支產生階段整合指令。
+- 你負責階段整合後的驗收、是否合併 `main`、是否開始下一階段，並依已合併的 PR 更新 `docs/PROGRESS.md`。
 
 ## 同事的額外原則
 
-- 你是爬蟲、ETL、GitHub 資料存取與 Actions 的 Issue 擁有者；自行合併自己的 PR。
+- 你是爬蟲、ETL、GitHub 資料存取與 Actions（包含前端建置與預覽 workflow）的擁有者；自行合併自己的 PR。
 - 你的單項 PR 不必等待專案負責人審查；但不得自行修改共用契約、替另一人做 Skill、或整合 `main`。
+- 不修改 `site/` 與 `docs/PROGRESS.md`；進度在 PR 描述中回報。
 - 階段完成後，提供最新 `dev/data-platform` 分支、已合併 PR 清單、測試／資料包證據給專案負責人。
