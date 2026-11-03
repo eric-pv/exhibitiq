@@ -1,6 +1,6 @@
 # ExhibitIQ 模組邊界與目錄負責人
 
-> 狀態：Phase 1 核定版（P1-AI-03，Issue #3）
+> 狀態：Phase 1 核定版（P1-AI-03，Issue #3）；V2.1（2026-11-03）修訂：`site/` 改由 `ai` 負責，同步範圍加入 `docs/specs/`、開發計畫與進度檔
 > 依據：[`docs/ExhibitIQ_專案總規範.md`](../ExhibitIQ_專案總規範.md) §5、§6，以及專案負責人 2026-11-03 的分工決定。
 > 本文件與總規範衝突時，以總規範及專案負責人當次決策為準。
 
@@ -8,8 +8,8 @@
 
 | 代號 | 角色 | 長期開發主線 | 功能分支 |
 |---|---|---|---|
-| `ai` | 專案負責人：架構、Schema 契約、AI Skill、產品知識、分析、報告、階段整合 | `dev/ai-intelligence` | `feature/ai/<issue>-<slug>` |
-| `data` | 資料工程同事：爬蟲、ETL、資料驗證程式、資料儲存、GitHub Actions | `dev/data-platform` | `feature/data/<issue>-<slug>` |
+| `ai` | 專案負責人：架構、Schema 契約、AI Skill、產品知識、分析、報告、Web Dashboard、階段整合 | `dev/ai-intelligence` | `feature/ai/<issue>-<slug>` |
+| `data` | 資料工程同事：爬蟲、ETL、資料驗證程式、資料儲存、資料集索引、GitHub Actions（含前端建置與預覽 workflow） | `dev/data-platform` | `feature/data/<issue>-<slug>` |
 
 ## 2. 目錄負責人（唯一負責人）
 
@@ -21,7 +21,7 @@
 |---|---|---|---|
 | `CLAUDE.md` | ai | Claude Code 規則 | 共用規範，需同步（第 4 節） |
 | `README.md` | ai | 專案入口 | |
-| `docs/` | ai | 總規範、工作流程、架構、規格 | 共用規範，需同步（第 4 節） |
+| `docs/` | ai | 總規範、開發計畫、進度、工作流程、架構、規格 | 共用規範，需同步（第 4 節）；`docs/PROGRESS.md` 只由 `ai` 更新 |
 | `docs/data-platform/` | data | 爬蟲、ETL、Actions 的操作與維護文件 | |
 | `.github/ISSUE_TEMPLATE/` | ai | Issue 模板 | 共用規範，需同步 |
 | `.github/pull_request_template.md` | ai | PR 模板 | 共用規範，需同步 |
@@ -35,7 +35,7 @@
 | `knowledge/` | ai | BXR 產品知識庫與分析分類架構 | 只收錄經專案負責人確認的產品資料 |
 | `skills/exhibitiq/` | ai | Claude Code Skill、references、scripts | |
 | `reports/` | ai | 分析結果與報告 | |
-| `site/` | data | 可選的靜態展示網站／報告索引 | **公開發布前必須經專案負責人核准** |
+| `site/` | ai | Web Dashboard（靜態 React SPA）：設計系統、共用元件、頁面、資料存取層、bundle 產生程式、前端測試；前端套件設定放在 `site/package.json` | 建置、預覽與發布 workflow 在 `.github/workflows/`，屬於 `data`；**公開發布前必須經專案負責人核准** |
 | `tests/contract/` | ai | Schema 契約測試、黃金樣本測試、規範文件檢查 | |
 | `tests/data/` | data | 爬蟲、ETL、驗證程式、資料包的測試 | |
 | `pyproject.toml` | data | Python 專案與依賴設定 | 雲端 Python 環境屬同事 Phase 1 第 1 項 |
@@ -49,7 +49,7 @@
 1. 需要修改對方負責的路徑時，**不要直接改**；開 Issue 說明需求，指定給該路徑的負責人。
 2. 由負責人在自己的功能分支實作，PR base 指向自己的 dev 主線，由負責人自行合併。
 3. 涉及 `schemas/` 的需求一律依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) 第 5 節的變更程序處理。
-4. 衝突或規格不明時暫停該 Issue，由專案負責人決定（總規範 §9）。
+4. 衝突或規格不明時暫停該工作項目，由專案負責人決定（總規範 §9）。
 
 ## 4. 共用規範與契約的同步
 
@@ -65,7 +65,7 @@
 - `schemas/`
 - 舊版編號規範檔的刪除：`01_ExhibitIQ_專案總規範.md`、`02_CLAUDE.md`、`03_雙方ChatGPT_工作指令模板.md`、`04_階段整合_ChatGPT指令模板.md`、`05_工作流程與驗收檢查表.md`（內容已原封不動移至 `docs/`）
 
-**不同步：** `tests/contract/`、`data/samples/golden/`、`knowledge/`、`skills/`、`reports/` 及任何 `ai` 的功能程式。這些等階段整合時才進入對方分支。
+**不同步：** `tests/contract/`、`data/samples/golden/`、`knowledge/`、`skills/`、`reports/`、`site/` 及任何 `ai` 的功能程式。這些等階段整合時才進入對方分支。
 
 ### 4.3 程序
 
@@ -74,10 +74,10 @@
 3. 只取共用路徑（不使用 merge／cherry-pick 整條 commit，避免帶入功能程式）：
 
    ```bash
-   git checkout origin/dev/ai-intelligence -- CLAUDE.md docs/ExhibitIQ_專案總規範.md docs/workflow docs/architecture .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
+   git checkout origin/dev/ai-intelligence -- CLAUDE.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
    ```
 
-   第一次同步另外刪除舊版編號規範檔（4.2 所列）。之後若 `docs/` 新增其他共用子目錄，一併列入上述命令並更新本節。
+   第一次同步另外刪除舊版編號規範檔（4.2 所列）。之後若 `docs/` 新增其他共用子目錄，一併列入上述命令並更新本節。`git checkout` 不會刪除來源端已移除的檔案；這類檔案要另外 `git rm`，4.4 的檢查會列出它們。
 4. PR base=`dev/data-platform`，PR 描述附上 4.4 的一致性檢查結果。
 5. **由同事自行合併**（她是 `dev/data-platform` 的負責人）。專案負責人不需審查。
 
@@ -87,7 +87,7 @@
 
 ```bash
 git fetch origin dev/ai-intelligence dev/data-platform
-git diff --stat origin/dev/ai-intelligence origin/dev/data-platform -- CLAUDE.md docs/ExhibitIQ_專案總規範.md docs/workflow docs/architecture .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
+git diff --stat origin/dev/ai-intelligence origin/dev/data-platform -- CLAUDE.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
 ```
 
 ### 4.5 限制
