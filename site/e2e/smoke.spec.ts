@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const SHOTS = process.env.SCREENSHOT_DIR;
-const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增"]); // pages that are no longer 「建置中」
+const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心"]); // pages that are no longer 「建置中」
 const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "資料及系統狀態"];
 
 test.beforeEach(async ({ page }, info) => {
@@ -119,4 +119,15 @@ test("exhibitions (W2-01): list from the dataset index, detail with editions", a
   await page.getByTestId("exhibition-link").first().click();
   await expect(page.getByTestId("exhibition-editions")).toBeVisible();
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-01-${info.project.name}-exhibition-detail.png`, fullPage: true });
+});
+
+test("reports (W3-04): report viewer, print layout hides navigation, PDF export", async ({ page }, info) => {
+  await page.goto("/#/reports");
+  await expect(page.getByTestId("report-viewer")).toBeVisible();
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w3-04-${info.project.name}-reports.png`, fullPage: true });
+  await page.emulateMedia({ media: "print" });
+  await expect(page.getByTestId("side-nav")).toBeHidden();
+  await expect(page.getByTestId("export-pdf")).toBeHidden();
+  await expect(page.getByTestId("report-viewer")).toBeVisible();
+  if (info.project.name === "desktop" && SHOTS) await page.pdf({ path: `${SHOTS}/w3-04-report.pdf`, format: "A4", printBackground: true });
 });

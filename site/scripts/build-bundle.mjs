@@ -170,7 +170,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
       ];
       for (const id of cited) if (!ds.sources[id]) throw new Error(`${relative(REPO, f)}: cites ${id}, which is not in ${a.input_dataset_id}/sources.jsonl`);
       analyses.push({
-        analysisId: a.analysis_id, title: a.title, analysisType: a.analysis_type, inputDatasetId: a.input_dataset_id,
+        analysisId: a.analysis_id, title: a.title, inputHash: a.input_hash, evidenceSourceIds: a.evidence_source_ids, analysisType: a.analysis_type, inputDatasetId: a.input_dataset_id,
         generatedAt: a.generated_at, reviewStatus: a.review_status, dataOrigin: a.data_origin,
         analyzedCompanyIds: [...new Set((a.scores ?? []).filter((s) => s.subject.entity_type === "company").map((s) => s.subject.entity_id))],
         highPriorityRecommendations: a.recommendations.filter((r) => r.priority === "high").length,
@@ -216,6 +216,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
     exhibitions,
     datasets,
     analyses,
+    reportTemplates: readJson(join(REPO, "skills", "exhibitiq", "templates", "report-templates.json")),
     notices: index.notices.map((n) => ({ level: n.level, message: n.message, occurredAt: n.occurred_at })),
   };
 }

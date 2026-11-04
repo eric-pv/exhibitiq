@@ -189,7 +189,16 @@ export function getScoredAnalyses(b: Bundle = bundle): Analysis[] {
 export function getOpportunityView(analysisId?: string | null, b: Bundle = bundle): OpportunityView | null {
   const list = getScoredAnalyses(b);
   const a = list.find((x) => x.analysisId === analysisId) ?? list[0];
-  if (!a) return null;
+  return a ? getAnalysisView(a, b) : null;
+}
+
+/** All analyses, newest first (報告中心). */
+export function getAnalyses(b: Bundle = bundle): Analysis[] {
+  return [...b.analyses].sort((x, y) => y.generatedAt.localeCompare(x.generatedAt));
+}
+
+/** The view model of one analysis; used by the opportunities page and ReportViewer (same data, same labels). */
+export function getAnalysisView(a: Analysis, b: Bundle = bundle): OpportunityView {
   const ds = b.datasets[a.inputDatasetId];
   const names = new Map(ds.companies.map((c) => [c.companyId, c.name]));
   const companyName = (id: string) => names.get(id) ?? id;

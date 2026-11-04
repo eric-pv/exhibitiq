@@ -52,6 +52,7 @@
 | A2-11 | 證據驗證 `evidence_check.py`（EV1–EV7；驗證失敗不能發布） | [#60](https://github.com/magician-eric/exhibitiq/pull/60) | `dev/ai-intelligence` | 2026-11-04 |
 | W2-01 | 展覽搜尋與展覽詳情（資料集索引；取得方式、評估、各屆次取得／驗證／完整度） | [#62](https://github.com/magician-eric/exhibitiq/pull/62) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-14 | 分析結果版本化回存 `save-analysis` | [#63](https://github.com/magician-eric/exhibitiq/pull/63) | `dev/ai-intelligence` | 2026-11-04 |
+| A2-12、A2-13 | 報告版型與 Markdown 報告 | [#65](https://github.com/magician-eric/exhibitiq/pull/65) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -59,7 +60,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A2-12、A2-13 | 報告版型（9 種分析類型）與 Markdown 報告（未通過驗證不產生） | 本 PR |
+| W3-04 | AI 報告中心、共用 `ReportViewer`、PDF 匯出（列印樣式）；網頁與 Markdown 章節一致由測試強制 | 本 PR |
 
 ## 待處理（Phase 1）
 
