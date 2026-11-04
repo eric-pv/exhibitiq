@@ -42,8 +42,10 @@ export function OpportunitiesPage() {
             { key: "model", label: o.model, children: [...new Set(d.scores.map((s) => s.modelId))].join("、") },
             { key: "input", label: o.input, children: <Space wrap><Typography.Text code>{a.inputDatasetId}</Typography.Text><CompletenessIndicator {...v.completeness} /></Space> },
             ...(d.skillVersion ? [{ key: "skill", label: o.skill, children: d.skillVersion }] : []),
+            { key: "cfg", label: t.analysisConfig.profile, children: a.config ? `${t.settings.modes[a.config.mode].short}｜${a.config.profileId} v${a.config.profileVersion}` : t.analysisConfig.legacy },
           ]} />
           {v.completeness.status !== "complete" && <Alert type="warning" showIcon message={o.incomplete} style={{ marginTop: space.sm }} />}
+          {(a.config?.bxrProductsStatus === "draft" || a.config?.bxrProductsStatus === "mixed") && <Alert type="warning" showIcon message={t.analysisConfig.productsUnapproved} style={{ marginTop: space.sm }} />}
         </Card>
 
         <Card title={o.ranking} data-testid="ranking">

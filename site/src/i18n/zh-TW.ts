@@ -130,6 +130,13 @@ export const t = {
     export: "匯出 JSON（提交用）", openGithub: "開啟 GitHub 上傳頁面",
     submitSteps: "匯出的檔案名稱就是主題代碼；內容有修改時版本號自動加 1。上傳到 knowledge/analysis-profiles/ 並合併後，網站重新建置就會顯示「已提交」；之後在 Claude Code 工作階段指定這個主題執行分析。網頁不保存任何 GitHub 憑證。",
   },
+  analysisConfig: {
+    legacy: "這份分析結果是舊版格式，沒有記錄分析設定。",
+    mode: "分析模式", profile: "分析主題", scoreModel: "評分模型", noScore: "不評分", bxr: "BXR 產品卡", keywords: (n: number) => `啟用的關鍵字（${n}）`,
+    candidateNote: "關鍵字命中只是候選訊號，不代表已確認的事實或商業關係。",
+    bxrStatus: { not_used: "未使用", draft: "使用待審核產品卡（產品資料未核定）", approved: "使用已核定產品卡", mixed: "部分產品卡未核定（產品資料未核定）" } as Record<string, string>,
+    productsUnapproved: "產品資料未核定：使用的 BXR 產品卡尚待 Eric 審核，只有名稱與功能定位，不代表正式規格。",
+  },
   opportunities: {
     analysis: "分析結果", noAnalysis: "尚無含商機評分的分析結果。請先以 ExhibitIQ Skill 執行 score 並回存分析結果。",
     aiNotice: "本頁的排名、評分、關係分類與建議都是 AI 分析結果（推論），不是已查證的事實。每一項都附上依據的來源；沒有依據的因子不計分。",

@@ -58,6 +58,7 @@
 | A2-15 | 分析設定檔契約（Schema `1.0.0-draft.6`，舊資料相容）；開發計畫 V2.5 | [#69](https://github.com/magician-eric/exhibitiq/pull/69) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-05 | 8 張 BXR 產品卡（draft，無規格）與 A 模式主題 `bxr-opportunity` | [#70](https://github.com/magician-eric/exhibitiq/pull/70) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-16 | 分析工具改讀設定檔、多標籤關係、`opportunity@2` 草稿 | [#71](https://github.com/magician-eric/exhibitiq/pull/71) | `dev/ai-intelligence` | 2026-11-04 |
+| W2-06 | 「分析設定」主選單（第 9 項） | [#72](https://github.com/magician-eric/exhibitiq/pull/72) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -65,7 +66,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W2-06 | 「分析設定」主選單（第 9 項）：模式、主題、關鍵字、關係規則、評分權重、JSON 匯入匯出；本機草稿／已提交／已用於分析 | 本 PR |
+| A2-17 | Skill 三種分析模式流程；報告（Markdown 與網頁）新增「分析設定」章節與「產品資料未核定」提示 | 本 PR |
 
 ## 待處理（Phase 1）
 

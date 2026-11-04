@@ -38,11 +38,26 @@ export function ReportViewer({ view, b = bundle }: { view: OpportunityView; b?: 
         { key: "rv", label: o.review, children: <Tag>{t.overview.reviewed[a.reviewStatus]}</Tag> },
       ]} />
     ),
+    analysis_config: () => {
+      const c = a.config, ac = t.analysisConfig;
+      if (!c) return <Typography.Text type="secondary">{ac.legacy}</Typography.Text>;
+      return (
+        <Descriptions size="small" column={1} data-testid="report-analysis-config" items={[
+          { key: "m", label: ac.mode, children: t.settings.modes[c.mode].short },
+          { key: "p", label: ac.profile, children: <Typography.Text code>{c.profileId} v{c.profileVersion}（{c.profileHash}）</Typography.Text> },
+          { key: "s", label: ac.scoreModel, children: c.scoreModelId ?? ac.noScore },
+          { key: "b", label: ac.bxr, children: ac.bxrStatus[c.bxrProductsStatus ?? "not_used"] ?? c.bxrProductsStatus },
+          { key: "k", label: ac.keywords(c.keywordCount), children: c.keywordLabels.join("、") || "—" },
+          { key: "n", label: "", children: <Typography.Text type="secondary">{ac.candidateNote}</Typography.Text> },
+        ]} />
+      );
+    },
     data_status: () => (
       <Space direction="vertical">
         <Typography.Text strong>{a.dataOrigin === "synthetic" ? t.origin.synthetic : t.origin.collected}</Typography.Text>
         <CompletenessIndicator {...ds.completeness} />
         {ds.completeness.status !== "complete" && <Alert type="warning" showIcon message={o.incomplete} />}
+        {(a.config?.bxrProductsStatus === "draft" || a.config?.bxrProductsStatus === "mixed") && <Alert type="warning" showIcon message={t.analysisConfig.productsUnapproved} data-testid="products-unapproved" />}
       </Space>
     ),
     summary: () => d.summary,

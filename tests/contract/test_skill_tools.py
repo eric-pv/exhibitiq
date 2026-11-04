@@ -130,3 +130,16 @@ def test_report_follows_template_and_refuses_invalid(tmp_path):
     with pytest.raises(LookupError):
         tools.render_report(p, ex / "package")
     assert set(tpl["types"]) == set(json.loads((ROOT / "schemas/v1/analysis_result.schema.json").read_text(encoding="utf-8"))["properties"]["analysis_type"]["enum"])
+
+
+def test_report_analysis_config_section_and_unapproved_products_warning(tmp_path):
+    """A2-17: every report shows the analysis settings; draft BXR cards trigger the 產品資料未核定 warning."""
+    ex = ROOT / "schemas/v1/examples"
+    old = tools.render_report(ex / "analysis/analysis_result.example.json", ex / "package")
+    assert "## 分析設定" in old and "沒有記錄分析設定" in old
+    a = json.loads((ex / "analysis/analysis_result.with_config.example.json").read_text(encoding="utf-8"))
+    md = tools.render_report(ex / "analysis/analysis_result.with_config.example.json", ex / "package")
+    assert a["analysis_config"]["profile_hash"] in md and "A. BXR 商機分析" in md and "產品資料未核定" not in md
+    a["analysis_config"]["bxr_products_status"] = "draft"
+    p = tmp_path / "a.json"; p.write_text(json.dumps(a, ensure_ascii=False), encoding="utf-8")
+    assert "產品資料未核定" in tools.render_report(p, ex / "package")

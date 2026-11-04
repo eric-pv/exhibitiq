@@ -1,8 +1,9 @@
 {
-  "version": "report-templates@1",
-  "description": "A2-12：各 analysis_type 的報告章節（順序即輸出順序）。必要章節依 references/report-spec.md；章節沒有內容時仍輸出標題並註明「無」。網頁（ReportViewer）與 PDF 使用同一份設定。",
+  "version": "report-templates@2",
+  "description": "A2-12：各 analysis_type 的報告章節（順序即輸出順序）。必要章節依 references/report-spec.md；章節沒有內容時仍輸出標題並註明「無」。網頁（ReportViewer）與 PDF 使用同一份設定。 A2-17：所有類型在基本資訊後加「分析設定」章節（模式、主題、版本、雜湊、啟用的關鍵字；舊分析結果沒有設定時註明）。",
   "section_titles": {
     "header": "基本資訊",
+    "analysis_config": "分析設定",
     "data_status": "資料狀態",
     "summary": "摘要",
     "conclusions": "結論",
@@ -17,6 +18,7 @@
       "label": "展覽概況報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
@@ -29,6 +31,7 @@
       "label": "企業情報報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
@@ -42,6 +45,7 @@
       "label": "商機排序報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
@@ -56,6 +60,7 @@
       "label": "競爭態勢報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
@@ -70,6 +75,7 @@
       "label": "合作夥伴與通路報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
@@ -84,6 +90,7 @@
       "label": "市場趨勢報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
@@ -96,6 +103,7 @@
       "label": "產品推薦報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
@@ -109,6 +117,7 @@
       "label": "參展策略報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
@@ -122,6 +131,7 @@
       "label": "跨展覽比較報告",
       "sections": [
         "header",
+        "analysis_config",
         "data_status",
         "summary",
         "conclusions",
