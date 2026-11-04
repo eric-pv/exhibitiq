@@ -73,8 +73,10 @@
 
 ### 4.3 程序
 
-1. 專案負責人合併一個改動共用檔案的 PR 到 `dev/ai-intelligence`。
-2. 從 `dev/data-platform` 建立 `feature/data/sync-shared-<YYYYMMDD>`。
+**V2.4 起由 data 端自行同步：** Albert 的 Claude Code 在每次開工時執行以下步驟，Eric 端不再開同步 PR。
+
+1. 取得最新的 `dev/ai-intelligence`（`git fetch origin dev/ai-intelligence`）。
+2. 在自己正要開始的功能分支上（或 `feature/data/sync-shared-<YYYYMMDD>`）執行下面的命令。
 3. 只取共用路徑（不使用 merge／cherry-pick 整條 commit，避免帶入功能程式）：
 
    ```bash
@@ -82,8 +84,8 @@
    ```
 
    第一次同步另外刪除舊版編號規範檔（4.2 所列）。之後若 `docs/` 新增其他共用子目錄，一併列入上述命令並更新本節。`git checkout` 不會刪除來源端已移除的檔案；這類檔案要另外 `git rm`，4.4 的檢查會列出它們。
-4. PR base=`dev/data-platform`，PR 描述附上 4.4 的一致性檢查結果。
-5. **由同事自行合併**（她是 `dev/data-platform` 的負責人）。專案負責人不需審查。
+4. 共用檔案的變更放進該 PR，PR 描述附上 4.4 的一致性檢查結果與來源 commit；base=`dev/data-platform`。
+5. 測試通過後由 Albert 端自行合併（V2.4）。共用檔案在 `dev/data-platform` 上不得另外修改，只能透過本程序取得。
 
 ### 4.4 一致性檢查
 

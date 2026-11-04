@@ -38,6 +38,7 @@
 | A1-09 | BXR 產品知識庫結構與分析分類架構（`1.0.0-draft.4`；只有結構） | [#34](https://github.com/magician-eric/exhibitiq/pull/34) | `dev/ai-intelligence` | 2026-11-04 |
 | — | 第七次共用規範同步：A1-09（`1.0.0-draft.4`） | [#35](https://github.com/magician-eric/exhibitiq/pull/35) | `dev/data-platform` | 2026-11-04 |
 | A1-01 | 競賽 MVP 範圍與驗收指標（**Eric 已核定**） | [#36](https://github.com/magician-eric/exhibitiq/pull/36) | `dev/ai-intelligence` | 2026-11-04 |
+| A1-10 | 展覽登錄契約（`1.0.0-draft.5`）；**ai 的 Phase 1 工作全部完成** | [#39](https://github.com/magician-eric/exhibitiq/pull/39) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -45,8 +46,8 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A1-10 | 展覽登錄契約（`data/registry/<exhibition_id>/registration.json`；Schema 升到 `1.0.0-draft.5`） | PR 待 Eric 合併 |
-| — | 第八次共用規範同步：已核定的 MVP 範圍 | [#38](https://github.com/magician-eric/exhibitiq/pull/38) 待 Albert 合併 |
+| — | V2.4 流程：獨立作業（階段為檢查點、Claude Code 測試通過後自行合併到自己的 dev、data 端自行同步共用檔案） | 本 PR |
+| A2-xx、W2-xx | ai 的 Phase 2（不等 data 的 Phase 1） | 依序進行 |
 
 ## 待處理（Phase 1）
 

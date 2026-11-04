@@ -56,7 +56,9 @@
 
 每項任務：開發計畫中的工作項目 → ChatGPT 指令 → Claude Code 開發與測試 → PR（可在 GitHub 前端看到）→ 任務擁有者自行合併到自己的 dev 分支 → 下一項工作。一般工作不需要建立 Issue（見 §9）。PR 需列出工作項目編號、變更檔案、測試結果、資料格式影響、已知限制。若測試未通過，先修正再合併；PR 存在不等於工作已完成。
 
-**階段同步：** 完成 `integration/phase-N` → `main` 後，下一階段開始前，兩條 `dev/*` 必須由整合後 `main` 更新；採用安全合併／必要時重建分支，不強制覆寫未備份的工作。若有跨分支共用 Schema 變更，先由你批准並在兩邊以相同契約實作；不必提前做程式整合。
+**V2.4 獨立作業（Eric 2026-11-04 核准）：** 階段是檢查點而不是關卡，雙方各自連續往下一個 Phase 做，不互相等待；各自的 Claude Code 在測試全部通過後自行合併到自己的 `dev/*`（`main` 只由你合併）；共用檔案由 Albert 那邊開工時自行從 `dev/ai-intelligence` 取得。
+
+**階段同步：** 完成 `integration/phase-N` → `main` 後，在方便的時點把整合後的 `main` 安全合併進兩條 `dev/*`；採用安全合併／必要時重建分支，不強制覆寫未備份的工作。若有跨分支共用 Schema 變更，先由你批准並在兩邊以相同契約實作；不必提前做程式整合。
 
 ## 4. 技術與成本原則：100% 雲端、GitHub 優先
 
@@ -165,7 +167,7 @@ BXR 產品範圍包含 AI XR SUT BOX、BXR POLICE BOX、GP-S、UAV／USV 相關�
 - 「不修改核心程式」的判斷：第二個展覽的 PR 只新增或修改展覽登錄資料、來源設定、來源適配器、匯入對應設定及資料檔，不修改 `etl/` 的標準化與驗證程式、`schemas/`、`skills/` 的分析邏輯或 `site/` 的頁面程式。
 - 各階段的具體檢查項目見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md) §6。
 
-**每個階段的驗收與整合（你）：** 雙方都完成開發計畫中該階段的工作，PR 都已各自合併到自己的 dev 分支後，你取得兩條分支現況與 PR 清單，請 ChatGPT 產生該階段整合指令，由 Claude Code 在 `integration/phase-N` 整合、執行端到端測試（含 Dashboard 與截圖），你驗收通過後才更新 `main`。Phase 4 結束時建立競賽版 Release。
+**每個階段的驗收與整合（你）：** 整合不阻擋任何人繼續開發。雙方都完成開發計畫中該階段的工作、PR 都已各自合併到自己的 dev 分支後，你取得兩條分支現況與 PR 清單，請 ChatGPT 產生該階段整合指令，由 Claude Code 在 `integration/phase-N` 整合、執行端到端測試（含 Dashboard 與截圖），你驗收通過後才更新 `main`。Phase 4 結束時建立競賽版 Release。
 
 ## 9. 工作項目、PR 與 Issue
 
