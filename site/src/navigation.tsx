@@ -1,12 +1,12 @@
 import {
-  AppstoreOutlined, BarChartOutlined, DatabaseOutlined, FileTextOutlined, FundOutlined,
+  AppstoreOutlined, SettingOutlined, BarChartOutlined, DatabaseOutlined, FileTextOutlined, FundOutlined,
   RocketOutlined, SearchOutlined, TeamOutlined,
 } from "@ant-design/icons";
 import type { ReactNode } from "react";
 import { t } from "./i18n/zh-TW";
 
 /**
- * The 8 main menu items (DEVELOPMENT_PLAN.md §3). Generic: no exhibition is
+ * The 9 main menu items (V2.5) (DEVELOPMENT_PLAN.md §3). Generic: no exhibition is
  * named here; exhibition lists always come from the dataset index.
  * `plannedIn` = the work item that builds the page (shown while it is not built).
  */
@@ -20,5 +20,6 @@ export const NAV_ITEMS: NavItem[] = [
   { key: "opportunities", path: "/opportunities", label: t.nav.opportunities, icon: <FundOutlined />, plannedIn: "W2-04" },
   { key: "products", path: "/products", label: t.nav.products, icon: <RocketOutlined />, plannedIn: "W3-03" },
   { key: "reports", path: "/reports", label: t.nav.reports, icon: <FileTextOutlined />, plannedIn: "W3-04" },
+  { key: "settings", path: "/settings", label: t.nav.settings, icon: <SettingOutlined />, plannedIn: "W2-06" },
   { key: "status", path: "/status", label: t.nav.status, icon: <DatabaseOutlined />, plannedIn: "W2-05" },
 ];

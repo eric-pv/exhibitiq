@@ -39,7 +39,11 @@ export interface Bundle {
     reviewStatus: "draft" | "human_reviewed" | "approved" | "rejected"; dataOrigin: "synthetic" | "collected";
     analyzedCompanyIds: string[]; highPriorityRecommendations: number; claimCounts: Record<string, number>;
     detail: AnalysisDetail;
+    config: AnalysisConfigRef | null;
   }[];
+  settings: { profiles: { profile: AnalysisProfile; hash: string }[]; products: { productId: string; name: string; approvalStatus: string }[];
+    scoreModels: { scoreModelId: string; approvalStatus: string; notes: string | null; factors: { factorId: string; label: string; defaultMax: number }[] }[];
+    schemas: Record<string, object> };
   reportTemplates: { version: string; section_titles: Record<string, string>; types: Record<string, { label: string; sections: string[] }> };
   notices: { level: "info" | "warning" | "error"; message: string; occurredAt: string }[];
 }
@@ -90,4 +94,24 @@ export interface AnalysisDetail {
     recommendationId: string; type: string; statement: string; rationale: string | null; priority: Level; subjects: EntityRef[];
     assumptions: string[]; sourceIds: string[]; claimIds: string[]; scoreIds: string[]; uncertaintyIds: string[];
   }[];
+}
+
+export type AnalysisMode = "bxr_opportunity" | "industry_research" | "competitor_research";
+export const REL_TYPES = ["potential_customer", "competitor", "partner", "channel"] as const;
+export type RelType = (typeof REL_TYPES)[number];
+export interface Keyword { term_id: string; category: string; label: string; label_en?: string; synonyms?: string[]; enabled: boolean; notes?: string }
+
+/** analysis_profile.schema.json (snake_case kept: this object is exported/imported as the contract file itself). */
+export interface AnalysisProfile {
+  schema_version: string; profile_id: string; version: number; name: string; description?: string; mode: AnalysisMode;
+  keywords: Keyword[];
+  relationship_signals?: Partial<Record<RelType, string[]>>;
+  score_model?: { score_model_id: string; weights: Record<string, number> };
+  targets?: { bxr_product_ids?: string[]; company_names?: string[]; focus_term_ids?: string[] };
+  updated_at: string; updated_by?: string; notes?: string;
+}
+
+export interface AnalysisConfigRef {
+  profileId: string; profileVersion: number; profileHash: string; mode: AnalysisMode; keywordCount: number;
+  scoreModelId: string | null; bxrProductsStatus: string | null;
 }
