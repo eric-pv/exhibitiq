@@ -3,6 +3,7 @@
 Usage (from the repo root):
   python skills/exhibitiq/scripts/exhibitiq_tools.py list   [--index PATH]
   python skills/exhibitiq/scripts/exhibitiq_tools.py select  EXHIBITION_ID [YEAR] [--index PATH]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py check-all [--index PATH]
   python skills/exhibitiq/scripts/exhibitiq_tools.py validate-package PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py validate-analysis ANALYSIS_JSON PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py report ANALYSIS_JSON PACKAGE_DIR > report.md
@@ -74,6 +75,35 @@ def validate_package(package_dir: Path) -> dict:
     return {"validator": "etl.validate", "ok": report.ok, "errors": [str(f) for f in report.findings]}
 
 
+def check_all(index_path: Path) -> list[dict]:
+    """A2-04: batch-check every latest package in the index: availability, schema version, hash, validation."""
+    version = (ROOT / "schemas" / "v1" / "VERSION").read_text(encoding="utf-8").strip()
+    rows = []
+    for e in load(index_path)["exhibitions"]:
+        for ed in e["editions"]:
+            row = {"edition_id": ed["edition_id"], "dataset_id": ed["latest_dataset_id"], "ok": False, "problems": []}
+            if not ed["latest_dataset_id"]:
+                la = ed.get("last_acquisition") or {}
+                row["problems"].append(f"no validated package (last acquisition: {la.get('status', 'none')})")
+                rows.append(row)
+                continue
+            try:
+                sel = select_package(index_path, e["exhibition_id"], ed["year"])
+            except LookupError as err:
+                row["problems"].append(str(err)); rows.append(row); continue
+            m = load(Path(sel["package_dir"]) / "manifest.json")
+            if m.get("schema_version") != version:
+                row["problems"].append(f"schema_version {m.get('schema_version')} != {version}")
+            if m.get("content_hash") != sel["content_hash"]:
+                row["problems"].append("content_hash differs from the dataset index")
+            v = validate_package(Path(sel["package_dir"]))
+            row["problems"] += v["errors"]
+            row["validator"] = v["validator"]
+            row["ok"] = not row["problems"]
+            rows.append(row)
+    return rows
+
+
 def validate_analysis(analysis_path: Path, package_dir: Path) -> dict:
     import analysis_check
     import knowledge_check
@@ -136,6 +166,7 @@ def main(argv: list[str] | None = None) -> int:
             sp.add_argument("year", nargs="?", type=int)
         sp.add_argument("--index", type=Path, default=None)
     sub.add_parser("validate-package").add_argument("package_dir", type=Path)
+    sub.add_parser("check-all").add_argument("--index", type=Path, default=None)
     for name in ("validate-analysis", "report"):
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
@@ -147,6 +178,9 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(list_exhibitions(idx), ensure_ascii=False, indent=2))
         elif a.cmd == "select":
             print(json.dumps(select_package(idx, a.exhibition_id, a.year), ensure_ascii=False, indent=2))
+        elif a.cmd == "check-all":
+            rows = check_all(idx); print(json.dumps(rows, ensure_ascii=False, indent=2))
+            return 0 if all(r["ok"] for r in rows if r["dataset_id"]) else 1
         elif a.cmd == "validate-package":
             r = validate_package(a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
         elif a.cmd == "validate-analysis":
