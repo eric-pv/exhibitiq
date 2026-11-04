@@ -21,6 +21,12 @@
 | D1-03 | 爬蟲／ETL 可重用目錄與程式骨架（舊編號 P1-DATA-02） | [#12](https://github.com/magician-eric/exhibitiq/pull/12) | `dev/data-platform` | 2026-11-03 |
 | A1-08 | 簡化開發管理流程：開發計畫、進度檔、Web Dashboard 納入 MVP | [#13](https://github.com/magician-eric/exhibitiq/pull/13) | `dev/ai-intelligence` | 2026-11-03 |
 | — | 第三次共用規範同步：V2.1 流程文件（已查證兩邊一致） | [#14](https://github.com/magician-eric/exhibitiq/pull/14) | `dev/data-platform` | 2026-11-03 |
+| A1-06 | 分析結果與證據契約（`1.0.0-draft.2`）＋合併人標記規則（Issue #15） | [#16](https://github.com/magician-eric/exhibitiq/pull/16) | `dev/ai-intelligence` | 2026-11-03 |
+| — | 第四次共用規範同步：A1-06、合併人規則（已查證兩邊一致） | [#17](https://github.com/magician-eric/exhibitiq/pull/17) | `dev/data-platform` | 2026-11-03 |
+| D1-07 | 來源設定、執行日誌與錯誤格式 | [#18](https://github.com/magician-eric/exhibitiq/pull/18) | `dev/data-platform` | 2026-11-03 |
+| D1-10 | （歷史紀錄）MSPO 來源評估，結論為網頁上看不到參展商名單；**不是任何後續工作的依賴** | [#19](https://github.com/magician-eric/exhibitiq/pull/19)、[#20](https://github.com/magician-eric/exhibitiq/pull/20) | `dev/data-platform` | 2026-11-03 |
+| — | V2.2 共用規範修訂同步到 `dev/ai-intelligence`（通用展覽平台、8 個主選單、通用性驗收） | [#22](https://github.com/magician-eric/exhibitiq/pull/22) | `dev/ai-intelligence` | 2026-11-03 |
+| A1-07 | 資料集索引與管線狀態契約（`1.0.0-draft.3`） | [#23](https://github.com/magician-eric/exhibitiq/pull/23) | `dev/ai-intelligence` | 2026-11-03 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -28,25 +34,24 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A1-06 | 分析結果與證據契約（Schema 升到 `1.0.0-draft.2`）；同時把合併人標記規則（Issue #15）寫進 `CLAUDE.md`、`branching.md`、PR 模板 | 已合併到 `dev/ai-intelligence`（[#16](https://github.com/magician-eric/exhibitiq/pull/16)）；已同步到 `dev/data-platform`（[#17](https://github.com/magician-eric/exhibitiq/pull/17)） |
-| D1-07 | 來源設定、執行日誌與錯誤格式 | 已合併到 `dev/data-platform`（[#18](https://github.com/magician-eric/exhibitiq/pull/18)） |
-| D1-10 | 測試案例 MSPO 資料來源評估 | 已合併到 `dev/data-platform`（[#19](https://github.com/magician-eric/exhibitiq/pull/19)、[#20](https://github.com/magician-eric/exhibitiq/pull/20)）；結論：主辦單位網頁上看不到參展商名單，等專案負責人決定取得方式 |
-| — | V2.2 共用規範修訂：通用展覽平台定位、Dashboard 必要模組（8 個主選單）、通用性驗收、靜態 Dashboard 的執行邊界 | 在 `dev/data-platform` 的 PR 待 Albert 合併；同步到 `dev/ai-intelligence` 的 PR 待 Eric 合併 |
+| — | V2.3 共用規範修訂：移除特定展覽依賴（專案負責人決策） | PR 待 Eric 合併 |
+| — | V2.2 共用規範修訂（`dev/data-platform` 版本） | [#21](https://github.com/magician-eric/exhibitiq/pull/21) 待 Albert 合併 |
 
 ## 待處理（Phase 1）
 
 | 負責 | 編號 |
 |---|---|
-| ai | A1-01、A1-07、A1-09、A1-10、W1-01、W1-02、W1-03 |
+| ai | A1-01、A1-09、A1-10、W1-01、W1-02、W1-03 |
 | data | D1-02、D1-04、D1-05、D1-06、D1-08、D1-09、D1-11 |
-| ai 準備、Albert 合併 | 第四次共用規範同步：A1-06 的 Schema、規格與合併人規則（A1-06 合併後） |
-| data | A1-06 同步後，資料包 manifest 的 `schema_version` 改為 `1.0.0-draft.2`（草案期必須完全相同） |
+| ai 準備、Albert 合併 | 第五次共用規範同步：A1-07（Schema `1.0.0-draft.3`）與 V2.3 規範（#21 與 V2.3 PR 都合併後） |
+| data | A1-07 同步後，資料包 manifest 的 `schema_version` 改為 `1.0.0-draft.3`（草案期必須完全相同）；D2-12 依 A1-07 產生 `data/index/datasets.json` |
 
 ## 阻礙事項
 
+個別展覽或來源無法取得資料**不列為阻礙**：記錄在資料集索引與來源評估報告後，改用其他公開來源（總規範 §1.1）。
+
 | 項目 | 影響 | 狀態 |
 |---|---|---|
-| 第一組可合法取得的真實展覽資料尚未確定（測試案例 MSPO 網頁上看不到名單） | Phase 2 真實資料展示與 §6 通用性驗收；最大時程風險 | D1-10 已評估；待 D1-11 與專案負責人決定 |
 | BXR 產品資料尚未提供 | A1-09 之後的 A2-05、W3-03 | 等專案負責人提供 |
 
 ## 待專案負責人決定
@@ -55,13 +60,12 @@
 |---|---|
 | Phase 4 給評審的操作網址：公開的去敏感版 GitHub Pages（需確認帳號方案）、受保護的外部託管（新服務）、或只做現場操作 | Phase 3 結束前 |
 | 根目錄 `.gitignore` 的負責人 | W1-01 開始前（前端會產生 `node_modules/`、`dist/`） |
-| 真實資料的第一個測試展覽與取得方式（自動擷取、匯入、向主辦單位取得授權） | Phase 2 開始前 |
 | 展覽登錄資料的存放位置（`data/index/` 或其他；A1-10） | D1-06、D2-13 開始前 |
 | 是否需要網頁一鍵執行（新增展覽、觸發擷取、執行分析）：需要後端代理或 GitHub App 等新服務；預設不做，改用 Actions 手動執行（總規範 §4.1） | Phase 3 開始前 |
 | 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用） | Phase 3 開始前 |
 
 ## 已存在的 Issue（歷史紀錄）
 
-Issue #15（合併人標記規則，跨人協調）是新制下的 Issue，等規則同步到 `dev/data-platform` 後關閉。
+Issue #15（合併人標記規則，跨人協調）是新制下的 Issue，規則已由 #17 同步到 `dev/data-platform`，已關閉。
 
 Issue #1、#3、#6、#7、#11 是取消強制 Issue 之前建立的，保留為歷史紀錄。#1、#3、#7 已關閉；#6、#11 屬於資料工程（對應的 PR #9、#12 已合併），由 Albert 自行處理。

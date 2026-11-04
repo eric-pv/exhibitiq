@@ -2,6 +2,13 @@
 
 格式依 [`VERSIONING.md`](VERSIONING.md)。每筆紀錄包含：版本、日期、Issue／PR、變更類別（MAJOR／MINOR／PATCH／draft）、變更內容、相容性與遷移說明。最新的放最上面。
 
+## 1.0.0-draft.3 — 2026-11-03
+
+- 工作項目：A1-07
+- 類別：draft
+- 內容：新增 `dataset_index.schema.json`（已登錄展覽、資料取得方式與來源評估、各屆次最近一次取得結果〔含失敗〕、資料包摘要與驗證狀態、系統通知）；新增 `examples/index/dataset_index.example.json`。規格見 [`docs/specs/dataset-index-contract.md`](../docs/specs/dataset-index-contract.md)。
+- 相容性：既有欄位沒有改變；**只有版本號改變**。資料包 manifest 與分析結果的 `schema_version` 必須改成 `1.0.0-draft.3`。
+
 ## 1.0.0-draft.2 — 2026-11-03
 
 - 工作項目：A1-06

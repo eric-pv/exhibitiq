@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0-draft.3",
+  "generated_at": "2026-11-03T09:00:00Z",
+  "generator": {
+    "name": "example-index-builder",
+    "version": "0.0.0"
+  },
+  "exhibitions": [
+    {
+      "exhibition_id": "example-expo",
+      "name": "Example Defence Expo (Synthetic)",
+      "name_zh_hant": "範例國防展（合成資料）",
+      "country": "ZZ",
+      "website": "https://example.com/",
+      "acquisition": {
+        "method": "automatic",
+        "status": "feasible",
+        "assessed_at": "2026-11-02T12:00:00Z",
+        "report_path": "docs/specs/dataset-index-contract.md",
+        "notes": "合成測試資料（synthetic）：示範資料集索引格式，內容不代表任何真實展覽。"
+      },
+      "editions": [
+        {
+          "edition_id": "example-expo-2026",
+          "year": 2026,
+          "latest_dataset_id": "example-expo-2026.20261103T000000Z",
+          "last_acquisition": {
+            "method": "automatic",
+            "status": "succeeded",
+            "crawl_run_id": "run_01JCR000000000000000000001",
+            "finished_at": "2026-11-02T23:15:00Z",
+            "records_extracted": 2,
+            "error_count": 0,
+            "dataset_id": "example-expo-2026.20261103T000000Z"
+          },
+          "datasets": [
+            {
+              "dataset_id": "example-expo-2026.20261103T000000Z",
+              "location": {
+                "storage": "git",
+                "locator": "schemas/v1/examples/package"
+              },
+              "created_at": "2026-11-03T00:00:00Z",
+              "data_origin": "synthetic",
+              "schema_version": "1.0.0-draft.3",
+              "content_hash": "sha256:68fc94dcaeaed1d23842f327b6b3cd05e07cca6610372ebb086622b03fb4d74b",
+              "record_counts": {
+                "companies": 2,
+                "participations": 2,
+                "sources": 2
+              },
+              "completeness_status": "partial",
+              "official_exhibitor_count": 3,
+              "collected_participation_count": 2,
+              "validation": {
+                "status": "passed",
+                "validated_at": "2026-11-03T00:05:00Z",
+                "validator": {
+                  "name": "example-validator",
+                  "version": "0.0.0"
+                },
+                "error_count": 0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibition_id": "sample-fair",
+      "name": "Sample Industry Fair (Synthetic)",
+      "name_zh_hant": "範例產業展（合成資料）",
+      "country": "ZZ",
+      "website": "https://example.org/",
+      "acquisition": {
+        "method": "undetermined",
+        "status": "not_feasible",
+        "assessed_at": "2026-11-03T03:00:00Z",
+        "report_path": "docs/specs/dataset-index-contract.md",
+        "notes": "合成範例：主辦單位網頁上沒有公開參展商名單，需要向主辦單位取得授權檔案。"
+      },
+      "editions": [
+        {
+          "edition_id": "sample-fair-2026",
+          "year": 2026,
+          "latest_dataset_id": null,
+          "last_acquisition": {
+            "method": "automatic",
+            "status": "failed",
+            "finished_at": "2026-11-03T02:40:00Z",
+            "records_extracted": 0,
+            "error_count": 1,
+            "notes": "合成範例：來源回應 403（access_blocked），依規定停止，不繞過。"
+          },
+          "datasets": []
+        }
+      ]
+    }
+  ],
+  "notices": [
+    {
+      "level": "warning",
+      "message": "sample-fair-2026 最近一次取得失敗，目前沒有可用資料包。",
+      "occurred_at": "2026-11-03T02:40:00Z",
+      "exhibition_id": "sample-fair"
+    },
+    {
+      "level": "info",
+      "message": "example-expo-2026 完整度為 partial（官方 3 家，已取得 2 家）。",
+      "occurred_at": "2026-11-03T00:05:00Z",
+      "exhibition_id": "example-expo",
+      "dataset_id": "example-expo-2026.20261103T000000Z"
+    }
+  ]
+}
