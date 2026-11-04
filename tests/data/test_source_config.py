@@ -104,3 +104,64 @@ def test_load_reports_file_path_for_bad_toml_and_bad_values(tmp_path: Path) -> N
     wrong.write_text('name = "x"\n', encoding="utf-8")
     with pytest.raises(ConfigError, match="wrong.toml: missing required keys"):
         load_source_config(wrong)
+
+
+# --- D2-01: adapter and options ------------------------------------------------------------
+
+
+def test_adapter_and_options_default_to_none_and_empty() -> None:
+    cfg = parse_source_config(valid())
+    assert cfg.adapter is None and cfg.options == {}
+
+
+def test_adapter_and_options_are_parsed() -> None:
+    cfg = parse_source_config(valid() | {"adapter": "html-table", "options": {"row_selector": "tr", "columns": {"name": 0, "hall": 1}}})
+    assert cfg.adapter == "html-table"
+    assert cfg.options == {"row_selector": "tr", "columns": {"name": 0, "hall": 1}}
+
+
+def test_options_are_copied_not_shared() -> None:
+    source = {"columns": {"name": 0}}
+    cfg = parse_source_config(valid() | {"options": source})
+    source["columns"]["name"] = 99  # mutating the caller's nested table must not change the config
+    source["added"] = True
+    assert cfg.options == {"columns": {"name": 0}}
+
+
+@pytest.mark.parametrize("name", ["HTML", "1abc", "has space", "", "a" * 65, "x.y"])
+def test_bad_adapter_names_are_rejected(name: str) -> None:
+    with pytest.raises(ConfigError, match="adapter"):
+        parse_source_config(valid() | {"adapter": name})
+
+
+@pytest.mark.parametrize("options", ["text", 5, ["a"], True])
+def test_options_must_be_a_table(options) -> None:
+    with pytest.raises(ConfigError, match="options must be a table"):
+        parse_source_config(valid() | {"options": options})
+
+
+@pytest.mark.parametrize(
+    "options, key",
+    [
+        ({"api_key": "x"}, "options.api_key"),
+        ({"auth": {"Token": "x"}}, "options.auth.Token"),
+        ({"steps": [{"name": "a", "password": "p"}]}, "options.steps.password"),
+        ({"login": {"credentials": {"u": 1}}}, "options.login.credentials"),
+    ],
+)
+def test_secret_looking_keys_are_rejected_at_any_depth(options: dict, key: str) -> None:
+    with pytest.raises(ConfigError, match="secrets must not be stored") as info:
+        parse_source_config(valid() | {"options": options})
+    assert key in str(info.value)
+
+
+def test_a_toml_file_with_an_options_table_loads(tmp_path: Path) -> None:
+    path = tmp_path / "s.toml"
+    path.write_text(
+        'name = "example-source"\nexhibition_id = "example-expo"\nedition_id = "example-expo-2026"\n'
+        'source_type = "official_exhibitor_list"\nstart_urls = ["https://www.example.com/x"]\n'
+        'allowed_domains = ["example.com"]\nadapter = "html-table"\n\n[options]\nrow_selector = "tr"\n\n[options.columns]\nname = 0\n',
+        encoding="utf-8",
+    )
+    cfg = load_source_config(path)
+    assert cfg.adapter == "html-table" and cfg.options == {"row_selector": "tr", "columns": {"name": 0}}

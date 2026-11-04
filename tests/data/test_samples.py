@@ -101,7 +101,7 @@ def test_every_sample_package_is_marked_synthetic_everywhere(package: Path) -> N
 
 
 def test_no_real_exhibition_name_appears_in_any_sample_file() -> None:
-    hits = [str(p.relative_to(ROOT)) for p in SAMPLES.rglob("*") if p.is_file() and FORBIDDEN_NAMES.search(p.read_text(encoding="utf-8"))]
+    hits = [str(p.relative_to(ROOT)) for p in SAMPLES.rglob("*") if p.is_file() and "__pycache__" not in p.parts and FORBIDDEN_NAMES.search(p.read_text(encoding="utf-8"))]
     assert hits == []
 
 

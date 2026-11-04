@@ -14,10 +14,11 @@ Boundaries:
 """
 from __future__ import annotations
 
+import copy
 import re
 import tomllib
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -28,9 +29,10 @@ class ConfigError(ValueError):
 
 
 _REQUIRED = ("name", "exhibition_id", "edition_id", "source_type", "start_urls", "allowed_domains")
-_OPTIONAL = ("rate_limit_per_second", "max_retries", "timeout_seconds", "user_agent")
+_OPTIONAL = ("rate_limit_per_second", "max_retries", "timeout_seconds", "user_agent", "adapter", "options")
 _ALLOWED_KEYS = frozenset(_REQUIRED + _OPTIONAL)
 _SECRET_KEY = re.compile(r"(token|secret|passwd|password|api[_-]?key|credential)", re.IGNORECASE)
+_ADAPTER_NAME = re.compile(r"^[a-z][a-z0-9_-]{0,63}$")
 _DOMAIN = re.compile(r"^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$")
 
 
@@ -46,6 +48,8 @@ class SourceConfig:
     max_retries: int = 3
     timeout_seconds: float = 30.0
     user_agent: str = "ExhibitIQ-crawler"
+    adapter: str | None = None  # name in the adapter registry; the only place a source picks its behavior
+    options: dict[str, Any] = field(default_factory=dict)  # adapter-specific settings (a TOML ``[options]`` table)
 
 
 def _text(data: Mapping[str, Any], key: str) -> str:
@@ -90,9 +94,36 @@ def _host_allowed(host: str, domains: tuple[str, ...]) -> bool:
     return any(host == d or host.endswith("." + d) for d in domains)
 
 
+def _secret_key_paths(value: Any, prefix: str = "") -> list[str]:
+    """Dotted paths of every key (at any depth, including inside lists of tables) that looks like a secret."""
+    found: list[str] = []
+    if isinstance(value, Mapping):
+        for key, inner in value.items():
+            path = f"{prefix}{key}"
+            if _SECRET_KEY.search(str(key)):
+                found.append(path)
+            found.extend(_secret_key_paths(inner, path + "."))
+    elif isinstance(value, list):
+        for inner in value:
+            found.extend(_secret_key_paths(inner, prefix))
+    return found
+
+
+def _adapter_and_options(data: Mapping[str, Any]) -> tuple[str | None, dict[str, Any]]:
+    adapter = None
+    if "adapter" in data:
+        adapter = _text(data, "adapter")
+        if not _ADAPTER_NAME.fullmatch(adapter):
+            raise ConfigError(f"adapter must match {_ADAPTER_NAME.pattern}, got {adapter!r}")
+    options = data.get("options", {})
+    if not isinstance(options, Mapping) or not all(isinstance(k, str) for k in options):
+        raise ConfigError("options must be a table with string keys")
+    return adapter, copy.deepcopy(dict(options))  # a deep copy: nested tables must not be shared with the caller
+
+
 def parse_source_config(data: Mapping[str, Any]) -> SourceConfig:
     """Validate a mapping (already parsed from TOML) and build a SourceConfig."""
-    secret_keys = sorted(k for k in data if _SECRET_KEY.search(str(k)))
+    secret_keys = sorted(set(_secret_key_paths(data)))
     if secret_keys:
         raise ConfigError(f"secrets must not be stored in config files (keys: {', '.join(secret_keys)})")
     unknown = sorted(set(data) - _ALLOWED_KEYS)
@@ -117,6 +148,7 @@ def parse_source_config(data: Mapping[str, Any]) -> SourceConfig:
         if not _host_allowed(parts.hostname.lower(), domains):
             raise ConfigError(f"start_urls host {parts.hostname!r} is not in allowed_domains")
 
+    adapter, options = _adapter_and_options(data)
     return SourceConfig(
         name=_text(data, "name"),
         exhibition_id=_text(data, "exhibition_id"),
@@ -128,6 +160,8 @@ def parse_source_config(data: Mapping[str, Any]) -> SourceConfig:
         max_retries=_non_negative_int(data, "max_retries", 3),
         timeout_seconds=_number(data, "timeout_seconds", 30.0, minimum=0, inclusive=False),
         user_agent=_text(data, "user_agent") if "user_agent" in data else "ExhibitIQ-crawler",
+        adapter=adapter,
+        options=options,
     )
 
 
