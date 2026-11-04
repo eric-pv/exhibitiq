@@ -50,6 +50,7 @@
 | W2-03 | 企業詳情：欄位來源（`SourceRef`）、別名、參展紀錄、最後更新時間 | [#58](https://github.com/magician-eric/exhibitiq/pull/58) | `dev/ai-intelligence` | 2026-11-04 |
 | W2-04 | 商機分析頁：排名、評分拆解（`ScoreBreakdown`）、關係分類、建議、來源引用 | [#59](https://github.com/magician-eric/exhibitiq/pull/59) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-11 | 證據驗證 `evidence_check.py`（EV1–EV7；驗證失敗不能發布） | [#60](https://github.com/magician-eric/exhibitiq/pull/60) | `dev/ai-intelligence` | 2026-11-04 |
+| W2-01 | 展覽搜尋與展覽詳情（資料集索引；取得方式、評估、各屆次取得／驗證／完整度） | [#62](https://github.com/magician-eric/exhibitiq/pull/62) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -57,7 +58,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W2-01 | 展覽搜尋（名稱、國家、年份、評估狀態；網址同步）與展覽詳情（取得方式、來源評估、各屆次取得／驗證／完整度） | 本 PR |
+| A2-14 | 分析結果版本化回存 `save-analysis`（驗證通過才寫入；存檔後不可修改，只能更新審核欄位） | 本 PR |
 
 ## 待處理（Phase 1）
 

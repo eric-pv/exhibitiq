@@ -6,6 +6,7 @@ Usage (from the repo root):
   python skills/exhibitiq/scripts/exhibitiq_tools.py check-all [--index PATH]
   python skills/exhibitiq/scripts/exhibitiq_tools.py validate-package PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py validate-analysis ANALYSIS_JSON PACKAGE_DIR
+  python skills/exhibitiq/scripts/exhibitiq_tools.py save-analysis ANALYSIS_JSON PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py report ANALYSIS_JSON PACKAGE_DIR > report.md
 
 Package validation uses data engineering's `etl.validate` when it is importable
@@ -169,6 +170,43 @@ def validate_analysis(analysis_path: Path, package_dir: Path) -> dict:
     return {"validator": "skills/exhibitiq evidence_check (AR1-AR9 + EV1-EV7) + knowledge_check", "ok": not errors, "errors": errors}
 
 
+ANALYSIS_ROOT = ROOT / "reports" / "analysis"
+REVIEW_FIELDS = {"review_status", "reviewed_by", "reviewed_at"}
+
+
+def save_analysis(analysis_path: Path, package_dir: Path, out_root: Path | None = None) -> dict:
+    """Versioned save (A2-14): reports/analysis/<input_dataset_id>/<analysis_id>.json.
+
+    Only validated results are written. A saved result is immutable: re-analysis needs a new
+    analysis_id; the only allowed change to an existing file is the human review fields.
+    """
+    out_root = out_root or ANALYSIS_ROOT
+    v = validate_analysis(analysis_path, package_dir)
+    if not v["ok"]:
+        return {"ok": False, "path": None, "action": "rejected", "errors": v["errors"]}
+    a = load(analysis_path)
+    target = out_root / a["input_dataset_id"] / f"{a['analysis_id']}.json"
+    if target.exists():
+        old = load(target)
+        if old == a:
+            return {"ok": True, "path": str(target), "action": "unchanged", "errors": []}
+        changed = {k for k in set(old) | set(a) if old.get(k) != a.get(k)}
+        if not changed <= REVIEW_FIELDS:
+            return {"ok": False, "path": str(target), "action": "rejected",
+                    "errors": [f"{target.name} already exists; saved analyses are immutable (changed: {sorted(changed)}). Re-analysis needs a new analysis_id."]}
+        action = "review_updated"
+    else:
+        if a["review_status"] != "draft":
+            return {"ok": False, "path": None, "action": "rejected", "errors": ["a new analysis must start as review_status=draft"]}
+        others = list((out_root).glob(f"*/{a['analysis_id']}.json")) if out_root.exists() else []
+        if others:
+            return {"ok": False, "path": None, "action": "rejected", "errors": [f"analysis_id already used in {others[0]}"]}
+        action = "created"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(a, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return {"ok": True, "path": str(target), "action": action, "errors": []}
+
+
 CLAIM = {"fact": "事實", "inference": "AI 推論", "unknown": "資料不足"}
 
 
@@ -225,7 +263,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("check-all").add_argument("--index", type=Path, default=None)
     sub.add_parser("classify").add_argument("package_dir", type=Path)
     sub.add_parser("score").add_argument("package_dir", type=Path)
-    for name in ("validate-analysis", "report"):
+    for name in ("validate-analysis", "report", "save-analysis"):
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
         sp.add_argument("package_dir", type=Path)
@@ -247,6 +285,8 @@ def main(argv: list[str] | None = None) -> int:
             r = validate_package(a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
         elif a.cmd == "validate-analysis":
             r = validate_analysis(a.analysis, a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
+        elif a.cmd == "save-analysis":
+            r = save_analysis(a.analysis, a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
         elif a.cmd == "report":
             sys.stdout.write(render_report(a.analysis, a.package_dir))
     except LookupError as e:

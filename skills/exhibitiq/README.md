@@ -15,6 +15,7 @@ python $T select <exhibition_id> [年份]             # 選出最新、驗證通
 python $T check-all                                 # 批次檢查所有最新資料包（版本、雜湊、驗證）
 python $T validate-package <package_dir>            # 分析前必做
 python $T validate-analysis <analysis.json> <package_dir>   # 發布前必做
+python $T save-analysis <analysis.json> <package_dir>       # 驗證通過才寫入 reports/analysis/<input_dataset_id>/<analysis_id>.json；已存檔的結果不能修改（只能更新審核欄位），重新分析要用新的 analysis_id
 python $T report <analysis.json> <package_dir> > <analysis_id>.md
 ```
 - 資料集索引預設讀 `data/index/datasets.json`，不存在時使用範例；可用 `--index` 指定。
