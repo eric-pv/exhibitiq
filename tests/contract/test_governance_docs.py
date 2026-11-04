@@ -128,6 +128,8 @@ def test_every_spec_directory_has_owner(path):
         ("docs/DEVELOPMENT_PLAN.md", "ai"),
         ("docs/data-platform/environment.md", "data"),
         ("data/index/", "data"),
+        (".gitignore", "ai"),  # Eric, 2026-11-04
+        ("site/package-lock.json", "ai"),
         ("README.md", "ai"),
     ],
 )
