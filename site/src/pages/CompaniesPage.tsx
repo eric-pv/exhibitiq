@@ -1,6 +1,6 @@
 import { Input, Select, Space, Tag, Typography } from "antd";
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { DataTable } from "../components/DataTable";
 import { PageHeader } from "../components/layout/PageHeader";
 import { ClaimBadge, type ClaimKind } from "../components/status/ClaimBadge";
@@ -36,7 +36,7 @@ export function CompaniesPage() {
         csvName="companies.csv"
         columns={[
           { title: c.name, dataIndex: "name", sorter: (a, b) => a.name.localeCompare(b.name),
-            render: (_, r) => <Space direction="vertical" size={0}><span>{r.name}</span>{r.aliases.length > 0 && <Typography.Text type="secondary">{r.aliases.join("、")}</Typography.Text>}</Space> },
+            render: (_, r) => <Space direction="vertical" size={0}><Link to={`/companies/${encodeURIComponent(r.companyId)}`} data-testid="company-link">{r.name}</Link>{r.aliases.length > 0 && <Typography.Text type="secondary">{r.aliases.join("、")}</Typography.Text>}</Space> },
           { title: c.country, dataIndex: "country", render: (v) => v ?? "未知", sorter: (a, b) => (a.country ?? "").localeCompare(b.country ?? "") },
           { title: c.exhibition, render: (_, r) => `${r.exhibitionName}（${r.year}）` },
           { title: c.booth, render: (_, r) => (r.booths.length ? r.booths.join("、") : <Typography.Text type="secondary">{c.noBooth}</Typography.Text>) },

@@ -80,8 +80,25 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
         if (manifest.content_hash !== ds.content_hash) throw new Error(`${where}: content_hash differs from the dataset index`);
         const companies = readJsonl(join(pkg, "companies.jsonl"));
         const participations = readJsonl(join(pkg, "participations.jsonl"));
+        const sourceRecords = readJsonl(join(pkg, "sources.jsonl"));
         companies.forEach((c, i) => v.check("company", c, `${where}/companies.jsonl:${i + 1}`));
         participations.forEach((p, i) => v.check("participation", p, `${where}/participations.jsonl:${i + 1}`));
+        sourceRecords.forEach((s, i) => v.check("source", s, `${where}/sources.jsonl:${i + 1}`));
+        const sources = Object.fromEntries(sourceRecords.map((s) => [s.source_id, {
+          sourceId: s.source_id, sourceType: s.source_type, url: s.url ?? null, title: s.title ?? null, publisher: s.publisher ?? null,
+          retrievedAt: s.retrieved_at, crawlRunId: s.crawl_run_id ?? null, contentSha256: s.content_sha256,
+          snapshot: { storage: s.snapshot.storage, locator: s.snapshot.locator ?? null, retainedUntil: s.snapshot.retained_until ?? null },
+          notes: s.notes ?? null,
+        }]));
+        // Every cited source must exist in the package: the detail page shows each field's source (W2-03).
+        const cite = (ids, what) => { for (const id of ids ?? []) if (!sources[id]) throw new Error(`${where}: ${what} cites ${id}, which is not in sources.jsonl`); };
+        const citeRecord = (r, what) => {
+          cite(r.source_ids, what);
+          for (const ids of Object.values(r.field_sources ?? {})) cite(ids, what);
+          for (const a of r.aliases ?? []) cite(a.source_ids, what);
+        };
+        companies.forEach((c) => citeRecord(c, c.company_id));
+        participations.forEach((p) => citeRecord(p, p.participation_id));
         datasets[ds.dataset_id] = {
           datasetId: ds.dataset_id,
           exhibitionId: ex.exhibition_id,
@@ -100,9 +117,24 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
               aliases: (c.aliases ?? []).map((a) => a.name),
               listed: ps.some((p) => p.listing_status === "listed"),
               booths: [...new Set(ps.map((p) => p.booth).filter(Boolean))],
+              detail: {
+                nameEn: c.name_en ?? null, nameZhHant: c.name_zh_hant ?? null, website: c.website ?? null, domains: c.domains ?? [],
+                description: c.description ?? null, status: c.status, mergedInto: c.merged_into ?? null, firstSeenAt: c.first_seen_at ?? null,
+                notes: c.notes ?? null, sourceIds: c.source_ids, fieldSources: c.field_sources ?? {},
+                aliases: (c.aliases ?? []).map((a) => ({ name: a.name, lang: a.lang ?? null, sourceIds: a.source_ids })),
+                participations: ps.map((p) => ({
+                  participationId: p.participation_id, editionId: p.edition_id, nameAsListed: p.exhibitor_name_as_listed,
+                  participationType: p.participation_type, listingStatus: p.listing_status, booth: p.booth ?? null, hall: p.hall ?? null,
+                  countryAsListed: p.country_as_listed ?? null, websiteAsListed: p.website_as_listed ?? null,
+                  categories: p.categories_as_listed ?? [], products: p.products_as_listed ?? [],
+                  firstSeenAt: p.first_seen_at ?? null, lastSeenAt: p.last_seen_at ?? null, verificationStatus: p.verification_status,
+                  sourceIds: p.source_ids, fieldSources: p.field_sources ?? {}, notes: p.notes ?? null,
+                })),
+              },
             };
           }),
           listedParticipations: participations.filter((p) => p.listing_status === "listed").length,
+          sources,
         };
       }
       return {
