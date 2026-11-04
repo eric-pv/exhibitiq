@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "exhibition_id": "example-expo",
+  "name": "Example Defence Expo (Synthetic)",
+  "name_zh_hant": "範例國防展（合成資料）",
+  "country": "ZZ",
+  "website": "https://example.com/",
+  "years": [
+    2026
+  ],
+  "registration_status": "accepted",
+  "requested_by": "Example User",
+  "requested_at": "2026-11-01T08:00:00Z",
+  "request_channel": "dashboard_form",
+  "notes": "合成範例（synthetic）：示範登錄資料格式，不代表任何真實展覽。"
+}

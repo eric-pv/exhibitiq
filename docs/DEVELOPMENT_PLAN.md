@@ -198,7 +198,7 @@ D1 = 2026-11-03。這是目標，不是承諾；實際進度記錄在 [`PROGRESS
 | D2-10 | 實作不刪除原始資料的初步規則篩選 | D2-07 | |
 | D2-11 | 產生含 manifest 與來源索引的 AI 分析資料包 | D1-04、D1-05 | 通過驗證程式 |
 | D2-12 | 建立資料版本化發布、資料集索引（依 A1-07，含取得失敗與資料不足的紀錄）及自動測試 | D2-11、A1-07 | Dashboard 可以讀取 |
-| D2-13 | 建立「新增展覽」workflow（`workflow_dispatch` 輸入：展覽名稱、國家、年份、官網）：產生登錄草稿與來源評估紀錄，輸出為資料更新 PR | D2-05、A1-10 | 不寫 `main`；最小權限與 concurrency；不需要前端憑證 |
+| D2-13 | 建立「新增展覽」workflow（`workflow_dispatch` 輸入：展覽名稱、國家、年份、官網）：寫入 `data/registry/<exhibition_id>/registration.json`（A1-10）並產生來源評估紀錄，輸出為資料更新 PR | D2-05、A1-10 | 不寫 `main`；最小權限與 concurrency；不需要前端憑證 |
 
 ### Phase 2 可視化成果（最低驗收）
 
