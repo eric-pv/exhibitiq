@@ -81,6 +81,18 @@ export const t = {
     participationType: { exhibitor: "參展商", co_exhibitor: "聯合參展", sponsor: "贊助商", unknown: "未知" } as Record<string, string>,
     timeline: (first: string, last: string) => `${first} ／ ${last}`,
   },
+  exhibitions: {
+    search: "搜尋展覽名稱、國家或年份", country: "國家／地區", year: "年份", acquisitionStatus: "來源評估",
+    name: "展覽", years: "屆次", method: "取得方式", completeness: "最新資料完整度", website: "官網",
+    count: (n: number, total: number) => `${n}／${total} 個展覽`,
+    noPackage: "尚無資料包", notFound: (id: string) => `找不到展覽 ${id}：它不在資料集索引中。`, back: "返回展覽清單",
+    assessment: "來源評估", assessedAt: "評估時間", report: "評估報告", notes: "說明",
+    editions: "屆次與資料包", edition: "屆次", lastAcquisition: "最近一次取得", finishedAt: "完成時間", validation: "驗證", dataset: "最新資料包",
+    viewCompanies: "查看參展商",
+    addHint: "新增展覽的表單在 W3-07 加入；目前請由 GitHub Actions「新增展覽」workflow 登錄（D2-13）。",
+    methodLabel: { automatic: "自動擷取", semi_automatic: "半自動", file_import: "檔案匯入", authorized_file: "授權檔案", manual_entry: "人工輸入", undetermined: "尚未決定" } as Record<string, string>,
+    csvHeaders: ["exhibition_id", "name", "country", "years", "acquisition_method", "assessment_status", "completeness", "collected", "official"],
+  },
   opportunities: {
     analysis: "分析結果", noAnalysis: "尚無含商機評分的分析結果。請先以 ExhibitIQ Skill 執行 score 並回存分析結果。",
     aiNotice: "本頁的排名、評分、關係分類與建議都是 AI 分析結果（推論），不是已查證的事實。每一項都附上依據的來源；沒有依據的因子不計分。",

@@ -210,3 +210,28 @@ export function getOpportunityView(analysisId?: string | null, b: Bundle = bundl
     companyName,
   };
 }
+
+export interface ExhibitionRow {
+  exhibitionId: string; name: string; country: string | null; website: string | null; years: number[];
+  acquisition: Bundle["exhibitions"][number]["acquisition"];
+  latestCompleteness: Completeness | null; hasPackage: boolean;
+  editions: EditionRow[];
+}
+
+/** Registered exhibitions from the dataset index (W2-01); nothing is hard-coded. */
+export function getExhibitionRows(b: Bundle = bundle): ExhibitionRow[] {
+  const editions = getOverview(b).editions;
+  return b.exhibitions.map((ex) => {
+    const eds = editions.filter((e) => e.exhibitionId === ex.exhibitionId).sort((x, y) => y.year - x.year);
+    const latest = eds.find((e) => e.latest)?.latest ?? null;
+    return {
+      exhibitionId: ex.exhibitionId, name: ex.name, country: ex.country, website: ex.website, years: eds.map((e) => e.year),
+      acquisition: ex.acquisition, latestCompleteness: latest?.completeness ?? null, hasPackage: !!latest, editions: eds,
+    };
+  });
+}
+
+export function matchesExhibition(r: ExhibitionRow, q: string): boolean {
+  const s = q.trim().toLowerCase();
+  return !s || [r.name, r.exhibitionId, r.country ?? "", ...r.years.map(String)].some((v) => v.toLowerCase().includes(s));
+}
