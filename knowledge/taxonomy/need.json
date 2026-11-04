@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0.0-draft.4",
+  "dimension": "need",
+  "approval_status": "draft",
+  "terms": [],
+  "updated_at": "2026-11-04",
+  "notes": "需求分類骨架（A1-09）。尚未收錄任何分類詞；分類詞需由專案負責人核定後才能改為 approved。"
+}

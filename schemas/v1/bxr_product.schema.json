@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/bxr_product.schema.json",
+  "title": "BXR Product 產品卡",
+  "description": "BXR 產品知識庫中的一張產品卡，存為 knowledge/bxr-products/<product_id>.json。內容只能來自專案負責人提供的文件；不得自行推測規格或能力。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product_id",
+    "name",
+    "approval_status",
+    "summary",
+    "sources",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0-draft.4"
+    },
+    "product_id": {
+      "$ref": "common.schema.json#/$defs/bxr_product_id"
+    },
+    "name": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "name_en": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "product_line": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "summary": {
+      "$ref": "common.schema.json#/$defs/text"
+    },
+    "capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(industry|technology|application|capability|problem|need)\\.[a-z0-9]+(-[a-z0-9]+)*$",
+        "maxLength": 80,
+        "description": "<dimension>.<slug>，例如 capability.scenario-training。"
+      }
+    },
+    "applications": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(industry|technology|application|capability|problem|need)\\.[a-z0-9]+(-[a-z0-9]+)*$",
+        "maxLength": 80,
+        "description": "<dimension>.<slug>，例如 capability.scenario-training。"
+      }
+    },
+    "target_industries": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(industry|technology|application|capability|problem|need)\\.[a-z0-9]+(-[a-z0-9]+)*$",
+        "maxLength": 80,
+        "description": "<dimension>.<slug>，例如 capability.scenario-training。"
+      }
+    },
+    "problems_addressed": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(industry|technology|application|capability|problem|need)\\.[a-z0-9]+(-[a-z0-9]+)*$",
+        "maxLength": 80,
+        "description": "<dimension>.<slug>，例如 capability.scenario-training。"
+      }
+    },
+    "specifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "value",
+          "source_index"
+        ],
+        "properties": {
+          "name": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "value": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "unit": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "source_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "對應 sources[] 的索引；每一項規格都必須有依據文件。"
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "provided_by",
+          "provided_at"
+        ],
+        "properties": {
+          "title": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "version": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "provided_by": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "provided_at": {
+            "$ref": "common.schema.json#/$defs/date"
+          },
+          "path": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          }
+        },
+        "description": "產品資訊的內部依據文件（例如型錄、規格書）。knowledge 內容只能來自這類經專案負責人提供的文件。"
+      }
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_review",
+        "approved",
+        "retired"
+      ],
+      "description": "只有 approved 的內容可以被分析與 Dashboard 使用；approved 必須有 approved_by 與 approved_at。"
+    },
+    "approved_by": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "approved_at": {
+      "$ref": "common.schema.json#/$defs/date"
+    },
+    "updated_at": {
+      "$ref": "common.schema.json#/$defs/date"
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "approval_status": {
+            "const": "approved"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "approved_by",
+          "approved_at"
+        ]
+      }
+    }
+  ]
+}

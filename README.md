@@ -28,6 +28,7 @@ ExhibitIQ 是**可支援不同展覽的通用型** AI 展會情報搜尋、蒐�
 | [`docs/specs/data-package-contract.md`](docs/specs/data-package-contract.md) | 資料包契約 v1：ID、目錄、序列化、雜湊、來源追溯、完整度 |
 | [`docs/specs/analysis-result-contract.md`](docs/specs/analysis-result-contract.md) | 分析結果契約 v1：結論類型、不確定性、可拆解評分、關係分類、建議 |
 | [`docs/specs/dataset-index-contract.md`](docs/specs/dataset-index-contract.md) | 資料集索引契約 v1：已登錄展覽、取得方式與評估、取得結果、資料包與驗證狀態 |
+| [`docs/specs/knowledge-base-contract.md`](docs/specs/knowledge-base-contract.md) | 知識庫契約 v1：BXR 產品卡（依據文件、核定狀態）與六個分析分類面向 |
 | [`docs/workflow/ChatGPT_工作指令模板.md`](docs/workflow/ChatGPT_工作指令模板.md) | 單一工作項目的 ChatGPT 指令模板 |
 | [`docs/workflow/階段整合_ChatGPT指令模板.md`](docs/workflow/階段整合_ChatGPT指令模板.md) | 階段整合指令模板（僅專案負責人） |
 | [`docs/workflow/工作流程與驗收檢查表.md`](docs/workflow/工作流程與驗收檢查表.md) | PR、階段與安全檢查表 |

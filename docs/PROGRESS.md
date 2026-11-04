@@ -33,6 +33,7 @@
 | D1-04 | 資料包讀寫工具（JSONL、雜湊、manifest 完整性、來源索引） | [#27](https://github.com/magician-eric/exhibitiq/pull/27) | `dev/data-platform` | 2026-11-04 |
 | W1-01 | 前端骨架（React、Vite、TS、Ant Design、ECharts、Vitest、Playwright、單一 HTML 打包）＋根目錄 `.gitignore` | [#28](https://github.com/magician-eric/exhibitiq/pull/28) | `dev/ai-intelligence` | 2026-11-04 |
 | W1-02 | 設計系統、共用 Layout、8 個主選單、狀態元件；自動模式規則（Issue #29） | [#30](https://github.com/magician-eric/exhibitiq/pull/30) | `dev/ai-intelligence` | 2026-11-04 |
+| W1-03 | 資料存取層、bundle 產生程式、系統總覽（合成資料）；**Phase 1 Dashboard 可視化成果完成** | [#32](https://github.com/magician-eric/exhibitiq/pull/32) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -40,15 +41,16 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W1-03 | 資料存取層、bundle 產生程式、系統總覽（合成資料）；完成 Phase 1 的 Dashboard 可視化成果 | PR 待 Eric 合併 |
+| A1-09 | BXR 產品知識庫結構與分析分類架構（Schema 升到 `1.0.0-draft.4`；只有結構，沒有產品內容） | PR 待 Eric 合併 |
+| — | 第六次共用規範同步：自動模式規則與進度 | [#33](https://github.com/magician-eric/exhibitiq/pull/33) 待 Albert 合併 |
 
 ## 待處理（Phase 1）
 
 | 負責 | 編號 |
 |---|---|
-| ai | A1-01、A1-09、A1-10 |
+| ai | A1-01、A1-10 |
 | data | D1-02、D1-05、D1-06、D1-08、D1-09、D1-11 |
-| data | 資料包 manifest 的 `schema_version` 使用 `1.0.0-draft.3`；D2-12 依 A1-07 產生 `data/index/datasets.json` |
+| data | 資料包 manifest 的 `schema_version` 使用 `1.0.0-draft.4`（A1-09 同步後）；D2-12 依 A1-07 產生 `data/index/datasets.json` |
 
 ## 阻礙事項
 
