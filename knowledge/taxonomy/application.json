@@ -2,7 +2,58 @@
   "schema_version": "1.0.0-draft.5",
   "dimension": "application",
   "approval_status": "draft",
-  "terms": [],
+  "terms": [
+    {
+      "term_id": "application.training",
+      "label": "訓練",
+      "synonyms": [
+        "Trainer",
+        "Training",
+        "訓練"
+      ]
+    },
+    {
+      "term_id": "application.wargaming",
+      "label": "兵棋推演",
+      "synonyms": [
+        "Wargame",
+        "Wargaming",
+        "兵棋"
+      ]
+    },
+    {
+      "term_id": "application.command-control",
+      "label": "指揮管制",
+      "synonyms": [
+        "C2",
+        "C4ISR",
+        "Command",
+        "Control",
+        "指揮",
+        "管制"
+      ]
+    },
+    {
+      "term_id": "application.maintenance",
+      "label": "維修保養",
+      "synonyms": [
+        "MRO",
+        "Maintenance",
+        "維修"
+      ]
+    },
+    {
+      "term_id": "application.surveillance",
+      "label": "監偵",
+      "synonyms": [
+        "ISR",
+        "Reconnaissance",
+        "Surveillance",
+        "偵察",
+        "監控"
+      ]
+    }
+  ],
   "updated_at": "2026-11-04",
-  "notes": "應用分類骨架（A1-09）。尚未收錄任何分類詞；分類詞需由專案負責人核定後才能改為 approved。"
+  "notes": "A2-06 草稿：分類詞與關鍵字由 Claude Code 依通用產業詞彙擬定，尚未經 Eric 核定（approval_status: draft）。核定前分析只能把分類結果標為推論並列出不確定性。"
 }

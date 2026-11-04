@@ -104,6 +104,24 @@ def check_all(index_path: Path) -> list[dict]:
     return rows
 
 
+def classify(package_dir: Path, taxonomy_dir: Path | None = None) -> dict:
+    """A2-06: deterministic keyword candidates per company (inference input, never fact)."""
+    import re
+    tax = [load(p) for p in sorted((taxonomy_dir or ROOT / "knowledge" / "taxonomy").glob("*.json"))]
+    words = [(t["term_id"], [t["label"], *t.get("synonyms", [])]) for d in tax for t in d["terms"]]
+    out: dict[str, dict] = {}
+    for line in (Path(package_dir) / "participations.jsonl").read_text(encoding="utf-8").splitlines():
+        p = json.loads(line)
+        text = " ".join([p["exhibitor_name_as_listed"], *p.get("categories_as_listed", []), *p.get("products_as_listed", [])])
+        hits = sorted({tid for tid, ws in words for w in ws
+                       if re.search(rf"(?<![A-Za-z]){re.escape(w)}(?:e?s)?(?![A-Za-z])", text, re.IGNORECASE)})
+        entry = out.setdefault(p["company_id"], {"terms": set(), "source_ids": set()})
+        entry["terms"] |= set(hits)
+        if hits:
+            entry["source_ids"] |= set(p["source_ids"])
+    return {k: {"terms": sorted(v["terms"]), "source_ids": sorted(v["source_ids"])} for k, v in out.items()}
+
+
 def validate_analysis(analysis_path: Path, package_dir: Path) -> dict:
     import analysis_check
     import knowledge_check
@@ -167,6 +185,7 @@ def main(argv: list[str] | None = None) -> int:
         sp.add_argument("--index", type=Path, default=None)
     sub.add_parser("validate-package").add_argument("package_dir", type=Path)
     sub.add_parser("check-all").add_argument("--index", type=Path, default=None)
+    sub.add_parser("classify").add_argument("package_dir", type=Path)
     for name in ("validate-analysis", "report"):
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
@@ -181,6 +200,8 @@ def main(argv: list[str] | None = None) -> int:
         elif a.cmd == "check-all":
             rows = check_all(idx); print(json.dumps(rows, ensure_ascii=False, indent=2))
             return 0 if all(r["ok"] for r in rows if r["dataset_id"]) else 1
+        elif a.cmd == "classify":
+            print(json.dumps(classify(a.package_dir), ensure_ascii=False, indent=2))
         elif a.cmd == "validate-package":
             r = validate_package(a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
         elif a.cmd == "validate-analysis":

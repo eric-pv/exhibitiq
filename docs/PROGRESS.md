@@ -43,6 +43,7 @@
 | A2-01 | Skill 入口、輸入輸出與報告驗收規格 | [#47](https://github.com/magician-eric/exhibitiq/pull/47) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-02 | 黃金樣本（第二組不同結構的合成資料與預期結果） | [#49](https://github.com/magician-eric/exhibitiq/pull/49) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-03 | Skill 輔助程式與安裝使用說明 | [#51](https://github.com/magician-eric/exhibitiq/pull/51) | `dev/ai-intelligence` | 2026-11-04 |
+| A2-04 | 資料包批次讀取與版本驗證 | [#52](https://github.com/magician-eric/exhibitiq/pull/52) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -50,7 +51,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A2-04 | 資料包批次讀取與版本驗證（`check-all`） | 本 PR |
+| A2-06 | 分類詞草稿（待 Eric 核定）與分類規則、`classify` | 本 PR |
 
 ## 待處理（Phase 1）
 
@@ -66,7 +67,7 @@
 
 | 項目 | 影響 | 狀態 |
 |---|---|---|
-| BXR 產品資料尚未提供 | A1-09 之後的 A2-05、W3-03 | 等專案負責人提供 |
+| A2-05 BXR 產品知識庫內容（等 Eric 提供產品資料；先跳過） | A1-09 之後的 A2-05、W3-03 | 等專案負責人提供 |
 
 ## 待專案負責人決定
 

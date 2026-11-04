@@ -2,7 +2,38 @@
   "schema_version": "1.0.0-draft.5",
   "dimension": "need",
   "approval_status": "draft",
-  "terms": [],
+  "terms": [
+    {
+      "term_id": "need.procurement",
+      "label": "採購需求",
+      "synonyms": [
+        "procurement",
+        "tender",
+        "採購",
+        "標案"
+      ]
+    },
+    {
+      "term_id": "need.partnership",
+      "label": "合作夥伴",
+      "synonyms": [
+        "agent",
+        "distributor",
+        "partner",
+        "代理",
+        "合作"
+      ]
+    },
+    {
+      "term_id": "need.localization",
+      "label": "在地化",
+      "synonyms": [
+        "local",
+        "localization",
+        "在地"
+      ]
+    }
+  ],
   "updated_at": "2026-11-04",
-  "notes": "需求分類骨架（A1-09）。尚未收錄任何分類詞；分類詞需由專案負責人核定後才能改為 approved。"
+  "notes": "A2-06 草稿：分類詞與關鍵字由 Claude Code 依通用產業詞彙擬定，尚未經 Eric 核定（approval_status: draft）。核定前分析只能把分類結果標為推論並列出不確定性。"
 }
