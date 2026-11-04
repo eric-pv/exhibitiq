@@ -8,7 +8,8 @@ completeness checks, package writing, and the single data-package validator
 Not in this package: crawling (see ``crawler``), and AI inference. Inferred
 analysis must never be written back as sourced fact.
 
-Skeleton only (P1-DATA-02). Readers/writers, the validator and run-log
-formats arrive in later Issues. The data contract lives only in ``schemas/``;
-never define fields here.
+Contents: ``jsonl`` / ``hashing`` / ``package`` read and write data packages
+byte-reproducibly (D1-04). The single data-package validator (D1-05) is not
+here yet. The data contract lives only in ``schemas/``; never define fields
+here.
 """
