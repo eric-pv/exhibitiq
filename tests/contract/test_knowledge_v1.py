@@ -33,9 +33,12 @@ def test_taxonomy_skeleton_has_all_six_dimensions():
     assert sorted(f.stem for f in (KB / "taxonomy").glob("*.json")) == sorted(DIMS)
 
 
-def test_no_product_cards_without_owner_material():
-    # A1-09 is structure only: product content needs Eric's approved source documents (A2-05).
-    assert list((KB / "bxr-products").glob("*.json")) == []
+def test_product_cards_only_from_owner_material():
+    # A2-05 (V2.5, Eric 2026-11-04): cards come only from Eric's material and stay draft until he approves them.
+    for p in (KB / "bxr-products").glob("*.json"):
+        d = load(p)
+        assert all(s["provided_by"] == "Eric" for s in d["sources"]), p.name
+        assert d["approval_status"] == "draft" or d.get("approved_by"), p.name
 
 
 # ------------------------------------------------------------------ examples
@@ -138,3 +141,16 @@ def test_analysis_cannot_cite_unapproved_products(tmp_path):
     card.update(approval_status="approved", approved_by="Eric", approved_at="2026-11-04")
     (tmp_path / "bxr-products" / "bxr-example-device.json").write_text(json.dumps(card), encoding="utf-8")
     assert kc.check_analysis_products(analysis, tmp_path) == []
+
+
+def test_a205_bxr_cards_are_draft_without_specifications():
+    """A2-05 (V2.5): 8 draft cards with names and positioning only; no invented specifications."""
+    import json as _j
+    cards = [_j.loads(p.read_text(encoding="utf-8")) for p in sorted((pc.ROOT / "knowledge" / "bxr-products").glob("bxr-*.json"))]
+    assert len(cards) == 8
+    for c in cards:
+        assert c["approval_status"] == "draft" and "approved_by" not in c
+        assert not c.get("specifications"), c["product_id"]
+        assert c["sources"][0]["provided_by"] == "Eric"
+    prof = _j.loads((pc.ROOT / "knowledge" / "analysis-profiles" / "bxr-opportunity.json").read_text(encoding="utf-8"))
+    assert prof["mode"] == "bxr_opportunity" and set(prof["targets"]["bxr_product_ids"]) == {c["product_id"] for c in cards}
