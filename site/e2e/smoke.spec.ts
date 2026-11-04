@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const SHOTS = process.env.SCREENSHOT_DIR;
+const BUILT = new Set(["系統總覽", "參展商與企業情報"]); // pages that are no longer 「建置中」
 const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "資料及系統狀態"];
 
 test.beforeEach(async ({ page }, info) => {
@@ -25,7 +26,8 @@ test("desktop: side menu shows 8 items and every page opens", async ({ page }, i
   for (const label of MENU.slice(1)) {
     await nav.getByText(label, { exact: true }).click();
     await expect(page.getByRole("heading", { name: label, level: 2 })).toBeVisible();
-    await expect(page.getByTestId("under-construction")).toBeVisible();
+    if (BUILT.has(label)) await expect(page.getByTestId("under-construction")).toHaveCount(0);
+    else await expect(page.getByTestId("under-construction")).toBeVisible();
   }
   await page.goto("/#/design");
   await expect(page.getByText("AI 推論")).toBeVisible();
@@ -79,4 +81,21 @@ test("overview: synthetic banner, KPI cards from data, charts and data status", 
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/w1-03-${info.project.name}-overview.png`, fullPage: true });
   await page.getByTestId("kpi-companies").click();
   await expect(page.getByRole("heading", { name: "參展商與企業情報", level: 2 })).toBeVisible();
+});
+
+test("company detail (W2-03): list → detail, every field shows its source, source popover", async ({ page }, info) => {
+  await page.goto("/#/companies");
+  await page.getByTestId("company-link").first().click();
+  await expect(page).toHaveURL(/#\/companies\/co_/);
+  await expect(page.getByTestId("data-origin-banner")).toBeVisible();
+  await expect(page.getByTestId("company-meta")).toContainText("最後更新");
+  const fields = page.getByTestId("company-fields");
+  await expect(fields.getByTestId("source-ref").first()).toBeVisible();
+  await expect(page.getByTestId("company-participations").getByTestId("source-ref").first()).toBeVisible();
+  await page.getByTestId("company-sources").getByTestId("source-ref").first().click();
+  await expect(page.getByText("內容雜湊")).toBeVisible();
+  await page.waitForTimeout(300);
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-03-${info.project.name}-company-detail.png`, fullPage: true });
+  await page.getByText("返回企業清單").click();
+  await expect(page.getByTestId("company-table")).toBeVisible();
 });

@@ -29,8 +29,9 @@ export interface Bundle {
   datasets: Record<string, {
     datasetId: string; exhibitionId: string; editionId: string; dataOrigin: "synthetic" | "collected"; createdAt: string;
     completeness: Completeness;
-    companies: { companyId: string; name: string; country: string | null; verificationStatus: string; aliases: string[]; listed: boolean; booths: string[] }[];
+    companies: { companyId: string; name: string; country: string | null; verificationStatus: string; aliases: string[]; listed: boolean; booths: string[]; detail: CompanyRecord }[];
     listedParticipations: number;
+    sources: Record<string, SourceInfo>;
   }>;
   analyses: {
     analysisId: string; title: string; analysisType: string; inputDatasetId: string; generatedAt: string;
@@ -38,4 +39,30 @@ export interface Bundle {
     analyzedCompanyIds: string[]; highPriorityRecommendations: number; claimCounts: Record<string, number>;
   }[];
   notices: { level: "info" | "warning" | "error"; message: string; occurredAt: string }[];
+}
+
+/** A source record (schemas/v1/source.schema.json) as the Dashboard shows it. */
+export interface SourceInfo {
+  sourceId: string; sourceType: string; url: string | null; title: string | null; publisher: string | null;
+  retrievedAt: string; crawlRunId: string | null; contentSha256: string;
+  snapshot: { storage: string; locator: string | null; retainedUntil: string | null };
+  notes: string | null;
+}
+
+/** Field sources: keys are record field names; unlisted fields fall back to the record-level sourceIds. */
+export type FieldSources = Record<string, string[]>;
+
+export interface ParticipationRecord {
+  participationId: string; editionId: string; nameAsListed: string; participationType: string; listingStatus: "listed" | "removed";
+  booth: string | null; hall: string | null; countryAsListed: string | null; websiteAsListed: string | null;
+  categories: string[]; products: string[]; firstSeenAt: string | null; lastSeenAt: string | null;
+  verificationStatus: string; sourceIds: string[]; fieldSources: FieldSources; notes: string | null;
+}
+
+export interface CompanyRecord {
+  nameEn: string | null; nameZhHant: string | null; website: string | null; domains: string[]; description: string | null;
+  status: "active" | "merged"; mergedInto: string | null; firstSeenAt: string | null; notes: string | null;
+  sourceIds: string[]; fieldSources: FieldSources;
+  aliases: { name: string; lang: string | null; sourceIds: string[] }[];
+  participations: ParticipationRecord[];
 }

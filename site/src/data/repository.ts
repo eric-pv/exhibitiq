@@ -1,5 +1,5 @@
 import bundleJson from "../generated/bundle.json";
-import type { Bundle, Completeness } from "./types";
+import type { Bundle, Completeness, FieldSources, SourceInfo } from "./types";
 
 /** The only entry point pages use to read data (DEVELOPMENT_PLAN.md §3). */
 export const bundle = bundleJson as unknown as Bundle;
@@ -75,4 +75,83 @@ export function matchesQuery(r: CompanyRow, q: string): boolean {
 export function toCsv(headers: readonly string[], rows: (string | number | null)[][]): string {
   const esc = (v: string | number | null) => { const s = v === null ? "" : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   return "\uFEFF" + [headers, ...rows].map((r) => r.map(esc).join(",")).join("\r\n") + "\r\n";
+}
+
+/** A cited source, resolved inside the package that cites it. `missing` never happens for bundles that passed build-bundle. */
+export type ResolvedSource = SourceInfo | { sourceId: string; missing: true };
+
+export interface DetailField {
+  key: string; value: string | string[] | null; sources: ResolvedSource[];
+  /** true when the field has no field-level source and the record-level sources apply (schema rule). */
+  recordLevel: boolean;
+}
+
+export interface CompanyDetail {
+  companyId: string; name: string; verificationStatus: string; dataOrigin: "synthetic" | "collected";
+  status: "active" | "merged"; mergedInto: string | null; notes: string | null;
+  fields: DetailField[];
+  aliases: { name: string; lang: string | null; sources: ResolvedSource[] }[];
+  participations: {
+    key: string; exhibitionId: string; exhibitionName: string; year: number; editionId: string; datasetId: string;
+    nameAsListed: string; participationType: string; listingStatus: "listed" | "removed"; booth: string | null; hall: string | null;
+    countryAsListed: string | null; categories: string[]; products: string[]; firstSeenAt: string | null; lastSeenAt: string | null;
+    verificationStatus: string; sources: ResolvedSource[]; notes: string | null;
+  }[];
+  /** Latest of: participation last_seen_at, cited source retrieved_at, package created_at. Never estimated. */
+  lastUpdated: string;
+  packageCreatedAt: string; datasetId: string;
+}
+
+/** Fields shown on the detail page, in display order (company.schema.json names). */
+export const COMPANY_FIELDS = ["name", "name_en", "name_zh_hant", "country", "website", "domains", "description", "first_seen_at"] as const;
+
+/**
+ * All facts about one company across the latest packages (W2-03). The newest package's company record is primary;
+ * participations from every package are listed. Returns null when the company is not in any latest package.
+ */
+export function getCompanyDetail(companyId: string, b: Bundle = bundle): CompanyDetail | null {
+  const names = new Map(b.exhibitions.map((e) => [e.exhibitionId, e.name]));
+  const years = new Map(b.exhibitions.flatMap((e) => e.editions.map((ed) => [ed.editionId, ed.year] as const)));
+  const hits = Object.values(b.datasets)
+    .flatMap((d) => d.companies.filter((c) => c.companyId === companyId).map((c) => ({ d, c })))
+    .sort((x, y) => y.d.createdAt.localeCompare(x.d.createdAt));
+  if (hits.length === 0) return null;
+  const { d: primaryDs, c: primary } = hits[0];
+  const resolve = (ds: (typeof hits)[number]["d"], ids: string[]): ResolvedSource[] =>
+    ids.map((id) => ds.sources[id] ?? { sourceId: id, missing: true as const });
+  const fieldOf = (fs: FieldSources, recordIds: string[], key: string) =>
+    fs[key] ? { ids: fs[key], recordLevel: false } : { ids: recordIds, recordLevel: true };
+  const r = primary.detail;
+  const values: Record<(typeof COMPANY_FIELDS)[number], string | string[] | null> = {
+    name: primary.name, name_en: r.nameEn, name_zh_hant: r.nameZhHant, country: primary.country, website: r.website,
+    domains: r.domains.length ? r.domains : null, description: r.description, first_seen_at: r.firstSeenAt,
+  };
+  const fields = COMPANY_FIELDS.map((key) => {
+    const value = values[key];
+    if (value === null) return { key, value, sources: [], recordLevel: false }; // no value → no source to show
+    const f = fieldOf(r.fieldSources, r.sourceIds, key);
+    return { key, value, sources: resolve(primaryDs, f.ids), recordLevel: f.recordLevel };
+  });
+
+  const aliases = new Map<string, CompanyDetail["aliases"][number]>();
+  for (const { d, c } of hits) for (const a of c.detail.aliases) if (!aliases.has(a.name)) aliases.set(a.name, { name: a.name, lang: a.lang, sources: resolve(d, a.sourceIds) });
+
+  const participations = hits.flatMap(({ d, c }) => c.detail.participations.map((p) => ({
+    key: `${d.datasetId}:${p.participationId}`, exhibitionId: d.exhibitionId, exhibitionName: names.get(d.exhibitionId) ?? d.exhibitionId,
+    year: years.get(p.editionId) ?? years.get(d.editionId) ?? 0, editionId: p.editionId, datasetId: d.datasetId,
+    nameAsListed: p.nameAsListed, participationType: p.participationType, listingStatus: p.listingStatus, booth: p.booth, hall: p.hall,
+    countryAsListed: p.countryAsListed, categories: p.categories, products: p.products, firstSeenAt: p.firstSeenAt, lastSeenAt: p.lastSeenAt,
+    verificationStatus: p.verificationStatus, sources: resolve(d, p.sourceIds), notes: p.notes,
+  }))).sort((x, y) => y.year - x.year || x.exhibitionName.localeCompare(y.exhibitionName));
+
+  const stamps = [
+    primaryDs.createdAt,
+    ...participations.map((p) => p.lastSeenAt).filter((s): s is string => !!s),
+    ...[...fields.flatMap((f) => f.sources), ...participations.flatMap((p) => p.sources)].flatMap((s) => ("missing" in s ? [] : [s.retrievedAt])),
+  ];
+  return {
+    companyId, name: primary.name, verificationStatus: primary.verificationStatus, dataOrigin: primaryDs.dataOrigin,
+    status: r.status, mergedInto: r.mergedInto, notes: r.notes, fields, aliases: [...aliases.values()], participations,
+    lastUpdated: stamps.reduce((a, s) => (s > a ? s : a)), packageCreatedAt: primaryDs.createdAt, datasetId: primaryDs.datasetId,
+  };
 }

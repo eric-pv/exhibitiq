@@ -6,6 +6,7 @@ import { NAV_ITEMS } from "./navigation";
 import { DesignSystemPage } from "./pages/DesignSystemPage";
 import { OverviewPage } from "./pages/OverviewPage";
 import { CompaniesPage } from "./pages/CompaniesPage";
+import { CompanyDetailPage } from "./pages/CompanyDetailPage";
 
 const BUILT: Record<string, () => JSX.Element> = { overview: OverviewPage, companies: CompaniesPage };
 
@@ -30,6 +31,7 @@ export default function App() {
             }
           />
         ))}
+        <Route path="/companies/:companyId" element={<CompanyDetailPage />} />
         <Route path="/design" element={<DesignSystemPage />} />
         <Route path="*" element={<UnderConstruction workItem="—" />} />
       </Routes>

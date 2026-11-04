@@ -1,6 +1,6 @@
 # ExhibitIQ 開發進度
 
-> 最後更新：2026-11-03｜負責人：專案負責人（`ai`）
+> 最後更新：2026-11-04｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
 > **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
 
@@ -46,6 +46,7 @@
 | A2-04 | 資料包批次讀取與版本驗證 | [#52](https://github.com/magician-eric/exhibitiq/pull/52) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-06 | 分類詞草稿（待核定）、分類規則、`classify` | [#54](https://github.com/magician-eric/exhibitiq/pull/54) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-07 | 商機評分模型 opportunity@1（草稿待核定）與 `score` | [#55](https://github.com/magician-eric/exhibitiq/pull/55) | `dev/ai-intelligence` | 2026-11-04 |
+| W2-02 | 企業清單：搜尋（含別名）、篩選（網址同步）、排序、分頁、CSV 匯出；共用 DataTable | [#56](https://github.com/magician-eric/exhibitiq/pull/56) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -53,7 +54,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W2-02 | 企業清單：搜尋（含別名）、篩選（網址同步）、排序、分頁、CSV 匯出；共用 DataTable | 本 PR |
+| W2-03 | 企業詳情：基本資料、別名、參展紀錄、每個欄位的來源（`SourceRef`）、最後更新時間、查證標記 | 本 PR |
 
 ## 待處理（Phase 1）
 
