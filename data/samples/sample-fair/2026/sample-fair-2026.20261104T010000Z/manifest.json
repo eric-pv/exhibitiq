@@ -1,0 +1,75 @@
+{
+  "completeness": {
+    "collected_participation_count": 4,
+    "notes": "合成範例：名單頁寫 5 家，只列出 4 家，因此為 partial。",
+    "official_count_as_of": "2026-11-04",
+    "official_count_source_id": "src_01JFSA00000000000000000001",
+    "official_exhibitor_count": 5
+  },
+  "completeness_status": "partial",
+  "content_hash": "sha256:f32ed66541bedb6dd05fc281f1c6bf70b5af46621ac521d587021c6c95232d27",
+  "crawl_run_ids": [
+    "run_01JFRA00000000000000000001"
+  ],
+  "created_at": "2026-11-04T01:00:00Z",
+  "data_origin": "synthetic",
+  "dataset_id": "sample-fair-2026.20261104T010000Z",
+  "edition_id": "sample-fair-2026",
+  "edition_year": 2026,
+  "exhibition_id": "sample-fair",
+  "files": {
+    "changes.jsonl": {
+      "bytes": 0,
+      "records": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "companies.jsonl": {
+      "bytes": 1880,
+      "records": 4,
+      "sha256": "sha256:70abb447b9a0c63f7454e92fb866d9558e76274ddae81a4310af8d36dc31c685"
+    },
+    "crawl_runs.jsonl": {
+      "bytes": 504,
+      "records": 1,
+      "sha256": "sha256:9ab5111727716b6d55a1d9374d1c9a6e71b96e299d5061185fe41662e846927f"
+    },
+    "edition.json": {
+      "bytes": 513,
+      "records": 1,
+      "sha256": "sha256:64d76071ab4bcfbbc588a161b235769a3fd58faff2b4e908264a98846c488a12"
+    },
+    "exhibition.json": {
+      "bytes": 451,
+      "records": 1,
+      "sha256": "sha256:6fe892f7b322044d420f1954d146f52a2f8ce816c648ea4d65a2777a445a85f0"
+    },
+    "participations.jsonl": {
+      "bytes": 2506,
+      "records": 4,
+      "sha256": "sha256:77840bee06a0f2f088948c2b7dbc91b44406586c6e61b782a67c2f310a6104f3"
+    },
+    "sources.jsonl": {
+      "bytes": 1164,
+      "records": 2,
+      "sha256": "sha256:b70bf0c9cdc4f2ce7a9e2fec097dd943b9ff921dac5d68bf4650fef140d5f686"
+    }
+  },
+  "notes": "合成測試資料（synthetic）：所有名稱、網址與數字皆為虛構，不代表任何真實展覽或企業。",
+  "previous_dataset_id": null,
+  "producer": {
+    "name": "sample-builder",
+    "version": "0.0.0"
+  },
+  "record_counts": {
+    "changes": 0,
+    "companies": 4,
+    "crawl_runs": 1,
+    "participations": 4,
+    "sources": 2
+  },
+  "schema_version": "1.0.0-draft.3",
+  "source_snapshot_ids": [
+    "src_01JFSA00000000000000000001",
+    "src_01JFSA00000000000000000002"
+  ]
+}

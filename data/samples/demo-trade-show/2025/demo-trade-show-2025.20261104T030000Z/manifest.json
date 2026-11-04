@@ -1,0 +1,77 @@
+{
+  "completeness": {
+    "collected_participation_count": 3,
+    "notes": "合成範例：官方文件寫 3 家，已列出 3 家，因此為 complete。",
+    "official_count_as_of": "2026-11-04",
+    "official_count_source_id": "src_01JFSB00000000000000000003",
+    "official_exhibitor_count": 3
+  },
+  "completeness_status": "complete",
+  "content_hash": "sha256:801bb057b37d77239543d14a87e1bd930d936e2ea74de11e5590075e43d59946",
+  "crawl_run_ids": [
+    "run_01JFRB00000000000000000001",
+    "run_01JFRB00000000000000000002"
+  ],
+  "created_at": "2026-11-04T03:10:00Z",
+  "data_origin": "synthetic",
+  "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+  "edition_id": "demo-trade-show-2025",
+  "edition_year": 2025,
+  "exhibition_id": "demo-trade-show",
+  "files": {
+    "changes.jsonl": {
+      "bytes": 0,
+      "records": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "companies.jsonl": {
+      "bytes": 532,
+      "records": 3,
+      "sha256": "sha256:800b15ec70541934a7313221fb80b0ef330437b833427c36a08346ca8d484f78"
+    },
+    "crawl_runs.jsonl": {
+      "bytes": 1246,
+      "records": 2,
+      "sha256": "sha256:a1e0b2a0e6f81979e842450e3f6d1f384c9e9f0c75c811534a7a242534a1799e"
+    },
+    "edition.json": {
+      "bytes": 303,
+      "records": 1,
+      "sha256": "sha256:4a258ddd251bfa07bceb9cdc3ef05409d50bff44c24b8f2c8601fa5726e46170"
+    },
+    "exhibition.json": {
+      "bytes": 292,
+      "records": 1,
+      "sha256": "sha256:dc40944eeb28aebbc0ed63e7b186a3d77327dff36160d8edbea291b17ffb1601"
+    },
+    "participations.jsonl": {
+      "bytes": 960,
+      "records": 3,
+      "sha256": "sha256:01fd98f308b8218f162f0b30fd65f55924b7596b6d3f18dade6d2d5727c84234"
+    },
+    "sources.jsonl": {
+      "bytes": 1519,
+      "records": 3,
+      "sha256": "sha256:ab38d4442b970797840d980b1c5dce4a974cd67a713c3abea6028fd71cdd178c"
+    }
+  },
+  "notes": "合成測試資料（synthetic）：所有名稱、網址與數字皆為虛構，不代表任何真實展覽或企業。",
+  "previous_dataset_id": null,
+  "producer": {
+    "name": "sample-builder",
+    "version": "0.0.0"
+  },
+  "record_counts": {
+    "changes": 0,
+    "companies": 3,
+    "crawl_runs": 2,
+    "participations": 3,
+    "sources": 3
+  },
+  "schema_version": "1.0.0-draft.3",
+  "source_snapshot_ids": [
+    "src_01JFSB00000000000000000001",
+    "src_01JFSB00000000000000000002",
+    "src_01JFSB00000000000000000003"
+  ]
+}
