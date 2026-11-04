@@ -20,12 +20,12 @@ ENTITIES = ["exhibition", "edition", "company", "participation", "source", "craw
 # ------------------------------------------------------------------ schema files
 def test_version_file():
     assert re.fullmatch(r"1\.0\.0-draft\.[1-9][0-9]*", pc.VERSION)
-    assert pc.load_schemas()["manifest"]["properties"]["schema_version"]["const"] == pc.VERSION
+    assert set(pc.load_schemas()["manifest"]["properties"]["schema_version"]["enum"]) == pc.ACCEPTED and pc.VERSION in pc.ACCEPTED
 
 
 def test_all_core_entities_present():
     # Core data entities (A1-05) + analysis result (A1-06) + dataset index (A1-07) + shared defs.
-    assert set(ENTITIES) | {"common", "analysis_result", "dataset_index", "bxr_product", "taxonomy", "exhibition_registration"} == set(pc.load_schemas())
+    assert set(ENTITIES) | {"common", "analysis_result", "dataset_index", "bxr_product", "taxonomy", "exhibition_registration", "analysis_profile"} == set(pc.load_schemas())
 
 
 @pytest.mark.parametrize("name", sorted(pc.load_schemas()))

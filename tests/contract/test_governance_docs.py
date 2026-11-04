@@ -289,7 +289,7 @@ def test_dashboard_menu_has_required_pages():
     pages = [p.strip(" 。") for p in menu.group(2).split("。")[0].split("、")]
     assert len(pages) == int(menu.group(1)), "menu count does not match listed pages"
     for page in ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分",
-                 "BXR 產品推薦", "AI 報告中心", "資料及系統狀態"]:
+                 "BXR 產品推薦", "AI 報告中心", "分析設定", "資料及系統狀態"]:
         assert page in pages, f"menu missing {page}"
     assert "PDF／CSV 匯出" in plan
     assert f"{menu.group(1)} 個主選單" in plan, "W1-02 / Phase 1 gate menu count out of date"

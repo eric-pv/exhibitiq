@@ -41,7 +41,7 @@ def test_spec_required_fields():
 
 def test_schema_version_matches_version_file():
     s = pc.load_schemas()["analysis_result"]
-    assert s["properties"]["schema_version"]["const"] == pc.VERSION
+    assert pc.VERSION in s["properties"]["schema_version"]["enum"] and set(s["properties"]["schema_version"]["enum"]) == pc.ACCEPTED
 
 
 def test_example_covers_all_claim_types_and_factor_statuses():

@@ -23,7 +23,7 @@ def check_taxonomy(doc: dict, filename: str | None = None) -> list[str]:
     errors = [f"KB1 {e.message}" for e in pc.validator("taxonomy").iter_errors(doc)]
     if errors:
         return errors
-    if doc["schema_version"] != pc.VERSION:
+    if doc["schema_version"] not in pc.ACCEPTED:
         errors.append("KB2 schema_version != VERSION")
     if filename and filename != f"{doc['dimension']}.json":
         errors.append(f"KB3 file {filename} must be named {doc['dimension']}.json")
@@ -42,7 +42,7 @@ def check_product(doc: dict, filename: str | None = None, approved_terms: set[st
     errors = [f"KB1 {e.message}" for e in pc.validator("bxr_product").iter_errors(doc)]
     if errors:
         return errors
-    if doc["schema_version"] != pc.VERSION:
+    if doc["schema_version"] not in pc.ACCEPTED:
         errors.append("KB2 schema_version != VERSION")
     if filename and filename != f"{doc['product_id']}.json":
         errors.append(f"KB4 file {filename} must be named {doc['product_id']}.json")

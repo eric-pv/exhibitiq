@@ -60,7 +60,7 @@ def test_example_shows_success_and_failure():
 
 
 def test_schema_version_matches_version_file():
-    assert pc.load_schemas()["dataset_index"]["properties"]["schema_version"]["const"] == pc.VERSION
+    assert set(pc.load_schemas()["dataset_index"]["properties"]["schema_version"]["enum"]) == pc.ACCEPTED
 
 
 # ------------------------------------------------------------------ negative: schema

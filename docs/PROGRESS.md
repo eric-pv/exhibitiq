@@ -1,6 +1,6 @@
 # ExhibitIQ 開發進度
 
-> 最後更新：2026-11-04｜負責人：專案負責人（`ai`）
+> 最後更新：2026-11-04（V2.5 動態分析設定）｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
 > **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
 
@@ -54,6 +54,7 @@
 | A2-14 | 分析結果版本化回存 `save-analysis` | [#63](https://github.com/magician-eric/exhibitiq/pull/63) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-12、A2-13 | 報告版型與 Markdown 報告 | [#65](https://github.com/magician-eric/exhibitiq/pull/65) | `dev/ai-intelligence` | 2026-11-04 |
 | W3-04 | AI 報告中心、`ReportViewer`、PDF 匯出 | [#66](https://github.com/magician-eric/exhibitiq/pull/66) | `dev/ai-intelligence` | 2026-11-04 |
+| A2-08 | 企業關係初篩 `relate`（V2.5 將由 A2-16 改為多標籤） | [#67](https://github.com/magician-eric/exhibitiq/pull/67) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -61,7 +62,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A2-08 | 合作夥伴、通路、競爭對手、潛在客戶初篩（`relate`；規則草稿待核定；沒有核定產品卡時不判定客戶或競爭） | 本 PR |
+| A2-15 | 分析設定檔契約（Schema `1.0.0-draft.6`、AR11、預設詞庫、舊資料相容）；開發計畫 V2.5 | 本 PR |
 
 ## 待處理（Phase 1）
 
@@ -77,7 +78,7 @@
 
 | 項目 | 影響 | 狀態 |
 |---|---|---|
-| A2-05 BXR 產品知識庫內容（等 Eric 提供產品資料；先跳過） | A1-09 之後的 A2-05、W3-03 | 等專案負責人提供 |
+| A2-05 正式產品規格（Eric 已核准先建立 8 張 draft 產品卡；正式型錄之後提供） | A 模式報告會標示「產品資料未核定」 | 不阻礙 B、C 模式 |
 
 ## 待專案負責人決定
 

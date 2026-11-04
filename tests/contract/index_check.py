@@ -15,7 +15,7 @@ def check_index(index: dict, repo_root: Path = pc.ROOT) -> list[str]:
     errors = [f"IR1 {e.message}" for e in pc.validator("dataset_index").iter_errors(index)]
     if errors:
         return errors
-    if index["schema_version"] != pc.VERSION:
+    if index["schema_version"] not in pc.ACCEPTED:
         errors.append("IR2 schema_version != VERSION")
 
     ex_ids = [e["exhibition_id"] for e in index["exhibitions"]]
