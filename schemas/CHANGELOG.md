@@ -2,6 +2,13 @@
 
 格式依 [`VERSIONING.md`](VERSIONING.md)。每筆紀錄包含：版本、日期、Issue／PR、變更類別（MAJOR／MINOR／PATCH／draft）、變更內容、相容性與遷移說明。最新的放最上面。
 
+## 1.0.0-draft.6 — 2026-11-04
+
+- 工作項目：A2-15（Eric 2026-11-04 核准）
+- 類別：draft（只新增，相容）
+- 內容：新增 `analysis_profile.schema.json`（分析設定檔：模式、關鍵字、企業關係訊號、評分權重）；`common.schema.json` 新增 `analysis_profile_id`、`analysis_mode`、`keyword`；`analysis_result` 新增選填 `analysis_config`（規則 AR11）；新增 `examples/profile/` 與 `examples/analysis/analysis_result.with_config.example.json`。規格見 [`docs/specs/analysis-profile-contract.md`](../docs/specs/analysis-profile-contract.md)。
+- 相容性：**草案期例外：舊資料不需改寫。** 新增 [`v1/COMPATIBILITY.json`](v1/COMPATIBILITY.json)，驗證程式接受 `1.0.0-draft.5` 與 `1.0.0-draft.6`；新產生的資料寫 `1.0.0-draft.6`。資料工程的驗證程式若比對 `VERSION` 完全相同，同步後請改為讀取 `COMPATIBILITY.json` 的 `accepted`。
+
 ## 1.0.0-draft.5 — 2026-11-04
 
 - 工作項目：A1-10

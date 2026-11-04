@@ -41,6 +41,7 @@ export function loadValidators() {
   };
   return {
     version: readFileSync(join(SCHEMAS, "VERSION"), "utf8").trim(),
+    accepted: readJson(join(SCHEMAS, "COMPATIBILITY.json")).accepted,
     check(name, value, where) {
       const v = get(name);
       if (!v(value)) throw new Error(`${where}: does not match ${name}.schema.json: ${ajv.errorsText(v.errors)}`);
@@ -77,7 +78,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
         const where = relative(REPO, pkg);
         const manifest = readJson(join(pkg, "manifest.json"));
         v.check("manifest", manifest, `${where}/manifest.json`);
-        if (manifest.schema_version !== v.version) throw new Error(`${where}: schema_version ${manifest.schema_version} != ${v.version}`);
+        if (!v.accepted.includes(manifest.schema_version)) throw new Error(`${where}: schema_version ${manifest.schema_version} not in ${v.accepted.join(", ")}`);
         if (manifest.content_hash !== ds.content_hash) throw new Error(`${where}: content_hash differs from the dataset index`);
         const companies = readJsonl(join(pkg, "companies.jsonl"));
         const participations = readJsonl(join(pkg, "participations.jsonl"));

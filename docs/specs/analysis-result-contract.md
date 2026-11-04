@@ -102,6 +102,7 @@ factor: factor_id、label、status、points、max_points、evidence_source_ids�
 | AR8 | 所有引用的來源都在輸入資料包的 `sources.jsonl`；所有 `subjects` 與評分、關係的企業都存在於資料包 |
 | AR9 | 輸入是合成資料時，`data_origin` 必須是 `synthetic` |
 | AR10 | 建議的 `product_ids` 只能引用已核定的 BXR 產品卡（[`knowledge-base-contract.md`](knowledge-base-contract.md) §5；`tests/contract/knowledge_check.py`） |
+| AR11 | `analysis_config`（選填，draft.6）：記錄分析設定的版本、雜湊、模式與關鍵字快照，規則見 [`analysis-profile-contract.md`](analysis-profile-contract.md) §5 |
 
 **驗證失敗的分析結果不能發布到 Dashboard 或報告。** 正式的分析驗證程式屬於 A2-11（`skills/exhibitiq/`）；`tests/contract/analysis_check.py` 只是用來證明範例符合契約的參考檢查。
 

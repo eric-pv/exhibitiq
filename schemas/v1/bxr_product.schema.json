@@ -16,7 +16,11 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0.0-draft.5"
+      "enum": [
+        "1.0.0-draft.5",
+        "1.0.0-draft.6"
+      ],
+      "description": "必須是 schemas/v1/COMPATIBILITY.json 的 accepted 版本之一；新產生的資料寫 VERSION。"
     },
     "product_id": {
       "$ref": "common.schema.json#/$defs/bxr_product_id"

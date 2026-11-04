@@ -23,8 +23,11 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0.0-draft.5",
-      "description": "草案期必須與 schemas/v1/VERSION 完全相同。"
+      "description": "必須是 schemas/v1/COMPATIBILITY.json 的 accepted 版本之一；新產生的資料寫 VERSION。",
+      "enum": [
+        "1.0.0-draft.5",
+        "1.0.0-draft.6"
+      ]
     },
     "analysis_id": {
       "type": "string",
@@ -699,6 +702,54 @@
     },
     "notes": {
       "$ref": "common.schema.json#/$defs/text"
+    },
+    "analysis_config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "profile_version",
+        "profile_hash",
+        "mode",
+        "keywords_snapshot"
+      ],
+      "description": "選填（draft.6 新增）：這次分析使用的分析設定，供重現與追溯。舊的分析結果沒有此欄位仍然有效。",
+      "properties": {
+        "profile_id": {
+          "$ref": "common.schema.json#/$defs/analysis_profile_id"
+        },
+        "profile_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "profile_hash": {
+          "$ref": "common.schema.json#/$defs/sha256",
+          "description": "設定檔正規化 JSON 的 SHA-256（規格 §4）。"
+        },
+        "mode": {
+          "$ref": "common.schema.json#/$defs/analysis_mode"
+        },
+        "keywords_snapshot": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/keyword"
+          },
+          "description": "當次啟用的關鍵字完整快照。"
+        },
+        "score_model_id": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        },
+        "bxr_products_status": {
+          "type": "string",
+          "enum": [
+            "not_used",
+            "draft",
+            "approved",
+            "mixed"
+          ],
+          "description": "A 模式使用的 BXR 產品卡核定狀態；不是 approved 時報告必須提示。"
+        }
+      }
     }
   },
   "allOf": [

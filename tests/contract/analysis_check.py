@@ -48,7 +48,7 @@ def check_analysis(result: dict, pkg: Path | None = None) -> list[str]:
         return errors  # structural errors make the remaining rules meaningless
 
     # AR2 schema version
-    if result["schema_version"] != pc.VERSION:
+    if result["schema_version"] not in pc.ACCEPTED:
         errors.append("AR2 schema_version != VERSION")
 
     # AR3 local IDs unique
@@ -139,5 +139,9 @@ def check_analysis(result: dict, pkg: Path | None = None) -> list[str]:
         # AR9 synthetic input cannot produce a 'collected' analysis
         if manifest["data_origin"] == "synthetic" and result["data_origin"] != "synthetic":
             errors.append("AR9 analysis of synthetic data must be data_origin=synthetic")
+
+    # AR11 analysis_config (A2-15): reproducible analysis settings
+    import profile_check
+    errors += profile_check.check_analysis_config(result)
 
     return errors

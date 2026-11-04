@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0-draft.6",
+  "profile_id": "example-firefighting",
+  "version": 3,
+  "name": "範例：消防救災技術研究（合成）",
+  "description": "合成範例（synthetic）：B 模式，不使用 BXR 產品卡、不評分。",
+  "mode": "industry_research",
+  "keywords": [
+    {
+      "term_id": "custom.firefighting",
+      "category": "industry",
+      "label": "消防救災",
+      "label_en": "Firefighting",
+      "synonyms": [
+        "Fire Rescue",
+        "消防"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "custom.thermal-imaging",
+      "category": "technology",
+      "label": "熱影像",
+      "label_en": "Thermal Imaging",
+      "synonyms": [
+        "Thermal Camera"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "custom.laser-sim",
+      "category": "technology",
+      "label": "雷射模擬",
+      "label_en": "Laser Simulation",
+      "enabled": true
+    }
+  ],
+  "relationship_signals": {
+    "competitor": [
+      "thermal camera"
+    ],
+    "channel": [
+      "distributor",
+      "代理"
+    ]
+  },
+  "updated_at": "2026-11-04T12:00:00Z",
+  "updated_by": "Example User"
+}

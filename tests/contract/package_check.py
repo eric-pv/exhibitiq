@@ -21,6 +21,8 @@ from referencing import Registry, Resource
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_DIR = ROOT / "schemas" / "v1"
 VERSION = (SCHEMA_DIR / "VERSION").read_text(encoding="utf-8").strip()
+# Versions whose data is still valid (schemas/v1/COMPATIBILITY.json; draft.6 is additive over draft.5).
+ACCEPTED = set(json.loads((SCHEMA_DIR / "COMPATIBILITY.json").read_text(encoding="utf-8"))["accepted"])
 
 # Data files in a package, and the schema each record must satisfy.
 SINGLE_FILES = {"exhibition.json": "exhibition", "edition.json": "edition"}
@@ -118,8 +120,8 @@ def check_package(pkg: Path) -> list[str]:
         errors.append(f"R2 manifest.json: {e.message}")
 
     # R3 schema version matches VERSION exactly (draft period)
-    if manifest.get("schema_version") != VERSION:
-        errors.append(f"R3 schema_version {manifest.get('schema_version')!r} != VERSION {VERSION!r}")
+    if manifest.get("schema_version") not in ACCEPTED:
+        errors.append(f"R3 schema_version {manifest.get('schema_version')!r} not in accepted {sorted(ACCEPTED)}")
 
     # R4 records validate, R5 canonical form, R6 unique and sorted IDs
     singles: dict[str, dict] = {}

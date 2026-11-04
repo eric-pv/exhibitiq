@@ -20,7 +20,7 @@ def check_registration(doc: dict, folder: str | None = None) -> list[str]:
     errors = [f"RG1 {e.message}" for e in pc.validator("exhibition_registration").iter_errors(doc)]
     if errors:
         return errors
-    if doc["schema_version"] != pc.VERSION:
+    if doc["schema_version"] not in pc.ACCEPTED:
         errors.append("RG2 schema_version != VERSION")
     if folder is not None and folder != doc["exhibition_id"]:
         errors.append(f"RG3 folder {folder} != exhibition_id {doc['exhibition_id']}")

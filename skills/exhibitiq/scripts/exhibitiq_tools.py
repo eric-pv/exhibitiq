@@ -79,7 +79,7 @@ def validate_package(package_dir: Path) -> dict:
 
 def check_all(index_path: Path) -> list[dict]:
     """A2-04: batch-check every latest package in the index: availability, schema version, hash, validation."""
-    version = (ROOT / "schemas" / "v1" / "VERSION").read_text(encoding="utf-8").strip()
+    accepted = set(load(ROOT / "schemas" / "v1" / "COMPATIBILITY.json")["accepted"])
     rows = []
     for e in load(index_path)["exhibitions"]:
         for ed in e["editions"]:
@@ -94,8 +94,8 @@ def check_all(index_path: Path) -> list[dict]:
             except LookupError as err:
                 row["problems"].append(str(err)); rows.append(row); continue
             m = load(Path(sel["package_dir"]) / "manifest.json")
-            if m.get("schema_version") != version:
-                row["problems"].append(f"schema_version {m.get('schema_version')} != {version}")
+            if m.get("schema_version") not in accepted:
+                row["problems"].append(f"schema_version {m.get('schema_version')} not in accepted {sorted(accepted)}")
             if m.get("content_hash") != sel["content_hash"]:
                 row["problems"].append("content_hash differs from the dataset index")
             v = validate_package(Path(sel["package_dir"]))

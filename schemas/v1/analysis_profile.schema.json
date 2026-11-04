@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/analysis_profile.schema.json",
+  "title": "AnalysisProfile",
+  "description": "分析設定檔（分析主題）：模式、關鍵字、企業關係訊號與評分權重（A2-15）。位置：knowledge/analysis-profiles/<profile_id>.json。規格見 docs/specs/analysis-profile-contract.md。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "version",
+    "name",
+    "mode",
+    "keywords",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": [
+        "1.0.0-draft.6"
+      ],
+      "description": "新 Schema，只有 draft.6 起才存在。"
+    },
+    "profile_id": {
+      "$ref": "common.schema.json#/$defs/analysis_profile_id"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "每次提交修改加 1；分析結果以 profile_id + version + profile_hash 追溯。"
+    },
+    "name": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "description": {
+      "$ref": "common.schema.json#/$defs/text"
+    },
+    "mode": {
+      "$ref": "common.schema.json#/$defs/analysis_mode"
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/keyword"
+      }
+    },
+    "relationship_signals": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "企業關係候選訊號（多標籤；命中只是候選，不是事實）。值為關鍵字原文陣列。",
+      "properties": {
+        "potential_customer": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          }
+        },
+        "competitor": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          }
+        },
+        "partner": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          }
+        },
+        "channel": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          }
+        }
+      }
+    },
+    "score_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "score_model_id",
+        "weights"
+      ],
+      "description": "選填：只有需要商機或競爭評分的分析才設定。weights 為各因子的最高分數（可調整）。 權重用整數，確保 profile_hash 在 Python 與瀏覽器計算結果相同。",
+      "properties": {
+        "score_model_id": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        },
+        "weights": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bxr_product_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/bxr_product_id"
+          },
+          "description": "A 模式使用的 BXR 產品卡；B、C 模式不得要求。"
+        },
+        "company_names": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "description": "C 模式：使用者指定的企業。"
+        },
+        "focus_term_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "description": "C 模式：指定的技術或產品領域（引用 keywords 的 term_id）。"
+        }
+      }
+    },
+    "updated_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "updated_by": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  }
+}

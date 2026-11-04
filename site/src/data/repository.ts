@@ -25,14 +25,15 @@ export function getOverview(b: Bundle = bundle) {
   const acquisition = new Map<string, number>();
   for (const r of rows) { const k = r.lastAcquisition?.status ?? "none"; acquisition.set(k, (acquisition.get(k) ?? 0) + 1); }
 
-  const sortedAnalyses = [...b.analyses].sort((x, y) => y.generatedAt.localeCompare(x.generatedAt));
+  const sortedAnalyses = [...b.analyses].sort((x, y) => y.generatedAt.localeCompare(x.generatedAt) || y.analysisId.localeCompare(x.analysisId));
   return {
     dataOrigin: b.dataOrigin,
     exhibitionCount: b.exhibitions.length,
     companyCount: companyIds.size,
     companyCompleteness: combineCompleteness(latest.map((d) => d.completeness)),
     analyzedCompanyCount: new Set(b.analyses.flatMap((a) => a.analyzedCompanyIds)).size,
-    highPriorityCount: b.analyses.reduce((n, a) => n + a.highPriorityRecommendations, 0),
+    // re-analyses of the same package (other profiles/modes) must not be double-counted: latest analysis per package
+    highPriorityCount: [...new Map([...sortedAnalyses].reverse().map((a) => [a.inputDatasetId, a] as const)).values()].reduce((n, a) => n + a.highPriorityRecommendations, 0),
     countryDistribution: [...countries].map(([name, value]) => ({ name, value })).sort((x, y) => y.value - x.value),
     acquisitionDistribution: [...acquisition].map(([status, value]) => ({ status, value })),
     editions: rows,
