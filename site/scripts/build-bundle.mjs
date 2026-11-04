@@ -10,6 +10,7 @@ import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -28,6 +29,40 @@ function walkJson(dir) {
     if (statSync(p).isDirectory()) out.push(...walkJson(p)); else if (f.endsWith(".json")) out.push(p);
   }
   return out.sort();
+}
+
+// Canonical JSON (keys sorted at every level, no spaces, UTF-8) — same as tests/contract/profile_check.py.
+export function canonical(v) {
+  if (Array.isArray(v)) return `[${v.map(canonical).join(",")}]`;
+  if (v && typeof v === "object") return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${canonical(v[k])}`).join(",")}}`;
+  return JSON.stringify(v);
+}
+export const profileHash = (doc) => "sha256:" + createHash("sha256").update(canonical(doc), "utf8").digest("hex");
+
+/** Submitted analysis profiles, BXR product cards (name + status only) and score models for the 分析設定 page (W2-06). */
+function loadSettings(v) {
+  const kd = join(REPO, "knowledge");
+  const dir = join(kd, "analysis-profiles");
+  const profiles = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith(".json")).sort().map((f) => {
+    const doc = readJson(join(dir, f));
+    v.check("analysis_profile", doc, `knowledge/analysis-profiles/${f}`);
+    if (f !== `${doc.profile_id}.json`) throw new Error(`knowledge/analysis-profiles/${f}: file name must be ${doc.profile_id}.json`);
+    return { profile: doc, hash: profileHash(doc) };
+  }) : [];
+  const pd = join(kd, "bxr-products");
+  const products = existsSync(pd) ? readdirSync(pd).filter((f) => f.endsWith(".json")).sort().map((f) => {
+    const d = readJson(join(pd, f));
+    v.check("bxr_product", d, `knowledge/bxr-products/${f}`);
+    return { productId: d.product_id, name: d.name, approvalStatus: d.approval_status };
+  }) : [];
+  const sd = join(kd, "scoring");
+  const scoreModels = existsSync(sd) ? readdirSync(sd).filter((f) => f.endsWith(".json")).sort().map((f) => {
+    const d = readJson(join(sd, f));
+    return { scoreModelId: d.score_model_id, approvalStatus: d.approval_status, notes: d.notes ?? null,
+      factors: d.factors.map((x) => ({ factorId: x.factor_id, label: x.label, defaultMax: x.default_max_points ?? x.max_points })) };
+  }) : [];
+  const schemas = Object.fromEntries(["common", "analysis_profile"].map((n) => [n, readJson(join(SCHEMAS, `${n}.schema.json`))]));
+  return { profiles, products, scoreModels, schemas };
 }
 
 export function loadValidators() {
@@ -175,6 +210,9 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
         generatedAt: a.generated_at, reviewStatus: a.review_status, dataOrigin: a.data_origin,
         analyzedCompanyIds: [...new Set((a.scores ?? []).filter((s) => s.subject.entity_type === "company").map((s) => s.subject.entity_id))],
         highPriorityRecommendations: a.recommendations.filter((r) => r.priority === "high").length,
+        config: a.analysis_config ? { profileId: a.analysis_config.profile_id, profileVersion: a.analysis_config.profile_version,
+          profileHash: a.analysis_config.profile_hash, mode: a.analysis_config.mode, keywordCount: a.analysis_config.keywords_snapshot.length,
+          scoreModelId: a.analysis_config.score_model_id ?? null, bxrProductsStatus: a.analysis_config.bxr_products_status ?? null } : null,
         claimCounts: a.conclusions.reduce((acc, c) => ({ ...acc, [c.claim_type]: (acc[c.claim_type] ?? 0) + 1 }), {}),
         detail: {
           summary: a.summary ?? null, skillVersion: a.skill_version ?? null,
@@ -217,6 +255,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
     exhibitions,
     datasets,
     analyses,
+    settings: loadSettings(v),
     reportTemplates: readJson(join(REPO, "skills", "exhibitiq", "templates", "report-templates.json")),
     notices: index.notices.map((n) => ({ level: n.level, message: n.message, occurredAt: n.occurred_at })),
   };

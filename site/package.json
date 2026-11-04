@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "ExhibitIQ Web Dashboard (static SPA). Owner: ai. See docs/DEVELOPMENT_PLAN.md §3.",
+  "description": "ExhibitIQ Web Dashboard (static SPA). Owner: ai. See docs/DEVELOPMENT_PLAN.md \u00a73.",
   "engines": {
     "node": ">=20"
   },
@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "5.6.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "antd": "5.29.3",
     "echarts": "5.6.0",
     "react": "18.3.1",
@@ -36,8 +38,6 @@
     "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "4.7.0",
-    "ajv": "8.20.0",
-    "ajv-formats": "3.0.1",
     "jsdom": "25.0.1",
     "typescript": "5.9.3",
     "vite": "6.4.5",

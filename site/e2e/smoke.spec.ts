@@ -4,8 +4,8 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const SHOTS = process.env.SCREENSHOT_DIR;
-const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心"]); // pages that are no longer 「建置中」
-const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "資料及系統狀態"];
+const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心", "分析設定"]); // pages that are no longer 「建置中」
+const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "分析設定", "資料及系統狀態"];
 
 test.beforeEach(async ({ page }, info) => {
   const errors: string[] = [];
@@ -17,7 +17,7 @@ test.afterEach(async ({ page }) => {
   expect((page as unknown as { _errs: string[] })._errs).toEqual([]);
 });
 
-test("desktop: side menu shows 8 items and every page opens", async ({ page }, info) => {
+test("desktop: side menu shows 9 items and every page opens", async ({ page }, info) => {
   test.skip(info.project.name !== "desktop");
   await page.goto("/");
   const nav = page.getByTestId("side-nav");
@@ -130,4 +130,21 @@ test("reports (W3-04): report viewer, print layout hides navigation, PDF export"
   await expect(page.getByTestId("export-pdf")).toBeHidden();
   await expect(page.getByTestId("report-viewer")).toBeVisible();
   if (info.project.name === "desktop" && SHOTS) await page.pdf({ path: `${SHOTS}/w3-04-report.pdf`, format: "A4", printBackground: true });
+});
+
+test("settings (W2-06): add a keyword, it is a local draft and survives reload; export is available", async ({ page }, info) => {
+  await page.goto("/#/settings");
+  await expect(page.getByTestId("settings-flow")).toBeVisible();
+  await page.getByTestId("profile-item").filter({ hasText: "預設詞庫" }).click();
+  await page.getByTestId("keyword-add").fill("雷射模擬");
+  await page.getByTestId("keyword-add").press("Enter");
+  await expect(page.getByTestId("unsubmitted-warning")).toBeVisible();
+  await page.reload();
+  await page.getByTestId("profile-item").filter({ hasText: "預設詞庫" }).click();
+  await expect(page.getByTestId("unsubmitted-warning")).toBeVisible();
+  await expect(page.getByTestId("profile-list").getByTestId("state-default-library").locator('[data-state="draft"]')).toBeVisible();
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-06-${info.project.name}-settings.png`, fullPage: true });
+  await page.getByRole("tab", { name: "提交與版本" }).click();
+  const [dl] = await Promise.all([page.waitForEvent("download"), page.getByTestId("profile-export").click()]);
+  expect(dl.suggestedFilename()).toBe("default-library.json");
 });
