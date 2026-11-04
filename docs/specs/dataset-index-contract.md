@@ -1,6 +1,6 @@
 # ExhibitIQ 資料集索引與管線狀態契約 v1
 
-> 狀態：`1.0.0-draft.3`（Phase 1 草案期，依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) §3.1）
+> 狀態：`1.0.0-draft.4`（Phase 1 草案期，依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) §3.1）
 > 負責人：專案負責人（`ai`）。工作項目 A1-07。
 > 機器可讀契約：[`schemas/v1/dataset_index.schema.json`](../../schemas/v1/dataset_index.schema.json)。本文件與 Schema 衝突時，以 Schema 為準。
 

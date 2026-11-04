@@ -89,6 +89,7 @@ describe("overview page", () => {
     expect(within(status).getByText("無法取得")).toBeTruthy();
     expect(within(status).getByText("沒有可用的資料包")).toBeTruthy();
     expect(within(screen.getByTestId("latest-analysis")).getByText("未審核")).toBeTruthy();
-    expect(screen.getByTestId("data-source").textContent).toContain("Schema 1.0.0-draft.3");
+    const version = readFileSync(join(REPO, "schemas", "v1", "VERSION"), "utf8").trim();
+    expect(screen.getByTestId("data-source").textContent).toContain(`Schema ${version}`);
   });
 });

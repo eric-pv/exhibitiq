@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/taxonomy.schema.json",
+  "title": "Taxonomy 分析分類",
+  "description": "分析分類的一個面向（產業、技術、應用、能力、問題、需求），存為 knowledge/taxonomy/<dimension>.json。分類是分析用的標準詞彙，不是來源事實。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dimension",
+    "approval_status",
+    "terms",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0-draft.4"
+    },
+    "dimension": {
+      "type": "string",
+      "enum": [
+        "industry",
+        "technology",
+        "application",
+        "capability",
+        "problem",
+        "need"
+      ]
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_review",
+        "approved",
+        "retired"
+      ],
+      "description": "只有 approved 的內容可以被分析與 Dashboard 使用；approved 必須有 approved_by 與 approved_at。"
+    },
+    "approved_by": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "approved_at": {
+      "$ref": "common.schema.json#/$defs/date"
+    },
+    "updated_at": {
+      "$ref": "common.schema.json#/$defs/date"
+    },
+    "terms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "term_id",
+          "label"
+        ],
+        "properties": {
+          "term_id": {
+            "type": "string",
+            "pattern": "^(industry|technology|application|capability|problem|need)\\.[a-z0-9]+(-[a-z0-9]+)*$",
+            "maxLength": 80,
+            "description": "<dimension>.<slug>，例如 capability.scenario-training。"
+          },
+          "label": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "label_en": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "parent_id": {
+            "type": "string",
+            "pattern": "^(industry|technology|application|capability|problem|need)\\.[a-z0-9]+(-[a-z0-9]+)*$",
+            "maxLength": 80,
+            "description": "<dimension>.<slug>，例如 capability.scenario-training。"
+          },
+          "synonyms": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "common.schema.json#/$defs/short_text"
+            }
+          },
+          "description": {
+            "$ref": "common.schema.json#/$defs/text"
+          }
+        }
+      }
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "approval_status": {
+            "const": "approved"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "approved_by",
+          "approved_at"
+        ]
+      }
+    }
+  ]
+}

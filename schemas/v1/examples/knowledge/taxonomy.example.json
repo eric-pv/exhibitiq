@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0-draft.4",
+  "dimension": "capability",
+  "approval_status": "approved",
+  "approved_by": "Example Reviewer",
+  "approved_at": "2026-11-04",
+  "updated_at": "2026-11-04",
+  "terms": [
+    {
+      "term_id": "capability.example-simulation",
+      "label": "範例模擬能力",
+      "label_en": "Example simulation"
+    },
+    {
+      "term_id": "capability.example-scenario-training",
+      "label": "範例情境訓練",
+      "parent_id": "capability.example-simulation",
+      "synonyms": [
+        "範例情境演練"
+      ]
+    }
+  ],
+  "notes": "合成範例（synthetic）：示範格式，不代表任何真實 BXR 產品。"
+}
