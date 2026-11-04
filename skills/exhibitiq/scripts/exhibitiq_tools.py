@@ -242,6 +242,22 @@ def render_report(analysis_path: Path, package_dir: Path) -> str:
                 f"- Skill：{a['skill_version']}｜產生時間：{a['generated_at']}",
                 f"- **審核狀態：{REVIEW.get(a['review_status'], a['review_status'])}**"]
 
+    MODE = {"bxr_opportunity": "A. BXR 商機分析", "industry_research": "B. 產業與技術研究", "competitor_research": "C. 競爭對手研究"}
+    BXR = {"not_used": "未使用", "draft": "使用待審核產品卡（產品資料未核定）", "approved": "使用已核定產品卡", "mixed": "部分產品卡未核定（產品資料未核定）"}
+
+    def analysis_config():
+        cfg = a.get("analysis_config")
+        if not cfg:
+            return ["- 這份分析結果是舊版格式，沒有記錄分析設定。"]
+        kws = "、".join(k["label"] for k in cfg["keywords_snapshot"]) or "（無）"
+        out = [f"- 分析模式：{MODE[cfg['mode']]}",
+               f"- 分析主題：`{cfg['profile_id']}` 版本 {cfg['profile_version']}（`{cfg['profile_hash']}`）",
+               f"- 評分模型：{cfg.get('score_model_id') or '不評分'}",
+               f"- BXR 產品卡：{BXR.get(cfg.get('bxr_products_status', 'not_used'), cfg.get('bxr_products_status'))}",
+               f"- 啟用的關鍵字（{len(cfg['keywords_snapshot'])}）：{kws}",
+               "- 關鍵字命中只是候選訊號，不代表已確認的事實或商業關係。"]
+        return out
+
     def data_status():
         comp = m["completeness"]
         off = "未知" if comp["official_exhibitor_count"] is None else comp["official_exhibitor_count"]
@@ -249,6 +265,8 @@ def render_report(analysis_path: Path, package_dir: Path) -> str:
                f"- 完整度：{m['completeness_status']}（已取得 {comp['collected_participation_count']}／官方公布 {off}）"]
         if m["completeness_status"] != "complete":
             out.append("- ⚠️ 資料不完整，結論與排名可能遺漏。")
+        if a.get("analysis_config", {}).get("bxr_products_status") in {"draft", "mixed"}:
+            out.append("- ⚠️ 產品資料未核定：使用的 BXR 產品卡尚待 Eric 審核，只有名稱與功能定位，不代表正式規格。")
         return out
 
     def summary():
@@ -301,7 +319,7 @@ def render_report(analysis_path: Path, package_dir: Path) -> str:
             out.append(f"| [{i}] | `{sid}` | {r['source_type']} | {r.get('url', '—')} | {r['retrieved_at']} | `{r['content_sha256']}` |")
         return out
 
-    fns = {"header": header, "data_status": data_status, "summary": summary, "conclusions": conclusions, "scores": scores,
+    fns = {"header": header, "analysis_config": analysis_config, "data_status": data_status, "summary": summary, "conclusions": conclusions, "scores": scores,
            "relationships": relationships, "recommendations": recommendations, "uncertainties": uncertainties, "sources": sources}
     # never drop content: a section that has data is rendered even if the template does not list it
     order = list(t["sections"])

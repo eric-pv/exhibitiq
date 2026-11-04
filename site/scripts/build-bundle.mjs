@@ -211,7 +211,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
         analyzedCompanyIds: [...new Set((a.scores ?? []).filter((s) => s.subject.entity_type === "company").map((s) => s.subject.entity_id))],
         highPriorityRecommendations: a.recommendations.filter((r) => r.priority === "high").length,
         config: a.analysis_config ? { profileId: a.analysis_config.profile_id, profileVersion: a.analysis_config.profile_version,
-          profileHash: a.analysis_config.profile_hash, mode: a.analysis_config.mode, keywordCount: a.analysis_config.keywords_snapshot.length,
+          profileHash: a.analysis_config.profile_hash, mode: a.analysis_config.mode, keywordCount: a.analysis_config.keywords_snapshot.length, keywordLabels: a.analysis_config.keywords_snapshot.map((k) => k.label),
           scoreModelId: a.analysis_config.score_model_id ?? null, bxrProductsStatus: a.analysis_config.bxr_products_status ?? null } : null,
         claimCounts: a.conclusions.reduce((acc, c) => ({ ...acc, [c.claim_type]: (acc[c.claim_type] ?? 0) + 1 }), {}),
         detail: {

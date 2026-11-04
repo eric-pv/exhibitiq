@@ -112,6 +112,6 @@ export interface AnalysisProfile {
 }
 
 export interface AnalysisConfigRef {
-  profileId: string; profileVersion: number; profileHash: string; mode: AnalysisMode; keywordCount: number;
+  profileId: string; profileVersion: number; profileHash: string; mode: AnalysisMode; keywordCount: number; keywordLabels: string[];
   scoreModelId: string | null; bxrProductsStatus: string | null;
 }
