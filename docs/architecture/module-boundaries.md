@@ -23,6 +23,7 @@
 |---|---|---|---|
 | `CLAUDE.md` | ai | Claude Code 規則 | 共用規範，需同步（第 4 節） |
 | `README.md` | ai | 專案入口 | |
+| `.gitignore` | ai | 根目錄忽略規則（只列產生的檔案，不忽略資料、Schema 或報告） | Eric 於 2026-11-04 指定 |
 | `docs/` | ai | 總規範、開發計畫、進度、工作流程、架構、規格 | 共用規範，需同步（第 4 節）；`docs/PROGRESS.md` 只由 `ai` 更新 |
 | `docs/data-platform/` | data | 爬蟲、ETL、Actions 的操作與維護文件 | |
 | `.github/ISSUE_TEMPLATE/` | ai | Issue 模板 | 共用規範，需同步 |

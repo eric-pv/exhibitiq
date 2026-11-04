@@ -27,6 +27,12 @@
 | D1-10 | （歷史紀錄）MSPO 來源評估，結論為網頁上看不到參展商名單；**不是任何後續工作的依賴** | [#19](https://github.com/magician-eric/exhibitiq/pull/19)、[#20](https://github.com/magician-eric/exhibitiq/pull/20) | `dev/data-platform` | 2026-11-03 |
 | — | V2.2 共用規範修訂同步到 `dev/ai-intelligence`（通用展覽平台、8 個主選單、通用性驗收） | [#22](https://github.com/magician-eric/exhibitiq/pull/22) | `dev/ai-intelligence` | 2026-11-03 |
 | A1-07 | 資料集索引與管線狀態契約（`1.0.0-draft.3`） | [#23](https://github.com/magician-eric/exhibitiq/pull/23) | `dev/ai-intelligence` | 2026-11-03 |
+| — | V2.3 共用規範修訂：移除特定展覽依賴 | [#24](https://github.com/magician-eric/exhibitiq/pull/24) | `dev/ai-intelligence` | 2026-11-03 |
+| — | V2.2 共用規範修訂（`dev/data-platform` 版本） | [#21](https://github.com/magician-eric/exhibitiq/pull/21) | `dev/data-platform` | 2026-11-04 |
+| — | 第五次共用規範同步：A1-07（Schema `1.0.0-draft.3`）與 V2.3（已查證兩邊一致） | [#26](https://github.com/magician-eric/exhibitiq/pull/26) | `dev/data-platform` | 2026-11-04 |
+| D1-04 | 資料包讀寫工具（JSONL、雜湊、manifest 完整性、來源索引） | [#27](https://github.com/magician-eric/exhibitiq/pull/27) | `dev/data-platform` | 2026-11-04 |
+| W1-01 | 前端骨架（React、Vite、TS、Ant Design、ECharts、Vitest、Playwright、單一 HTML 打包）＋根目錄 `.gitignore` | [#28](https://github.com/magician-eric/exhibitiq/pull/28) | `dev/ai-intelligence` | 2026-11-04 |
+| W1-02 | 設計系統、共用 Layout、8 個主選單、狀態元件；自動模式規則（Issue #29） | [#30](https://github.com/magician-eric/exhibitiq/pull/30) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -34,17 +40,15 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| — | V2.3 共用規範修訂：移除特定展覽依賴（專案負責人決策） | PR 待 Eric 合併 |
-| — | V2.2 共用規範修訂（`dev/data-platform` 版本） | [#21](https://github.com/magician-eric/exhibitiq/pull/21) 待 Albert 合併 |
+| W1-03 | 資料存取層、bundle 產生程式、系統總覽（合成資料）；完成 Phase 1 的 Dashboard 可視化成果 | PR 待 Eric 合併 |
 
 ## 待處理（Phase 1）
 
 | 負責 | 編號 |
 |---|---|
-| ai | A1-01、A1-09、A1-10、W1-01、W1-02、W1-03 |
-| data | D1-02、D1-04、D1-05、D1-06、D1-08、D1-09、D1-11 |
-| ai 準備、Albert 合併 | 第五次共用規範同步：A1-07（Schema `1.0.0-draft.3`）與 V2.3 規範（#21 與 V2.3 PR 都合併後） |
-| data | A1-07 同步後，資料包 manifest 的 `schema_version` 改為 `1.0.0-draft.3`（草案期必須完全相同）；D2-12 依 A1-07 產生 `data/index/datasets.json` |
+| ai | A1-01、A1-09、A1-10 |
+| data | D1-02、D1-05、D1-06、D1-08、D1-09、D1-11 |
+| data | 資料包 manifest 的 `schema_version` 使用 `1.0.0-draft.3`；D2-12 依 A1-07 產生 `data/index/datasets.json` |
 
 ## 阻礙事項
 
@@ -59,7 +63,6 @@
 | 事項 | 需要在何時決定 |
 |---|---|
 | Phase 4 給評審的操作網址：公開的去敏感版 GitHub Pages（需確認帳號方案）、受保護的外部託管（新服務）、或只做現場操作 | Phase 3 結束前 |
-| 根目錄 `.gitignore` 的負責人 | W1-01 開始前（前端會產生 `node_modules/`、`dist/`） |
 | 展覽登錄資料的存放位置（`data/index/` 或其他；A1-10） | D1-06、D2-13 開始前 |
 | 是否需要網頁一鍵執行（新增展覽、觸發擷取、執行分析）：需要後端代理或 GitHub App 等新服務；預設不做，改用 Actions 手動執行（總規範 §4.1） | Phase 3 開始前 |
 | 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用） | Phase 3 開始前 |
