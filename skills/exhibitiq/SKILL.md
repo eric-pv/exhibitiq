@@ -24,6 +24,8 @@ description: ExhibitIQ exhibition intelligence analysis. Use when asked to analy
 2. **Markdown 報告：** 同一目錄下的 `<analysis_id>.md`，**只能由分析結果 JSON 產生**，不得加入 JSON 裡沒有的結論（`references/report-spec.md`）。Dashboard 與 PDF 也使用同一份 JSON。
 
 ## 4. 工作流程
+
+輔助程式：`python skills/exhibitiq/scripts/exhibitiq_tools.py`，子命令 `list`、`select`、`validate-package`、`validate-analysis`、`report`（用法見 `README.md`）。
 1. 讀取資料集索引，選定展覽與屆次，取得最新資料包路徑。
 2. 執行 `python -m etl.validate <package_dir>`；失敗就停止並回報錯誤，不分析。
 3. 讀取 `manifest.json`；記下 `dataset_id`、`content_hash`、`data_origin`、`completeness_status`。合成資料的分析結果必須標 `data_origin: synthetic`。
