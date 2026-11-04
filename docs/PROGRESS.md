@@ -34,6 +34,8 @@
 | W1-01 | 前端骨架（React、Vite、TS、Ant Design、ECharts、Vitest、Playwright、單一 HTML 打包）＋根目錄 `.gitignore` | [#28](https://github.com/magician-eric/exhibitiq/pull/28) | `dev/ai-intelligence` | 2026-11-04 |
 | W1-02 | 設計系統、共用 Layout、8 個主選單、狀態元件；自動模式規則（Issue #29） | [#30](https://github.com/magician-eric/exhibitiq/pull/30) | `dev/ai-intelligence` | 2026-11-04 |
 | W1-03 | 資料存取層、bundle 產生程式、系統總覽（合成資料）；**Phase 1 Dashboard 可視化成果完成** | [#32](https://github.com/magician-eric/exhibitiq/pull/32) | `dev/ai-intelligence` | 2026-11-04 |
+| — | 第六次共用規範同步：自動模式規則與進度 | [#33](https://github.com/magician-eric/exhibitiq/pull/33) | `dev/data-platform` | 2026-11-04 |
+| A1-09 | BXR 產品知識庫結構與分析分類架構（`1.0.0-draft.4`；只有結構） | [#34](https://github.com/magician-eric/exhibitiq/pull/34) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -41,14 +43,14 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A1-09 | BXR 產品知識庫結構與分析分類架構（Schema 升到 `1.0.0-draft.4`；只有結構，沒有產品內容） | PR 待 Eric 合併 |
-| — | 第六次共用規範同步：自動模式規則與進度 | [#33](https://github.com/magician-eric/exhibitiq/pull/33) 待 Albert 合併 |
+| A1-01 | MVP 範圍與驗收指標（`docs/specs/mvp-scope.md`；合併即核定） | PR 待 Eric 合併 |
+| — | 第七次共用規範同步：A1-09（Schema `1.0.0-draft.4`） | [#35](https://github.com/magician-eric/exhibitiq/pull/35) 待 Albert 合併 |
 
 ## 待處理（Phase 1）
 
 | 負責 | 編號 |
 |---|---|
-| ai | A1-01、A1-10 |
+| ai | A1-10（等待 Eric 決定展覽登錄資料的存放位置） |
 | data | D1-02、D1-05、D1-06、D1-08、D1-09、D1-11 |
 | data | 資料包 manifest 的 `schema_version` 使用 `1.0.0-draft.4`（A1-09 同步後）；D2-12 依 A1-07 產生 `data/index/datasets.json` |
 
@@ -65,7 +67,7 @@
 | 事項 | 需要在何時決定 |
 |---|---|
 | Phase 4 給評審的操作網址：公開的去敏感版 GitHub Pages（需確認帳號方案）、受保護的外部託管（新服務）、或只做現場操作 | Phase 3 結束前 |
-| 展覽登錄資料的存放位置（`data/index/` 或其他；A1-10） | D1-06、D2-13 開始前 |
+| 展覽登錄資料的存放位置（A1-10）。建議：`data/registry/exhibitions/<exhibition_id>.json`，一個展覽一個檔案，由 data 寫入 | A1-10、D2-13 開始前 |
 | 是否需要網頁一鍵執行（新增展覽、觸發擷取、執行分析）：需要後端代理或 GitHub App 等新服務；預設不做，改用 Actions 手動執行（總規範 §4.1） | Phase 3 開始前 |
 | 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用） | Phase 3 開始前 |
 

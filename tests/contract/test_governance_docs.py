@@ -303,7 +303,7 @@ def test_three_core_modules_and_reverse_sync_documented():
 
 
 # ---------------------------------------------------------------- V2.3 no fixed exhibition
-GENERAL_DOCS = [CLAUDE, ROOT / "README.md", SPEC, PLAN, PROGRESS]
+GENERAL_DOCS = [CLAUDE, ROOT / "README.md", SPEC, PLAN, PROGRESS, ROOT / "docs" / "specs" / "mvp-scope.md"]
 
 
 @pytest.mark.parametrize("doc", GENERAL_DOCS, ids=lambda p: p.name)
@@ -338,3 +338,22 @@ def test_progress_has_no_exhibition_blocker_or_owner_pick():
     decisions = _section(text, "## 待專案負責人決定", "## 已存在的 Issue")
     assert not SPECIFIC_EXHIBITIONS.search(blockers)
     assert "第一組" not in blockers and "測試展覽" not in decisions
+
+
+# ---------------------------------------------------------------- A1-01 MVP scope
+MVP = ROOT / "docs" / "specs" / "mvp-scope.md"
+
+
+def test_mvp_scope_covers_every_main_menu_item():
+    text = _read(MVP)
+    for menu in ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報",
+                 "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "資料及系統狀態"]:
+        assert f"| {menu} |" in text, f"mvp-scope.md has no row for {menu}"
+
+
+def test_mvp_metrics_are_capabilities_not_exhibitor_counts():
+    text = _read(MVP)
+    metrics = _section(text, "## 4. MVP 驗收指標", "## 5.")
+    assert "不修改核心程式" in metrics and "不作為驗收指標" in metrics
+    assert "參展商數量" in metrics.split("**不作為驗收指標：**", 1)[1]
+    assert not re.search(r"\d{3,}\s*家", metrics), "an exhibitor count is used as a metric"
