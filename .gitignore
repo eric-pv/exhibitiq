@@ -18,3 +18,6 @@ site/src/generated/
 
 # Editors / OS
 .DS_Store
+
+# Local Claude Code skill link (skills/exhibitiq/README.md)
+.claude/skills/
