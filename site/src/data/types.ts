@@ -33,6 +33,8 @@ export interface Bundle {
     companies: { companyId: string; name: string; country: string | null; verificationStatus: string; aliases: string[]; listed: boolean; booths: string[]; detail: CompanyRecord }[];
     listedParticipations: number;
     sources: Record<string, SourceInfo>;
+    /** profileId → term_id → matching companies (keyword candidates, W3-01) */
+    keywordMatches: Record<string, Record<string, { companyIds: string[]; sourceIds: string[] }>>;
   }>;
   analyses: {
     analysisId: string; title: string; inputHash: string; evidenceSourceIds: string[]; analysisType: string; inputDatasetId: string; generatedAt: string;

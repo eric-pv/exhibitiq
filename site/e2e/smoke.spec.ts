@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const SHOTS = process.env.SCREENSHOT_DIR;
-const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心", "分析設定"]); // pages that are no longer 「建置中」
+const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心", "分析設定", "展覽情報與比較"]); // pages that are no longer 「建置中」
 const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "分析設定", "資料及系統狀態"];
 
 test.beforeEach(async ({ page }, info) => {
@@ -147,4 +147,12 @@ test("settings (W2-06): add a keyword, it is a local draft and survives reload; 
   await page.getByRole("tab", { name: "提交與版本" }).click();
   const [dl] = await Promise.all([page.waitForEvent("download"), page.getByTestId("profile-export").click()]);
   expect(dl.suggestedFilename()).toBe("default-library.json");
+});
+
+test("compare (W3-01): editions side by side, missing data shown as 資料不足", async ({ page }, info) => {
+  await page.goto("/#/intel");
+  await expect(page.getByTestId("compare-table")).toBeVisible();
+  await expect(page.getByTestId("compare-table").getByText("資料不足").first()).toBeVisible();
+  await page.waitForTimeout(300);
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w3-01-${info.project.name}-compare.png`, fullPage: true });
 });
