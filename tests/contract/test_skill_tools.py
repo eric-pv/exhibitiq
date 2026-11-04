@@ -70,3 +70,11 @@ def test_check_all_detects_hash_mismatch(tmp_path):
     p.write_text(json.dumps(idx), encoding="utf-8")
     row = tools.check_all(p)[0]
     assert not row["ok"] and any("content_hash" in x for x in row["problems"])
+
+
+def test_classify_golden_candidates():
+    r = tools.classify(G / "package")
+    alpha = next(v for k, v in r.items() if k.endswith("C000000000000000000001"))
+    assert {"application.training", "technology.simulation"} <= set(alpha["terms"]) and alpha["source_ids"]
+    delta = next(v for k, v in r.items() if k.endswith("C000000000000000000004"))
+    assert "technology.sensors" in delta["terms"]
