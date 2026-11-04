@@ -37,6 +37,7 @@ export interface Bundle {
     analysisId: string; title: string; analysisType: string; inputDatasetId: string; generatedAt: string;
     reviewStatus: "draft" | "human_reviewed" | "approved" | "rejected"; dataOrigin: "synthetic" | "collected";
     analyzedCompanyIds: string[]; highPriorityRecommendations: number; claimCounts: Record<string, number>;
+    detail: AnalysisDetail;
   }[];
   notices: { level: "info" | "warning" | "error"; message: string; occurredAt: string }[];
 }
@@ -65,4 +66,26 @@ export interface CompanyRecord {
   sourceIds: string[]; fieldSources: FieldSources;
   aliases: { name: string; lang: string | null; sourceIds: string[] }[];
   participations: ParticipationRecord[];
+}
+
+export type Level = "low" | "medium" | "high";
+export interface EntityRef { entity_type: "exhibition" | "edition" | "company" | "participation"; entity_id: string }
+
+/** analysis_result.schema.json as the Dashboard shows it (W2-04). Everything here is AI output unless claimType is "fact". */
+export interface AnalysisDetail {
+  summary: string | null; skillVersion: string | null;
+  conclusions: {
+    claimId: string; claimType: "fact" | "inference" | "unknown"; statement: string; subjects: EntityRef[]; sourceIds: string[];
+    verificationStatus: string | null; confidence: Level | null; rationale: string | null; missingData: string | null; uncertaintyIds: string[];
+  }[];
+  uncertainties: { uncertaintyId: string; description: string; impact: Level }[];
+  scores: {
+    scoreId: string; modelId: string; subject: EntityRef; total: number; max: number; rank: number | null;
+    factors: { factorId: string; label: string; status: "scored" | "insufficient_data"; points: number; max: number; sourceIds: string[]; claimIds: string[]; rationale: string | null }[];
+  }[];
+  relationships: { relationshipId: string; companyId: string; type: string; rationale: string | null; confidence: Level | null; sourceIds: string[]; claimIds: string[] }[];
+  recommendations: {
+    recommendationId: string; type: string; statement: string; rationale: string | null; priority: Level; subjects: EntityRef[];
+    assumptions: string[]; sourceIds: string[]; claimIds: string[]; scoreIds: string[]; uncertaintyIds: string[];
+  }[];
 }

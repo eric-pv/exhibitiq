@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const SHOTS = process.env.SCREENSHOT_DIR;
-const BUILT = new Set(["系統總覽", "參展商與企業情報"]); // pages that are no longer 「建置中」
+const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分"]); // pages that are no longer 「建置中」
 const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "資料及系統狀態"];
 
 test.beforeEach(async ({ page }, info) => {
@@ -98,4 +98,16 @@ test("company detail (W2-03): list → detail, every field shows its source, sou
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-03-${info.project.name}-company-detail.png`, fullPage: true });
   await page.getByText("返回企業清單").click();
   await expect(page.getByTestId("company-table")).toBeVisible();
+});
+
+test("opportunities (W2-04): AI notice, ranking, score breakdown with sources, link to company", async ({ page }, info) => {
+  await page.goto("/#/opportunities");
+  await expect(page.getByTestId("ai-notice")).toBeVisible();
+  await expect(page.getByTestId("score-breakdown").first()).toBeVisible();
+  await expect(page.getByTestId("score-breakdown").first().getByText(/資料不足，不計分/).first()).toBeVisible();
+  await expect(page.getByTestId("conclusions").locator('[data-claim="ai_inferred"]').first()).toBeVisible();
+  await page.waitForTimeout(300);
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-04-${info.project.name}-opportunities.png`, fullPage: true });
+  await page.getByTestId("ranking-table").getByRole("link").first().click();
+  await expect(page).toHaveURL(/#\/companies\/co_/);
 });
