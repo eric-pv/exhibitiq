@@ -122,6 +122,43 @@ def classify(package_dir: Path, taxonomy_dir: Path | None = None) -> dict:
     return {k: {"terms": sorted(v["terms"]), "source_ids": sorted(v["source_ids"])} for k, v in out.items()}
 
 
+def score(package_dir: Path, model_path: Path | None = None) -> list[dict]:
+    """A2-07: deterministic opportunity scores (analysis_result `scores` items).
+    Factors without evidence are insufficient_data with 0 points — never estimated."""
+    model = load(model_path or ROOT / "knowledge" / "scoring" / "opportunity@1.json")
+    cand = classify(package_dir)
+    parts = [json.loads(l) for l in (Path(package_dir) / "participations.jsonl").read_text(encoding="utf-8").splitlines()]
+    companies = sorted({p["company_id"] for p in parts})
+    scores = []
+    for cid in companies:
+        ps = [p for p in parts if p["company_id"] == cid]
+        listed = [p for p in ps if p["listing_status"] == "listed"]
+        booth = [p for p in listed if p.get("booth")]
+        hits = [x for x in cand.get(cid, {}).get("terms", []) if x in model["target_terms"]]
+        factors = []
+        for f in model["factors"]:
+            fid, mx = f["factor_id"], f["max_points"]
+            if fid == "domain_fit" and hits:
+                factors.append({"factor_id": fid, "label": f["label"], "status": "scored", "points": min(mx, 10 * len(hits)), "max_points": mx,
+                                "evidence_source_ids": cand[cid]["source_ids"], "rationale": "符合目標分類：" + "、".join(hits)})
+            elif fid == "presence" and listed:
+                factors.append({"factor_id": fid, "label": f["label"], "status": "scored", "points": mx, "max_points": mx,
+                                "evidence_source_ids": sorted({s for p in listed for s in p["source_ids"]}), "rationale": "目前列於參展名單。"})
+            elif fid == "booth_known" and booth:
+                factors.append({"factor_id": fid, "label": f["label"], "status": "scored", "points": mx, "max_points": mx,
+                                "evidence_source_ids": sorted({s for p in booth for s in p["source_ids"]}), "rationale": f"展位 {booth[0]['booth']}。"})
+            else:
+                factors.append({"factor_id": fid, "label": f["label"], "status": "insufficient_data", "points": 0, "max_points": mx,
+                                "rationale": "沒有足夠證據，不計分。"})
+        scores.append({"subject": {"entity_type": "company", "entity_id": cid}, "score_model_id": model["score_model_id"], "factors": factors,
+                       "total_points": sum(f["points"] for f in factors), "max_total_points": sum(f["max_points"] for f in factors)})
+    scores.sort(key=lambda s: (-s["total_points"], s["subject"]["entity_id"]))
+    for i, s in enumerate(scores, 1):
+        s["rank"] = i
+        s["score_id"] = f"sc-{i:03d}"
+    return scores
+
+
 def validate_analysis(analysis_path: Path, package_dir: Path) -> dict:
     import analysis_check
     import knowledge_check
@@ -186,6 +223,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("validate-package").add_argument("package_dir", type=Path)
     sub.add_parser("check-all").add_argument("--index", type=Path, default=None)
     sub.add_parser("classify").add_argument("package_dir", type=Path)
+    sub.add_parser("score").add_argument("package_dir", type=Path)
     for name in ("validate-analysis", "report"):
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
@@ -200,6 +238,8 @@ def main(argv: list[str] | None = None) -> int:
         elif a.cmd == "check-all":
             rows = check_all(idx); print(json.dumps(rows, ensure_ascii=False, indent=2))
             return 0 if all(r["ok"] for r in rows if r["dataset_id"]) else 1
+        elif a.cmd == "score":
+            print(json.dumps(score(a.package_dir), ensure_ascii=False, indent=2))
         elif a.cmd == "classify":
             print(json.dumps(classify(a.package_dir), ensure_ascii=False, indent=2))
         elif a.cmd == "validate-package":

@@ -78,3 +78,34 @@ def test_classify_golden_candidates():
     assert {"application.training", "technology.simulation"} <= set(alpha["terms"]) and alpha["source_ids"]
     delta = next(v for k, v in r.items() if k.endswith("C000000000000000000004"))
     assert "technology.sensors" in delta["terms"]
+
+
+def test_score_is_explainable_and_schema_valid():
+    import analysis_check
+    scores = tools.score(G / "package")
+    assert [s["rank"] for s in scores] == [1, 2, 3]
+    for s in scores:
+        for f in s["factors"]:
+            if f["status"] == "insufficient_data":
+                assert f["points"] == 0
+            else:
+                assert f["evidence_source_ids"]
+    # drop the scores into the golden analysis and validate AR1-AR9
+    a = json.loads((G / "expected" / "analysis" / "analysis_result.json").read_text(encoding="utf-8"))
+    a["scores"] = scores
+    for r in a["recommendations"]:
+        r["score_ids"] = [scores[0]["score_id"]]
+    ev = set()
+    for c in a["conclusions"]:
+        ev |= set(c.get("evidence_source_ids", []))
+    for s in scores:
+        for f in s["factors"]:
+            ev |= set(f.get("evidence_source_ids", []))
+    for k in ("relationships", "recommendations"):
+        for r in a[k]:
+            ev |= set(r["evidence_source_ids"])
+    a["evidence_source_ids"] = sorted(ev)
+    assert analysis_check.check_analysis(a, G / "package") == []
+    top = scores[0]
+    assert top["subject"]["entity_id"].endswith("C000000000000000000001")
+    assert next(f for f in top["factors"] if f["factor_id"] == "product_fit")["status"] == "insufficient_data"
