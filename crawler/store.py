@@ -8,7 +8,6 @@ Layout, one directory per run, never reused::
         crawl_run.json                the ``crawl_run`` record (shared contract)
         run.log.jsonl                 the event log of D1-07
         errors.json                   every error of the run (``crawl_run.error_samples`` keeps only 50)
-        pending.json                  in-scope URLs found but not fetched (max_requests, cancel, block); input for a resume
 
 Rules:
 
@@ -155,7 +154,6 @@ class RunStore:
             for e in result.errors
         ]
         _write_new(directory / "errors.json", (json.dumps(errors, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))
-        _write_new(directory / "pending.json", (json.dumps(sorted(result.pending), ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
         _write_new(directory / "run.log.jsonl", result.log_text.encode("utf-8"))
         # the run record goes last: its presence means "this run directory is complete"
         _write_new(directory / "crawl_run.json", (json.dumps(result.crawl_run, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))

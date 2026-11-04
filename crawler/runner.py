@@ -58,7 +58,6 @@ class RunOptions:
     trigger: str = "manual"  # crawl_run.trigger: manual, schedule, pull_request, import or other
     code_commit: str | None = None
     github_run_url: str | None = None
-    resumes: str | None = None  # crawl_run_id of the earlier run this run continues (written to notes)
 
 
 class SnapshotSink(Protocol):
@@ -75,7 +74,6 @@ class RunResult:
     records: list[ExtractedRecord] = field(default_factory=list)
     errors: list[CrawlError] = field(default_factory=list)
     skipped: list[str] = field(default_factory=list)  # URLs not fetched, with the reason
-    pending: list[str] = field(default_factory=list)  # in-scope URLs found but never fetched (max_requests, cancel, block): a resume can fetch them
     log_text: str = ""
 
 
@@ -106,9 +104,7 @@ class _Crawl:
         sink: SnapshotSink | None,
         cancel: Callable[[], bool] | None,
         rand: Callable[[int], bytes],
-        start_requests: Iterable[Request] | None = None,
     ) -> None:
-        self.initial = start_requests
         self.config, self.adapter, self.fetcher, self.clock, self.options = config, adapter, fetcher, clock, options
         self.sink, self.cancel, self.rand = sink, cancel, rand
         self._own_stream = io.StringIO() if log_stream is None else None
@@ -257,7 +253,7 @@ class _Crawl:
         truncated = 0
         pages = 0
         try:
-            queue.extend(self.initial if self.initial is not None else self.adapter.start_requests(self.config))
+            queue.extend(self.adapter.start_requests(self.config))
         except Exception as exc:
             self.error(ErrorCode.UNEXPECTED, f"adapter {self.adapter.name!r} start_requests raised {type(exc).__name__}: {exc}")
 
@@ -275,9 +271,7 @@ class _Crawl:
                 self.skip(url, "outside allowed_domains")
                 continue
             if pages >= self.options.max_requests:
-                waiting = [_normalize(r.url) for r in queue]
-                self.result.pending.append(url)
-                truncated += 1 + sum(1 for u in waiting if u not in seen and u not in self.result.pending)
+                truncated += 1 + sum(1 for r in queue if _normalize(r.url) not in seen)
                 self.log.event("WARNING", "max_requests", f"stopped at max_requests={self.options.max_requests}", unfetched=truncated)
                 break
             if self.options.respect_robots:
@@ -298,10 +292,6 @@ class _Crawl:
             snapshot = self.make_snapshot(response)
             self.parse(Request(url, request.headers, request.meta), response, snapshot, queue)
 
-        for waiting_request in queue:  # whatever is still queued (max_requests, cancel, block) can be fetched by a resume
-            waiting_url = _normalize(waiting_request.url)
-            if waiting_url not in seen and waiting_url not in self.result.pending and self.in_scope(waiting_url):
-                self.result.pending.append(waiting_url)
         finished = self.clock.now()
         stats = self.log.stats()
         if cancelled:
@@ -312,12 +302,9 @@ class _Crawl:
             status = "partial"
         else:
             status = "succeeded"
-        note_parts = []
-        if self.options.resumes:
-            note_parts.append(f"resumes {self.options.resumes}: fetches only the URLs that run could not fetch")
+        notes = None
         if truncated:
-            note_parts.append(f"stopped at max_requests={self.options.max_requests}; {truncated} URL(s) were not fetched, so the data is incomplete")
-        notes = "; ".join(note_parts) or None
+            notes = f"stopped at max_requests={self.options.max_requests}; {truncated} URL(s) were not fetched, so the data is incomplete"
         self.log.event("INFO", "run_finished", status=status, **stats)
         self.result.status = status
         self.result.crawl_run = self.log.build_crawl_run(
@@ -350,13 +337,9 @@ def run_source(
     sink: SnapshotSink | None = None,
     cancel: Callable[[], bool] | None = None,
     rand: Callable[[int], bytes] = os.urandom,
-    start_requests: Iterable[Request] | None = None,
 ) -> RunResult:
-    """Run one source. Never raises for crawl problems; they are in the result.
-
-    ``start_requests`` replaces the adapter's first requests (used to resume: only the URLs that are still missing).
-    """
-    return _Crawl(config, adapter, fetcher, clock or SystemClock(), options or RunOptions(), log_stream, sink, cancel, rand, start_requests).run()
+    """Run one source. Never raises for crawl problems; they are in the result."""
+    return _Crawl(config, adapter, fetcher, clock or SystemClock(), options or RunOptions(), log_stream, sink, cancel, rand).run()
 
 
 def _failed_result(config: SourceConfig, error: CrawlError, clock: Clock, options: RunOptions, rand: Callable[[int], bytes]) -> RunResult:
