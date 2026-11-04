@@ -3,13 +3,58 @@
   "approval_status": "draft",
   "description": "A2-08：合作夥伴、通路、競爭對手、潛在客戶的確定性初篩規則。結果一律是候選（inference，信心 low），由 Skill 閱讀來源後確認或改為 unknown。草稿，待 Eric 核定。",
   "keyword_signals": {
-    "channel": ["distributor", "distribution", "reseller", "dealer", "agent", "代理", "經銷", "代理商", "經銷商"],
-    "partner": ["integrator", "system integration", "systems integration", "OEM", "ODM", "solution provider", "系統整合", "整合商", "合作夥伴"]
+    "channel": [
+      "distributor",
+      "distribution",
+      "reseller",
+      "dealer",
+      "agent",
+      "代理",
+      "經銷",
+      "代理商",
+      "經銷商"
+    ],
+    "partner": [
+      "integrator",
+      "system integration",
+      "systems integration",
+      "OEM",
+      "ODM",
+      "solution provider",
+      "系統整合",
+      "整合商",
+      "合作夥伴"
+    ]
   },
   "taxonomy_signals": {
-    "competitor": { "company_dimensions": ["capability", "technology"], "bxr_fields": ["capabilities"] },
-    "potential_customer": { "company_dimensions": ["industry", "application", "problem", "need"], "bxr_fields": ["target_industries", "applications", "problems_addressed"] }
+    "competitor": {
+      "company_dimensions": [
+        "capability",
+        "technology"
+      ],
+      "bxr_fields": [
+        "capabilities"
+      ]
+    },
+    "potential_customer": {
+      "company_dimensions": [
+        "industry",
+        "application",
+        "problem",
+        "need"
+      ],
+      "bxr_fields": [
+        "target_industries",
+        "applications",
+        "problems_addressed"
+      ]
+    }
   },
-  "precedence": ["competitor", "channel", "partner", "potential_customer"],
-  "notes": "競爭對手與潛在客戶需要比對已核定的 BXR 產品卡（A2-05）；沒有核定產品卡時一律輸出 unknown 並說明原因，不硬分類。"
+  "precedence": [
+    "competitor",
+    "channel",
+    "partner",
+    "potential_customer"
+  ],
+  "notes": "已停用（A2-16，V2.5）：企業關係改為多標籤，訊號詞移到 knowledge/analysis-profiles/*.json 的 relationship_signals。保留作為歷史紀錄。"
 }
