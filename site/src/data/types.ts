@@ -35,11 +35,12 @@ export interface Bundle {
     sources: Record<string, SourceInfo>;
   }>;
   analyses: {
-    analysisId: string; title: string; analysisType: string; inputDatasetId: string; generatedAt: string;
+    analysisId: string; title: string; inputHash: string; evidenceSourceIds: string[]; analysisType: string; inputDatasetId: string; generatedAt: string;
     reviewStatus: "draft" | "human_reviewed" | "approved" | "rejected"; dataOrigin: "synthetic" | "collected";
     analyzedCompanyIds: string[]; highPriorityRecommendations: number; claimCounts: Record<string, number>;
     detail: AnalysisDetail;
   }[];
+  reportTemplates: { version: string; section_titles: Record<string, string>; types: Record<string, { label: string; sections: string[] }> };
   notices: { level: "info" | "warning" | "error"; message: string; occurredAt: string }[];
 }
 
