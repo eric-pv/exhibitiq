@@ -5,3 +5,6 @@ jsonschema==4.26.0
 # referencing：D1-05 起驗證器直接使用（原本只是 jsonschema 的間接依賴）。
 referencing==0.37.0
 pytest==9.2.0
+# D2-04: 檔案匯入。openpyxl 讀 .xlsx；pypdf 抽取 PDF 文字層（不做 OCR）。
+openpyxl==3.1.5
+pypdf==6.21.4

@@ -55,6 +55,7 @@ AI Skill 讀取（專案負責人的範圍；資料包是兩邊的介面）
 | D1-06 | 兩組不同結構的合成展覽測試資料（`data_origin: "synthetic"`）（**已完成**） | `data/samples/<exhibition_id>/` |
 | D1-07 | 來源設定、執行日誌與錯誤格式（**已完成**） | `crawler/` |
 | D2-01 | 共用爬蟲框架與來源註冊機制（**已完成**，見 `crawler-framework.md`） | `crawler/`、`etl/ids.py` |
+| D2-04 | HTML／PDF／CSV／Excel 匯入轉換與欄位對應設定（**已完成**，見 `file-import.md`） | `crawler/importers.py`、`crawler/file_import.py` |
 | D1-11 | 通用的展覽來源探索與可行性評估流程與範本（**已完成**，見 `source-assessment-process.md`、`source-assessment-template.md`） | `docs/data-platform/` |
 | Phase 2 | 共用爬蟲框架與來源註冊機制（D2-01）、測試展覽的來源適配器與匯入轉換（展覽差異只放在來源設定、適配器或對應設定）、去重與別名、完整度報告、資料包發布、新增展覽 workflow（D2-13） | `crawler/`、`etl/`、`data/`、`.github/workflows/` |
 
