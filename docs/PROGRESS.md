@@ -53,6 +53,7 @@
 | W2-01 | 展覽搜尋與展覽詳情（資料集索引；取得方式、評估、各屆次取得／驗證／完整度） | [#62](https://github.com/magician-eric/exhibitiq/pull/62) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-14 | 分析結果版本化回存 `save-analysis` | [#63](https://github.com/magician-eric/exhibitiq/pull/63) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-12、A2-13 | 報告版型與 Markdown 報告 | [#65](https://github.com/magician-eric/exhibitiq/pull/65) | `dev/ai-intelligence` | 2026-11-04 |
+| W3-04 | AI 報告中心、`ReportViewer`、PDF 匯出 | [#66](https://github.com/magician-eric/exhibitiq/pull/66) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -60,7 +61,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W3-04 | AI 報告中心、共用 `ReportViewer`、PDF 匯出（列印樣式）；網頁與 Markdown 章節一致由測試強制 | 本 PR |
+| A2-08 | 合作夥伴、通路、競爭對手、潛在客戶初篩（`relate`；規則草稿待核定；沒有核定產品卡時不判定客戶或競爭） | 本 PR |
 
 ## 待處理（Phase 1）
 
