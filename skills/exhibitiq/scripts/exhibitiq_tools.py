@@ -10,8 +10,8 @@ Usage (from the repo root):
 
 Package validation uses data engineering's `etl.validate` when it is importable
 (after phase integration). Until then it falls back to the contract reference
-checks in tests/contract and says so in its output. Analysis validation uses the
-contract reference checks until A2-11 provides the production validator.
+checks in tests/contract and says so in its output. Analysis validation uses
+evidence_check.py (A2-11): contract rules AR1-AR9 plus evidence rules EV1-EV7.
 """
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "tests" / "contract"))
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 REAL_INDEX = ROOT / "data" / "index" / "datasets.json"
 EXAMPLE_INDEX = ROOT / "schemas" / "v1" / "examples" / "index" / "dataset_index.example.json"
@@ -160,12 +161,12 @@ def score(package_dir: Path, model_path: Path | None = None) -> list[dict]:
 
 
 def validate_analysis(analysis_path: Path, package_dir: Path) -> dict:
-    import analysis_check
+    import evidence_check
     import knowledge_check
     a = load(analysis_path)
-    errors = analysis_check.check_analysis(a, Path(package_dir))
+    errors = evidence_check.validate(a, Path(package_dir))
     errors += knowledge_check.check_analysis_products(a, ROOT / "knowledge")
-    return {"validator": "tests/contract analysis_check + knowledge_check (until A2-11)", "ok": not errors, "errors": errors}
+    return {"validator": "skills/exhibitiq evidence_check (AR1-AR9 + EV1-EV7) + knowledge_check", "ok": not errors, "errors": errors}
 
 
 CLAIM = {"fact": "事實", "inference": "AI 推論", "unknown": "資料不足"}

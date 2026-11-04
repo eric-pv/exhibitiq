@@ -48,6 +48,7 @@
 | A2-07 | 商機評分模型 opportunity@1（草稿待核定）與 `score` | [#55](https://github.com/magician-eric/exhibitiq/pull/55) | `dev/ai-intelligence` | 2026-11-04 |
 | W2-02 | 企業清單：搜尋（含別名）、篩選（網址同步）、排序、分頁、CSV 匯出；共用 DataTable | [#56](https://github.com/magician-eric/exhibitiq/pull/56) | `dev/ai-intelligence` | 2026-11-04 |
 | W2-03 | 企業詳情：欄位來源（`SourceRef`）、別名、參展紀錄、最後更新時間 | [#58](https://github.com/magician-eric/exhibitiq/pull/58) | `dev/ai-intelligence` | 2026-11-04 |
+| W2-04 | 商機分析頁：排名、評分拆解（`ScoreBreakdown`）、關係分類、建議、來源引用 | [#59](https://github.com/magician-eric/exhibitiq/pull/59) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -55,7 +56,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W2-04 | 商機分析頁：AI 標示、商機排名、評分拆解（`ScoreBreakdown`）、關係分類、建議、結論與來源引用 | 本 PR |
+| A2-11 | 事實／推論／未知區分與證據驗證（`evidence_check.py`，EV1–EV7；驗證失敗不能發布） | 本 PR |
 
 ## 待處理（Phase 1）
 
