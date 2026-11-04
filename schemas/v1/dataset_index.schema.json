@@ -1,0 +1,475 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/dataset_index.schema.json",
+  "title": "DatasetIndex 資料集索引與管線狀態",
+  "description": "所有已登錄展覽、取得方式、最近一次取得結果、資料包清單與驗證狀態。存為 data/index/datasets.json，由資料工程產生，Dashboard 讀取。規則見 docs/specs/dataset-index-contract.md。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "generator",
+    "exhibitions",
+    "notices"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0-draft.3"
+    },
+    "generated_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        },
+        "code_commit": {
+          "$ref": "common.schema.json#/$defs/git_commit"
+        }
+      }
+    },
+    "exhibitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "exhibition_id",
+          "name",
+          "acquisition",
+          "editions"
+        ],
+        "properties": {
+          "exhibition_id": {
+            "$ref": "common.schema.json#/$defs/exhibition_id"
+          },
+          "name": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "name_zh_hant": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "country": {
+            "$ref": "common.schema.json#/$defs/country_code"
+          },
+          "website": {
+            "$ref": "common.schema.json#/$defs/http_url"
+          },
+          "acquisition": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "method",
+              "status"
+            ],
+            "properties": {
+              "method": {
+                "$ref": "#/$defs/acquisition_method"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_assessed",
+                  "feasible",
+                  "partially_feasible",
+                  "not_feasible",
+                  "pending_authorization"
+                ],
+                "description": "來源評估結論（D1-10、D1-11）。not_feasible 或 pending_authorization 時 Dashboard 要顯示原因。"
+              },
+              "assessed_at": {
+                "$ref": "common.schema.json#/$defs/utc_timestamp"
+              },
+              "report_path": {
+                "$ref": "common.schema.json#/$defs/short_text"
+              },
+              "notes": {
+                "$ref": "common.schema.json#/$defs/text"
+              }
+            },
+            "description": "這個展覽的資料取得方式與來源評估結果。",
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "status": {
+                      "const": "not_assessed"
+                    }
+                  }
+                },
+                "else": {
+                  "required": [
+                    "assessed_at",
+                    "report_path"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "not_feasible",
+                        "pending_authorization",
+                        "partially_feasible"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "notes"
+                  ]
+                }
+              }
+            ]
+          },
+          "editions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "edition_id",
+                "year",
+                "latest_dataset_id",
+                "datasets"
+              ],
+              "properties": {
+                "edition_id": {
+                  "$ref": "common.schema.json#/$defs/edition_id"
+                },
+                "year": {
+                  "type": "integer",
+                  "minimum": 1900,
+                  "maximum": 2100
+                },
+                "latest_dataset_id": {
+                  "oneOf": [
+                    {
+                      "$ref": "common.schema.json#/$defs/dataset_id"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "last_acquisition": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "method",
+                    "status",
+                    "finished_at"
+                  ],
+                  "properties": {
+                    "method": {
+                      "$ref": "#/$defs/acquisition_method"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "succeeded",
+                        "partial",
+                        "failed",
+                        "cancelled"
+                      ]
+                    },
+                    "crawl_run_id": {
+                      "$ref": "common.schema.json#/$defs/crawl_run_id"
+                    },
+                    "finished_at": {
+                      "$ref": "common.schema.json#/$defs/utc_timestamp"
+                    },
+                    "records_extracted": {
+                      "$ref": "common.schema.json#/$defs/count"
+                    },
+                    "error_count": {
+                      "$ref": "common.schema.json#/$defs/count"
+                    },
+                    "dataset_id": {
+                      "$ref": "common.schema.json#/$defs/dataset_id"
+                    },
+                    "notes": {
+                      "$ref": "common.schema.json#/$defs/text"
+                    }
+                  },
+                  "description": "這個屆次最近一次取得資料的結果，**包括失敗**。失敗時不會產生資料包，但仍要記錄在這裡。",
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "status": {
+                            "const": "failed"
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "notes"
+                        ],
+                        "not": {
+                          "required": [
+                            "dataset_id"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "datasets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "dataset_id",
+                      "location",
+                      "created_at",
+                      "data_origin",
+                      "schema_version",
+                      "content_hash",
+                      "record_counts",
+                      "completeness_status",
+                      "official_exhibitor_count",
+                      "collected_participation_count",
+                      "validation"
+                    ],
+                    "properties": {
+                      "dataset_id": {
+                        "$ref": "common.schema.json#/$defs/dataset_id"
+                      },
+                      "location": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "storage",
+                          "locator"
+                        ],
+                        "properties": {
+                          "storage": {
+                            "type": "string",
+                            "enum": [
+                              "git",
+                              "release",
+                              "actions_artifact",
+                              "external"
+                            ]
+                          },
+                          "locator": {
+                            "$ref": "common.schema.json#/$defs/short_text"
+                          },
+                          "retained_until": {
+                            "$ref": "common.schema.json#/$defs/date"
+                          }
+                        },
+                        "description": "資料包存放位置。storage=git 時 locator 是 repo 內的相對路徑。"
+                      },
+                      "created_at": {
+                        "$ref": "common.schema.json#/$defs/utc_timestamp"
+                      },
+                      "data_origin": {
+                        "$ref": "common.schema.json#/$defs/data_origin"
+                      },
+                      "schema_version": {
+                        "$ref": "common.schema.json#/$defs/schema_version"
+                      },
+                      "content_hash": {
+                        "$ref": "common.schema.json#/$defs/sha256"
+                      },
+                      "record_counts": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "companies",
+                          "participations",
+                          "sources"
+                        ],
+                        "properties": {
+                          "companies": {
+                            "$ref": "common.schema.json#/$defs/count"
+                          },
+                          "participations": {
+                            "$ref": "common.schema.json#/$defs/count"
+                          },
+                          "sources": {
+                            "$ref": "common.schema.json#/$defs/count"
+                          }
+                        }
+                      },
+                      "completeness_status": {
+                        "$ref": "common.schema.json#/$defs/completeness_status"
+                      },
+                      "official_exhibitor_count": {
+                        "oneOf": [
+                          {
+                            "$ref": "common.schema.json#/$defs/count"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "collected_participation_count": {
+                        "$ref": "common.schema.json#/$defs/count"
+                      },
+                      "validation": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "passed",
+                              "failed",
+                              "not_run"
+                            ]
+                          },
+                          "validated_at": {
+                            "$ref": "common.schema.json#/$defs/utc_timestamp"
+                          },
+                          "validator": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "name",
+                              "version"
+                            ],
+                            "properties": {
+                              "name": {
+                                "$ref": "common.schema.json#/$defs/short_text"
+                              },
+                              "version": {
+                                "$ref": "common.schema.json#/$defs/short_text"
+                              }
+                            }
+                          },
+                          "error_count": {
+                            "$ref": "common.schema.json#/$defs/count"
+                          },
+                          "messages": {
+                            "type": "array",
+                            "maxItems": 20,
+                            "items": {
+                              "$ref": "common.schema.json#/$defs/text"
+                            }
+                          }
+                        },
+                        "allOf": [
+                          {
+                            "if": {
+                              "properties": {
+                                "status": {
+                                  "enum": [
+                                    "passed",
+                                    "failed"
+                                  ]
+                                }
+                              }
+                            },
+                            "then": {
+                              "required": [
+                                "validated_at",
+                                "validator",
+                                "error_count"
+                              ]
+                            }
+                          },
+                          {
+                            "if": {
+                              "properties": {
+                                "status": {
+                                  "const": "failed"
+                                }
+                              }
+                            },
+                            "then": {
+                              "required": [
+                                "messages"
+                              ],
+                              "properties": {
+                                "error_count": {
+                                  "minimum": 1
+                                },
+                                "messages": {
+                                  "minItems": 1
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "description": "一個資料包的摘要。數值必須與該資料包 manifest 相同；Dashboard 用它顯示清單，不必逐一打開資料包。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "notices": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "level",
+          "message",
+          "occurred_at"
+        ],
+        "properties": {
+          "level": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "error"
+            ]
+          },
+          "message": {
+            "$ref": "common.schema.json#/$defs/text"
+          },
+          "occurred_at": {
+            "$ref": "common.schema.json#/$defs/utc_timestamp"
+          },
+          "exhibition_id": {
+            "$ref": "common.schema.json#/$defs/exhibition_id"
+          },
+          "dataset_id": {
+            "$ref": "common.schema.json#/$defs/dataset_id"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "acquisition_method": {
+      "type": "string",
+      "enum": [
+        "automatic",
+        "semi_automatic",
+        "file_import",
+        "authorized_file",
+        "manual_entry",
+        "undetermined"
+      ],
+      "description": "automatic=爬蟲自動擷取；semi_automatic=需要人工步驟的擷取；file_import=匯入公開檔案（PDF、CSV、Excel）；authorized_file=主辦單位授權提供的檔案；manual_entry=人工輸入；undetermined=尚未決定。"
+    }
+  }
+}
