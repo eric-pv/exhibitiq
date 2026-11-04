@@ -5,6 +5,9 @@
 ## 報告類型（對應 `analysis_type`）
 展覽概況、企業情報、商機排序、競爭態勢、合作與通路、市場趨勢、產品推薦、參展策略、跨展覽比較。
 
+## 版型（A2-12）
+各 `analysis_type` 的報告名稱與章節順序定義在 [`../templates/report-templates.json`](../templates/report-templates.json)。`exhibitiq_tools.py report` 依此輸出 Markdown（A2-13）；分析結果未通過驗證時不產生報告。有資料的章節一律輸出，不會因版型未列而遺漏。
+
 ## 必要章節（所有類型）
 1. **標題與基本資訊：** 展覽、屆次、資料包 ID、`content_hash`、Skill 版本、產生時間、**審核狀態**。
 2. **資料狀態：** `data_origin`（合成資料要明確標示）、完整度（官方筆數未知時寫「未知」）。

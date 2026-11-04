@@ -109,3 +109,24 @@ def test_score_is_explainable_and_schema_valid():
     top = scores[0]
     assert top["subject"]["entity_id"].endswith("C000000000000000000001")
     assert next(f for f in top["factors"] if f["factor_id"] == "product_fit")["status"] == "insufficient_data"
+
+
+ROOT = pc.ROOT
+
+
+def test_report_follows_template_and_refuses_invalid(tmp_path):
+    """A2-12/A2-13: sections follow templates/report-templates.json; invalid analyses are not rendered."""
+    import pytest
+    tpl = json.loads((ROOT / "skills/exhibitiq/templates/report-templates.json").read_text(encoding="utf-8"))
+    ex = ROOT / "schemas/v1/examples"
+    md = tools.render_report(ex / "analysis/analysis_result.example.json", ex / "package")
+    heads = [l[3:] for l in md.splitlines() if l.startswith("## ")]
+    want = [tpl["section_titles"][s] for s in tpl["types"]["opportunity_ranking"]["sections"]]
+    assert heads == want
+    assert "Synthetic Simulation Systems Ltd." in md and "（AI 推論" in md
+    bad = json.loads((ex / "analysis/analysis_result.example.json").read_text(encoding="utf-8"))
+    bad["scores"][0]["factors"][0]["evidence_source_ids"] = []
+    p = tmp_path / "bad.json"; p.write_text(json.dumps(bad), encoding="utf-8")
+    with pytest.raises(LookupError):
+        tools.render_report(p, ex / "package")
+    assert set(tpl["types"]) == set(json.loads((ROOT / "schemas/v1/analysis_result.schema.json").read_text(encoding="utf-8"))["properties"]["analysis_type"]["enum"])

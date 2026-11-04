@@ -208,46 +208,117 @@ def save_analysis(analysis_path: Path, package_dir: Path, out_root: Path | None 
 
 
 CLAIM = {"fact": "事實", "inference": "AI 推論", "unknown": "資料不足"}
+LEVEL = {"low": "低", "medium": "中", "high": "高"}
+REL = {"potential_customer": "潛在客戶", "competitor": "競爭對手", "partner": "合作夥伴", "channel": "通路", "unrelated": "不相關", "unknown": "未知"}
+REVIEW = {"draft": "未審核（draft）", "human_reviewed": "已人工審核", "approved": "已核准", "rejected": "已退回"}
+TEMPLATES = Path(__file__).resolve().parents[1] / "templates" / "report-templates.json"
+
+
+def _jsonl(p: Path) -> list[dict]:
+    return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()] if p.exists() else []
 
 
 def render_report(analysis_path: Path, package_dir: Path) -> str:
-    """Markdown report built ONLY from the analysis JSON (+ source details from the package)."""
-    a = load(analysis_path)
-    m = load(Path(package_dir) / "manifest.json")
-    srcs = {json.loads(l)["source_id"]: json.loads(l) for l in (Path(package_dir) / "sources.jsonl").read_text(encoding="utf-8").splitlines()}
-    comp = m["completeness"]
-    out = [f"# {a['title']}", "",
-           f"- 資料包：`{a['input_dataset_id']}`（`{a['input_hash']}`）",
-           f"- Skill：{a['skill_version']}｜產生時間：{a['generated_at']}｜**審核狀態：{a['review_status']}**",
-           f"- 資料來源類型：**{'合成資料（synthetic）' if a['data_origin'] == 'synthetic' else '真實資料'}**",
-           f"- 完整度：{m['completeness_status']}（已取得 {comp['collected_participation_count']}／官方公布 "
-           f"{'未知' if comp['official_exhibitor_count'] is None else comp['official_exhibitor_count']}）", ""]
-    if a.get("summary"):
-        out += ["## 摘要", "", a["summary"], ""]
-    out += ["## 結論", ""]
-    for c in a["conclusions"]:
-        ev = "、".join(f"`{s}`" for s in c.get("evidence_source_ids", [])) or "—"
-        extra = f"（信心：{c['confidence']}）" if c["claim_type"] == "inference" else ""
-        missing = f"；缺少：{c['missing_data']}" if c["claim_type"] == "unknown" else ""
-        out.append(f"- **[{CLAIM[c['claim_type']]}]** {c['statement']}{extra}{missing}　來源：{ev}")
-    if a.get("scores"):
-        out += ["", "## 評分", ""]
-        for s in sorted(a["scores"], key=lambda s: s["rank"]):
-            out.append(f"### #{s['rank']} `{s['subject']['entity_id']}`：{s['total_points']}／{s['max_total_points']}（{s['score_model_id']}）")
+    """Markdown report (A2-12/A2-13) built ONLY from a validated analysis JSON (+ names and source details from its package).
+
+    Sections and their order come from templates/report-templates.json for the analysis_type. An analysis
+    that fails validation is not rendered (LookupError), so an unvalidated report cannot be published.
+    """
+    v = validate_analysis(analysis_path, package_dir)
+    if not v["ok"]:
+        raise LookupError("analysis failed validation; no report: " + "; ".join(v["errors"][:5]))
+    pkg = Path(package_dir)
+    a, m, tpl = load(analysis_path), load(pkg / "manifest.json"), load(TEMPLATES)
+    srcs = {r["source_id"]: r for r in _jsonl(pkg / "sources.jsonl")}
+    names = {r["company_id"]: r["name"] for r in _jsonl(pkg / "companies.jsonl")}
+    ex = load(pkg / "exhibition.json") if (pkg / "exhibition.json").exists() else {}
+    claims = {c["claim_id"]: c for c in a["conclusions"]}
+    unc = {u["uncertainty_id"]: u for u in a.get("uncertainties", [])}
+    num = {sid: i for i, sid in enumerate(a["evidence_source_ids"], 1)}
+    cite = lambda ids: "".join(f"[{num[i]}]" for i in ids if i in num) or "—"
+    who = lambda e: names.get(e["entity_id"], e["entity_id"]) if e["entity_type"] == "company" else e["entity_id"]
+    t = tpl["types"][a["analysis_type"]]
+    titles = tpl["section_titles"]
+
+    def header():
+        exname = ex.get("name_zh_hant") or ex.get("name") or m["exhibition_id"]
+        return [f"- 報告類型：{t['label']}",
+                f"- 展覽：{exname}｜屆次：{m.get('edition_year', m['edition_id'])}",
+                f"- 資料包：`{a['input_dataset_id']}`（`{a['input_hash']}`）",
+                f"- Skill：{a['skill_version']}｜產生時間：{a['generated_at']}",
+                f"- **審核狀態：{REVIEW.get(a['review_status'], a['review_status'])}**"]
+
+    def data_status():
+        comp = m["completeness"]
+        off = "未知" if comp["official_exhibitor_count"] is None else comp["official_exhibitor_count"]
+        out = [f"- 資料類型：**{'合成資料（synthetic）：內容為虛構，不代表任何真實展覽或企業' if a['data_origin'] == 'synthetic' else '真實資料'}**",
+               f"- 完整度：{m['completeness_status']}（已取得 {comp['collected_participation_count']}／官方公布 {off}）"]
+        if m["completeness_status"] != "complete":
+            out.append("- ⚠️ 資料不完整，結論與排名可能遺漏。")
+        return out
+
+    def summary():
+        return [a["summary"]] if a.get("summary") else []
+
+    def conclusions():
+        out = []
+        for c in a["conclusions"]:
+            extra = f"（信心：{LEVEL[c['confidence']]}；理由：{c.get('rationale', '')}）" if c["claim_type"] == "inference" else ""
+            missing = f"（缺少：{c['missing_data']}）" if c["claim_type"] == "unknown" else ""
+            out.append(f"- **[{CLAIM[c['claim_type']]}]** {c['statement']}{extra}{missing}　來源：{cite(c.get('evidence_source_ids', []))}")
+        return out
+
+    def scores():
+        out = []
+        for s in sorted(a.get("scores", []), key=lambda s: s["rank"]):
+            out += [f"### 第 {s['rank']} 名：{who(s['subject'])}　{s['total_points']}／{s['max_total_points']}（{s['score_model_id']}，AI 推論）", "",
+                    "| 因子 | 得分 | 理由 | 來源 |", "|---|---|---|---|"]
             for f in s["factors"]:
-                st = "資料不足，不計分" if f["status"] == "insufficient_data" else f"{f['points']}／{f['max_points']}"
-                out.append(f"- {f['label']}：{st}；{f['rationale']}")
-    if a["recommendations"]:
-        out += ["", "## 建議", ""]
+                st = f"資料不足，不計分（0／{f['max_points']}）" if f["status"] == "insufficient_data" else f"{f['points']}／{f['max_points']}"
+                out.append(f"| {f['label']} | {st} | {f.get('rationale', '')} | {cite(f.get('evidence_source_ids', []))} |")
+            out.append("")
+        return out
+
+    def relationships():
+        return [f"- {names.get(r['company_id'], r['company_id'])}：**{REL[r['relationship_type']]}**（AI 推論"
+                + (f"，信心：{LEVEL[r['confidence']]}" if r.get("confidence") else "") + f"）{r.get('rationale', '')}　來源：{cite(r.get('evidence_source_ids', []))}"
+                for r in a.get("relationships", [])]
+
+    def recommendations():
+        out = []
         for r in a["recommendations"]:
-            out.append(f"- **[{r['priority']}]** {r['statement']}　理由：{r['rationale']}"
-                       + (f"　前提：{'；'.join(r['assumptions'])}" if r.get("assumptions") else ""))
-    out += ["", "## 不確定性與限制", ""] + [f"- [{u['impact']}] {u['description']}" for u in a["uncertainties"]]
-    out += ["", "## 來源附錄", "", "| source_id | 類型 | 網址 | 取得時間 | 快照雜湊 |", "|---|---|---|---|---|"]
-    for sid in a["evidence_source_ids"]:
-        s = srcs.get(sid, {})
-        out.append(f"| `{sid}` | {s.get('source_type', '?')} | {s.get('url', '—')} | {s.get('retrieved_at', '?')} | `{s.get('content_sha256', '?')}` |")
-    return "\n".join(out) + "\n"
+            out.append(f"- **[優先度：{LEVEL[r['priority']]}]** {r['statement']}（AI 推論）")
+            out.append(f"  - 理由：{r['rationale']}")
+            if r.get("assumptions"):
+                out.append(f"  - 前提：{'；'.join(r['assumptions'])}")
+            out.append(f"  - 依據結論：{'；'.join(claims[c]['statement'] for c in r['based_on_claim_ids'])}")
+            if r.get("uncertainty_ids"):
+                out.append(f"  - 不確定性：{'；'.join(unc[u]['description'] for u in r['uncertainty_ids'])}")
+            out.append(f"  - 來源：{cite(r.get('evidence_source_ids', []))}")
+        return out
+
+    def uncertainties():
+        return [f"- [影響：{LEVEL[u['impact']]}] {u['description']}" for u in a.get("uncertainties", [])]
+
+    def sources():
+        out = ["| # | source_id | 類型 | 網址 | 取得時間 | 快照雜湊 |", "|---|---|---|---|---|---|"]
+        for sid, i in num.items():
+            r = srcs[sid]
+            out.append(f"| [{i}] | `{sid}` | {r['source_type']} | {r.get('url', '—')} | {r['retrieved_at']} | `{r['content_sha256']}` |")
+        return out
+
+    fns = {"header": header, "data_status": data_status, "summary": summary, "conclusions": conclusions, "scores": scores,
+           "relationships": relationships, "recommendations": recommendations, "uncertainties": uncertainties, "sources": sources}
+    # never drop content: a section that has data is rendered even if the template does not list it
+    order = list(t["sections"])
+    for sec, key in (("scores", "scores"), ("relationships", "relationships")):
+        if a.get(key) and sec not in order:
+            order.insert(order.index("recommendations"), sec)
+    out = [f"# {a['title']}", ""]
+    for sec in order:
+        body = fns[sec]()
+        out += [f"## {titles[sec]}", ""] + (body or ["無"]) + [""]
+    return "\n".join(out).rstrip("\n") + "\n"
 
 
 def main(argv: list[str] | None = None) -> int:
