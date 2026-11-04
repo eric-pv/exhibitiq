@@ -45,6 +45,7 @@
 | A2-03 | Skill 輔助程式與安裝使用說明 | [#51](https://github.com/magician-eric/exhibitiq/pull/51) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-04 | 資料包批次讀取與版本驗證 | [#52](https://github.com/magician-eric/exhibitiq/pull/52) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-06 | 分類詞草稿（待核定）、分類規則、`classify` | [#54](https://github.com/magician-eric/exhibitiq/pull/54) | `dev/ai-intelligence` | 2026-11-04 |
+| A2-07 | 商機評分模型 opportunity@1（草稿待核定）與 `score` | [#55](https://github.com/magician-eric/exhibitiq/pull/55) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -52,7 +53,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A2-07 | 商機評分模型 opportunity@1（草稿待核定）與 `score` | 本 PR |
+| W2-02 | 企業清單：搜尋（含別名）、篩選（網址同步）、排序、分頁、CSV 匯出；共用 DataTable | 本 PR |
 
 ## 待處理（Phase 1）
 

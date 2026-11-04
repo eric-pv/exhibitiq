@@ -93,9 +93,15 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
             official: manifest.completeness.official_exhibitor_count,
             collected: manifest.completeness.collected_participation_count,
           },
-          companies: companies.map((c) => ({
-            companyId: c.company_id, name: c.name, country: c.country ?? null, verificationStatus: c.verification_status,
-          })),
+          companies: companies.map((c) => {
+            const ps = participations.filter((p) => p.company_id === c.company_id);
+            return {
+              companyId: c.company_id, name: c.name, country: c.country ?? null, verificationStatus: c.verification_status,
+              aliases: (c.aliases ?? []).map((a) => a.name),
+              listed: ps.some((p) => p.listing_status === "listed"),
+              booths: [...new Set(ps.map((p) => p.booth).filter(Boolean))],
+            };
+          }),
           listedParticipations: participations.filter((p) => p.listing_status === "listed").length,
         };
       }

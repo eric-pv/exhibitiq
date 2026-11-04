@@ -29,7 +29,7 @@ export interface Bundle {
   datasets: Record<string, {
     datasetId: string; exhibitionId: string; editionId: string; dataOrigin: "synthetic" | "collected"; createdAt: string;
     completeness: Completeness;
-    companies: { companyId: string; name: string; country: string | null; verificationStatus: string }[];
+    companies: { companyId: string; name: string; country: string | null; verificationStatus: string; aliases: string[]; listed: boolean; booths: string[] }[];
     listedParticipations: number;
   }>;
   analyses: {
