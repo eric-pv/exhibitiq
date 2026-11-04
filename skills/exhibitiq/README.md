@@ -12,6 +12,7 @@ mkdir -p .claude/skills && ln -sfn ../../skills/exhibitiq .claude/skills/exhibit
 T=skills/exhibitiq/scripts/exhibitiq_tools.py
 python $T list                                      # 已登錄展覽與最新資料包
 python $T select <exhibition_id> [年份]             # 選出最新、驗證通過的資料包
+python $T check-all                                 # 批次檢查所有最新資料包（版本、雜湊、驗證）
 python $T validate-package <package_dir>            # 分析前必做
 python $T validate-analysis <analysis.json> <package_dir>   # 發布前必做
 python $T report <analysis.json> <package_dir> > <analysis_id>.md

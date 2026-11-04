@@ -53,3 +53,20 @@ def test_report_is_built_only_from_analysis():
 def test_cli_exit_codes():
     assert tools.main(["select", "sample-fair", "--index", str(EX_INDEX)]) == 2
     assert tools.main(["validate-package", str(G / "package")]) == 0
+
+
+def test_check_all_reports_every_edition():
+    rows = tools.check_all(EX_INDEX)
+    by = {r["edition_id"]: r for r in rows}
+    assert by["example-expo-2026"]["ok"]
+    assert by["sample-fair-2026"]["dataset_id"] is None and "no validated package" in by["sample-fair-2026"]["problems"][0]
+    assert tools.check_all(G / "dataset_index.json")[0]["ok"]
+
+
+def test_check_all_detects_hash_mismatch(tmp_path):
+    idx = json.loads(EX_INDEX.read_text(encoding="utf-8"))
+    idx["exhibitions"][0]["editions"][0]["datasets"][0]["content_hash"] = "sha256:" + "0" * 64
+    p = tmp_path / "idx.json"
+    p.write_text(json.dumps(idx), encoding="utf-8")
+    row = tools.check_all(p)[0]
+    assert not row["ok"] and any("content_hash" in x for x in row["problems"])
