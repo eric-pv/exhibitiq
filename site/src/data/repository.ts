@@ -1,5 +1,5 @@
 import bundleJson from "../generated/bundle.json";
-import type { Bundle, Completeness, FieldSources, SourceInfo } from "./types";
+import type { AnalysisDetail, Bundle, Completeness, FieldSources, SourceInfo } from "./types";
 
 /** The only entry point pages use to read data (DEVELOPMENT_PLAN.md §3). */
 export const bundle = bundleJson as unknown as Bundle;
@@ -153,5 +153,60 @@ export function getCompanyDetail(companyId: string, b: Bundle = bundle): Company
     companyId, name: primary.name, verificationStatus: primary.verificationStatus, dataOrigin: primaryDs.dataOrigin,
     status: r.status, mergedInto: r.mergedInto, notes: r.notes, fields, aliases: [...aliases.values()], participations,
     lastUpdated: stamps.reduce((a, s) => (s > a ? s : a)), packageCreatedAt: primaryDs.createdAt, datasetId: primaryDs.datasetId,
+  };
+}
+
+type Analysis = Bundle["analyses"][number];
+type Conclusion = AnalysisDetail["conclusions"][number];
+
+/** How a conclusion is labelled: sourced facts keep their verification status; everything else is AI inference or unknown. */
+export function claimKindOf(c: Pick<Conclusion, "claimType" | "verificationStatus">): string {
+  return c.claimType === "fact" ? c.verificationStatus ?? "unverified" : c.claimType === "inference" ? "ai_inferred" : "insufficient_data";
+}
+
+export interface RankingRow {
+  key: string; rank: number | null; companyId: string; companyName: string; total: number; max: number;
+  scoredFactors: number; factorCount: number;
+  score: AnalysisDetail["scores"][number];
+  relationship: AnalysisDetail["relationships"][number] | null;
+}
+
+export interface OpportunityView {
+  analysis: Analysis; dataOrigin: "synthetic" | "collected"; completeness: Completeness;
+  ranking: RankingRow[];
+  claims: Map<string, Conclusion>;
+  uncertainties: Map<string, AnalysisDetail["uncertainties"][number]>;
+  source: (id: string) => ResolvedSource;
+  companyName: (id: string) => string;
+}
+
+/** Analyses that have scores, newest first (the opportunities page can switch between them). */
+export function getScoredAnalyses(b: Bundle = bundle): Analysis[] {
+  return b.analyses.filter((a) => a.detail.scores.length > 0).sort((x, y) => y.generatedAt.localeCompare(x.generatedAt));
+}
+
+/** 商機分析 (W2-04): ranking, score breakdown, relationship classes and citations for one analysis. */
+export function getOpportunityView(analysisId?: string | null, b: Bundle = bundle): OpportunityView | null {
+  const list = getScoredAnalyses(b);
+  const a = list.find((x) => x.analysisId === analysisId) ?? list[0];
+  if (!a) return null;
+  const ds = b.datasets[a.inputDatasetId];
+  const names = new Map(ds.companies.map((c) => [c.companyId, c.name]));
+  const companyName = (id: string) => names.get(id) ?? id;
+  const rel = new Map(a.detail.relationships.map((r) => [r.companyId, r]));
+  const ranking = a.detail.scores
+    .filter((s) => s.subject.entity_type === "company")
+    .map((s) => ({
+      key: s.scoreId, rank: s.rank, companyId: s.subject.entity_id, companyName: companyName(s.subject.entity_id), total: s.total, max: s.max,
+      scoredFactors: s.factors.filter((f) => f.status === "scored").length, factorCount: s.factors.length, score: s,
+      relationship: rel.get(s.subject.entity_id) ?? null,
+    }))
+    .sort((x, y) => (x.rank ?? Infinity) - (y.rank ?? Infinity) || y.total - x.total);
+  return {
+    analysis: a, dataOrigin: a.dataOrigin, completeness: ds.completeness, ranking,
+    claims: new Map(a.detail.conclusions.map((c) => [c.claimId, c])),
+    uncertainties: new Map(a.detail.uncertainties.map((u) => [u.uncertaintyId, u])),
+    source: (id) => ds.sources[id] ?? { sourceId: id, missing: true as const },
+    companyName,
   };
 }

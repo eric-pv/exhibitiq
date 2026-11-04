@@ -158,12 +158,47 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
       const a = readJson(f);
       v.check("analysis_result", a, relative(REPO, f));
       if (!datasets[a.input_dataset_id]) continue; // analysis of a package that is not the latest one
+      const ds = datasets[a.input_dataset_id];
+      // Every source an analysis cites must exist in its input package (W2-04: citations are clickable).
+      const cited = [
+        ...(a.evidence_source_ids ?? []),
+        ...a.conclusions.flatMap((c) => c.evidence_source_ids ?? []),
+        ...(a.scores ?? []).flatMap((s) => s.factors.flatMap((f) => f.evidence_source_ids ?? [])),
+        ...(a.relationships ?? []).flatMap((r) => r.evidence_source_ids ?? []),
+        ...a.recommendations.flatMap((r) => r.evidence_source_ids ?? []),
+      ];
+      for (const id of cited) if (!ds.sources[id]) throw new Error(`${relative(REPO, f)}: cites ${id}, which is not in ${a.input_dataset_id}/sources.jsonl`);
       analyses.push({
         analysisId: a.analysis_id, title: a.title, analysisType: a.analysis_type, inputDatasetId: a.input_dataset_id,
         generatedAt: a.generated_at, reviewStatus: a.review_status, dataOrigin: a.data_origin,
         analyzedCompanyIds: [...new Set((a.scores ?? []).filter((s) => s.subject.entity_type === "company").map((s) => s.subject.entity_id))],
         highPriorityRecommendations: a.recommendations.filter((r) => r.priority === "high").length,
         claimCounts: a.conclusions.reduce((acc, c) => ({ ...acc, [c.claim_type]: (acc[c.claim_type] ?? 0) + 1 }), {}),
+        detail: {
+          summary: a.summary ?? null, skillVersion: a.skill_version ?? null,
+          conclusions: a.conclusions.map((c) => ({
+            claimId: c.claim_id, claimType: c.claim_type, statement: c.statement, subjects: c.subjects ?? [],
+            sourceIds: c.evidence_source_ids ?? [], verificationStatus: c.verification_status ?? null, confidence: c.confidence ?? null,
+            rationale: c.rationale ?? null, missingData: c.missing_data ?? null, uncertaintyIds: c.uncertainty_ids ?? [],
+          })),
+          uncertainties: (a.uncertainties ?? []).map((u) => ({ uncertaintyId: u.uncertainty_id, description: u.description, impact: u.impact })),
+          scores: (a.scores ?? []).map((s) => ({
+            scoreId: s.score_id, modelId: s.score_model_id, subject: s.subject, total: s.total_points, max: s.max_total_points, rank: s.rank ?? null,
+            factors: s.factors.map((x) => ({
+              factorId: x.factor_id, label: x.label, status: x.status, points: x.points, max: x.max_points,
+              sourceIds: x.evidence_source_ids ?? [], claimIds: x.claim_ids ?? [], rationale: x.rationale ?? null,
+            })),
+          })),
+          relationships: (a.relationships ?? []).map((r) => ({
+            relationshipId: r.relationship_id, companyId: r.company_id, type: r.relationship_type, rationale: r.rationale ?? null,
+            confidence: r.confidence ?? null, sourceIds: r.evidence_source_ids ?? [], claimIds: r.claim_ids ?? [],
+          })),
+          recommendations: a.recommendations.map((r) => ({
+            recommendationId: r.recommendation_id, type: r.recommendation_type, statement: r.statement, rationale: r.rationale ?? null,
+            priority: r.priority, subjects: r.subjects ?? [], assumptions: r.assumptions ?? [], sourceIds: r.evidence_source_ids ?? [],
+            claimIds: r.based_on_claim_ids ?? [], scoreIds: r.score_ids ?? [], uncertaintyIds: r.uncertainty_ids ?? [],
+          })),
+        },
       });
     }
   }
