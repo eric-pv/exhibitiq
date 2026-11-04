@@ -40,6 +40,7 @@
 | A1-01 | 競賽 MVP 範圍與驗收指標（**Eric 已核定**） | [#36](https://github.com/magician-eric/exhibitiq/pull/36) | `dev/ai-intelligence` | 2026-11-04 |
 | A1-10 | 展覽登錄契約（`1.0.0-draft.5`）；**ai 的 Phase 1 工作全部完成** | [#39](https://github.com/magician-eric/exhibitiq/pull/39) | `dev/ai-intelligence` | 2026-11-04 |
 | — | V2.4 流程：獨立作業（階段為檢查點、測試通過後自行合併、data 端自行同步） | [#44](https://github.com/magician-eric/exhibitiq/pull/44) | `dev/ai-intelligence` | 2026-11-04 |
+| A2-01 | Skill 入口、輸入輸出與報告驗收規格 | [#47](https://github.com/magician-eric/exhibitiq/pull/47) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -47,7 +48,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A2-01 | Skill 入口、輸入輸出與報告驗收規格（`skills/exhibitiq/`） | 本 PR |
+| A2-02 | 黃金樣本：第二組不同結構的合成資料包、索引、預期分析與 Dashboard 預期數字 | 本 PR |
 
 ## 待處理（Phase 1）
 
