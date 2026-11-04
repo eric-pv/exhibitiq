@@ -9,7 +9,7 @@
 | 路徑 | 責任 | 不做 | 狀態 |
 |---|---|---|---|
 | `crawler/` | 取得來源（HTML、PDF、CSV、Excel、人工輸入），保存為不可變的原始證據，並記錄來源 ID、取得時間、內容雜湊 | 清洗、去重、打包、AI 分析 | 套件已建立；已有來源設定、錯誤格式、執行日誌（D1-07，見 `run-logging-and-errors.md`），無爬取邏輯 |
-| `etl/` | 可重現的清洗、標準化、企業去重、品質與完整度檢查、資料包寫出，以及**唯一一份**資料包驗證程式 | 爬取來源、AI 推論 | 套件已建立；已有資料包讀寫工具（D1-04，見 `package-io.md`），驗證程式（D1-05）尚未建立 |
+| `etl/` | 可重現的清洗、標準化、企業去重、品質與完整度檢查、資料包寫出，以及**唯一一份**資料包驗證程式 | 爬取來源、AI 推論 | 套件已建立；已有資料包讀寫工具（D1-04，見 `package-io.md`）與唯一的資料包驗證程式（D1-05，見 `package-validator.md`） |
 | `.github/workflows/` | 在雲端執行驗證、擷取、ETL（不直接寫入 `main`） | — | 規劃中（D1-02、D1-08） |
 | `data/` | 資料產物：`raw/`、`normalized/`、`packages/`、`history/` | 原始資料不可修改 | 規劃中（Phase 2 起使用） |
 | `tests/data/` | 資料工程測試 | — | 已建立 |
@@ -51,7 +51,7 @@ AI Skill 讀取（專案負責人的範圍；資料包是兩邊的介面）
 | 工作項目 | 預期內容 | 預期位置 |
 |---|---|---|
 | D1-04 | JSONL、manifest、來源索引的讀寫工具（依契約 §5、§6 的序列化與雜湊）（**已完成**） | `etl/` |
-| D1-05 | Schema 載入與資料包驗證程式（R1–R11）、完整性測試；以 `schemas/v1/examples/package/` 為正向測試向量 | `etl/`、`tests/data/` |
+| D1-05 | Schema 載入與資料包驗證程式（R1–R11）、完整性測試；以 `schemas/v1/examples/package/` 為正向測試向量（**已完成**） | `etl/`、`tests/data/` |
 | D1-06 | 兩組不同結構的合成展覽測試資料（`data_origin: "synthetic"`） | `data/samples/<exhibition_id>/` |
 | D1-11 | 通用的新展覽來源評估流程與範本（以 D1-10 MSPO 評估為第一個實例） | `docs/data-platform/` |
 | D1-07 | 來源設定、執行日誌與錯誤格式（**已完成**） | `crawler/` |

@@ -23,7 +23,7 @@ pip install -r requirements.txt
 pytest tests/data
 ```
 
-預期結果：`4 passed`。
+預期結果：全部通過（D1-01 建立時只有 4 個測試；現在的測試數量見各工作項目的 PR 與 `package-io.md`、`package-validator.md`）。
 
 ## 已驗證（2026-11-03，雲端 Linux 容器）
 
@@ -51,7 +51,7 @@ Smoke test 檢查四件事：Python 版本不低於 3.11；`pyproject.toml` 的 
 - **Python 3.14** 未測試。
 - **GitHub Actions** 尚未設定，屬 P1-DATA-07；本 Issue 不建立 workflow。
 - **Claude Code 不在 Codespace 內安裝。** 2026-11-03 在該 Codespace 執行 `claude --version` 找不到指令，本設定也沒有安裝它；Claude Code 在另一個雲端工作階段執行，開發結果透過 GitHub 分支與 PR 交付。
-- 只固定頂層套件。`jsonschema` 的相依套件（`attrs`、`referencing`、`rpds-py` 等）未固定，版本由 pip 解析；需要完全可重現的鎖定檔時，另開 Issue。
+- 只固定「程式直接匯入」的套件：`jsonschema`、`referencing`（D1-05 起，驗證器直接使用）、`pytest`。它們的相依套件（`attrs`、`rpds-py` 等）未固定，版本由 pip 解析；需要完全可重現的鎖定檔時，另開 Issue。
 
 ## 新增依賴的規則
 

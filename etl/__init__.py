@@ -9,7 +9,7 @@ Not in this package: crawling (see ``crawler``), and AI inference. Inferred
 analysis must never be written back as sourced fact.
 
 Contents: ``jsonl`` / ``hashing`` / ``package`` read and write data packages
-byte-reproducibly (D1-04). The single data-package validator (D1-05) is not
-here yet. The data contract lives only in ``schemas/``; never define fields
-here.
+byte-reproducibly (D1-04); ``validate`` (with ``schema_registry``) is the single
+data-package validator, rules R1-R11 (D1-05). The data contract lives only in
+``schemas/``; never define fields here.
 """
