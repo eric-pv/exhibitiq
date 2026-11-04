@@ -124,6 +124,48 @@ def classify(package_dir: Path, taxonomy_dir: Path | None = None) -> dict:
     return {k: {"terms": sorted(v["terms"]), "source_ids": sorted(v["source_ids"])} for k, v in out.items()}
 
 
+def relate(package_dir: Path, knowledge_dir: Path | None = None) -> dict:
+    """A2-08: deterministic relationship candidates per company (always inference input, never fact).
+
+    competitor / potential_customer need approved BXR product cards (A2-05); without them the result is
+    "unknown" with the reason. channel / partner come from keyword signals in the source text.
+    """
+    import re
+    kd = knowledge_dir or ROOT / "knowledge"
+    rules = load(kd / "relationship-rules@1.json")
+    terms = classify(package_dir, kd / "taxonomy")
+    products = [p for p in (load(f) for f in sorted((kd / "bxr-products").glob("*.json"))) if p.get("approval_status") == "approved"]
+    bxr = {rel: {t for p in products for f in spec["bxr_fields"] for t in p.get(f, [])} for rel, spec in rules["taxonomy_signals"].items()}
+    texts: dict[str, list[tuple[str, list[str]]]] = {}
+    for p in _jsonl(Path(package_dir) / "participations.jsonl"):
+        text = " ".join([p["exhibitor_name_as_listed"], *p.get("categories_as_listed", []), *p.get("products_as_listed", [])])
+        texts.setdefault(p["company_id"], []).append((text, p["source_ids"]))
+    out = {}
+    for cid in sorted(texts):
+        found: dict[str, dict] = {}
+        for rel, words in rules["keyword_signals"].items():
+            for text, sids in texts[cid]:
+                hit = [w for w in words if re.search(rf"(?<![A-Za-z]){re.escape(w)}(?![A-Za-z])", text, re.IGNORECASE)]
+                if hit:
+                    f = found.setdefault(rel, {"signals": set(), "source_ids": set()})
+                    f["signals"] |= set(hit); f["source_ids"] |= set(sids)
+        ct = terms.get(cid, {"terms": [], "source_ids": []})
+        for rel, spec in rules["taxonomy_signals"].items():
+            mine = {t for t in ct["terms"] if t.split(".")[0] in spec["company_dimensions"]}
+            overlap = mine & bxr[rel]
+            if overlap:
+                found[rel] = {"signals": overlap, "source_ids": set(ct["source_ids"])}
+        rel = next((r for r in rules["precedence"] if r in found), None)
+        if rel:
+            out[cid] = {"relationship_type": rel, "confidence": "low", "signals": sorted(found[rel]["signals"]),
+                        "source_ids": sorted(found[rel]["source_ids"]), "other_candidates": sorted(set(found) - {rel}), "reason": None}
+        else:
+            reason = ("BXR 產品知識庫沒有已核定的產品卡（A2-05），無法判斷是否為潛在客戶或競爭對手；來源也沒有通路或合作訊號。"
+                      if not products else "來源中沒有可判斷關係的訊號。")
+            out[cid] = {"relationship_type": "unknown", "confidence": None, "signals": [], "source_ids": [], "other_candidates": [], "reason": reason}
+    return {"rules_id": rules["rules_id"], "rules_status": rules["approval_status"], "approved_products": len(products), "companies": out}
+
+
 def score(package_dir: Path, model_path: Path | None = None) -> list[dict]:
     """A2-07: deterministic opportunity scores (analysis_result `scores` items).
     Factors without evidence are insufficient_data with 0 points — never estimated."""
@@ -334,6 +376,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("check-all").add_argument("--index", type=Path, default=None)
     sub.add_parser("classify").add_argument("package_dir", type=Path)
     sub.add_parser("score").add_argument("package_dir", type=Path)
+    sub.add_parser("relate").add_argument("package_dir", type=Path)
     for name in ("validate-analysis", "report", "save-analysis"):
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
@@ -350,6 +393,8 @@ def main(argv: list[str] | None = None) -> int:
             return 0 if all(r["ok"] for r in rows if r["dataset_id"]) else 1
         elif a.cmd == "score":
             print(json.dumps(score(a.package_dir), ensure_ascii=False, indent=2))
+        elif a.cmd == "relate":
+            print(json.dumps(relate(a.package_dir), ensure_ascii=False, indent=2))
         elif a.cmd == "classify":
             print(json.dumps(classify(a.package_dir), ensure_ascii=False, indent=2))
         elif a.cmd == "validate-package":
