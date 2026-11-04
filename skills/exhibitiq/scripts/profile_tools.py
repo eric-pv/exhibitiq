@@ -159,3 +159,56 @@ def analysis_config(profile=None, knowledge_dir: Path | None = None) -> dict:
         cfg["score_model_id"] = prof["score_model"]["score_model_id"]
     cfg["bxr_products_status"] = bxr_status(prof, knowledge_dir)
     return cfg
+
+
+def compare(package_dirs: list[Path], profile=None) -> dict:
+    """A2-09: deterministic cross-package comparison and keyword trends for one profile.
+
+    Per package: identity (exhibition, edition/year, dataset), completeness, collected companies, and for every
+    enabled keyword the companies whose source text matches it (with source ids). Across packages: companies that
+    appear in several packages and per-keyword series ordered by year. Shares are only given when the package is
+    complete; otherwise they are null with the reason (never estimated). Changes (changes.jsonl) are counted as given.
+    """
+    prof = load_profile(profile)
+    kws = [k for k in prof["keywords"] if k["enabled"]]
+    packages = []
+    for d in package_dirs:
+        d = Path(d)
+        m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
+        hits = match(d, prof)
+        companies = sorted(hits)
+        complete = m["completeness_status"] == "complete"
+        per_kw = {}
+        for k in kws:
+            cos = [c for c in companies if k["term_id"] in hits[c]["terms"]]
+            per_kw[k["term_id"]] = {
+                "label": k["label"], "category": k["category"], "company_ids": cos, "count": len(cos),
+                "share": round(len(cos) / len(companies), 4) if complete and companies else None,
+                "source_ids": sorted({s for c in cos for s in hits[c]["source_ids"]}),
+            }
+        changes = _jsonl(d / "changes.jsonl")
+        packages.append({
+            "dataset_id": m["dataset_id"], "exhibition_id": m["exhibition_id"], "edition_id": m["edition_id"],
+            "year": m.get("edition_year"), "data_origin": m["data_origin"], "completeness_status": m["completeness_status"],
+            "official_exhibitor_count": m["completeness"]["official_exhibitor_count"],
+            "collected_company_count": len(companies), "company_ids": companies, "keywords": per_kw,
+            "share_note": None if complete else "資料不完整，不計算比例（只列實際取得的家數）",
+            "changes": {t: sum(1 for c in changes if c["change_type"] == t and c["entity_type"] in {"company", "participation"})
+                        for t in ("added", "removed", "modified")} if changes else None,
+        })
+    order = sorted(packages, key=lambda p: ((p["year"] or 0), p["exhibition_id"]))
+    seen: dict[str, list[str]] = {}
+    for p in order:
+        for c in p["company_ids"]:
+            seen.setdefault(c, []).append(p["dataset_id"])
+    series = {k["term_id"]: [{"dataset_id": p["dataset_id"], "exhibition_id": p["exhibition_id"], "year": p["year"],
+                              "count": p["keywords"][k["term_id"]]["count"], "share": p["keywords"][k["term_id"]]["share"],
+                              "completeness_status": p["completeness_status"]} for p in order] for k in kws}
+    years = {(p["exhibition_id"], p["year"]) for p in order}
+    return {
+        "profile_id": prof["profile_id"], "profile_version": prof["version"], "mode": prof["mode"],
+        "packages": order, "keyword_series": series,
+        "shared_companies": {c: ds for c, ds in sorted(seen.items()) if len(ds) > 1},
+        "trend_note": None if len({e for e, _ in years}) < len(years) else "沒有同一展覽的多個年度，只能做跨展覽比較，不能判斷時間趨勢（資料不足）",
+        "incomplete_packages": [p["dataset_id"] for p in order if p["completeness_status"] != "complete"],
+    }

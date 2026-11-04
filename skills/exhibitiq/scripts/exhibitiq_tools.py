@@ -349,6 +349,9 @@ def main(argv: list[str] | None = None) -> int:
         sp.add_argument("package_dir", type=Path)
         sp.add_argument("--profile", default=None, help="analysis profile id or path (knowledge/analysis-profiles/)")
     sub.add_parser("config").add_argument("profile")
+    sp = sub.add_parser("compare")
+    sp.add_argument("package_dirs", type=Path, nargs="+")
+    sp.add_argument("--profile", default=None)
     for name in ("validate-analysis", "report", "save-analysis"):
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
@@ -369,6 +372,9 @@ def main(argv: list[str] | None = None) -> int:
                 print(json.dumps(profile_tools.score(a.package_dir, a.profile), ensure_ascii=False, indent=2))
             else:  # legacy opportunity@1 draft (kept for comparison until Eric approves a model)
                 print(json.dumps(score(a.package_dir), ensure_ascii=False, indent=2))
+        elif a.cmd == "compare":
+            import profile_tools
+            print(json.dumps(profile_tools.compare(a.package_dirs, a.profile), ensure_ascii=False, indent=2))
         elif a.cmd == "config":
             import profile_tools
             print(json.dumps(profile_tools.analysis_config(a.profile), ensure_ascii=False, indent=2))

@@ -26,7 +26,7 @@ description: ExhibitIQ exhibition intelligence analysis. Use when asked to analy
 
 ## 4. 工作流程
 
-輔助程式：`python skills/exhibitiq/scripts/exhibitiq_tools.py`，子命令 `list`、`select`、`validate-package`、`classify`／`score`／`relate`（都可加 `--profile <分析設定檔>`；關係為多標籤候選，見 `references/relationship-rules.md`）、`config <profile>`（產生分析結果的 `analysis_config`）、`validate-analysis`、`save-analysis`、`report`（用法見 `README.md`）。
+輔助程式：`python skills/exhibitiq/scripts/exhibitiq_tools.py`，子命令 `list`、`select`、`validate-package`、`classify`／`score`／`relate`（都可加 `--profile <分析設定檔>`；關係為多標籤候選，見 `references/relationship-rules.md`）、`config <profile>`（產生分析結果的 `analysis_config`）、`compare <package_dir>... --profile`（跨展覽／跨年度比較與關鍵字趨勢）、`validate-analysis`、`save-analysis`、`report`（用法見 `README.md`）。
 1. 讀取資料集索引，選定展覽與屆次，取得最新資料包路徑。
 2. 執行 `python -m etl.validate <package_dir>`（尚未整合時用 `exhibitiq_tools.py validate-package`）；失敗就停止並回報錯誤，不分析。
 3. 讀取 `manifest.json`；記下 `dataset_id`、`content_hash`、`data_origin`、`completeness_status`。合成資料的分析結果必須標 `data_origin: synthetic`。
