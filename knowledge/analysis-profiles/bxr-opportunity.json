@@ -1,0 +1,155 @@
+{
+  "schema_version": "1.0.0-draft.6",
+  "profile_id": "bxr-opportunity",
+  "version": 1,
+  "name": "BXR 商機分析（產品卡待審核）",
+  "description": "A 模式起始主題：以 8 張待審核 BXR 產品卡的功能定位與初始關鍵字辨識潛在客戶、競爭對手、合作夥伴與通路。使用者可自行調整。",
+  "mode": "bxr_opportunity",
+  "keywords": [
+    {
+      "term_id": "bxr.xr-scenario-training",
+      "category": "product",
+      "label": "XR 情境式模擬訓練",
+      "label_en": "XR Scenario Training",
+      "synonyms": [
+        "XR",
+        "情境模擬",
+        "Scenario Training",
+        "Mixed Reality"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "bxr.tactical-training",
+      "category": "product",
+      "label": "戰術訓練",
+      "label_en": "Tactical Training",
+      "synonyms": [
+        "Tactical"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "bxr.police-training",
+      "category": "product",
+      "label": "警政模擬訓練",
+      "label_en": "Police Training",
+      "synonyms": [
+        "警政",
+        "Law Enforcement",
+        "Police"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "bxr.shooting-simulation",
+      "category": "product",
+      "label": "射擊模擬訓練",
+      "label_en": "Shooting Simulation",
+      "synonyms": [
+        "射擊",
+        "Marksmanship",
+        "Firearms Training",
+        "Shooting Simulator"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "bxr.uav",
+      "category": "product",
+      "label": "無人機",
+      "label_en": "UAV",
+      "synonyms": [
+        "Drone",
+        "UAS",
+        "無人飛行載具"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "bxr.counter-uav",
+      "category": "product",
+      "label": "無人機反制",
+      "label_en": "Counter-UAV",
+      "synonyms": [
+        "C-UAS",
+        "Counter Drone",
+        "反無人機"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "bxr.usv",
+      "category": "product",
+      "label": "無人水面載具",
+      "label_en": "USV",
+      "synonyms": [
+        "Unmanned Surface Vehicle",
+        "無人艇"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "bxr.weapon-simulation",
+      "category": "product",
+      "label": "武器操作模擬訓練",
+      "label_en": "Weapon Simulation",
+      "synonyms": [
+        "Weapon Training",
+        "武器模擬"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "bxr.wargaming",
+      "category": "product",
+      "label": "兵棋推演",
+      "label_en": "Wargaming",
+      "synonyms": [
+        "Wargame",
+        "兵推",
+        "情境規劃"
+      ],
+      "enabled": true
+    }
+  ],
+  "relationship_signals": {
+    "channel": [
+      "distributor",
+      "distribution",
+      "reseller",
+      "dealer",
+      "agent",
+      "代理",
+      "經銷",
+      "代理商",
+      "經銷商"
+    ],
+    "partner": [
+      "integrator",
+      "system integration",
+      "systems integration",
+      "OEM",
+      "ODM",
+      "solution provider",
+      "系統整合",
+      "整合商",
+      "合作夥伴"
+    ]
+  },
+  "targets": {
+    "bxr_product_ids": [
+      "bxr-ai-xr-sut-box",
+      "bxr-police-box",
+      "bxr-gp-s",
+      "bxr-uav-module",
+      "bxr-usv-vr-sim",
+      "bxr-rwg90-simulator",
+      "bxr-javelin-simulator",
+      "bxr-wargame-table"
+    ]
+  },
+  "updated_at": "2026-11-04T12:00:00Z",
+  "updated_by": "Claude Code（A2-05）",
+  "notes": "產品卡皆為 draft；以此設定產生的報告必須提示「產品資料未核定」。評分模型由 A2-16 加入。"
+}

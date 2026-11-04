@@ -1,7 +1,8 @@
 # knowledge/bxr-products/ — BXR 產品知識庫
 
 - **負責人：** Eric（`ai`）。格式：[`schemas/v1/bxr_product.schema.json`](../../schemas/v1/bxr_product.schema.json)；規格：[`docs/specs/knowledge-base-contract.md`](../../docs/specs/knowledge-base-contract.md)。
-- **目前狀態：** 只有結構，**沒有任何產品卡**。產品內容要由 Eric 提供依據文件（型錄、規格書等），經核定後才建立（A2-05）。
+- **目前狀態（A2-05，V2.5）：** 8 張產品卡，全部是 **`draft`（待審核）**，只有 Eric 提供的產品名稱與初始功能定位；**沒有任何規格數值**。正式型錄提供並經 Eric 核定後，才改為 `approved`。
+- **用途：** 只用於 A 模式（BXR 商機分析，主題 `knowledge/analysis-profiles/bxr-opportunity.json`）；使用未核定產品卡的報告必須提示「產品資料未核定」。B、C 模式不使用產品卡。
 
 ## 規則
 

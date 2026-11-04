@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0-draft.6",
+  "product_id": "bxr-uav-module",
+  "name": "UAV 模組",
+  "name_en": "UAV Module",
+  "summary": "初始功能定位：無人機偵察、反制與模擬應用。",
+  "applications": [
+    "application.surveillance"
+  ],
+  "sources": [
+    {
+      "title": "Eric 提供之 BXR 產品名稱與初始功能定位清單（ExhibitIQ 需求修訂，對話紀錄）",
+      "provided_by": "Eric",
+      "provided_at": "2026-11-04"
+    }
+  ],
+  "approval_status": "draft",
+  "updated_at": "2026-11-04",
+  "notes": "待審核（draft）：只有 Eric 提供的產品名稱與初始功能定位，不代表正式技術規格；不得據此推論射程、精度、效能、尺寸、重量、相容性或其他數值。"
+}
