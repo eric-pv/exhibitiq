@@ -17,7 +17,8 @@ export interface Bundle {
     exhibitionId: string;
     name: string;
     country: string | null;
-    acquisition: { method: string; status: PipelineStatus; notes: string | null };
+    website: string | null;
+    acquisition: { method: string; status: PipelineStatus; notes: string | null; assessedAt: string | null; reportPath: string | null };
     editions: {
       editionId: string;
       year: number;

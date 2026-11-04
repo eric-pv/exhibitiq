@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const SHOTS = process.env.SCREENSHOT_DIR;
-const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分"]); // pages that are no longer 「建置中」
+const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增"]); // pages that are no longer 「建置中」
 const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "資料及系統狀態"];
 
 test.beforeEach(async ({ page }, info) => {
@@ -110,4 +110,13 @@ test("opportunities (W2-04): AI notice, ranking, score breakdown with sources, l
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-04-${info.project.name}-opportunities.png`, fullPage: true });
   await page.getByTestId("ranking-table").getByRole("link").first().click();
   await expect(page).toHaveURL(/#\/companies\/co_/);
+});
+
+test("exhibitions (W2-01): list from the dataset index, detail with editions", async ({ page }, info) => {
+  await page.goto("/#/exhibitions");
+  await expect(page.getByTestId("exhibition-table")).toBeVisible();
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-01-${info.project.name}-exhibitions.png`, fullPage: true });
+  await page.getByTestId("exhibition-link").first().click();
+  await expect(page.getByTestId("exhibition-editions")).toBeVisible();
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-01-${info.project.name}-exhibition-detail.png`, fullPage: true });
 });

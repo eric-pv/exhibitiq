@@ -67,7 +67,8 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
     exhibitionId: ex.exhibition_id,
     name: ex.name_zh_hant ?? ex.name,
     country: ex.country ?? null,
-    acquisition: { method: ex.acquisition.method, status: ex.acquisition.status, notes: ex.acquisition.notes ?? null },
+    website: ex.website ?? null,
+    acquisition: { method: ex.acquisition.method, status: ex.acquisition.status, notes: ex.acquisition.notes ?? null, assessedAt: ex.acquisition.assessed_at ?? null, reportPath: ex.acquisition.report_path ?? null },
     editions: ex.editions.map((ed) => {
       for (const ds of ed.datasets) {
         if (ds.dataset_id !== ed.latest_dataset_id) continue; // the Dashboard shows the latest validated package
