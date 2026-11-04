@@ -2,7 +2,7 @@
 
 - **負責人：** Eric（`ai`）。建置、預覽與發布的 workflow 在 `.github/workflows/`，由 Albert（`data`）負責。
 - **架構與規則：** [`docs/DEVELOPMENT_PLAN.md`](../docs/DEVELOPMENT_PLAN.md) §3（Web Dashboard 架構）。
-- **目前狀態：** W1-02 設計系統、共用 Layout、8 個主選單與狀態元件。資料存取層與總覽（W1-03）尚未加入。
+- **目前狀態：** Phase 1 完成（W1-01～W1-03）：設計系統、8 個主選單、資料存取層，以及用合成資料顯示的系統總覽。其他 7 個頁面顯示「建置中」。
 
 ## 結構
 
@@ -15,12 +15,25 @@
 | `src/components/status/` | `ClaimBadge`（查證狀態與 AI 推論）、`StatusBadge`（取得、驗證、來源評估）、`CompletenessIndicator`（官方筆數缺少時顯示「未知」）、`DataOriginBanner`（合成資料橫幅） |
 | `src/components/states/` | `LoadingState`、`EmptyState`、`ErrorState`、`UnderConstruction`（建置中） |
 | `src/pages/DesignSystemPage.tsx` | 元件參考頁 `#/design`（不在主選單） |
+| `src/components/KpiCard.tsx`、`ChartPanel.tsx` | 統計卡片（可點擊進入）、長條圖面板（統一配色、空狀態、來源說明、隨容器調整寬度） |
+| `scripts/build-bundle.mjs` | **bundle 產生程式**：讀取資料集索引 → 最新資料包 → 分析結果，**每份輸入先用 `schemas/v1/` 驗證**，不合格就停止；輸出 `src/generated/bundle.json`（不進 Git） |
+| `src/data/` | `repository.ts`（頁面唯一的資料入口）、`types.ts`（bundle 的 view model） |
+| `src/pages/OverviewPage.tsx` | 系統總覽：4 張統計卡片、2 張圖表、展覽資料狀態、最近一次 AI 分析、系統通知、資料來源 |
+
+## 資料來源
+
+`npm run bundle`（`build`、`test`、`typecheck` 前會自動執行）：
+
+- 資料集索引：`data/index/datasets.json`（Albert 的 D2-12 產生後），在那之前使用 `schemas/v1/examples/index/dataset_index.example.json`。
+- 分析結果：`reports/analysis/`，在那之前使用 `schemas/v1/examples/analysis/`。
+- 可以用 `BUNDLE_INDEX`、`BUNDLE_ANALYSES` 環境變數指定其他檔案。
+- 範例資料都是合成資料，頁面會顯示合成資料橫幅。
 
 狀態一律用「顏色＋圖示＋文字」表示，不只靠顏色；AI 推論的顏色和「已查證」不同。
 
 ## 技術
 
-React 18、Vite 6、TypeScript 5、Ant Design 5（`zh_TW` 語系）、ECharts 5、React Router（HashRouter）、Vitest、Playwright。版本鎖定在 `package.json` 與 `package-lock.json`。
+React 18、Vite 6、TypeScript 5、Ant Design 5（`zh_TW` 語系）、ECharts 5（直接使用，由 `ChartPanel` 管理尺寸）、React Router（HashRouter）、Vitest、Playwright；bundle 產生程式使用 Ajv 8（JSON Schema Draft 2020-12）。版本鎖定在 `package.json` 與 `package-lock.json`。
 
 ## 指令（在 `site/` 目錄執行）
 

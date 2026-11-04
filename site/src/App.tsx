@@ -4,6 +4,9 @@ import { PageHeader } from "./components/layout/PageHeader";
 import { UnderConstruction } from "./components/states/States";
 import { NAV_ITEMS } from "./navigation";
 import { DesignSystemPage } from "./pages/DesignSystemPage";
+import { OverviewPage } from "./pages/OverviewPage";
+
+const BUILT: Record<string, () => JSX.Element> = { overview: OverviewPage };
 
 /** Routes for the 8 main menu items. Pages that are not built yet show the unified 「建置中」 state. */
 export default function App() {
@@ -15,10 +18,14 @@ export default function App() {
             key={n.key}
             path={n.path}
             element={
-              <>
-                <PageHeader title={n.label} />
-                <UnderConstruction workItem={n.plannedIn} />
-              </>
+              BUILT[n.key] ? (
+                (() => { const Page = BUILT[n.key]; return <Page />; })()
+              ) : (
+                <>
+                  <PageHeader title={n.label} />
+                  <UnderConstruction workItem={n.plannedIn} />
+                </>
+              )
             }
           />
         ))}

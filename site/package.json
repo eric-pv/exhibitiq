@@ -14,13 +14,16 @@
     "preview": "vite preview --port 4173 --strictPort",
     "typecheck": "tsc --noEmit -p .",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "bundle": "node scripts/build-bundle.mjs",
+    "pretypecheck": "npm run -s bundle",
+    "pretest": "npm run -s bundle",
+    "prebuild": "npm run -s bundle"
   },
   "dependencies": {
     "@ant-design/icons": "5.6.1",
     "antd": "5.29.3",
     "echarts": "5.6.0",
-    "echarts-for-react": "3.0.6",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "6.30.6"
@@ -33,6 +36,8 @@
     "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "4.7.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "jsdom": "25.0.1",
     "typescript": "5.9.3",
     "vite": "6.4.5",
