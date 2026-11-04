@@ -58,6 +58,7 @@ AI Skill 讀取（專案負責人的範圍；資料包是兩邊的介面）
 | D2-04 | HTML／PDF／CSV／Excel 匯入轉換與欄位對應設定（**已完成**，見 `file-import.md`） | `crawler/importers.py`、`crawler/file_import.py` |
 | D2-06 | 來源快照、擷取批次與錯誤紀錄的保存（**已完成**，見 `snapshot-storage.md`） | `crawler/store.py` |
 | D2-07 | 清洗、標準化、企業去重與別名關聯、穩定 company_id（**已完成**，見 `normalize-and-dedupe.md`） | `etl/normalize.py`、`etl/registry.py`、`etl/build_records.py` |
+| D2-08 | 跨展會／跨年度參展歷史與變更比對、同一屆再次取得的攜帶下架紀錄（**已完成**，見 `changes-and-history.md`） | `etl/changes.py`、`etl/history.py` |
 | D2-11 | 組裝含 manifest 與來源索引的資料包，通過驗證程式才發布（**已完成**，見 `assemble-package.md`） | `etl/assemble.py` |
 | D1-11 | 通用的展覽來源探索與可行性評估流程與範本（**已完成**，見 `source-assessment-process.md`、`source-assessment-template.md`） | `docs/data-platform/` |
 | Phase 2 | 共用爬蟲框架與來源註冊機制（D2-01）、測試展覽的來源適配器與匯入轉換（展覽差異只放在來源設定、適配器或對應設定）、去重與別名、完整度報告、資料包發布、新增展覽 workflow（D2-13） | `crawler/`、`etl/`、`data/`、`.github/workflows/` |
