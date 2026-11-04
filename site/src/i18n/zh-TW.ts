@@ -61,6 +61,12 @@ export const t = {
     source: (index: string, version: string, at: string) => `資料來源：${index}（Schema ${version}，索引產生於 ${at}）`,
     clickHint: "點擊查看",
   },
+  companies: {
+    search: "搜尋企業名稱或別名", country: "國家／地區", exhibition: "展覽", status: "查證狀態",
+    name: "企業", booth: "展位", listing: "名單狀態", listed: "列於名單", removed: "已下架", noBooth: "未公布",
+    count: (n: number, total: number) => `${n}／${total} 筆`,
+    csvHeaders: ["company_id", "name", "aliases", "country", "exhibition", "year", "listing", "booths", "verification_status", "data_origin"],
+  },
   origin: {
     synthetic: "合成資料：畫面上的展覽、企業與數字都是虛構的測試資料，不代表任何真實展覽或企業。",
     collected: "真實資料",

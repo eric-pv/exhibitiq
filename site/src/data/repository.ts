@@ -50,3 +50,29 @@ export function combineCompleteness(parts: Completeness[]): Completeness | null 
   const status = parts.every((p) => p.status === "complete") ? "complete" : parts.some((p) => p.status === "unknown") ? "unknown" : "partial";
   return { status, official, collected };
 }
+
+export interface CompanyRow {
+  key: string; companyId: string; name: string; aliases: string[]; country: string | null; verificationStatus: string;
+  exhibitionId: string; exhibitionName: string; year: number; listed: boolean; booths: string[]; dataOrigin: "synthetic" | "collected";
+}
+
+/** One row per company per latest dataset (a company at two exhibitions appears twice). */
+export function getCompanyRows(b: Bundle = bundle): CompanyRow[] {
+  const names = new Map(b.exhibitions.map((e) => [e.exhibitionId, e.name]));
+  const years = new Map(b.exhibitions.flatMap((e) => e.editions.map((ed) => [ed.editionId, ed.year] as const)));
+  return Object.values(b.datasets).flatMap((d) => d.companies.map((c) => ({
+    key: `${d.datasetId}:${c.companyId}`, ...c, exhibitionId: d.exhibitionId, exhibitionName: names.get(d.exhibitionId) ?? d.exhibitionId,
+    year: years.get(d.editionId) ?? 0, dataOrigin: d.dataOrigin,
+  })));
+}
+
+export function matchesQuery(r: CompanyRow, q: string): boolean {
+  const s = q.trim().toLowerCase();
+  return !s || [r.name, ...r.aliases].some((n) => n.toLowerCase().includes(s));
+}
+
+/** CSV with UTF-8 BOM so Excel opens Chinese text correctly. */
+export function toCsv(headers: readonly string[], rows: (string | number | null)[][]): string {
+  const esc = (v: string | number | null) => { const s = v === null ? "" : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  return "\uFEFF" + [headers, ...rows].map((r) => r.map(esc).join(",")).join("\r\n") + "\r\n";
+}
