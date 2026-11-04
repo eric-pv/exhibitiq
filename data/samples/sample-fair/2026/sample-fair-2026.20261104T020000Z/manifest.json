@@ -1,0 +1,77 @@
+{
+  "completeness": {
+    "collected_participation_count": 4,
+    "notes": "合成範例：更新後的名單頁寫 4 家，已列出 4 家（另有 1 筆已下架），因此為 complete。",
+    "official_count_as_of": "2026-11-04",
+    "official_count_source_id": "src_01JFSA00000000000000000003",
+    "official_exhibitor_count": 4
+  },
+  "completeness_status": "complete",
+  "content_hash": "sha256:5ad8031c4e22264996bb602efa73d5f22f33144c75db269ede94855875f08123",
+  "crawl_run_ids": [
+    "run_01JFRA00000000000000000001",
+    "run_01JFRA00000000000000000002"
+  ],
+  "created_at": "2026-11-04T02:00:00Z",
+  "data_origin": "synthetic",
+  "dataset_id": "sample-fair-2026.20261104T020000Z",
+  "edition_id": "sample-fair-2026",
+  "edition_year": 2026,
+  "exhibition_id": "sample-fair",
+  "files": {
+    "changes.jsonl": {
+      "bytes": 2541,
+      "records": 5,
+      "sha256": "sha256:e6c77928a30e10141354fed43c1489eaf2e9f78988ed8167949232e90bdcf596"
+    },
+    "companies.jsonl": {
+      "bytes": 2349,
+      "records": 5,
+      "sha256": "sha256:cac8d51de08d22a430edd1a21e290aefc38ba10989925dadd2c07c8e76dd2c22"
+    },
+    "crawl_runs.jsonl": {
+      "bytes": 1010,
+      "records": 2,
+      "sha256": "sha256:5d5fb4d50dd2ace45ade597bce3227364b89ae4b34216cb9b85bfada62dbcc1c"
+    },
+    "edition.json": {
+      "bytes": 513,
+      "records": 1,
+      "sha256": "sha256:64d76071ab4bcfbbc588a161b235769a3fd58faff2b4e908264a98846c488a12"
+    },
+    "exhibition.json": {
+      "bytes": 451,
+      "records": 1,
+      "sha256": "sha256:6fe892f7b322044d420f1954d146f52a2f8ce816c648ea4d65a2777a445a85f0"
+    },
+    "participations.jsonl": {
+      "bytes": 3222,
+      "records": 5,
+      "sha256": "sha256:763b8817e569a2f577dd55e1276cd790eeb445ea499ef3d99ddeb4b1a85e477a"
+    },
+    "sources.jsonl": {
+      "bytes": 1802,
+      "records": 3,
+      "sha256": "sha256:cc0331ae8f8957af9f5b76b1a6f0fb8ad7383559dc1a09a224eb0677eb8a6ee2"
+    }
+  },
+  "notes": "合成測試資料（synthetic）：所有名稱、網址與數字皆為虛構，不代表任何真實展覽或企業。",
+  "previous_dataset_id": "sample-fair-2026.20261104T010000Z",
+  "producer": {
+    "name": "sample-builder",
+    "version": "0.0.0"
+  },
+  "record_counts": {
+    "changes": 5,
+    "companies": 5,
+    "crawl_runs": 2,
+    "participations": 5,
+    "sources": 3
+  },
+  "schema_version": "1.0.0-draft.4",
+  "source_snapshot_ids": [
+    "src_01JFSA00000000000000000001",
+    "src_01JFSA00000000000000000002",
+    "src_01JFSA00000000000000000003"
+  ]
+}
