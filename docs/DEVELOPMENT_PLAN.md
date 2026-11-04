@@ -41,7 +41,7 @@ Web Dashboard 是**競賽 MVP 的必要模組**：一個可以操作、搜尋、
 | 通用性 | 頁面、導覽與元件不得寫死任何展覽的名稱、ID 或欄位；展覽清單一律來自資料集索引 |
 | 預覽 | Actions build artifact（單一 HTML，私有）、雲端 `vite preview`、Playwright 截圖。**GitHub Pages 網站是公開的**，只能放專案負責人核准的非機密內容 |
 
-**主選單（9 項，V2.5）：** 系統總覽、展覽搜尋與新增、展覽情報與比較、參展商與企業情報、商機分析與評分、BXR 產品推薦、AI 報告中心、**分析設定**、資料及系統狀態。「分析設定」是全系統共用功能（分析模式、主題、關鍵字、分類與同義詞、企業關係規則、評分模型、設定匯入／匯出），不是商機分析的附屬功能。**PDF／CSV 匯出**是跨頁共用功能（表格匯出 CSV、報告匯出 PDF），不另設頁面。
+**主選單（9 項）：** 系統總覽、展覽搜尋與新增、展覽情報與比較、參展商與企業情報、商機分析與評分、BXR 產品推薦、AI 報告中心、分析設定、資料及系統狀態。V2.5 新增「分析設定」是全系統共用功能（分析模式、主題、關鍵字、分類與同義詞、企業關係規則、評分模型、設定匯入／匯出），不是商機分析的附屬功能。**PDF／CSV 匯出**是跨頁共用功能（表格匯出 CSV、報告匯出 PDF），不另設頁面。
 
 **共用元件（只維護一份，放在 `site/src/components/`）：** 設計 token、`AppLayout`／`SideNav`／`TopHeader`／`PageHeader`、`DataOriginBanner`、`KpiCard`、`DataTable`、`FilterBar`／`SearchBox`、`ChartPanel`、`ClaimBadge`、`StatusBadge`、`CompletenessIndicator`、`SourceRef`、`ScoreBreakdown`、`ReportViewer`、`LoadingState`／`EmptyState`／`ErrorState`。頁面只能組合這些元件，不能各自設計樣式或表格。
 
