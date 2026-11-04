@@ -16,7 +16,7 @@
 - 每個因子都要有 `max_points`、`points`、`rationale`。
 - 有證據時 `status: scored`，並附 `evidence_source_ids`。
 - 沒有證據時 `status: insufficient_data`、`points: 0`，**不推估**。
-- 同一個評分模型（`score_model_id`，例如 `opportunity@1`）的所有企業使用同一組因子；評分模型的因子與配分由 A2-07 定義。
+- 同一個評分模型（`score_model_id`，例如 `opportunity@1`）的所有企業使用同一組因子；評分模型的因子與配分見 `knowledge/scoring/opportunity@1.json`（A2-07，草稿待核定）；`exhibitiq_tools.py score` 產生確定性部分，需要閱讀來源的因子（合作或採購訊號）由 Skill 補上並附來源。
 
 ## 關係分類
 潛在客戶、競爭對手、合作夥伴、通路一律是推論；資料不足時用 `unknown`，不要硬分類。
