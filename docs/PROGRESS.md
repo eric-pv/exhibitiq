@@ -31,6 +31,7 @@
 | — | V2.2 共用規範修訂（`dev/data-platform` 版本） | [#21](https://github.com/magician-eric/exhibitiq/pull/21) | `dev/data-platform` | 2026-11-04 |
 | — | 第五次共用規範同步：A1-07（Schema `1.0.0-draft.3`）與 V2.3（已查證兩邊一致） | [#26](https://github.com/magician-eric/exhibitiq/pull/26) | `dev/data-platform` | 2026-11-04 |
 | D1-04 | 資料包讀寫工具（JSONL、雜湊、manifest 完整性、來源索引） | [#27](https://github.com/magician-eric/exhibitiq/pull/27) | `dev/data-platform` | 2026-11-04 |
+| W1-01 | 前端骨架（React、Vite、TS、Ant Design、ECharts、Vitest、Playwright、單一 HTML 打包）＋根目錄 `.gitignore` | [#28](https://github.com/magician-eric/exhibitiq/pull/28) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -38,13 +39,13 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W1-01 | 前端骨架（React、Vite、TS、Ant Design、ECharts、Vitest、Playwright、單一 HTML 打包）＋根目錄 `.gitignore` | PR 待 Eric 合併 |
+| W1-02 | 設計系統、共用 Layout、8 個主選單、狀態元件；`CLAUDE.md` 加入自動模式（Issue #29） | PR 待 Eric 合併 |
 
 ## 待處理（Phase 1）
 
 | 負責 | 編號 |
 |---|---|
-| ai | A1-01、A1-09、A1-10、W1-02、W1-03 |
+| ai | A1-01、A1-09、A1-10、W1-03 |
 | data | D1-02、D1-05、D1-06、D1-08、D1-09、D1-11 |
 | data | 資料包 manifest 的 `schema_version` 使用 `1.0.0-draft.3`；D2-12 依 A1-07 產生 `data/index/datasets.json` |
 

@@ -17,6 +17,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@ant-design/icons": "5.6.1",
     "antd": "5.29.3",
     "echarts": "5.6.0",
     "echarts-for-react": "3.0.6",

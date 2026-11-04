@@ -2,7 +2,21 @@
 
 - **負責人：** Eric（`ai`）。建置、預覽與發布的 workflow 在 `.github/workflows/`，由 Albert（`data`）負責。
 - **架構與規則：** [`docs/DEVELOPMENT_PLAN.md`](../docs/DEVELOPMENT_PLAN.md) §3（Web Dashboard 架構）。
-- **目前狀態：** W1-01 前端骨架。設計系統、主選單（W1-02）與資料存取層（W1-03）尚未加入。
+- **目前狀態：** W1-02 設計系統、共用 Layout、8 個主選單與狀態元件。資料存取層與總覽（W1-03）尚未加入。
+
+## 結構
+
+| 路徑 | 內容 |
+|---|---|
+| `src/theme/tokens.ts` | **唯一**的設計 token（色彩、間距、字級、圓角、版面）與 Ant Design 主題；其他檔案不得寫色碼（測試強制） |
+| `src/i18n/zh-TW.ts` | 所有介面文字（繁體中文優先，預留英文） |
+| `src/navigation.tsx` | 8 個主選單；不寫死任何展覽（測試強制） |
+| `src/components/layout/` | `AppLayout`（側邊選單，手機版收合並覆蓋在內容上方）、`PageHeader` |
+| `src/components/status/` | `ClaimBadge`（查證狀態與 AI 推論）、`StatusBadge`（取得、驗證、來源評估）、`CompletenessIndicator`（官方筆數缺少時顯示「未知」）、`DataOriginBanner`（合成資料橫幅） |
+| `src/components/states/` | `LoadingState`、`EmptyState`、`ErrorState`、`UnderConstruction`（建置中） |
+| `src/pages/DesignSystemPage.tsx` | 元件參考頁 `#/design`（不在主選單） |
+
+狀態一律用「顏色＋圖示＋文字」表示，不只靠顏色；AI 推論的顏色和「已查證」不同。
 
 ## 技術
 
