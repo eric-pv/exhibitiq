@@ -53,8 +53,8 @@ AI Skill 讀取（專案負責人的範圍；資料包是兩邊的介面）
 | D1-04 | JSONL、manifest、來源索引的讀寫工具（依契約 §5、§6 的序列化與雜湊）（**已完成**） | `etl/` |
 | D1-05 | Schema 載入與資料包驗證程式（R1–R11）、完整性測試；以 `schemas/v1/examples/package/` 為正向測試向量（**已完成**） | `etl/`、`tests/data/` |
 | D1-06 | 兩組不同結構的合成展覽測試資料（`data_origin: "synthetic"`）（**已完成**） | `data/samples/<exhibition_id>/` |
-| D1-11 | 通用的新展覽來源評估流程與範本（以 D1-10 MSPO 評估為第一個實例） | `docs/data-platform/` |
 | D1-07 | 來源設定、執行日誌與錯誤格式（**已完成**） | `crawler/` |
+| D1-11 | 通用的展覽來源探索與可行性評估流程與範本（**已完成**，見 `source-assessment-process.md`、`source-assessment-template.md`） | `docs/data-platform/` |
 | Phase 2 | 共用爬蟲框架與來源註冊機制（D2-01）、測試展覽的來源適配器與匯入轉換（展覽差異只放在來源設定、適配器或對應設定）、去重與別名、完整度報告、資料包發布、新增展覽 workflow（D2-13） | `crawler/`、`etl/`、`data/`、`.github/workflows/` |
 
 ## 5. 本骨架刻意不包含的東西
