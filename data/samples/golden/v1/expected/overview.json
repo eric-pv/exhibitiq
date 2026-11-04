@@ -1,0 +1,28 @@
+{
+  "exhibitionCount": 1,
+  "companyCount": 3,
+  "companyCompleteness": {
+    "status": "unknown",
+    "official": null,
+    "collected": 2
+  },
+  "analyzedCompanyCount": 3,
+  "highPriorityCount": 1,
+  "countryDistribution": [
+    {
+      "name": "ZZ",
+      "value": 2
+    },
+    {
+      "name": "未知",
+      "value": 1
+    }
+  ],
+  "acquisitionDistribution": [
+    {
+      "status": "partial",
+      "value": 1
+    }
+  ],
+  "dataOrigin": "synthetic"
+}
