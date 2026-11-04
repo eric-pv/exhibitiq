@@ -25,7 +25,8 @@ describe("navigation", () => {
     expect(new Set(NAV_ITEMS.map((n) => n.path)).size).toBe(8);
   });
 
-  test.each(NAV_ITEMS.map((n) => [n.path, n] as const))("route %s shows its title and the unified 建置中 state", (path, n) => {
+  const BUILT = new Set(["overview"]);
+  test.each(NAV_ITEMS.filter((n) => !BUILT.has(n.key)).map((n) => [n.path, n] as const))("route %s shows its title and the unified 建置中 state", (path, n) => {
     wrap(<App />, path);
     expect(screen.getAllByText(n.label).length).toBeGreaterThan(0);
     const uc = screen.getByTestId("under-construction");

@@ -22,7 +22,7 @@ test("desktop: side menu shows 8 items and every page opens", async ({ page }, i
   const nav = page.getByTestId("side-nav");
   for (const label of MENU) await expect(nav.getByText(label, { exact: true })).toBeVisible();
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/w1-02-desktop-overview.png`, fullPage: true });
-  for (const label of MENU) {
+  for (const label of MENU.slice(1)) {
     await nav.getByText(label, { exact: true }).click();
     await expect(page.getByRole("heading", { name: label, level: 2 })).toBeVisible();
     await expect(page.getByTestId("under-construction")).toBeVisible();
@@ -55,6 +55,28 @@ test("single-file build opens from disk and navigates", async ({ page }, info) =
   const file = resolve("dist-single/index.html");
   test.skip(!existsSync(file), "run `npm run build:single` first");
   await page.goto(pathToFileURL(file).href);
+  await expect(page.getByTestId("kpi-companies")).toContainText("已取得 2 ／ 官方公布 3");
   await page.getByTestId("side-nav").getByText("商機分析與評分", { exact: true }).click();
   await expect(page.getByRole("heading", { name: "商機分析與評分", level: 2 })).toBeVisible();
+});
+
+test("overview: synthetic banner, KPI cards from data, charts and data status", async ({ page }, info) => {
+  await page.goto("/");
+  await expect(page.getByTestId("data-origin-banner")).toBeVisible();
+  await expect(page.getByTestId("kpi-exhibitions")).toContainText("2");
+  await expect(page.getByTestId("kpi-companies")).toContainText("已取得 2 ／ 官方公布 3");
+  await expect(page.getByTestId("chart-country").locator("svg").first()).toBeVisible();
+  await expect(page.getByTestId("chart-acquisition").locator("svg").first()).toBeVisible();
+  await expect(page.getByTestId("data-status")).toContainText("沒有可用的資料包");
+  await expect(page.getByTestId("latest-analysis")).toContainText("未審核");
+  await page.waitForTimeout(500); // let menu and card animations settle before measuring and the screenshot
+  // charts stay inside their cards after layout settles
+  for (const id of ["chart-country", "chart-acquisition"]) {
+    const card = await page.getByTestId(id).boundingBox();
+    const svg = await page.getByTestId(id).locator("svg").first().boundingBox();
+    expect(svg!.x + svg!.width).toBeLessThanOrEqual(card!.x + card!.width + 1);
+  }
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w1-03-${info.project.name}-overview.png`, fullPage: true });
+  await page.getByTestId("kpi-companies").click();
+  await expect(page.getByRole("heading", { name: "參展商與企業情報", level: 2 })).toBeVisible();
 });
