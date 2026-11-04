@@ -14,6 +14,7 @@
     crawl_run.json                crawl_run 紀錄（共用契約）
     run.log.jsonl                 事件日誌（D1-07 格式）
     errors.json                   該次所有錯誤（crawl_run.error_samples 最多只留 50 筆）
+    pending.json                  找到但沒抓的網址（max_requests、取消）；續跑的輸入（D2-05）
 ```
 
 建議 `<root>` 為 `data/raw`（`root_label` 預設值，寫入 `source.snapshot.locator`，從 repo 根目錄起算）。副檔名依 media type（html、csv、pdf、xlsx、json、xml、txt），未知為 `.bin`。

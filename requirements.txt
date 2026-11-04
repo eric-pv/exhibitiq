@@ -8,3 +8,5 @@ pytest==9.2.0
 # D2-04: 檔案匯入。openpyxl 讀 .xlsx；pypdf 抽取 PDF 文字層（不做 OCR）。
 openpyxl==3.1.5
 pypdf==6.21.4
+# D2-05: 測試用，檢查 GitHub Actions workflow 的權限與注入安全。
+PyYAML==6.0.3

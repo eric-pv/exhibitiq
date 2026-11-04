@@ -43,6 +43,8 @@ Smoke test 檢查四件事：Python 版本不低於 3.11；`pyproject.toml` 的 
 
 - D2-04 新增 `openpyxl==3.1.5`（讀 `.xlsx`；間接依賴 `et_xmlfile==2.0.0`）與 `pypdf==6.21.4`（讀 PDF 文字層）。三者都是純 Python，三個 Python 版本都已安裝並通過測試。
 
+- D2-05 新增 `PyYAML==6.0.3`（僅測試用，檢查 workflow）。
+
 ## 版本選擇依據
 
 - `requires-python >= 3.11`：3.11、3.12、3.13 都實測通過。

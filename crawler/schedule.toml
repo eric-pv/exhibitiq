@@ -1,0 +1,3 @@
+# 排程擷取的來源清單（D2-05）。每個名稱對應 crawler/sources/<名稱>.toml。
+# 預設為空：沒有來源，排程 workflow 什麼都不會抓。新增來源前請先完成來源評估（docs/data-platform/source-assessment-process.md）。
+sources = []
