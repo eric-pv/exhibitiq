@@ -245,3 +245,41 @@ export function matchesExhibition(r: ExhibitionRow, q: string): boolean {
   const s = q.trim().toLowerCase();
   return !s || [r.name, r.exhibitionId, r.country ?? "", ...r.years.map(String)].some((v) => v.toLowerCase().includes(s));
 }
+
+export interface ComparisonColumn {
+  editionId: string; exhibitionId: string; label: string; year: number;
+  dataset: Bundle["datasets"][string] | null;
+  lastAcquisition: EditionRow["lastAcquisition"];
+  companyCount: number | null; listedParticipations: number | null; topCountries: { name: string; value: number }[];
+  analysisCount: number;
+  keywords: Record<string, { count: number; share: number | null; sourceIds: string[] }>;
+}
+
+/**
+ * W3-01: the same metrics side by side for any selected editions (no exhibition hard-coded). Editions without a
+ * validated package show null (資料不足). Keyword counts are candidates from the selected profile; shares only when complete.
+ */
+export function getComparison(editionIds: string[], profileId: string | null, b: Bundle = bundle) {
+  const rows = getOverview(b).editions;
+  const profile = b.settings.profiles.find((p) => p.profile.profile_id === profileId)?.profile ?? null;
+  const kws = profile ? profile.keywords.filter((k) => k.enabled) : [];
+  const columns: ComparisonColumn[] = editionIds.map((id) => rows.find((r) => r.editionId === id)).filter((r): r is EditionRow => !!r).map((r) => {
+    const ds = r.latest ? b.datasets[r.latest.datasetId] ?? null : null;
+    const countries = new Map<string, number>();
+    for (const c of ds?.companies ?? []) countries.set(c.country ?? "未知", (countries.get(c.country ?? "未知") ?? 0) + 1);
+    const complete = ds?.completeness.status === "complete";
+    const n = ds?.companies.length ?? 0;
+    return {
+      editionId: r.editionId, exhibitionId: r.exhibitionId, label: `${r.exhibitionName}（${r.year}）`, year: r.year, dataset: ds,
+      lastAcquisition: r.lastAcquisition, companyCount: ds ? n : null, listedParticipations: ds ? ds.listedParticipations : null,
+      topCountries: [...countries].map(([name, value]) => ({ name, value })).sort((x, y) => y.value - x.value).slice(0, 3),
+      analysisCount: ds ? b.analyses.filter((a) => a.inputDatasetId === ds.datasetId).length : 0,
+      keywords: Object.fromEntries(kws.map((k) => {
+        const m = ds && profile ? ds.keywordMatches[profile.profile_id]?.[k.term_id] : undefined;
+        const count = m?.companyIds.length ?? 0;
+        return [k.term_id, { count, share: complete && n ? count / n : null, sourceIds: m?.sourceIds ?? [] }];
+      })),
+    };
+  });
+  return { columns, profile, keywords: kws, editions: rows };
+}

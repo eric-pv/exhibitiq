@@ -11,8 +11,9 @@ import { OpportunitiesPage } from "./pages/OpportunitiesPage";
 import { ExhibitionDetailPage, ExhibitionsPage } from "./pages/ExhibitionsPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { ComparePage } from "./pages/ComparePage";
 
-const BUILT: Record<string, () => JSX.Element> = { overview: OverviewPage, companies: CompaniesPage, opportunities: OpportunitiesPage, exhibitions: ExhibitionsPage, reports: ReportsPage, settings: SettingsPage };
+const BUILT: Record<string, () => JSX.Element> = { overview: OverviewPage, companies: CompaniesPage, opportunities: OpportunitiesPage, exhibitions: ExhibitionsPage, reports: ReportsPage, settings: SettingsPage, intel: ComparePage };
 
 /** Routes for the 8 main menu items. Pages that are not built yet show the unified 「建置中」 state. */
 export default function App() {

@@ -65,6 +65,21 @@ function loadSettings(v) {
   return { profiles, products, scoreModels, schemas };
 }
 
+// Same keyword rule as skills/exhibitiq/scripts/profile_tools.py::_hit (whole word for Latin, substring for CJK).
+const esc = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+export function keywordHit(word, text) {
+  if (/[A-Za-z0-9]/.test(word)) return new RegExp(`(?<![A-Za-z0-9])${esc(word)}(?:e?s)?(?![A-Za-z0-9])`, "i").test(text);
+  return text.includes(word);
+}
+/** W3-01: for each submitted profile, which companies of a package match each enabled keyword (candidates, not facts). */
+function keywordMatches(texts, profiles) {
+  return Object.fromEntries(profiles.map(({ profile }) => [profile.profile_id, Object.fromEntries(profile.keywords.filter((k) => k.enabled).map((k) => {
+    const words = [k.label, k.label_en, ...(k.synonyms ?? [])].filter(Boolean);
+    const hits = texts.filter((x) => words.some((w) => keywordHit(w, x.text)));
+    return [k.term_id, { companyIds: [...new Set(hits.map((h) => h.companyId))].sort(), sourceIds: [...new Set(hits.flatMap((h) => h.sourceIds))].sort() }];
+  }))]));
+}
+
 export function loadValidators() {
   const ajv = new Ajv2020({ allErrors: true, strict: false });
   addFormats(ajv);
@@ -171,6 +186,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
             };
           }),
           listedParticipations: participations.filter((p) => p.listing_status === "listed").length,
+          _texts: participations.map((p) => ({ companyId: p.company_id, text: [p.exhibitor_name_as_listed, ...(p.categories_as_listed ?? []), ...(p.products_as_listed ?? [])].join(" "), sourceIds: p.source_ids })),
           sources,
         };
       }
@@ -243,6 +259,9 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
     }
   }
 
+  const settings = loadSettings(v);
+  for (const d of Object.values(datasets)) { d.keywordMatches = keywordMatches(d._texts, settings.profiles); delete d._texts; }
+
   const origins = new Set([
     ...Object.values(datasets).map((d) => d.dataOrigin),
     ...analyses.map((a) => a.dataOrigin),
@@ -255,7 +274,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
     exhibitions,
     datasets,
     analyses,
-    settings: loadSettings(v),
+    settings,
     reportTemplates: readJson(join(REPO, "skills", "exhibitiq", "templates", "report-templates.json")),
     notices: index.notices.map((n) => ({ level: n.level, message: n.message, occurredAt: n.occurred_at })),
   };

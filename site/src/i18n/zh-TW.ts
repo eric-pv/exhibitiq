@@ -130,6 +130,14 @@ export const t = {
     export: "匯出 JSON（提交用）", openGithub: "開啟 GitHub 上傳頁面",
     submitSteps: "匯出的檔案名稱就是主題代碼；內容有修改時版本號自動加 1。上傳到 knowledge/analysis-profiles/ 並合併後，網站重新建置就會顯示「已提交」；之後在 Claude Code 工作階段指定這個主題執行分析。網頁不保存任何 GitHub 憑證。",
   },
+  compare: {
+    pick: "選擇要比較的展覽與年度（兩個以上）", profile: "關鍵字主題", needTwo: "請選擇兩個以上的展覽或年度。", noPackage: "尚無資料包",
+    note: "所有展覽使用同一組指標並排比較。沒有驗證通過資料包的屆次顯示「資料不足」；關鍵字命中是候選訊號（AI 推論前的初篩），資料不完整時不計算比例。",
+    metric: "指標", insufficient: "資料不足", origin: "資料類型", synthetic: "合成資料", collected: "真實資料", lastAcquisition: "最近一次取得",
+    completeness: "完整度", companies: "已取得企業", listed: "列於名單的參展紀錄", countries: "主要國家／地區", analyses: "AI 分析結果",
+    hits: (n: number) => `${n} 家命中`,
+    chart: "各展覽已取得企業數", chartNote: "只包含有驗證通過資料包的屆次；完整度不是「完整」時，數字只代表實際取得的部分。",
+  },
   analysisConfig: {
     legacy: "這份分析結果是舊版格式，沒有記錄分析設定。",
     mode: "分析模式", profile: "分析主題", scoreModel: "評分模型", noScore: "不評分", bxr: "BXR 產品卡", keywords: (n: number) => `啟用的關鍵字（${n}）`,
