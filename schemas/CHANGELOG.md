@@ -2,6 +2,13 @@
 
 格式依 [`VERSIONING.md`](VERSIONING.md)。每筆紀錄包含：版本、日期、Issue／PR、變更類別（MAJOR／MINOR／PATCH／draft）、變更內容、相容性與遷移說明。最新的放最上面。
 
+## 1.0.0-draft.5 — 2026-11-04
+
+- 工作項目：A1-10
+- 類別：draft
+- 內容：新增 `exhibition_registration.schema.json`（展覽名冊：`data/registry/<exhibition_id>/registration.json`）與 `examples/registry/`。規格見 [`docs/specs/exhibition-registry-contract.md`](../docs/specs/exhibition-registry-contract.md)。
+- 相容性：既有欄位沒有改變；**只有版本號改變**。資料包、資料集索引、分析結果與知識庫檔案的 `schema_version` 必須改成 `1.0.0-draft.5`。
+
 ## 1.0.0-draft.4 — 2026-11-04
 
 - 工作項目：A1-09

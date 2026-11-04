@@ -8,12 +8,13 @@
 
 ## 目前狀態
 
-- 版本：`1.0.0-draft.4`（Phase 1 草案期）
+- 版本：`1.0.0-draft.5`（Phase 1 草案期）
 - 核心資料契約（P1-AI-04）：`common`、`exhibition`、`edition`、`company`、`participation`、`source`、`crawl_run`、`manifest`、`change`
 - 人看的規格：[`docs/specs/data-package-contract.md`](../docs/specs/data-package-contract.md)
 - AI 分析結果與證據契約（A1-06）：`analysis_result`；規格 [`docs/specs/analysis-result-contract.md`](../docs/specs/analysis-result-contract.md)
 - 資料集索引與管線狀態契約（A1-07）：`dataset_index`；規格 [`docs/specs/dataset-index-contract.md`](../docs/specs/dataset-index-contract.md)
 - 知識庫契約（A1-09）：`bxr_product`、`taxonomy`；規格 [`docs/specs/knowledge-base-contract.md`](../docs/specs/knowledge-base-contract.md)
+- 展覽登錄契約（A1-10）：`exhibition_registration`；規格 [`docs/specs/exhibition-registry-contract.md`](../docs/specs/exhibition-registry-contract.md)
 
 ## 預定結構
 
@@ -31,6 +32,7 @@ schemas/
         ├── analysis/          # 分析結果範例（以 package/ 為輸入）
         ├── index/             # 資料集索引範例（含取得失敗的展覽）
         ├── knowledge/         # 產品卡與分類範例（合成）
+        ├── registry/          # 展覽登錄範例（合成，含重複登錄）
         └── change.example.json
 ```
 

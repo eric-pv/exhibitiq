@@ -16,7 +16,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0.0-draft.4"
+      "const": "1.0.0-draft.5"
     },
     "product_id": {
       "$ref": "common.schema.json#/$defs/bxr_product_id"

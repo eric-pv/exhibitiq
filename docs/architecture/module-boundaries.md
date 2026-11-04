@@ -33,6 +33,7 @@
 | `crawler/` | data | 通用擷取框架、各展覽的來源設定與來源適配器 | 展覽相關差異只能放在來源設定、適配器或匯入對應設定，不得寫死在共用框架 |
 | `etl/` | data | 清洗、去重、品質檢查、**資料驗證程式** | 驗證程式讀取 `schemas/`，不得另行定義契約 |
 | `data/` | data | `raw/`、`normalized/`、`packages/`、`history/` 等資料產物 | Raw evidence 不可變更 |
+| `data/registry/` | data | 展覽名冊：`<exhibition_id>/registration.json`（格式由 ai 的 `exhibition_registration.schema.json` 定義）與該展覽的其他資料 | Eric 於 2026-11-04 決定位置（A1-10） |
 | `data/samples/golden/` | ai | 整合測試用的黃金樣本（預期輸入／輸出） | 合成資料，須明確標示 |
 | `data/samples/` | data | 各展覽的公開或合成測試資料，依 `data/samples/<exhibition_id>/` 分目錄 | 合成資料須明確標示；`golden/` 例外（見上一列） |
 | `knowledge/` | ai | BXR 產品知識庫與分析分類架構 | 只收錄經專案負責人確認的產品資料 |

@@ -23,7 +23,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0.0-draft.4",
+      "const": "1.0.0-draft.5",
       "description": "草案期必須與 schemas/v1/VERSION 完全相同。"
     },
     "analysis_id": {
