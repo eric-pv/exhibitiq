@@ -27,6 +27,7 @@
    | `dev/data-platform`（含同步 PR） | Albert | `【Albert 合併】` | `> ⚠️ **合併人：Albert。Eric 請勿合併。**` | `acyihung-infinityandbeyond` |
 6. 前一項合併後，再從更新後的 `dev/*` 開始下一項（除非另有指示）。
 7. 專案負責人依已合併的 PR 更新 [`PROGRESS.md`](../PROGRESS.md)；同事在 PR 描述中回報進度，不修改 `PROGRESS.md`。
+8. **自動模式（Issue #29）：** 建立 PR 後 Claude Code 訂閱該 PR（`subscribe_pr_activity`）；合併後自動查證並依開發計畫接著做下一項。人只負責合併 PR 和關鍵確認，不需要回報「合併了」。詳見 `CLAUDE.md` Task workflow 第 11 點。
 
 ## 階段整合
 

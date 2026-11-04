@@ -25,6 +25,13 @@ ExhibitIQ is a cloud-only, GitHub-first, **general-purpose** AI exhibition intel
 8. **Do not merge `dev/*` into `main` during an active phase.** Only after BOTH developers finish their phase work does the project owner run the phase integration (see below).
 9. After a phase is integrated, synchronize both development branches with the newly accepted `main` before the next phase. Never discard unmerged work.
 10. Shared rules and contracts reach `dev/data-platform` only through the one-way sync in `module-boundaries.md` §4; the colleague merges the sync PR. Exception: when the project owner explicitly authorizes the colleague to revise shared documents, the change is made on `dev/data-platform` and reaches `dev/ai-intelligence` through a sync PR that only the project owner merges (`module-boundaries.md` §4.6). Such authorization does not change module ownership.
+11. **Autopilot (Issue #29).** Humans only merge PRs and make key decisions; Claude Code drives the rest:
+   - After opening a PR, call `subscribe_pr_activity` on it and end the turn (no polling/sleep). The user does not need to report "merged".
+   - On the merge event: verify the merge, start from the updated own dev branch and **automatically begin the next work item of your role** in `DEVELOPMENT_PLAN.md` dependency order; open its PR and subscribe again.
+   - If a work item is blocked by an unfinished dependency, skip to the next doable item and say so in the PR.
+   - Stop for a human only to merge, for the "Stop and ask" cases below, for a pending owner decision that blocks **all** remaining items, for tests that cannot be fixed within the item, or when another owner's paths would need changing.
+   - Eric's Claude Code opens shared-file sync PRs (`【Albert 合併】`) when shared changes need to reach `dev/data-platform`; Albert's Claude Code reminds Albert to merge them.
+   - Sessions must stay open to receive events; when a session resumes, first check GitHub for merged PRs and new sync PRs.
 
 ## Architecture boundaries
 - **強制規則（V2.3）：ExhibitIQ 嚴禁將任何特定展覽列為預設開發目標、主要資料來源、必要驗收對象或專案負責人必須指定的測試案例。所有展覽資料來源均由通用探索與評估流程決定。特定展覽的取得失敗，不得阻礙通用系統繼續開發。**
