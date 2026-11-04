@@ -106,64 +106,16 @@ def check_all(index_path: Path) -> list[dict]:
     return rows
 
 
-def classify(package_dir: Path, taxonomy_dir: Path | None = None) -> dict:
-    """A2-06: deterministic keyword candidates per company (inference input, never fact)."""
-    import re
-    tax = [load(p) for p in sorted((taxonomy_dir or ROOT / "knowledge" / "taxonomy").glob("*.json"))]
-    words = [(t["term_id"], [t["label"], *t.get("synonyms", [])]) for d in tax for t in d["terms"]]
-    out: dict[str, dict] = {}
-    for line in (Path(package_dir) / "participations.jsonl").read_text(encoding="utf-8").splitlines():
-        p = json.loads(line)
-        text = " ".join([p["exhibitor_name_as_listed"], *p.get("categories_as_listed", []), *p.get("products_as_listed", [])])
-        hits = sorted({tid for tid, ws in words for w in ws
-                       if re.search(rf"(?<![A-Za-z]){re.escape(w)}(?:e?s)?(?![A-Za-z])", text, re.IGNORECASE)})
-        entry = out.setdefault(p["company_id"], {"terms": set(), "source_ids": set()})
-        entry["terms"] |= set(hits)
-        if hits:
-            entry["source_ids"] |= set(p["source_ids"])
-    return {k: {"terms": sorted(v["terms"]), "source_ids": sorted(v["source_ids"])} for k, v in out.items()}
+def classify(package_dir: Path, profile=None) -> dict:
+    """A2-06/A2-16: keyword candidates per company from an analysis profile (default: default-library)."""
+    import profile_tools
+    return {k: {"terms": v["terms"], "source_ids": v["source_ids"]} for k, v in profile_tools.match(package_dir, profile).items()}
 
 
-def relate(package_dir: Path, knowledge_dir: Path | None = None) -> dict:
-    """A2-08: deterministic relationship candidates per company (always inference input, never fact).
-
-    competitor / potential_customer need approved BXR product cards (A2-05); without them the result is
-    "unknown" with the reason. channel / partner come from keyword signals in the source text.
-    """
-    import re
-    kd = knowledge_dir or ROOT / "knowledge"
-    rules = load(kd / "relationship-rules@1.json")
-    terms = classify(package_dir, kd / "taxonomy")
-    products = [p for p in (load(f) for f in sorted((kd / "bxr-products").glob("*.json"))) if p.get("approval_status") == "approved"]
-    bxr = {rel: {t for p in products for f in spec["bxr_fields"] for t in p.get(f, [])} for rel, spec in rules["taxonomy_signals"].items()}
-    texts: dict[str, list[tuple[str, list[str]]]] = {}
-    for p in _jsonl(Path(package_dir) / "participations.jsonl"):
-        text = " ".join([p["exhibitor_name_as_listed"], *p.get("categories_as_listed", []), *p.get("products_as_listed", [])])
-        texts.setdefault(p["company_id"], []).append((text, p["source_ids"]))
-    out = {}
-    for cid in sorted(texts):
-        found: dict[str, dict] = {}
-        for rel, words in rules["keyword_signals"].items():
-            for text, sids in texts[cid]:
-                hit = [w for w in words if re.search(rf"(?<![A-Za-z]){re.escape(w)}(?![A-Za-z])", text, re.IGNORECASE)]
-                if hit:
-                    f = found.setdefault(rel, {"signals": set(), "source_ids": set()})
-                    f["signals"] |= set(hit); f["source_ids"] |= set(sids)
-        ct = terms.get(cid, {"terms": [], "source_ids": []})
-        for rel, spec in rules["taxonomy_signals"].items():
-            mine = {t for t in ct["terms"] if t.split(".")[0] in spec["company_dimensions"]}
-            overlap = mine & bxr[rel]
-            if overlap:
-                found[rel] = {"signals": overlap, "source_ids": set(ct["source_ids"])}
-        rel = next((r for r in rules["precedence"] if r in found), None)
-        if rel:
-            out[cid] = {"relationship_type": rel, "confidence": "low", "signals": sorted(found[rel]["signals"]),
-                        "source_ids": sorted(found[rel]["source_ids"]), "other_candidates": sorted(set(found) - {rel}), "reason": None}
-        else:
-            reason = ("BXR 產品知識庫沒有已核定的產品卡（A2-05），無法判斷是否為潛在客戶或競爭對手；來源也沒有通路或合作訊號。"
-                      if not products else "來源中沒有可判斷關係的訊號。")
-            out[cid] = {"relationship_type": "unknown", "confidence": None, "signals": [], "source_ids": [], "other_candidates": [], "reason": reason}
-    return {"rules_id": rules["rules_id"], "rules_status": rules["approval_status"], "approved_products": len(products), "companies": out}
+def relate(package_dir: Path, profile=None, knowledge_dir: Path | None = None) -> dict:
+    """A2-08/A2-16: multi-label relationship candidates from an analysis profile."""
+    import profile_tools
+    return profile_tools.relate(package_dir, profile, knowledge_dir)
 
 
 def score(package_dir: Path, model_path: Path | None = None) -> list[dict]:
@@ -374,9 +326,11 @@ def main(argv: list[str] | None = None) -> int:
         sp.add_argument("--index", type=Path, default=None)
     sub.add_parser("validate-package").add_argument("package_dir", type=Path)
     sub.add_parser("check-all").add_argument("--index", type=Path, default=None)
-    sub.add_parser("classify").add_argument("package_dir", type=Path)
-    sub.add_parser("score").add_argument("package_dir", type=Path)
-    sub.add_parser("relate").add_argument("package_dir", type=Path)
+    for name in ("classify", "score", "relate"):
+        sp = sub.add_parser(name)
+        sp.add_argument("package_dir", type=Path)
+        sp.add_argument("--profile", default=None, help="analysis profile id or path (knowledge/analysis-profiles/)")
+    sub.add_parser("config").add_argument("profile")
     for name in ("validate-analysis", "report", "save-analysis"):
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
@@ -392,11 +346,18 @@ def main(argv: list[str] | None = None) -> int:
             rows = check_all(idx); print(json.dumps(rows, ensure_ascii=False, indent=2))
             return 0 if all(r["ok"] for r in rows if r["dataset_id"]) else 1
         elif a.cmd == "score":
-            print(json.dumps(score(a.package_dir), ensure_ascii=False, indent=2))
+            if a.profile:
+                import profile_tools
+                print(json.dumps(profile_tools.score(a.package_dir, a.profile), ensure_ascii=False, indent=2))
+            else:  # legacy opportunity@1 draft (kept for comparison until Eric approves a model)
+                print(json.dumps(score(a.package_dir), ensure_ascii=False, indent=2))
+        elif a.cmd == "config":
+            import profile_tools
+            print(json.dumps(profile_tools.analysis_config(a.profile), ensure_ascii=False, indent=2))
         elif a.cmd == "relate":
-            print(json.dumps(relate(a.package_dir), ensure_ascii=False, indent=2))
+            print(json.dumps(relate(a.package_dir, a.profile), ensure_ascii=False, indent=2))
         elif a.cmd == "classify":
-            print(json.dumps(classify(a.package_dir), ensure_ascii=False, indent=2))
+            print(json.dumps(classify(a.package_dir, a.profile), ensure_ascii=False, indent=2))
         elif a.cmd == "validate-package":
             r = validate_package(a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
         elif a.cmd == "validate-analysis":

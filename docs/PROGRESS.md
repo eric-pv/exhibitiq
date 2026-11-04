@@ -56,6 +56,7 @@
 | W3-04 | AI 報告中心、`ReportViewer`、PDF 匯出 | [#66](https://github.com/magician-eric/exhibitiq/pull/66) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-08 | 企業關係初篩 `relate`（V2.5 將由 A2-16 改為多標籤） | [#67](https://github.com/magician-eric/exhibitiq/pull/67) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-15 | 分析設定檔契約（Schema `1.0.0-draft.6`，舊資料相容）；開發計畫 V2.5 | [#69](https://github.com/magician-eric/exhibitiq/pull/69) | `dev/ai-intelligence` | 2026-11-04 |
+| A2-05 | 8 張 BXR 產品卡（draft，無規格）與 A 模式主題 `bxr-opportunity` | [#70](https://github.com/magician-eric/exhibitiq/pull/70) | `dev/ai-intelligence` | 2026-11-04 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -63,7 +64,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A2-05 | 8 張 BXR 產品卡（draft，只有名稱與功能定位，無規格）與 A 模式起始主題 `bxr-opportunity` | 本 PR |
+| A2-16 | `classify`／`relate`／`score` 改讀分析設定檔；企業關係多標籤；評分模型 `opportunity@2` 草稿（權重可設定、不含展位加分）；`config` 指令 | 本 PR |
 
 ## 待處理（Phase 1）
 
