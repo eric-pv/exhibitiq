@@ -2,6 +2,13 @@
 
 格式依 [`VERSIONING.md`](VERSIONING.md)。每筆紀錄包含：版本、日期、Issue／PR、變更類別（MAJOR／MINOR／PATCH／draft）、變更內容、相容性與遷移說明。最新的放最上面。
 
+## 1.0.0-draft.4 — 2026-11-04
+
+- 工作項目：A1-09
+- 類別：draft
+- 內容：新增 `bxr_product.schema.json`（產品卡；規格必須指向依據文件；核定狀態）與 `taxonomy.schema.json`（六個分析分類面向）；新增 `examples/knowledge/`。規格見 [`docs/specs/knowledge-base-contract.md`](../docs/specs/knowledge-base-contract.md)。分析結果新增規則 AR10：建議只能引用已核定的產品卡。
+- 相容性：既有欄位沒有改變；**只有版本號改變**。資料包 manifest、分析結果與資料集索引的 `schema_version` 必須改成 `1.0.0-draft.4`。
+
 ## 1.0.0-draft.3 — 2026-11-03
 
 - 工作項目：A1-07
