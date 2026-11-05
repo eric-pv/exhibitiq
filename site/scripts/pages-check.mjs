@@ -16,11 +16,11 @@ export function pagesProblems(bundle, allowCollected = false) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const file = join(SITE, "dist-single", "index.html");
-  if (!existsSync(file)) { console.error("pages-check: run `npm run build:single` first"); process.exit(2); }
+  const file = join(SITE, "dist", "index.html");
+  if (!existsSync(file)) { console.error("pages-check: run `npm run build` first"); process.exit(2); }
   const bundle = JSON.parse(readFileSync(join(SITE, "src", "generated", "bundle.json"), "utf8"));
   const problems = pagesProblems(bundle, process.env.PAGES_ALLOW_COLLECTED === "1");
   if (problems.length) { console.error("pages-check FAILED:\n" + problems.join("\n")); process.exit(1); }
   execFileSync("node", [join(SITE, "scripts", "security-check.mjs")], { stdio: "inherit" });
-  console.log(`pages-check: OK (data origin: ${bundle.dataOrigin}) → dist-single/index.html may be published`);
+  console.log(`pages-check: OK (data origin: ${bundle.dataOrigin}) → dist/ may be published`);
 }

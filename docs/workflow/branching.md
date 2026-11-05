@@ -23,7 +23,7 @@
    **每個 PR 都要標明合併人**（Issue #15）：
    | PR base | 合併人 | 標題開頭 | 內文第一行 | Assignee |
    |---|---|---|---|---|
-   | `dev/ai-intelligence`、`main` | Eric | `【Eric 合併】` | `> **合併人：Eric**` | `magician-eric` |
+   | `dev/ai-intelligence`、`main` | Eric | `【Eric 合併】` | `> **合併人：Eric**` | `eric-pv` |
    | `dev/data-platform`（含同步 PR） | Albert | `【Albert 合併】` | `> ⚠️ **合併人：Albert。Eric 請勿合併。**` | `acyihung-infinityandbeyond` |
 6. 前一項合併後，再從更新後的 `dev/*` 開始下一項（除非另有指示）。
 7. 專案負責人依已合併的 PR 更新 [`PROGRESS.md`](../PROGRESS.md)；同事在 PR 描述中回報進度，不修改 `PROGRESS.md`。

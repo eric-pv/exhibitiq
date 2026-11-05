@@ -127,7 +127,7 @@ export const t = {
     competitorHint: "C 模式：指定要研究的企業與技術／產品領域（選填），不需要 BXR 產品資料。",
     companies: "指定企業", focus: "指定技術或產品領域（從關鍵字選）",
     submittedVersion: "已提交版本", localVersion: "本機版本", sameAsSubmitted: "與已提交版本相同", usedBy: "已用於分析", notUsed: "尚未用於任何分析", olderVersion: "較舊版本",
-    export: "匯出 JSON（提交用）", openGithub: "開啟 GitHub 上傳頁面",
+    export: "匯出 JSON（提交用）", submitPath: "knowledge/analysis-profiles/<主題代碼>.json",
     submitSteps: "匯出的檔案名稱就是主題代碼；內容有修改時版本號自動加 1。上傳到 knowledge/analysis-profiles/ 並合併後，網站重新建置就會顯示「已提交」；之後在 Claude Code 工作階段指定這個主題執行分析。網頁不保存任何 GitHub 憑證。",
   },
   systemStatus: {
