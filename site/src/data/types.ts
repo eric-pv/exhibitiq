@@ -46,7 +46,9 @@ export interface Bundle {
     detail: AnalysisDetail;
     config: AnalysisConfigRef | null;
   }[];
-  settings: { profiles: { profile: AnalysisProfile; hash: string }[]; products: { productId: string; name: string; approvalStatus: string }[];
+  settings: { profiles: { profile: AnalysisProfile; hash: string }[];
+    products: { productId: string; name: string; nameEn: string | null; summary: string; approvalStatus: string; approvedAt: string | null; terms: string[]; specCount: number }[];
+    termLabels: Record<string, string>;
     scoreModels: { scoreModelId: string; approvalStatus: string; notes: string | null; factors: { factorId: string; label: string; defaultMax: number }[] }[];
     schemas: Record<string, object> };
   reportTemplates: { version: string; section_titles: Record<string, string>; types: Record<string, { label: string; sections: string[] }> };
@@ -96,7 +98,7 @@ export interface AnalysisDetail {
   }[];
   relationships: { relationshipId: string; companyId: string; type: string; rationale: string | null; confidence: Level | null; sourceIds: string[]; claimIds: string[] }[];
   recommendations: {
-    recommendationId: string; type: string; statement: string; rationale: string | null; priority: Level; subjects: EntityRef[];
+    recommendationId: string; type: string; productIds: string[]; statement: string; rationale: string | null; priority: Level; subjects: EntityRef[];
     assumptions: string[]; sourceIds: string[]; claimIds: string[]; scoreIds: string[]; uncertaintyIds: string[];
   }[];
 }

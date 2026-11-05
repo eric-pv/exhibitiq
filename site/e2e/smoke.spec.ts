@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const SHOTS = process.env.SCREENSHOT_DIR;
-const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心", "分析設定", "展覽情報與比較", "資料及系統狀態"]); // pages that are no longer 「建置中」
+const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心", "分析設定", "展覽情報與比較", "資料及系統狀態", "BXR 產品推薦"]); // pages that are no longer 「建置中」
 const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "分析設定", "資料及系統狀態"];
 
 test.beforeEach(async ({ page }, info) => {

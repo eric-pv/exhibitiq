@@ -53,7 +53,9 @@ function loadSettings(v) {
   const products = existsSync(pd) ? readdirSync(pd).filter((f) => f.endsWith(".json")).sort().map((f) => {
     const d = readJson(join(pd, f));
     v.check("bxr_product", d, `knowledge/bxr-products/${f}`);
-    return { productId: d.product_id, name: d.name, approvalStatus: d.approval_status };
+    return { productId: d.product_id, name: d.name, nameEn: d.name_en ?? null, summary: d.summary, approvalStatus: d.approval_status,
+      approvedAt: d.approved_at ?? null, terms: [...(d.capabilities ?? []), ...(d.applications ?? []), ...(d.target_industries ?? []), ...(d.problems_addressed ?? [])],
+      specCount: (d.specifications ?? []).length };
   }) : [];
   const sd = join(kd, "scoring");
   const scoreModels = existsSync(sd) ? readdirSync(sd).filter((f) => f.endsWith(".json")).sort().map((f) => {
@@ -61,8 +63,10 @@ function loadSettings(v) {
     return { scoreModelId: d.score_model_id, approvalStatus: d.approval_status, notes: d.notes ?? null,
       factors: d.factors.map((x) => ({ factorId: x.factor_id, label: x.label, defaultMax: x.default_max_points ?? x.max_points })) };
   }) : [];
+  const td = join(kd, "taxonomy");
+  const termLabels = existsSync(td) ? Object.fromEntries(readdirSync(td).filter((f) => f.endsWith(".json")).flatMap((f) => readJson(join(td, f)).terms.map((t) => [t.term_id, t.label]))) : {};
   const schemas = Object.fromEntries(["common", "analysis_profile"].map((n) => [n, readJson(join(SCHEMAS, `${n}.schema.json`))]));
-  return { profiles, products, scoreModels, schemas };
+  return { profiles, products, scoreModels, schemas, termLabels };
 }
 
 // Same keyword rule as skills/exhibitiq/scripts/profile_tools.py::_hit (whole word for Latin, substring for CJK).
@@ -256,7 +260,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
             confidence: r.confidence ?? null, sourceIds: r.evidence_source_ids ?? [], claimIds: r.claim_ids ?? [],
           })),
           recommendations: a.recommendations.map((r) => ({
-            recommendationId: r.recommendation_id, type: r.recommendation_type, statement: r.statement, rationale: r.rationale ?? null,
+            recommendationId: r.recommendation_id, type: r.recommendation_type, productIds: r.product_ids ?? [], statement: r.statement, rationale: r.rationale ?? null,
             priority: r.priority, subjects: r.subjects ?? [], assumptions: r.assumptions ?? [], sourceIds: r.evidence_source_ids ?? [],
             claimIds: r.based_on_claim_ids ?? [], scoreIds: r.score_ids ?? [], uncertaintyIds: r.uncertainty_ids ?? [],
           })),
