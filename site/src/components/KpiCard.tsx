@@ -10,7 +10,7 @@ export function KpiCard(props: { title: string; value: number; suffix?: string; 
       hoverable={!!props.onOpen}
       onClick={props.onOpen}
       role={props.onOpen ? "link" : undefined}
-      aria-label={props.onOpen ? `${props.title}：${t.overview.clickHint}` : undefined}
+      aria-label={props.onOpen ? `${props.title} ${props.value}${props.suffix ?? ""}：${t.overview.clickHint}` : undefined}
       data-testid={props.testId}
       style={{ height: "100%" }}
     >
