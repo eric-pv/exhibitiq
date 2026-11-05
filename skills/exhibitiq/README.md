@@ -29,3 +29,11 @@ python $T select golden-fair --index $G/dataset_index.json
 python $T validate-analysis $G/expected/analysis/analysis_result.json $G/package
 python $T report $G/expected/analysis/analysis_result.json $G/package
 ```
+
+## 可重現性檢查（A3-08）
+
+```bash
+python skills/exhibitiq/scripts/repro_check.py --check
+```
+
+在任何乾淨的雲端工作區（Eric 或 Albert 的）執行，所有確定性指令（`validate-package`、`classify`、`relate`、`score`、`config`、`compare`、`report`）的輸出雜湊都必須等於 `skills/exhibitiq/repro/expected-digest.json`。有意修改輸出時，執行 `python skills/exhibitiq/scripts/repro_check.py > skills/exhibitiq/repro/expected-digest.json` 更新並在 PR 說明原因。AI 撰寫的結論本身不是確定性的；可重現的是輸入、工具輸出與驗證規則。
