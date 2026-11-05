@@ -317,3 +317,38 @@ export function getProducts(b: Bundle = bundle) {
     recommendations: recs.filter((r) => r.productIds.includes(p.productId)),
   }));
 }
+
+export interface HistoryStep {
+  fromYear: number; toYear: number; returning: number;
+  /** null = cannot be known: the earlier (new) or later (not seen again) year is incomplete — never estimated. */
+  newCount: number | null; notSeenAgain: number | null;
+}
+
+/** 歷史趨勢 (W3-02, same rules as A3-04 `profile_tools.history`): one exhibition, latest package per year, oldest first. */
+export function getHistory(exhibitionId: string, profileId: string | null, b: Bundle = bundle) {
+  const profile = b.settings.profiles.find((p) => p.profile.profile_id === profileId)?.profile ?? null;
+  const kws = profile ? profile.keywords.filter((k) => k.enabled) : [];
+  const years = getOverview(b).editions.filter((e) => e.exhibitionId === exhibitionId && e.latest && b.datasets[e.latest.datasetId])
+    .sort((x, y) => x.year - y.year).map((e) => {
+      const ds = b.datasets[e.latest!.datasetId];
+      const ids = new Set(ds.companies.map((c) => c.companyId));
+      const complete = ds.completeness.status === "complete";
+      return {
+        year: e.year, datasetId: ds.datasetId, completeness: ds.completeness, complete, companyIds: ids, companyCount: ids.size,
+        keywords: Object.fromEntries(kws.map((k) => {
+          const n = (profile && ds.keywordMatches[profile.profile_id]?.[k.term_id]?.companyIds.length) ?? 0;
+          return [k.term_id, { count: n, share: complete && ids.size ? n / ids.size : null }];
+        })),
+      };
+    });
+  const steps: HistoryStep[] = years.slice(1).map((cur, i) => {
+    const prev = years[i];
+    const returning = [...cur.companyIds].filter((c) => prev.companyIds.has(c)).length;
+    return {
+      fromYear: prev.year, toYear: cur.year, returning,
+      newCount: prev.complete ? cur.companyCount - returning : null,
+      notSeenAgain: cur.complete ? prev.companyCount - returning : null,
+    };
+  });
+  return { status: years.length >= 2 ? "ok" as const : "insufficient" as const, years, steps, keywords: kws, profile };
+}

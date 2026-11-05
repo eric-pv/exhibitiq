@@ -8,6 +8,7 @@ Usage (from the repo root):
   python skills/exhibitiq/scripts/exhibitiq_tools.py validate-analysis ANALYSIS_JSON PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py save-analysis ANALYSIS_JSON PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py report ANALYSIS_JSON PACKAGE_DIR > report.md
+  python skills/exhibitiq/scripts/exhibitiq_tools.py trend EXHIBITION_ID [--profile ID] [--index PATH]
 
 Package validation uses data engineering's `etl.validate` when it is importable
 (after phase integration). Until then it falls back to the contract reference
@@ -63,6 +64,22 @@ def select_package(index_path: Path, exhibition_id: str, year: int | None = None
         raise LookupError(f"{ds['dataset_id']}: storage {ds['location']['storage']} is not readable here")
     return {"dataset_id": ds["dataset_id"], "edition_id": ed["edition_id"], "package_dir": str(ROOT / ds["location"]["locator"]),
             "content_hash": ds["content_hash"], "data_origin": ds["data_origin"], "completeness_status": ds["completeness_status"]}
+
+
+def edition_packages(index_path: Path, exhibition_id: str) -> list[dict]:
+    """A3-04: the latest validated package of EVERY edition of one exhibition (oldest year first), for `trend`."""
+    idx = load(index_path)
+    ex = next((e for e in idx["exhibitions"] if e["exhibition_id"] == exhibition_id), None)
+    if ex is None:
+        raise LookupError(f"{exhibition_id} is not in the dataset index (not registered/accepted)")
+    out = []
+    for ed in sorted(ex["editions"], key=lambda e: e["year"]):
+        if ed["latest_dataset_id"]:
+            out.append(select_package(index_path, exhibition_id, ed["year"]))
+    if not out:
+        why = ex["acquisition"].get("notes") or ex["acquisition"]["status"]
+        raise LookupError(f"{exhibition_id}: no validated package available ({why})")
+    return out
 
 
 def validate_package(package_dir: Path) -> dict:
@@ -380,6 +397,10 @@ def main(argv: list[str] | None = None) -> int:
     sp = sub.add_parser("compare")
     sp.add_argument("package_dirs", type=Path, nargs="+")
     sp.add_argument("--profile", default=None)
+    sp = sub.add_parser("trend")
+    sp.add_argument("exhibition_id")
+    sp.add_argument("--profile", default=None)
+    sp.add_argument("--index", type=Path, default=None)
     for name in ("validate-analysis", "report", "save-analysis"):
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
@@ -408,6 +429,10 @@ def main(argv: list[str] | None = None) -> int:
         elif a.cmd == "compare":
             import profile_tools
             print(json.dumps(profile_tools.compare(a.package_dirs, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "trend":
+            import profile_tools
+            dirs = [Path(x["package_dir"]) for x in edition_packages(idx, a.exhibition_id)]
+            print(json.dumps(profile_tools.history(dirs, a.profile), ensure_ascii=False, indent=2))
         elif a.cmd == "config":
             import profile_tools
             print(json.dumps(profile_tools.analysis_config(a.profile), ensure_ascii=False, indent=2))
@@ -423,7 +448,7 @@ def main(argv: list[str] | None = None) -> int:
             r = save_analysis(a.analysis, a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
         elif a.cmd == "report":
             sys.stdout.write(render_report(a.analysis, a.package_dir, show_cost=not a.hide_cost))
-    except LookupError as e:
+    except (LookupError, ValueError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
     return 0

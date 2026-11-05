@@ -248,3 +248,50 @@ def exhibition_value(package_dir: Path, profile=None, top: int = 10) -> dict:
             "不評估預算或金額（Eric 2026-11-05）",
         ] if n],
     }
+
+
+def history(package_dirs: list[Path], profile=None) -> dict:
+    """A3-04: deterministic multi-year history of ONE exhibition (one package per year, any order).
+
+    Builds on compare(): per year the collected companies and keyword counts; between consecutive years the companies
+    that returned, are new, or did not appear again. Never inferred from incomplete data:
+      - "returning" is a fact (the same company_id is in both packages);
+      - "new" needs the EARLIER year to be complete (otherwise the company may have been there but not collected);
+      - "not seen again" needs the LATER year to be complete (otherwise it may simply not be collected yet).
+    Otherwise the value is null with the reason. Fewer than two years -> status "insufficient" (資料不足).
+    """
+    cmp = compare(package_dirs, profile)
+    exhibitions = {p["exhibition_id"] for p in cmp["packages"]}
+    if len(exhibitions) > 1:
+        raise ValueError(f"history needs packages of one exhibition, got {sorted(exhibitions)} (use compare instead)")
+    years = [p["year"] for p in cmp["packages"]]
+    if len(set(years)) != len(years) or None in years:
+        raise ValueError(f"history needs one package per year with edition_year set, got {years}")
+    pk = cmp["packages"]
+    steps = []
+    for prev, cur in zip(pk, pk[1:]):
+        a, b = set(prev["company_ids"]), set(cur["company_ids"])
+        prev_ok, cur_ok = prev["completeness_status"] == "complete", cur["completeness_status"] == "complete"
+        steps.append({
+            "from_year": prev["year"], "to_year": cur["year"],
+            "from_dataset_id": prev["dataset_id"], "to_dataset_id": cur["dataset_id"],
+            "returning": {"count": len(a & b), "company_ids": sorted(a & b)},
+            "new": {"count": len(b - a), "company_ids": sorted(b - a)} if prev_ok else None,
+            "not_seen_again": {"count": len(a - b), "company_ids": sorted(a - b)} if cur_ok else None,
+            "notes": [n for n in [
+                None if prev_ok else f"{prev['year']} 年資料不完整：無法判斷哪些企業是新參展（可能只是當年未取得）",
+                None if cur_ok else f"{cur['year']} 年資料不完整：無法判斷哪些企業沒有再參展（可能只是尚未取得）",
+            ] if n],
+        })
+    return {
+        "exhibition_id": next(iter(exhibitions), None),
+        "profile_id": cmp["profile_id"], "profile_version": cmp["profile_version"], "mode": cmp["mode"],
+        "status": "ok" if len(pk) >= 2 else "insufficient",
+        "status_note": None if len(pk) >= 2 else "只有一個年度的驗證通過資料包，無法判斷歷史趨勢（資料不足）",
+        "years": [{"year": p["year"], "dataset_id": p["dataset_id"], "completeness_status": p["completeness_status"],
+                   "official_exhibitor_count": p["official_exhibitor_count"], "collected_company_count": p["collected_company_count"],
+                   "data_origin": p["data_origin"]} for p in pk],
+        "keyword_series": cmp["keyword_series"],
+        "year_over_year": steps,
+        "incomplete_years": [p["year"] for p in pk if p["completeness_status"] != "complete"],
+    }
