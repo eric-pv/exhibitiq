@@ -39,7 +39,7 @@ Web Dashboard 是**競賽 MVP 的必要模組**：一個可以操作、搜尋、
 | 報告 | 網頁與 PDF 使用同一份分析結果 JSON 和同一個 `ReportViewer` 元件；PDF 由列印樣式產生 |
 | 安全 | 前端不放任何 Token、API Key 或可寫入憑證；「新增展覽」「手動執行」只產生內容並連到 GitHub Actions 頁面；公開版打包有白名單檢查 |
 | 通用性 | 頁面、導覽與元件不得寫死任何展覽的名稱、ID 或欄位；展覽清單一律來自資料集索引 |
-| 預覽 | Actions build artifact（單一 HTML，私有）、雲端 `vite preview`、Playwright 截圖。**GitHub Pages 網站是公開的**，只能放專案負責人核准的非機密內容 |
+| 預覽 | 公開展示網址 https://magician-eric.github.io/exhibitiq/（`gh-pages` 分支；發布前 `npm run pages:check`）、Actions build artifact、雲端 `vite preview`、Playwright 截圖。**Repo 與 GitHub Pages 都是公開的（2026-11-05 起）**，只能放專案負責人核准的非機密內容 |
 
 **主選單（9 項）：** 系統總覽、展覽搜尋與新增、展覽情報與比較、參展商與企業情報、商機分析與評分、BXR 產品推薦、AI 報告中心、分析設定、資料及系統狀態。V2.5 新增「分析設定」是全系統共用功能（分析模式、主題、關鍵字、分類與同義詞、企業關係規則、評分模型、設定匯入／匯出），不是商機分析的附屬功能。**PDF／CSV 匯出**是跨頁共用功能（表格匯出 CSV、報告匯出 PDF），不另設頁面。
 
