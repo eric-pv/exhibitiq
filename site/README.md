@@ -55,3 +55,12 @@ React 18、Vite 6、TypeScript 5、Ant Design 5（`zh_TW` 語系）、ECharts 5�
 - 不寫死任何展覽；展覽清單只來自資料集索引。
 - 前端不放任何 Token 或 API Key。
 - 打包產物（`dist/`、`dist-single/`）、`node_modules/`、測試輸出不進 Git（見根目錄 `.gitignore`）。
+
+## 錯誤處理（W4-03）
+
+| 情況 | 行為 |
+|---|---|
+| 資料驗證失敗（Schema、雜湊、引用的來源不存在） | `npm run bundle` 停止並列出檔案與原因；不會產生含錯誤資料的網站（`scripts/build-bundle.mjs`） |
+| 頁面載入或顯示時發生錯誤 | 該頁顯示統一的錯誤狀態（`ErrorBoundary` → `ErrorState`），切換到其他頁面即恢復 |
+| 沒有資料（沒有展覽、資料包或分析結果） | 各頁顯示統一的空狀態或「資料不足」，數字為 0 或「未知」，不推測補足 |
+| 個別屆次取得失敗 | 系統狀態頁與總覽列出失敗與原因，不隱藏 |

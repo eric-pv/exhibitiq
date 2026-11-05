@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { ErrorBoundary } from "./components/states/ErrorBoundary";
 import { AppLayout } from "./components/layout/AppLayout";
 import { PageHeader } from "./components/layout/PageHeader";
 import { UnderConstruction } from "./components/states/States";
@@ -18,8 +19,10 @@ const BUILT: Record<string, () => JSX.Element> = { overview: OverviewPage, compa
 
 /** Routes for the 8 main menu items. Pages that are not built yet show the unified 「建置中」 state. */
 export default function App() {
+  const { pathname } = useLocation();
   return (
     <AppLayout>
+      <ErrorBoundary resetKey={pathname}>
       <Routes>
         {NAV_ITEMS.map((n) => (
           <Route
@@ -42,6 +45,7 @@ export default function App() {
         <Route path="/design" element={<DesignSystemPage />} />
         <Route path="*" element={<UnderConstruction workItem="—" />} />
       </Routes>
+      </ErrorBoundary>
     </AppLayout>
   );
 }
