@@ -61,6 +61,7 @@
 | W2-06 | 「分析設定」主選單（第 9 項） | [#72](https://github.com/magician-eric/exhibitiq/pull/72) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-17 | Skill 三種分析模式；報告「分析設定」章節 | [#73](https://github.com/magician-eric/exhibitiq/pull/73) | `dev/ai-intelligence` | 2026-11-04 |
 | A2-09 | 趨勢與跨展覽比較 `compare` | [#74](https://github.com/magician-eric/exhibitiq/pull/74) | `dev/ai-intelligence` | 2026-11-04 |
+| W3-01 | 展覽情報與比較頁 | [#75](https://github.com/magician-eric/exhibitiq/pull/75) | `dev/ai-intelligence` | 2026-11-05 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -68,7 +69,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W3-01 | 展覽情報與比較頁：任選屆次並排比較同一組指標；關鍵字命中（依主題）；沒有資料包顯示資料不足 | 本 PR |
+| W2-05 | 資料及系統狀態頁：各屆次取得（含失敗）、資料包驗證（含歷史）、完整度、錯誤與警告 | 本 PR |
 
 ## 待處理（Phase 1）
 

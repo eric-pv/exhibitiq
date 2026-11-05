@@ -130,6 +130,13 @@ export const t = {
     export: "匯出 JSON（提交用）", openGithub: "開啟 GitHub 上傳頁面",
     submitSteps: "匯出的檔案名稱就是主題代碼；內容有修改時版本號自動加 1。上傳到 knowledge/analysis-profiles/ 並合併後，網站重新建置就會顯示「已提交」；之後在 Claude Code 工作階段指定這個主題執行分析。網頁不保存任何 GitHub 憑證。",
   },
+  systemStatus: {
+    editions: "已登錄屆次", acqOk: "取得成功或部分成功", acqFailed: "取得失敗或尚未取得", validated: "驗證通過的資料包", unit: "個",
+    failedNote: (n: number) => `${n} 個屆次取得失敗或尚未取得。這是正常且會被記錄的結果，不會被隱藏或以推測補足；請參考說明欄的原因。`,
+    acquisitionTitle: "資料取得（各屆次最近一次）", validationTitle: "資料包驗證（含歷史版本）", noticesTitle: (n: number) => `錯誤與警告（${n}）`, noNotices: "沒有通知",
+    edition: "展覽（年份）", assessment: "來源評估", lastRun: "最近一次取得", records: "擷取筆數", errors: "錯誤數", completeness: "完整度", notes: "說明",
+    dataset: "資料包", latest: "最新", origin: "資料類型", validation: "驗證", validatedAt: "驗證時間", validator: "驗證程式",
+  },
   compare: {
     pick: "選擇要比較的展覽與年度（兩個以上）", profile: "關鍵字主題", needTwo: "請選擇兩個以上的展覽或年度。", noPackage: "尚無資料包",
     note: "所有展覽使用同一組指標並排比較。沒有驗證通過資料包的屆次顯示「資料不足」；關鍵字命中是候選訊號（AI 推論前的初篩），資料不完整時不計算比例。",

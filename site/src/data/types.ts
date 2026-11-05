@@ -23,8 +23,9 @@ export interface Bundle {
       editionId: string;
       year: number;
       latestDatasetId: string | null;
-      lastAcquisition: { method: string; status: PipelineStatus; finishedAt: string; notes: string | null } | null;
-      datasets: { datasetId: string; dataOrigin: "synthetic" | "collected"; validation: PipelineStatus; completeness: Completeness }[];
+      lastAcquisition: { method: string; status: PipelineStatus; finishedAt: string; notes: string | null; crawlRunId: string | null; recordsExtracted: number | null; errorCount: number | null } | null;
+      datasets: { datasetId: string; dataOrigin: "synthetic" | "collected"; validation: PipelineStatus; completeness: Completeness; createdAt: string; schemaVersion: string;
+        validatedAt: string | null; validator: string | null; validationErrors: number | null; isLatest: boolean }[];
     }[];
   }[];
   datasets: Record<string, {
@@ -47,7 +48,7 @@ export interface Bundle {
     scoreModels: { scoreModelId: string; approvalStatus: string; notes: string | null; factors: { factorId: string; label: string; defaultMax: number }[] }[];
     schemas: Record<string, object> };
   reportTemplates: { version: string; section_titles: Record<string, string>; types: Record<string, { label: string; sections: string[] }> };
-  notices: { level: "info" | "warning" | "error"; message: string; occurredAt: string }[];
+  notices: { level: "info" | "warning" | "error"; message: string; occurredAt: string; exhibitionId: string | null; datasetId: string | null }[];
 }
 
 /** A source record (schemas/v1/source.schema.json) as the Dashboard shows it. */

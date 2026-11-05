@@ -283,3 +283,20 @@ export function getComparison(editionIds: string[], profileId: string | null, b:
   });
   return { columns, profile, keywords: kws, editions: rows };
 }
+
+/** 資料及系統狀態 (W2-05): acquisition, validation, completeness, errors and warnings from the dataset index. */
+export function getSystemStatus(b: Bundle = bundle) {
+  const editions = getOverview(b).editions;
+  const datasets = b.exhibitions.flatMap((ex) => ex.editions.flatMap((ed) => ed.datasets.map((d) => ({ ...d, exhibitionName: ex.name, year: ed.year, editionId: ed.editionId }))))
+    .sort((x, y) => y.createdAt.localeCompare(x.createdAt));
+  const count = <T,>(xs: T[], f: (x: T) => string) => xs.reduce<Record<string, number>>((m, x) => ({ ...m, [f(x)]: (m[f(x)] ?? 0) + 1 }), {});
+  return {
+    editions, datasets,
+    acquisition: count(editions, (e) => e.lastAcquisition?.status ?? "none"),
+    validation: count(datasets, (d) => d.validation),
+    acquisitionErrors: editions.reduce((n, e) => n + (e.lastAcquisition?.errorCount ?? 0), 0),
+    notices: [...b.notices].sort((x, y) => y.occurredAt.localeCompare(x.occurredAt)),
+    noticeLevels: count(b.notices, (n) => n.level),
+    source: { ...b.generatedFrom, schemaVersion: b.schemaVersion, indexGeneratedAt: b.indexGeneratedAt },
+  };
+}
