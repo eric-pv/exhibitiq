@@ -18,7 +18,8 @@
     "bundle": "node scripts/build-bundle.mjs",
     "pretypecheck": "npm run -s bundle",
     "pretest": "npm run -s bundle",
-    "prebuild": "npm run -s bundle"
+    "prebuild": "npm run -s bundle",
+    "security": "node scripts/security-check.mjs"
   },
   "dependencies": {
     "@ant-design/icons": "5.6.1",
