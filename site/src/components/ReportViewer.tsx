@@ -136,7 +136,7 @@ export function ReportViewer({ view, b = bundle }: { view: OpportunityView; b?: 
   };
 
   return (
-    <article className="report" data-testid="report-viewer">
+    <article className="report" data-testid="report-viewer" style={{ overflowWrap: "anywhere", minWidth: 0 }}>
       <Typography.Title level={3}>{a.title}</Typography.Title>
       {order.map((sec) => (
         <section key={sec} data-section={sec} style={{ marginBottom: space.lg }}>
