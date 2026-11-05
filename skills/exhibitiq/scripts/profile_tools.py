@@ -212,3 +212,39 @@ def compare(package_dirs: list[Path], profile=None) -> dict:
         "trend_note": None if len({e for e, _ in years}) < len(years) else "沒有同一展覽的多個年度，只能做跨展覽比較，不能判斷時間趨勢（資料不足）",
         "incomplete_packages": [p["dataset_id"] for p in order if p["completeness_status"] != "complete"],
     }
+
+
+def exhibition_value(package_dir: Path, profile=None, top: int = 10) -> dict:
+    """A2-10: deterministic inputs for the exhibition's business value and visit suggestions (Eric 2026-11-05: business
+    value only — no budget or money). Everything here is a signal for the Skill; the recommendation it writes is inference.
+    """
+    prof = load_profile(profile)
+    d = Path(package_dir)
+    m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
+    rel = relate(d, prof)
+    scores = score(d, prof)
+    hits = match(d, prof)
+    by_type: dict[str, list[str]] = {t: [] for t in REL_TYPES}
+    for cid, items in rel["companies"].items():
+        for x in items:
+            if x["relationship_type"] in by_type:
+                by_type[x["relationship_type"]].append(cid)
+    matched = sorted(c for c, v in hits.items() if v["terms"])
+    complete = m["completeness_status"] == "complete"
+    return {
+        "dataset_id": m["dataset_id"], "exhibition_id": m["exhibition_id"], "edition_id": m["edition_id"],
+        "profile_id": prof["profile_id"], "profile_version": prof["version"], "mode": prof["mode"],
+        "completeness_status": m["completeness_status"], "official_exhibitor_count": m["completeness"]["official_exhibitor_count"],
+        "collected_company_count": len(hits),
+        "topic_matched_companies": {"count": len(matched), "share": round(len(matched) / len(hits), 4) if complete and hits else None, "company_ids": matched},
+        "relationship_candidates": {t: {"count": len(v), "company_ids": sorted(v)} for t, v in by_type.items()},
+        "visit_candidates": [{"rank": s["rank"], "company_id": s["subject"]["entity_id"], "score_id": s["score_id"],
+                              "total_points": s["total_points"], "max_total_points": s["max_total_points"]}
+                             for s in scores if s["total_points"] > 0][:top],
+        "bxr_products_status": rel["bxr_products_status"],
+        "notes": [n for n in [
+            None if complete else "資料不完整：家數只代表實際取得的部分，不計算比例；建議中必須列出不確定性",
+            None if scores else "這個主題沒有設定評分模型：拜訪建議只能依關係候選與結論，不能依排名",
+            "不評估預算或金額（Eric 2026-11-05）",
+        ] if n],
+    }

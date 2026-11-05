@@ -46,3 +46,17 @@ def test_works_for_any_profile_without_bxr(tmp_path):
     fire = json.loads((ROOT / "schemas/v1/examples/profile/analysis_profile.industry.example.json").read_text(encoding="utf-8"))
     r = pt.compare([G], fire)
     assert r["mode"] == "industry_research" and set(r["keyword_series"]) == {k["term_id"] for k in fire["keywords"] if k["enabled"]}
+
+
+def test_exhibition_value_signals_no_money(tmp_path):
+    """A2-10: business-value inputs only (no budget); incomplete data -> no share; visit list from the profile's scores."""
+    prof = json.loads((ROOT / "knowledge/analysis-profiles/bxr-opportunity.json").read_text(encoding="utf-8"))
+    prof["keywords"].append({"term_id": "custom.training", "category": "application", "label": "訓練", "label_en": "Training", "enabled": True})
+    r = pt.exhibition_value(G, prof)
+    assert r["topic_matched_companies"]["count"] >= 1 and r["topic_matched_companies"]["share"] is None
+    assert r["visit_candidates"] and all(v["total_points"] > 0 for v in r["visit_candidates"])
+    assert any("預算" in n for n in r["notes"])
+    assert "budget" not in json.dumps(r).lower().replace("不評估預算", "")
+    fire = json.loads((ROOT / "schemas/v1/examples/profile/analysis_profile.industry.example.json").read_text(encoding="utf-8"))
+    r2 = pt.exhibition_value(G, fire)
+    assert r2["visit_candidates"] == [] and r2["bxr_products_status"] == "not_used"

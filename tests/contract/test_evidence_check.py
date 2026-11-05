@@ -46,3 +46,18 @@ def test_each_rule_rejects(mutate, rule):
     errs = ev.validate(a, PKG)
     assert any(e.startswith(rule) or e.startswith("AR1") for e in errs), errs
     assert errs, "must not be publishable"
+
+
+@pytest.mark.parametrize("text", ["建議投入 NT$300,000 參展", "預算約 50 萬元", "Budget of USD 10k"])
+def test_ev8_no_money_in_recommendations(text):
+    a = copy.deepcopy(BASE)
+    a["recommendations"][0]["statement"] = text
+    assert any(e.startswith("EV8") for e in ev.validate(a, PKG))
+
+
+def test_ev8_participation_decision_needs_basis():
+    a = copy.deepcopy(BASE)
+    r = a["recommendations"][0]
+    r["recommendation_type"] = "participation_decision"
+    r["based_on_claim_ids"], r["score_ids"] = [], []
+    assert any(e.startswith("EV8") or e.startswith("AR") for e in ev.validate(a, PKG))

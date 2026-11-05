@@ -90,9 +90,17 @@ def check_evidence(a: dict, pkg: Path | None = None) -> list[str]:
             if not r.get("uncertainty_ids"):
                 errors.append(f"EV6 {r['recommendation_id']}: incomplete input but no uncertainty cited")
 
+    import re
+    money = re.compile(r"(NT\$|US\$|\$|€|£|¥|新台幣|台幣|美元|歐元|預算|元整|萬元|千元|budget|USD|TWD|EUR)", re.IGNORECASE)
     for r in a.get("recommendations", []):  # EV7
         if not r.get("evidence_source_ids"):
             errors.append(f"EV7 {r['recommendation_id']}: recommendation without evidence")
+        # EV8 (Eric 2026-11-05): business value only — no budget or money amounts in any recommendation
+        text = " ".join([r["statement"], r.get("rationale", ""), *r.get("assumptions", [])])
+        if money.search(text):
+            errors.append(f"EV8 {r['recommendation_id']}: recommendations must not contain budget or money amounts")
+        if r["recommendation_type"] == "participation_decision" and not (r.get("score_ids") or r.get("based_on_claim_ids")):
+            errors.append(f"EV8 {r['recommendation_id']}: participation decision must cite scores or conclusions")
     return errors
 
 
