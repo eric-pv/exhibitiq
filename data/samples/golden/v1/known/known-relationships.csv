@@ -1,0 +1,4 @@
+company_name,aliases,country,website,relationship,source,notes
+Alpha Training Systems (Synthetic),Alpha Training,ZZ,https://www.alpha.example/,competitor,合成範例（synthetic）：測試用，非真實判斷,
+Beta Components,,ZZ,,partner;channel,合成範例（synthetic）：測試用,名稱與資料包不同（少了 Synthetic），測試不做模糊比對
+Omega Simulation (Synthetic),,ZZ,https://omega.example,competitor,合成範例（synthetic）：不在資料包中,

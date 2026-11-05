@@ -1,6 +1,6 @@
 # ExhibitIQ 開發進度
 
-> 最後更新：2026-11-05（A3-04、W3-02 歷史趨勢）｜負責人：專案負責人（`ai`）
+> 最後更新：2026-11-05（A3-07 人工標準樣本工具）｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
 > **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
 
@@ -78,6 +78,7 @@
 | A2-10 | 展覽商務價值與拜訪候選（不含預算）、EV8 | [#92](https://github.com/eric-pv/exhibitiq/pull/92) | `dev/ai-intelligence` | 2026-11-05 |
 | W4-06（檢查） | 公開網頁發布檢查 `pages:check` | [#86](https://github.com/magician-eric/exhibitiq/pull/86) | `dev/ai-intelligence` | 2026-11-05 |
 | W3-03 | BXR 產品推薦頁（只顯示已核定產品卡、引用該產品的 AI 建議） | [#93](https://github.com/eric-pv/exhibitiq/pull/93) | `dev/ai-intelligence` | 2026-11-05 |
+| A3-04、W3-02 | 歷史趨勢：`trend` 指令與「展覽情報與比較」頁歷史趨勢區塊（只有一個年度時顯示「資料不足」） | [#94](https://github.com/eric-pv/exhibitiq/pull/94) | `dev/ai-intelligence` | 2026-11-05 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -85,7 +86,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A3-04、W3-02 | 同一展覽的歷史趨勢：`trend` 指令（再次參展／新參展／未再參展，資料不完整時不判斷）與「展覽情報與比較」頁的歷史趨勢區塊；目前資料只有單一年度，畫面顯示「資料不足」 | 本 PR |
+| A3-07 | 已知企業關係名單（人工標準樣本）規格、`validate-known`／`benchmark` 工具；**等 Albert 提交名單**（Issue #90） | 本 PR |
 
 ## 待處理（Phase 1）
 

@@ -9,6 +9,8 @@ Usage (from the repo root):
   python skills/exhibitiq/scripts/exhibitiq_tools.py save-analysis ANALYSIS_JSON PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py report ANALYSIS_JSON PACKAGE_DIR > report.md
   python skills/exhibitiq/scripts/exhibitiq_tools.py trend EXHIBITION_ID [--profile ID] [--index PATH]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py validate-known KNOWN_CSV
+  python skills/exhibitiq/scripts/exhibitiq_tools.py benchmark KNOWN_CSV PACKAGE_DIR [--profile ID]
 
 Package validation uses data engineering's `etl.validate` when it is importable
 (after phase integration). Until then it falls back to the contract reference
@@ -397,6 +399,11 @@ def main(argv: list[str] | None = None) -> int:
     sp = sub.add_parser("compare")
     sp.add_argument("package_dirs", type=Path, nargs="+")
     sp.add_argument("--profile", default=None)
+    sub.add_parser("validate-known").add_argument("known_csv", type=Path)
+    sp = sub.add_parser("benchmark")
+    sp.add_argument("known_csv", type=Path)
+    sp.add_argument("package_dir", type=Path)
+    sp.add_argument("--profile", default=None)
     sp = sub.add_parser("trend")
     sp.add_argument("exhibition_id")
     sp.add_argument("--profile", default=None)
@@ -429,6 +436,14 @@ def main(argv: list[str] | None = None) -> int:
         elif a.cmd == "compare":
             import profile_tools
             print(json.dumps(profile_tools.compare(a.package_dirs, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "validate-known":
+            import profile_tools
+            rows, errors = profile_tools.load_known(a.known_csv)
+            print(json.dumps({"ok": not errors, "rows": len(rows), "errors": errors}, ensure_ascii=False, indent=2))
+            return 0 if not errors else 1
+        elif a.cmd == "benchmark":
+            import profile_tools
+            print(json.dumps(profile_tools.benchmark(a.known_csv, a.package_dir, a.profile), ensure_ascii=False, indent=2))
         elif a.cmd == "trend":
             import profile_tools
             dirs = [Path(x["package_dir"]) for x in edition_packages(idx, a.exhibition_id)]
