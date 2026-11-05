@@ -143,13 +143,13 @@ def test_analysis_cannot_cite_unapproved_products(tmp_path):
     assert kc.check_analysis_products(analysis, tmp_path) == []
 
 
-def test_a205_bxr_cards_are_draft_without_specifications():
-    """A2-05 (V2.5): 8 draft cards with names and positioning only; no invented specifications."""
+def test_a205_bxr_cards_approved_without_specifications():
+    """A2-05 (V2.5): 8 cards with names and positioning only, approved by Eric 2026-11-05; no invented specifications."""
     import json as _j
     cards = [_j.loads(p.read_text(encoding="utf-8")) for p in sorted((pc.ROOT / "knowledge" / "bxr-products").glob("bxr-*.json"))]
     assert len(cards) == 8
     for c in cards:
-        assert c["approval_status"] == "draft" and "approved_by" not in c
+        assert c["approval_status"] == "approved" and c["approved_by"] == "Eric"
         assert not c.get("specifications"), c["product_id"]
         assert c["sources"][0]["provided_by"] == "Eric"
     prof = _j.loads((pc.ROOT / "knowledge" / "analysis-profiles" / "bxr-opportunity.json").read_text(encoding="utf-8"))

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0-draft.6",
   "profile_id": "default-library",
-  "version": 1,
+  "version": 2,
   "name": "預設詞庫（起點）",
   "description": "由 knowledge/taxonomy 草稿轉成的起始詞庫，只是起點；使用者可以在「分析設定」新增任何領域的主題與關鍵字。",
   "mode": "industry_research",
@@ -358,7 +358,7 @@
       "合作夥伴"
     ]
   },
-  "updated_at": "2026-11-04T12:00:00Z",
+  "updated_at": "2026-11-05T08:00:00Z",
   "updated_by": "Claude Code（A2-15）",
-  "notes": "draft：分類詞待 Eric 核定。"
+  "notes": "分類詞由 Eric 於 2026-11-05 核定為起始詞庫；使用者可在「分析設定」新增或修改。"
 }

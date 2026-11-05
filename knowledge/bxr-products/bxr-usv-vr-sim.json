@@ -17,7 +17,9 @@
       "provided_at": "2026-11-04"
     }
   ],
-  "approval_status": "draft",
-  "updated_at": "2026-11-04",
-  "notes": "待審核（draft）：只有 Eric 提供的產品名稱與初始功能定位，不代表正式技術規格；不得據此推論射程、精度、效能、尺寸、重量、相容性或其他數值。"
+  "approval_status": "approved",
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定目前內容（產品名稱與初始功能定位）；不含任何規格數值，正式型錄之後補充。不得據此推論射程、精度、效能、尺寸、重量、相容性或其他數值。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
 }
