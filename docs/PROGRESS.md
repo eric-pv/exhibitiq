@@ -63,6 +63,7 @@
 | A2-09 | 趨勢與跨展覽比較 `compare` | [#74](https://github.com/magician-eric/exhibitiq/pull/74) | `dev/ai-intelligence` | 2026-11-04 |
 | W3-01 | 展覽情報與比較頁 | [#75](https://github.com/magician-eric/exhibitiq/pull/75) | `dev/ai-intelligence` | 2026-11-05 |
 | W2-05 | 資料及系統狀態頁 | [#76](https://github.com/magician-eric/exhibitiq/pull/76) | `dev/ai-intelligence` | 2026-11-05 |
+| W4-03 | 錯誤處理（統一錯誤與空狀態） | [#77](https://github.com/magician-eric/exhibitiq/pull/77) | `dev/ai-intelligence` | 2026-11-05 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -70,7 +71,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W4-03 | 錯誤處理：頁面錯誤顯示統一錯誤狀態；沒有資料時不當機、不推測 | 本 PR |
+| A3-05 | 報告「版本與追溯附錄」（Markdown 與網頁）：Schema、Skill、模型、知識庫、版型、輸入雜湊、分析設定；成本欄位待核准 | 本 PR |
 
 ## 待處理（Phase 1）
 

@@ -143,3 +143,13 @@ def test_report_analysis_config_section_and_unapproved_products_warning(tmp_path
     a["analysis_config"]["bxr_products_status"] = "draft"
     p = tmp_path / "a.json"; p.write_text(json.dumps(a, ensure_ascii=False), encoding="utf-8")
     assert "產品資料未核定" in tools.render_report(p, ex / "package")
+
+
+def test_report_appendix_traces_versions_and_inputs():
+    """A3-05: every report ends with versions, inputs (with hashes), analysis settings and the (unrecorded) cost."""
+    ex = ROOT / "schemas/v1/examples"
+    a = json.loads((ex / "analysis/analysis_result.with_config.example.json").read_text(encoding="utf-8"))
+    md = tools.render_report(ex / "analysis/analysis_result.with_config.example.json", ex / "package")
+    app = md.split("## 版本與追溯附錄", 1)[1]
+    for needle in [a["schema_version"], a["skill_version"], a["input_hash"], a["analysis_config"]["profile_hash"], a["analysis_id"], "report-templates@", "分析成本：未記錄"]:
+        assert needle in app, needle

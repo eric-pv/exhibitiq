@@ -319,7 +319,22 @@ def render_report(analysis_path: Path, package_dir: Path) -> str:
             out.append(f"| [{i}] | `{sid}` | {r['source_type']} | {r.get('url', '—')} | {r['retrieved_at']} | `{r['content_sha256']}` |")
         return out
 
-    fns = {"header": header, "analysis_config": analysis_config, "data_status": data_status, "summary": summary, "conclusions": conclusions, "scores": scores,
+    def appendix():
+        mdl = a.get("model")
+        out = [f"- Schema 版本：{a['schema_version']}",
+               f"- Skill 版本：{a['skill_version']}",
+               f"- 模型：{' '.join(x for x in [mdl.get('provider'), mdl['name'], mdl.get('version')] if x) if mdl else '未記錄'}",
+               f"- 知識庫版本：{a.get('knowledge_version') or '未記錄'}",
+               f"- 報告版型：{tpl['version']}",
+               f"- 輸入資料包：`{a['input_dataset_id']}`（`{a['input_hash']}`）"]
+        out += [f"- 其他輸入資料包：`{x['dataset_id']}`（`{x['content_hash']}`）" for x in a.get("additional_inputs", [])]
+        cfg = a.get("analysis_config")
+        out.append(f"- 分析設定：`{cfg['profile_id']}` v{cfg['profile_version']}（`{cfg['profile_hash']}`）" if cfg else "- 分析設定：未記錄（舊版格式）")
+        out.append("- 分析成本：未記錄（分析結果格式目前沒有成本欄位）")
+        out.append(f"- 分析 ID：`{a['analysis_id']}`｜審核：{REVIEW.get(a['review_status'], a['review_status'])}")
+        return out
+
+    fns = {"header": header, "analysis_config": analysis_config, "appendix": appendix, "data_status": data_status, "summary": summary, "conclusions": conclusions, "scores": scores,
            "relationships": relationships, "recommendations": recommendations, "uncertainties": uncertainties, "sources": sources}
     # never drop content: a section that has data is rendered even if the template does not list it
     order = list(t["sections"])
