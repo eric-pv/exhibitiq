@@ -64,3 +64,8 @@ React 18、Vite 6、TypeScript 5、Ant Design 5（`zh_TW` 語系）、ECharts 5�
 | 頁面載入或顯示時發生錯誤 | 該頁顯示統一的錯誤狀態（`ErrorBoundary` → `ErrorState`），切換到其他頁面即恢復 |
 | 沒有資料（沒有展覽、資料包或分析結果） | 各頁顯示統一的空狀態或「資料不足」，數字為 0 或「未知」，不推測補足 |
 | 個別屆次取得失敗 | 系統狀態頁與總覽列出失敗與原因，不隱藏 |
+
+## 安全檢查（W4-05）
+
+`npm run build && npm run build:single && npm run security`：掃描 `dist/`、`dist-single/` 與 `src/`，發現任何 Token、API Key、私鑰、Bearer 憑證，或呼叫 GitHub API／LLM API 的程式就失敗。規則本身由 `src/security.test.ts` 測試。
+公開版（GitHub Pages）的內容白名單要等專案負責人決定發布方式後再加入（開發計畫「待專案負責人決定」）。
