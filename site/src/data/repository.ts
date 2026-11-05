@@ -72,9 +72,16 @@ export function matchesQuery(r: CompanyRow, q: string): boolean {
   return !s || [r.name, ...r.aliases].some((n) => n.toLowerCase().includes(s));
 }
 
-/** CSV with UTF-8 BOM so Excel opens Chinese text correctly. */
+/**
+ * CSV for Excel (W3-05): UTF-8 BOM (Chinese text), CRLF rows, RFC 4180 quoting. Text cells that start with
+ * = + - @ (or tab/CR) are prefixed with ' so Excel never runs them as formulas (CSV injection); numbers stay numbers.
+ */
 export function toCsv(headers: readonly string[], rows: (string | number | null)[][]): string {
-  const esc = (v: string | number | null) => { const s = v === null ? "" : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  const esc = (v: string | number | null) => {
+    let s = v === null ? "" : String(v);
+    if (typeof v === "string" && /^[=+\-@\t\r]/.test(s)) s = `'${s}`;
+    return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
   return "\uFEFF" + [headers, ...rows].map((r) => r.map(esc).join(",")).join("\r\n") + "\r\n";
 }
 
