@@ -352,3 +352,33 @@ export function getHistory(exhibitionId: string, profileId: string | null, b: Bu
   });
   return { status: years.length >= 2 ? "ok" as const : "insufficient" as const, years, steps, keywords: kws, profile };
 }
+
+const KF_COMPLETENESS: Record<string, string> = { complete: "完整", partial: "不完整", unknown: "未知" };
+const KF_REL: Record<string, string> = { potential_customer: "潛在客戶", competitor: "競爭對手", partner: "合作夥伴", channel: "通路", unrelated: "不相關", unknown: "未知" };
+const byCount = (x: [string, number], y: [string, number]) => y[1] - x[1] || (x[0] < y[0] ? -1 : x[0] > y[0] ? 1 : 0);
+
+/**
+ * 數據摘要 (A3-02): the same lines as the Markdown report's key_figure_lines() (exhibitiq_tools.py), computed only
+ * from the analysis and its package; reports.test.tsx checks they are identical. Also returns the country chart data.
+ */
+export function keyFigures(a: Analysis, b: Bundle = bundle) {
+  const ds = b.datasets[a.inputDatasetId];
+  const count = (xs: string[]) => [...xs.reduce((m, x) => m.set(x, (m.get(x) ?? 0) + 1), new Map<string, number>())].sort(byCount);
+  const countries = count(ds.companies.map((c) => c.country ?? "未知")).slice(0, 5);
+  const rels = count(a.detail.relationships.map((r) => r.type));
+  const pri = (["high", "medium", "low"] as const).map((k) => [k, a.detail.recommendations.filter((r) => r.priority === k).length] as const);
+  const scored = a.detail.scores.filter((s) => s.subject.entity_type === "company");
+  const best = scored.reduce<(typeof scored)[number] | null>((m, s) => (!m || s.total > m.total ? s : m), null);
+  const level: Record<string, string> = { high: "高", medium: "中", low: "低" };
+  const c = ds.completeness;
+  const lines = [
+    `已取得企業：${ds.companies.length} 家（完整度：${KF_COMPLETENESS[c.status] ?? c.status}；官方公布參展商：${c.official ?? "未知"}）`,
+    `主要國家／地區（只計已取得企業）：${countries.map(([k, v]) => `${k} ${v}`).join("、") || "無"}`,
+    `列於名單的參展紀錄：${ds.listedParticipations} 筆`,
+    `關係候選（AI 推論）：${rels.map(([k, v]) => `${KF_REL[k] ?? k} ${v}`).join("、") || "無"}`,
+    `建議（AI 推論）：${pri.map(([k, v]) => `優先度${level[k]} ${v}`).join("、")}`,
+    `已評分企業（AI 推論）：${scored.length} 家${best ? `；最高 ${best.total}／${best.max} 分` : ""}`,
+    ...(c.status !== "complete" ? ["資料不完整：以上數字只代表實際取得的部分，不計算比例"] : []),
+  ];
+  return { lines, countries: countries.map(([name, value]) => ({ name, value })) };
+}

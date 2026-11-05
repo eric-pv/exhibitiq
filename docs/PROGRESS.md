@@ -1,6 +1,6 @@
 # ExhibitIQ 開發進度
 
-> 最後更新：2026-11-05（A3-06 展示腳本、W4-01 主流程端到端測試）｜負責人：專案負責人（`ai`）
+> 最後更新：2026-11-05（A3-02 報告數據摘要）｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
 > **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
 
@@ -80,6 +80,7 @@
 | W3-03 | BXR 產品推薦頁（只顯示已核定產品卡、引用該產品的 AI 建議） | [#93](https://github.com/eric-pv/exhibitiq/pull/93) | `dev/ai-intelligence` | 2026-11-05 |
 | A3-04、W3-02 | 歷史趨勢：`trend` 指令與「展覽情報與比較」頁歷史趨勢區塊（只有一個年度時顯示「資料不足」） | [#94](https://github.com/eric-pv/exhibitiq/pull/94) | `dev/ai-intelligence` | 2026-11-05 |
 | A3-07（工具） | 已知企業關係名單規格與 `validate-known`／`benchmark`；名單等 Albert 提交（Issue #90） | [#95](https://github.com/eric-pv/exhibitiq/pull/95) | `dev/ai-intelligence` | 2026-11-05 |
+| A3-06、W4-01 | 競賽展示腳本與主要操作流程端到端測試 | [#96](https://github.com/eric-pv/exhibitiq/pull/96) | `dev/ai-intelligence` | 2026-11-05 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -87,7 +88,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A3-06、W4-01 | 競賽展示腳本（`docs/acceptance/demo-script.md`）與主要操作流程端到端測試（`site/e2e/flow.spec.ts`） | 本 PR |
+| A3-02 | 報告「數據摘要」章節（所有報告類型；Markdown 與網頁／PDF 同一組數字）與國家／地區圖表；版型 `report-templates@4` | 本 PR |
 
 ## 待處理（Phase 1）
 
