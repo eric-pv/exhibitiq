@@ -13,3 +13,6 @@
   .ant-table-content { overflow: visible !important; }
   .ant-popover { display: none !important; }
 }
+
+/* Long IDs and hashes (code) must wrap instead of widening the page on phones (W4-02). */
+.report code, .report .ant-typography code { white-space: normal; overflow-wrap: anywhere; word-break: break-all; }

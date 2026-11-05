@@ -22,7 +22,7 @@ export function ReportsPage() {
       <div className="no-print">
         <PageHeader title={t.nav.reports} extra={
           <Space wrap>
-            <Select value={a.analysisId} style={{ minWidth: 260 }} onChange={(id) => setParams({ analysis: id }, { replace: true })}
+            <Select value={a.analysisId} style={{ width: 320, maxWidth: "100%" }} onChange={(id) => setParams({ analysis: id }, { replace: true })}
               options={list.map((x) => ({ value: x.analysisId, label: `${x.title}（${shortTime(x.generatedAt)}）` }))} data-testid="report-select" />
             <Button type="primary" icon={<PrinterOutlined />} onClick={() => window.print()} data-testid="export-pdf">匯出 PDF（列印）</Button>
           </Space>
