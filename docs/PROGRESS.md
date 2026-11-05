@@ -69,6 +69,7 @@
 | W4-05 | 安全檢查 `npm run security` | [#80](https://github.com/magician-eric/exhibitiq/pull/80) | `dev/ai-intelligence` | 2026-11-05 |
 | A3-08 | Skill 可重現性檢查 | [#81](https://github.com/magician-eric/exhibitiq/pull/81) | `dev/ai-intelligence` | 2026-11-05 |
 | W3-05 | CSV 匯出（Excel 可開、防公式注入） | [#82](https://github.com/magician-eric/exhibitiq/pull/82) | `dev/ai-intelligence` | 2026-11-05 |
+| W4-04 | Lighthouse 實測紀錄與初步優化 | [#83](https://github.com/magician-eric/exhibitiq/pull/83) | `dev/ai-intelligence` | 2026-11-05 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -76,7 +77,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W4-04 | Lighthouse 實測紀錄（`site/docs/lighthouse-2026-11-05.md`）；圖表套件按需載入、favicon、文字對比 | 本 PR |
+| A4-01 | 驗收清單與測試案例（`docs/acceptance/acceptance-checklist.md`：V1–V14、D1–D7、通用性，對應到強制的測試） | 本 PR |
 
 ## 待處理（Phase 1）
 
