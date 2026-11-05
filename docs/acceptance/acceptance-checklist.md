@@ -26,7 +26,7 @@ npx playwright test                                    # 端到端、三種尺�
 | V7 | 產品建議只引用已核准產品卡 | ✅ | `tests/contract/test_knowledge_v1.py`（AR10、A2-05 draft 卡） | 產品卡核定（A2-05） |
 | V8 | 沒有官方筆數時顯示「未知」；不完整時顯示完整度 | ✅ | `site/src/overview.test.tsx`、`exhibitions.test.tsx`、`test_compare.py`（不完整不算比例） | — |
 | V9 | 網頁報告與 PDF 內容一致 | ✅ | `site/src/reports.test.tsx`（網頁與 Markdown 章節、結論、來源一致）、`e2e`「reports (W3-04)」（列印版面、PDF） | 自動 PDF workflow（D3-01） |
-| V10 | 完整流程：展覽 → 企業 → 商機 → 產品建議 → 報告 → PDF | ◐ | 各段已有 e2e（W2-01、W2-03、W2-04、W3-04） | 產品建議頁（W3-03）；串成單一 e2e（W4-01） |
+| V10 | 完整流程：展覽 → 企業 → 商機 → 產品建議 → 報告 → PDF | ◐ | `site/e2e/flow.spec.ts`（W4-01：單一測試走完整條流程，含 PDF）；展示腳本 `docs/acceptance/demo-script.md` | 「新增展覽」一段（W3-07／D2-13）；真實資料 |
 | V11 | 桌機、平板、手機都可以操作 | ✅ | `e2e/layout.spec.ts`（9 頁 × 3 尺寸，不得橫向捲動） | 完整響應式調整（W3-06） |
 | V12 | 前端沒有 Token、API Key；公開版只含核准內容 | ◐ | `npm run security`、`site/src/security.test.ts` | 公開版白名單（發布方式待決定） |
 | V13 | 資料更新後可重新產生；兩人可在雲端獨立執行 Skill | ◐ | `tests/contract/test_repro.py`、另一個乾淨 clone 驗證一致 | Albert 工作區執行（A4-04）；A4-05 |
