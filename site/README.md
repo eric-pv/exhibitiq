@@ -75,3 +75,7 @@ React 18、Vite 6、TypeScript 5、Ant Design 5（`zh_TW` 語系）、ECharts 5�
 **GitHub Pages 是公開網站。** 發布前必須通過 `npm run build && npm run pages:check`：網站內只要有真實（collected）資料或分析結果就拒絕發布，除非專案負責人核准該內容可以公開（`PAGES_ALLOW_COLLECTED=1`）；同時執行安全掃描（W4-05）。
 
 發布方式：把 `dist/` 的內容（`index.html` 與 `assets/`，一般多檔案網頁；不用單一大檔，避免被企業防火牆誤判為可疑網頁）放到 `gh-pages` 分支根目錄（每次以單一 commit 取代，避免 Git 歷史變大），GitHub 設定 Settings → Pages → Deploy from a branch → `gh-pages` / root。之後若改由 Actions 自動部署，workflow 由 data 負責（`.github/workflows/`）。
+
+## 分析成本顯示（Eric 2026-11-05）
+
+報告中心有「顯示分析成本」勾選框（每個瀏覽器各自記住）。預設勾選（比賽展示）；正式版建置時設定 `VITE_SHOW_COST=0`，預設就不顯示。Markdown 報告用 `exhibitiq_tools.py report ... --hide-cost` 隱藏。成本只顯示分析結果中實際量測的數字，沒有就寫「未記錄」。

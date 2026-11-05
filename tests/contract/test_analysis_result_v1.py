@@ -204,3 +204,14 @@ def test_collected_label_on_synthetic_input_detected():
     r = base()
     r["data_origin"] = "collected"
     assert _rules(ac.check_analysis(r, PKG)) == {"AR9"}
+
+
+def test_cost_field_measured_only():
+    """draft.7: cost numbers only when recorded=true; recorded=false carries no numbers (never estimated)."""
+    import json as _j
+    a = _j.loads((pc.ROOT / "schemas/v1/examples/analysis/analysis_result.with_config.example.json").read_text(encoding="utf-8"))
+    v = pc.validator("analysis_result")
+    assert not list(v.iter_errors(a))
+    for bad in ({"recorded": False, "amount": 1.0, "currency": "USD"}, {"recorded": True}, {"recorded": True, "amount": 1, "currency": "usd"}):
+        assert list(v.iter_errors({**a, "cost": bad})), bad
+    assert not list(v.iter_errors({**a, "cost": {"recorded": False, "notes": "沒有量測"}}))

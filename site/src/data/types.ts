@@ -39,6 +39,7 @@ export interface Bundle {
   }>;
   analyses: {
     analysisId: string; title: string; inputHash: string; schemaVersion: string; model: string | null; knowledgeVersion: string | null;
+    cost: { recorded: boolean; input_tokens?: number; output_tokens?: number; amount?: number; currency?: string; measured_by?: string; notes?: string } | null;
     additionalInputs: { datasetId: string; contentHash: string }[]; evidenceSourceIds: string[]; analysisType: string; inputDatasetId: string; generatedAt: string;
     reviewStatus: "draft" | "human_reviewed" | "approved" | "rejected"; dataOrigin: "synthetic" | "collected";
     analyzedCompanyIds: string[]; highPriorityRecommendations: number; claimCounts: Record<string, number>;

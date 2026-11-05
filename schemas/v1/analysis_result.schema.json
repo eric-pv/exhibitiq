@@ -26,7 +26,8 @@
       "description": "必須是 schemas/v1/COMPATIBILITY.json 的 accepted 版本之一；新產生的資料寫 VERSION。",
       "enum": [
         "1.0.0-draft.5",
-        "1.0.0-draft.6"
+        "1.0.0-draft.6",
+        "1.0.0-draft.7"
       ]
     },
     "analysis_id": {
@@ -748,6 +749,88 @@
             "mixed"
           ],
           "description": "A 模式使用的 BXR 產品卡核定狀態；不是 approved 時報告必須提示。"
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recorded"
+      ],
+      "description": "選填（draft.7）：這次 AI 分析的成本。只記錄實際量測值，不得估算；沒有量測值時 recorded=false。報告是否顯示由使用者勾選（比賽顯示、正式版隱藏）。",
+      "properties": {
+        "recorded": {
+          "type": "boolean",
+          "description": "true=以下數字是實際量測值。"
+        },
+        "input_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "description": "金額（依 currency）。"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "measured_by": {
+          "$ref": "common.schema.json#/$defs/short_text",
+          "description": "數字來源，例如 Claude Code /cost、API usage。"
+        },
+        "notes": {
+          "$ref": "common.schema.json#/$defs/text"
+        }
+      },
+      "if": {
+        "properties": {
+          "recorded": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {
+            "required": [
+              "input_tokens",
+              "output_tokens"
+            ]
+          },
+          {
+            "required": [
+              "amount",
+              "currency"
+            ]
+          }
+        ]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "input_tokens"
+              ]
+            },
+            {
+              "required": [
+                "output_tokens"
+              ]
+            },
+            {
+              "required": [
+                "amount"
+              ]
+            }
+          ]
         }
       }
     }

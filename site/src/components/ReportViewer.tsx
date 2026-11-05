@@ -16,7 +16,7 @@ const o = t.opportunities;
  * analysis JSON; sections and their order come from skills/exhibitiq/templates/report-templates.json, the same
  * file the Markdown report uses (A2-13), so web, PDF and Markdown cannot diverge.
  */
-export function ReportViewer({ view, b = bundle }: { view: OpportunityView; b?: Bundle }) {
+export function ReportViewer({ view, b = bundle, showCost = true }: { view: OpportunityView; b?: Bundle; showCost?: boolean }) {
   const a = view.analysis, d = a.detail, tpl = b.reportTemplates;
   const type = tpl.types[a.analysisType];
   const ds = b.datasets[a.inputDatasetId];
@@ -64,7 +64,12 @@ export function ReportViewer({ view, b = bundle }: { view: OpportunityView; b?: 
           { key: "i", label: x.input, children: <Typography.Text code>{a.inputDatasetId}（{a.inputHash}）</Typography.Text> },
           ...a.additionalInputs.map((y) => ({ key: y.datasetId, label: x.other, children: <Typography.Text code>{y.datasetId}（{y.contentHash}）</Typography.Text> })),
           { key: "c", label: x.config, children: c ? <Typography.Text code>{c.profileId} v{c.profileVersion}（{c.profileHash}）</Typography.Text> : x.legacyConfig },
-          { key: "cost", label: x.cost, children: x.costNote },
+          ...(showCost ? [{ key: "cost", label: x.cost, children: (() => {
+            const c = a.cost;
+            if (!c || !c.recorded) return x.notRecorded;
+            const parts = [c.input_tokens !== undefined ? x.tokens(c.input_tokens, c.output_tokens ?? 0) : null, c.amount !== undefined ? `${c.amount} ${c.currency}` : null].filter(Boolean);
+            return `${parts.join("；")}（${c.measured_by ?? x.measured}）`;
+          })() }] : []),
           { key: "id", label: x.id, children: <Typography.Text code>{a.analysisId}</Typography.Text> },
         ]} />
       );

@@ -2,6 +2,13 @@
 
 格式依 [`VERSIONING.md`](VERSIONING.md)。每筆紀錄包含：版本、日期、Issue／PR、變更類別（MAJOR／MINOR／PATCH／draft）、變更內容、相容性與遷移說明。最新的放最上面。
 
+## 1.0.0-draft.7 — 2026-11-05
+
+- 工作項目：A3-05（Eric 2026-11-05 核准）
+- 類別：draft（只新增，相容）
+- 內容：`analysis_result` 新增選填 `cost`（`recorded`、`input_tokens`、`output_tokens`、`amount`、`currency`、`measured_by`、`notes`）。只記錄實際量測值；`recorded=false` 時不得有數字。報告是否顯示成本由使用者勾選（比賽顯示、正式版隱藏）。
+- 相容性：舊資料不需改寫；`COMPATIBILITY.json` 接受 draft.5、draft.6、draft.7。
+
 ## 1.0.0-draft.6 — 2026-11-04
 
 - 工作項目：A2-15（Eric 2026-11-04 核准）

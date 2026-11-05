@@ -18,7 +18,8 @@
     "schema_version": {
       "type": "string",
       "enum": [
-        "1.0.0-draft.6"
+        "1.0.0-draft.6",
+        "1.0.0-draft.7"
       ],
       "description": "新 Schema，只有 draft.6 起才存在。"
     },

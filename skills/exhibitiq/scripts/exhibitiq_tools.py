@@ -212,7 +212,7 @@ def _jsonl(p: Path) -> list[dict]:
     return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()] if p.exists() else []
 
 
-def render_report(analysis_path: Path, package_dir: Path) -> str:
+def render_report(analysis_path: Path, package_dir: Path, show_cost: bool = True) -> str:
     """Markdown report (A2-12/A2-13) built ONLY from a validated analysis JSON (+ names and source details from its package).
 
     Sections and their order come from templates/report-templates.json for the analysis_type. An analysis
@@ -330,7 +330,17 @@ def render_report(analysis_path: Path, package_dir: Path) -> str:
         out += [f"- 其他輸入資料包：`{x['dataset_id']}`（`{x['content_hash']}`）" for x in a.get("additional_inputs", [])]
         cfg = a.get("analysis_config")
         out.append(f"- 分析設定：`{cfg['profile_id']}` v{cfg['profile_version']}（`{cfg['profile_hash']}`）" if cfg else "- 分析設定：未記錄（舊版格式）")
-        out.append("- 分析成本：未記錄（分析結果格式目前沒有成本欄位）")
+        if show_cost:  # Eric 2026-11-05: shown in the competition, hidden in production (--hide-cost)
+            c = a.get("cost")
+            if not c or not c["recorded"]:
+                out.append("- 分析成本：未記錄")
+            else:
+                parts = []
+                if "input_tokens" in c:
+                    parts.append(f"輸入 {c['input_tokens']:,} tokens、輸出 {c['output_tokens']:,} tokens")
+                if "amount" in c:
+                    parts.append(f"{c['amount']} {c['currency']}")
+                out.append(f"- 分析成本：{'；'.join(parts)}（{c.get('measured_by', '實際量測')}）")
         out.append(f"- 分析 ID：`{a['analysis_id']}`｜審核：{REVIEW.get(a['review_status'], a['review_status'])}")
         return out
 
@@ -371,6 +381,8 @@ def main(argv: list[str] | None = None) -> int:
         sp = sub.add_parser(name)
         sp.add_argument("analysis", type=Path)
         sp.add_argument("package_dir", type=Path)
+        if name == "report":
+            sp.add_argument("--hide-cost", action="store_true", help="omit the analysis cost (production reports)")
     a = p.parse_args(argv)
     idx = getattr(a, "index", None) or default_index()
     try:
@@ -404,7 +416,7 @@ def main(argv: list[str] | None = None) -> int:
         elif a.cmd == "save-analysis":
             r = save_analysis(a.analysis, a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
         elif a.cmd == "report":
-            sys.stdout.write(render_report(a.analysis, a.package_dir))
+            sys.stdout.write(render_report(a.analysis, a.package_dir, show_cost=not a.hide_cost))
     except LookupError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
