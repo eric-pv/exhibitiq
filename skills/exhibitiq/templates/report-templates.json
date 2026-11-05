@@ -1,6 +1,6 @@
 {
-  "version": "report-templates@2",
-  "description": "A2-12：各 analysis_type 的報告章節（順序即輸出順序）。必要章節依 references/report-spec.md；章節沒有內容時仍輸出標題並註明「無」。網頁（ReportViewer）與 PDF 使用同一份設定。 A2-17：所有類型在基本資訊後加「分析設定」章節（模式、主題、版本、雜湊、啟用的關鍵字；舊分析結果沒有設定時註明）。",
+  "version": "report-templates@3",
+  "description": "A2-12：各 analysis_type 的報告章節（順序即輸出順序）。必要章節依 references/report-spec.md；章節沒有內容時仍輸出標題並註明「無」。網頁（ReportViewer）與 PDF 使用同一份設定。 A2-17：所有類型在基本資訊後加「分析設定」章節（模式、主題、版本、雜湊、啟用的關鍵字；舊分析結果沒有設定時註明）。 A3-05：所有類型最後加「版本與追溯附錄」（Schema、Skill、模型、知識庫、版型、輸入資料包與雜湊、分析設定雜湊、分析成本）。",
   "section_titles": {
     "header": "基本資訊",
     "analysis_config": "分析設定",
@@ -11,7 +11,8 @@
     "relationships": "關係分類",
     "recommendations": "建議",
     "uncertainties": "不確定性與限制",
-    "sources": "來源附錄"
+    "sources": "來源附錄",
+    "appendix": "版本與追溯附錄"
   },
   "types": {
     "exhibition_overview": {
@@ -24,7 +25,8 @@
         "conclusions",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     },
     "company_intelligence": {
@@ -38,7 +40,8 @@
         "relationships",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     },
     "opportunity_ranking": {
@@ -53,7 +56,8 @@
         "relationships",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     },
     "competitive_landscape": {
@@ -68,7 +72,8 @@
         "scores",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     },
     "partner_channel": {
@@ -83,7 +88,8 @@
         "scores",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     },
     "market_trend": {
@@ -96,7 +102,8 @@
         "conclusions",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     },
     "product_recommendation": {
@@ -110,7 +117,8 @@
         "scores",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     },
     "exhibition_strategy": {
@@ -124,7 +132,8 @@
         "scores",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     },
     "cross_exhibition_comparison": {
@@ -138,7 +147,8 @@
         "scores",
         "recommendations",
         "uncertainties",
-        "sources"
+        "sources",
+        "appendix"
       ]
     }
   }

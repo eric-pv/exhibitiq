@@ -52,6 +52,23 @@ export function ReportViewer({ view, b = bundle }: { view: OpportunityView; b?: 
         ]} />
       );
     },
+    appendix: () => {
+      const x = t.appendix, c = a.config;
+      return (
+        <Descriptions size="small" column={1} data-testid="report-appendix" items={[
+          { key: "s", label: x.schema, children: a.schemaVersion },
+          { key: "k", label: x.skill, children: d.skillVersion ?? x.notRecorded },
+          { key: "m", label: x.model, children: a.model ?? x.notRecorded },
+          { key: "kv", label: x.knowledge, children: a.knowledgeVersion ?? x.notRecorded },
+          { key: "t", label: x.template, children: tpl.version },
+          { key: "i", label: x.input, children: <Typography.Text code>{a.inputDatasetId}（{a.inputHash}）</Typography.Text> },
+          ...a.additionalInputs.map((y) => ({ key: y.datasetId, label: x.other, children: <Typography.Text code>{y.datasetId}（{y.contentHash}）</Typography.Text> })),
+          { key: "c", label: x.config, children: c ? <Typography.Text code>{c.profileId} v{c.profileVersion}（{c.profileHash}）</Typography.Text> : x.legacyConfig },
+          { key: "cost", label: x.cost, children: x.costNote },
+          { key: "id", label: x.id, children: <Typography.Text code>{a.analysisId}</Typography.Text> },
+        ]} />
+      );
+    },
     data_status: () => (
       <Space direction="vertical">
         <Typography.Text strong>{a.dataOrigin === "synthetic" ? t.origin.synthetic : t.origin.collected}</Typography.Text>

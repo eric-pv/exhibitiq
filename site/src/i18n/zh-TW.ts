@@ -145,6 +145,10 @@ export const t = {
     hits: (n: number) => `${n} 家命中`,
     chart: "各展覽已取得企業數", chartNote: "只包含有驗證通過資料包的屆次；完整度不是「完整」時，數字只代表實際取得的部分。",
   },
+  appendix: {
+    schema: "Schema 版本", skill: "Skill 版本", model: "模型", knowledge: "知識庫版本", template: "報告版型", input: "輸入資料包", other: "其他輸入資料包",
+    config: "分析設定", cost: "分析成本", id: "分析 ID", notRecorded: "未記錄", legacyConfig: "未記錄（舊版格式）", costNote: "未記錄（分析結果格式目前沒有成本欄位）",
+  },
   analysisConfig: {
     legacy: "這份分析結果是舊版格式，沒有記錄分析設定。",
     mode: "分析模式", profile: "分析主題", scoreModel: "評分模型", noScore: "不評分", bxr: "BXR 產品卡", keywords: (n: number) => `啟用的關鍵字（${n}）`,

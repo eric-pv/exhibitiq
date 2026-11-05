@@ -225,7 +225,9 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
       ];
       for (const id of cited) if (!ds.sources[id]) throw new Error(`${relative(REPO, f)}: cites ${id}, which is not in ${a.input_dataset_id}/sources.jsonl`);
       analyses.push({
-        analysisId: a.analysis_id, title: a.title, inputHash: a.input_hash, evidenceSourceIds: a.evidence_source_ids, analysisType: a.analysis_type, inputDatasetId: a.input_dataset_id,
+        analysisId: a.analysis_id, title: a.title, inputHash: a.input_hash, schemaVersion: a.schema_version,
+        model: a.model ? [a.model.provider, a.model.name, a.model.version].filter(Boolean).join(" ") : null, knowledgeVersion: a.knowledge_version ?? null,
+        additionalInputs: (a.additional_inputs ?? []).map((x) => ({ datasetId: x.dataset_id, contentHash: x.content_hash })), evidenceSourceIds: a.evidence_source_ids, analysisType: a.analysis_type, inputDatasetId: a.input_dataset_id,
         generatedAt: a.generated_at, reviewStatus: a.review_status, dataOrigin: a.data_origin,
         analyzedCompanyIds: [...new Set((a.scores ?? []).filter((s) => s.subject.entity_type === "company").map((s) => s.subject.entity_id))],
         highPriorityRecommendations: a.recommendations.filter((r) => r.priority === "high").length,
