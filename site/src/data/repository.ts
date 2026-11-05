@@ -307,3 +307,13 @@ export function getSystemStatus(b: Bundle = bundle) {
     source: { ...b.generatedFrom, schemaVersion: b.schemaVersion, indexGeneratedAt: b.indexGeneratedAt },
   };
 }
+
+/** W3-03: approved BXR product cards (only approved ones are shown) and the AI recommendations that cite them. */
+export function getProducts(b: Bundle = bundle) {
+  const products = b.settings.products.filter((p) => p.approvalStatus === "approved");
+  const recs = b.analyses.flatMap((a) => a.detail.recommendations.filter((r) => r.productIds.length > 0).map((r) => ({ ...r, analysis: a })));
+  return products.map((p) => ({
+    ...p, termLabels: p.terms.map((t) => b.settings.termLabels[t] ?? t),
+    recommendations: recs.filter((r) => r.productIds.includes(p.productId)),
+  }));
+}

@@ -75,6 +75,7 @@
 | W4-06 | 公開展示網址、帳號改名 `eric-pv`、多檔案發布 | [#87](https://github.com/eric-pv/exhibitiq/pull/87)、[#88](https://github.com/eric-pv/exhibitiq/pull/88) | `dev/ai-intelligence` | 2026-11-05 |
 | — | Eric 核定：產品卡、`opportunity@2`、預設詞庫 | [#89](https://github.com/eric-pv/exhibitiq/pull/89) | `dev/ai-intelligence` | 2026-11-05 |
 | A3-05（成本） | 分析成本欄位（Schema `1.0.0-draft.7`）與勾選顯示 | [#91](https://github.com/eric-pv/exhibitiq/pull/91) | `dev/ai-intelligence` | 2026-11-05 |
+| A2-10 | 展覽商務價值與拜訪候選（不含預算）、EV8 | [#92](https://github.com/eric-pv/exhibitiq/pull/92) | `dev/ai-intelligence` | 2026-11-05 |
 | W4-06（檢查） | 公開網頁發布檢查 `pages:check` | [#86](https://github.com/magician-eric/exhibitiq/pull/86) | `dev/ai-intelligence` | 2026-11-05 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
@@ -83,7 +84,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A2-10 | 展覽商務價值與拜訪候選 `value`（不含預算）；EV8：建議不得含金額，參展建議須引用評分或結論 | 本 PR |
+| W3-03 | BXR 產品推薦頁：只顯示已核定產品卡、功能定位與分類、引用該產品的 AI 建議（連到報告） | 本 PR |
 
 ## 待處理（Phase 1）
 

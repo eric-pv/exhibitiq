@@ -130,6 +130,11 @@ export const t = {
     export: "匯出 JSON（提交用）", submitPath: "knowledge/analysis-profiles/<主題代碼>.json",
     submitSteps: "匯出的檔案名稱就是主題代碼；內容有修改時版本號自動加 1。上傳到 knowledge/analysis-profiles/ 並合併後，網站重新建置就會顯示「已提交」；之後在 Claude Code 工作階段指定這個主題執行分析。網頁不保存任何 GitHub 憑證。",
   },
+  products: {
+    note: "只顯示 Eric 已核定的 BXR 產品卡。目前產品卡只有名稱與功能定位，規格待型錄補充；產品推薦一律是 AI 推論，來自 A 模式（BXR 商機分析）的分析結果。",
+    none: "沒有已核定的產品卡。", approved: (d: string) => `已核定 ${d}`, specs: (n: number) => `規格 ${n} 項（皆有依據文件）`, noSpecs: "規格：尚未提供（待型錄）",
+    recs: "展會產品建議", noRecs: "尚無引用此產品的分析建議（需在雲端以 A 模式執行分析）",
+  },
   systemStatus: {
     editions: "已登錄屆次", acqOk: "取得成功或部分成功", acqFailed: "取得失敗或尚未取得", validated: "驗證通過的資料包", unit: "個",
     failedNote: (n: number) => `${n} 個屆次取得失敗或尚未取得。這是正常且會被記錄的結果，不會被隱藏或以推測補足；請參考說明欄的原因。`,
