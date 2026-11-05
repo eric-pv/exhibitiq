@@ -18,7 +18,8 @@
     "schema_version": {
       "enum": [
         "1.0.0-draft.5",
-        "1.0.0-draft.6"
+        "1.0.0-draft.6",
+        "1.0.0-draft.7"
       ],
       "description": "必須是 schemas/v1/COMPATIBILITY.json 的 accepted 版本之一；新產生的資料寫 VERSION。"
     },

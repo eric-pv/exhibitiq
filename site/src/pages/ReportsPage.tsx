@@ -1,6 +1,7 @@
 import { PrinterOutlined } from "@ant-design/icons";
-import { Button, Card, Select, Space } from "antd";
-import { useMemo } from "react";
+import { Button, Card, Checkbox, Select, Space } from "antd";
+import { useMemo, useState } from "react";
+import { loadShowCost, saveShowCost } from "../data/displayPrefs";
 import { useSearchParams } from "react-router-dom";
 import { PageHeader } from "../components/layout/PageHeader";
 import { ReportViewer } from "../components/ReportViewer";
@@ -16,6 +17,7 @@ export function ReportsPage() {
   const [params, setParams] = useSearchParams();
   const a = list.find((x) => x.analysisId === params.get("analysis")) ?? list[0];
   const view = useMemo(() => (a ? getAnalysisView(a) : null), [a]);
+  const [showCost, setShowCost] = useState(loadShowCost);
   if (!view) return (<><PageHeader title={t.nav.reports} /><EmptyState message={t.opportunities.noAnalysis} /></>);
   return (
     <>
@@ -24,12 +26,13 @@ export function ReportsPage() {
           <Space wrap>
             <Select value={a.analysisId} style={{ width: 320, maxWidth: "100%" }} onChange={(id) => setParams({ analysis: id }, { replace: true })}
               options={list.map((x) => ({ value: x.analysisId, label: `${x.title}（${shortTime(x.generatedAt)}）` }))} data-testid="report-select" />
+            <Checkbox checked={showCost} onChange={(e) => { setShowCost(e.target.checked); saveShowCost(e.target.checked); }} data-testid="show-cost">{t.appendix.showCost}</Checkbox>
             <Button type="primary" icon={<PrinterOutlined />} onClick={() => window.print()} data-testid="export-pdf">匯出 PDF（列印）</Button>
           </Space>
         } />
         <DataOriginBanner origin={bundle.dataOrigin} />
       </div>
-      <Card style={{ marginTop: 16 }}><ReportViewer view={view} /></Card>
+      <Card style={{ marginTop: 16 }}><ReportViewer view={view} showCost={showCost} /></Card>
     </>
   );
 }

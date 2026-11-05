@@ -227,6 +227,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
       analyses.push({
         analysisId: a.analysis_id, title: a.title, inputHash: a.input_hash, schemaVersion: a.schema_version,
         model: a.model ? [a.model.provider, a.model.name, a.model.version].filter(Boolean).join(" ") : null, knowledgeVersion: a.knowledge_version ?? null,
+        cost: a.cost ?? null,
         additionalInputs: (a.additional_inputs ?? []).map((x) => ({ datasetId: x.dataset_id, contentHash: x.content_hash })), evidenceSourceIds: a.evidence_source_ids, analysisType: a.analysis_type, inputDatasetId: a.input_dataset_id,
         generatedAt: a.generated_at, reviewStatus: a.review_status, dataOrigin: a.data_origin,
         analyzedCompanyIds: [...new Set((a.scores ?? []).filter((s) => s.subject.entity_type === "company").map((s) => s.subject.entity_id))],

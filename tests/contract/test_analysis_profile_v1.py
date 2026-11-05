@@ -18,7 +18,7 @@ PROFILES = {PA["profile_id"]: PA, PB["profile_id"]: PB}
 
 
 def test_versions():
-    assert pc.VERSION == "1.0.0-draft.6" and pc.ACCEPTED == {"1.0.0-draft.5", "1.0.0-draft.6"}
+    assert pc.VERSION == "1.0.0-draft.7" and pc.ACCEPTED == {"1.0.0-draft.5", "1.0.0-draft.6", "1.0.0-draft.7"}
 
 
 @pytest.mark.parametrize("p", sorted((pc.ROOT / "knowledge" / "analysis-profiles").glob("*.json")), ids=lambda p: p.name)

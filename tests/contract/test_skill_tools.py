@@ -151,5 +151,9 @@ def test_report_appendix_traces_versions_and_inputs():
     a = json.loads((ex / "analysis/analysis_result.with_config.example.json").read_text(encoding="utf-8"))
     md = tools.render_report(ex / "analysis/analysis_result.with_config.example.json", ex / "package")
     app = md.split("## 版本與追溯附錄", 1)[1]
-    for needle in [a["schema_version"], a["skill_version"], a["input_hash"], a["analysis_config"]["profile_hash"], a["analysis_id"], "report-templates@", "分析成本：未記錄"]:
+    for needle in [a["schema_version"], a["skill_version"], a["input_hash"], a["analysis_config"]["profile_hash"], a["analysis_id"], "report-templates@", "18,250 tokens", "0.18 USD"]:
         assert needle in app, needle
+    hidden = tools.render_report(ex / "analysis/analysis_result.with_config.example.json", ex / "package", show_cost=False)
+    assert "分析成本" not in hidden  # production reports hide the cost (Eric 2026-11-05)
+    old = tools.render_report(ex / "analysis/analysis_result.example.json", ex / "package")
+    assert "分析成本：未記錄" in old  # never estimated

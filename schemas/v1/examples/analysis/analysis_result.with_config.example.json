@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0-draft.6",
+  "schema_version": "1.0.0-draft.7",
   "analysis_id": "ana_01JCA000000000000000000002",
   "analysis_type": "opportunity_ranking",
   "title": "範例國防展 2026 商機排序（合成範例）",
@@ -250,5 +250,14 @@
     ],
     "score_model_id": "opportunity@1",
     "bxr_products_status": "not_used"
+  },
+  "cost": {
+    "recorded": true,
+    "input_tokens": 18250,
+    "output_tokens": 3120,
+    "amount": 0.18,
+    "currency": "USD",
+    "measured_by": "Claude Code /cost（合成範例）",
+    "notes": "合成範例：示範格式，數字不是真實量測值。"
   }
 }

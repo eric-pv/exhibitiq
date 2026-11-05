@@ -42,3 +42,17 @@ test("reports page: viewer and PDF export button", () => {
   expect(screen.getByTestId("report-viewer")).toBeTruthy();
   expect(screen.getByTestId("export-pdf")).toBeTruthy();
 });
+
+test("analysis cost: shown when ticked (competition), hidden when unticked (production); never invented", () => {
+  const b = undefined;
+  const a = getAnalyses(b).find((x) => x.cost?.recorded)!;
+  const on = render(<ConfigProvider locale={zhTW}><MemoryRouter><ReportViewer view={getAnalysisView(a)} showCost /></MemoryRouter></ConfigProvider>);
+  expect(on.getByTestId("report-appendix").textContent).toContain("18,250 tokens");
+  on.unmount();
+  const off = render(<ConfigProvider locale={zhTW}><MemoryRouter><ReportViewer view={getAnalysisView(a)} showCost={false} /></MemoryRouter></ConfigProvider>);
+  expect(off.getByTestId("report-appendix").textContent).not.toContain("分析成本");
+  off.unmount();
+  const legacy = getAnalyses().find((x) => !x.cost)!;
+  const l = render(<ConfigProvider locale={zhTW}><MemoryRouter><ReportViewer view={getAnalysisView(legacy)} showCost /></MemoryRouter></ConfigProvider>);
+  expect(l.getByTestId("report-appendix").textContent).toContain("未記錄");
+});

@@ -147,7 +147,9 @@ export const t = {
   },
   appendix: {
     schema: "Schema 版本", skill: "Skill 版本", model: "模型", knowledge: "知識庫版本", template: "報告版型", input: "輸入資料包", other: "其他輸入資料包",
-    config: "分析設定", cost: "分析成本", id: "分析 ID", notRecorded: "未記錄", legacyConfig: "未記錄（舊版格式）", costNote: "未記錄（分析結果格式目前沒有成本欄位）",
+    config: "分析設定", cost: "分析成本", id: "分析 ID", notRecorded: "未記錄", legacyConfig: "未記錄（舊版格式）", measured: "實際量測",
+    tokens: (i: number, o: number) => `輸入 ${i.toLocaleString("en-US")} tokens、輸出 ${o.toLocaleString("en-US")} tokens`,
+    showCost: "顯示分析成本（比賽展示用；正式版請取消）",
   },
   analysisConfig: {
     legacy: "這份分析結果是舊版格式，沒有記錄分析設定。",
