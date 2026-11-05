@@ -1,9 +1,10 @@
 import { Alert, Descriptions, List, Space, Tag, Typography } from "antd";
 import type { ReactNode } from "react";
-import { bundle, claimKindOf, type OpportunityView } from "../data/repository";
+import { bundle, claimKindOf, keyFigures, type OpportunityView } from "../data/repository";
 import type { Bundle } from "../data/types";
 import { t } from "../i18n/zh-TW";
 import { space } from "../theme/tokens";
+import { ChartPanel } from "./ChartPanel";
 import { ScoreBar, ScoreBreakdown } from "./ScoreBreakdown";
 import { ClaimBadge, type ClaimKind } from "./status/ClaimBadge";
 import { CompletenessIndicator } from "./status/CompletenessIndicator";
@@ -82,6 +83,15 @@ export function ReportViewer({ view, b = bundle, showCost = true }: { view: Oppo
         {(a.config?.bxrProductsStatus === "draft" || a.config?.bxrProductsStatus === "mixed") && <Alert type="warning" showIcon message={t.analysisConfig.productsUnapproved} data-testid="products-unapproved" />}
       </Space>
     ),
+    key_figures: () => {
+      const k = keyFigures(a, b);
+      return (
+        <Space direction="vertical" style={{ width: "100%" }} data-testid="report-key-figures">
+          <ul style={{ margin: 0, paddingInlineStart: space.lg }}>{k.lines.map((l) => <li key={l}>{l}</li>)}</ul>
+          {k.countries.length > 1 && <div className="report-avoid-break"><ChartPanel testId="report-country-chart" title="主要國家／地區（已取得企業）" note="只計已取得企業；資料不完整時不代表全部參展商。" data={k.countries} /></div>}
+        </Space>
+      );
+    },
     summary: () => d.summary,
     conclusions: () => d.conclusions.length > 0 && (
       <List size="small" dataSource={d.conclusions} renderItem={(c) => (

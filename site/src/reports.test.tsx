@@ -9,7 +9,7 @@ import { MemoryRouter } from "react-router-dom";
 import { buildBundle, REPO } from "../scripts/build-bundle.mjs";
 import App from "./App";
 import { ReportViewer } from "./components/ReportViewer";
-import { getAnalyses, getAnalysisView } from "./data/repository";
+import { getAnalyses, getAnalysisView, keyFigures } from "./data/repository";
 import type { Bundle } from "./data/types";
 
 vi.mock("echarts", () => ({ init: () => ({ setOption() {}, on() {}, resize() {}, dispose() {} }) }));
@@ -35,6 +35,10 @@ test.each(cases)("%s: web ReportViewer has the same sections and conclusions as 
   for (const c of a.detail.conclusions) { expect(md).toContain(c.statement); expect(container.textContent).toContain(c.statement); }
   for (const sid of a.evidenceSourceIds) expect(container.textContent).toContain(sid);
   if (a.config) { expect(md).toContain(a.config.profileHash); expect(container.textContent).toContain(a.config.profileHash); }
+  // A3-02 數據摘要: identical lines in Markdown (Python) and web (TypeScript)
+  const mdFigures = md.split("## 數據摘要\n\n")[1].split("\n\n")[0].split("\n").map((l) => l.slice(2));
+  expect(keyFigures(a, b).lines).toEqual(mdFigures);
+  for (const l of mdFigures) expect(container.querySelector('[data-testid="report-key-figures"]')!.textContent).toContain(l);
 });
 
 test("reports page: viewer and PDF export button", () => {

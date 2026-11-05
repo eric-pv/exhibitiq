@@ -34,11 +34,15 @@
 
 ## 4. 章節（所有報告類型）
 
-基本資訊 → 分析設定 → 資料狀態 → 摘要 → 結論 → （評分與排名、關係分類：有資料時一定出現）→ 建議 → 不確定性與限制 → 來源附錄 → 版本與追溯附錄。沒有內容的章節仍保留標題並寫「無」。
+基本資訊 → 分析設定 → 資料狀態 → 數據摘要 → 摘要 → 結論 → （評分與排名、關係分類：有資料時一定出現）→ 建議 → 不確定性與限制 → 來源附錄 → 版本與追溯附錄。沒有內容的章節仍保留標題並寫「無」。
 
-## 5. 驗收
+## 5. 數據摘要（A3-02）
 
-- 網頁與 Markdown 章節、結論、來源一致：`site/src/reports.test.tsx`。
+「數據摘要」只用資料包與分析結果計算，不推測。內容包括：已取得企業與完整度、主要國家／地區（前 5 名，只計已取得企業）、列於名單的參展紀錄、關係候選（AI 推論）、建議的優先度分布、已評分企業與最高分；資料不完整時加註「不計算比例」。Markdown 的 `key_figure_lines()`（`exhibitiq_tools.py`）和網頁的 `keyFigures()`（`site/src/data/repository.ts`）輸出相同的文字（`reports.test.tsx` 強制）。網頁與 PDF 另外顯示國家／地區長條圖（有兩個以上國家時；共用 `ChartPanel`）。
+
+## 6. 驗收
+
+- 網頁與 Markdown 章節、結論、來源、數據摘要一致：`site/src/reports.test.tsx`。
 - 列印版面隱藏選單、產生 PDF：`site/e2e/smoke.spec.ts`「reports (W3-04)」。
 - 手機不出現橫向捲動：`site/e2e/layout.spec.ts`。
 - 顏色只定義在 `tokens.ts`：`site/src/app.test.tsx`「colours are defined only in theme/tokens.ts」。

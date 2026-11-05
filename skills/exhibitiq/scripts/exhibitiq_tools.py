@@ -231,6 +231,41 @@ def _jsonl(p: Path) -> list[dict]:
     return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()] if p.exists() else []
 
 
+COMPLETENESS = {"complete": "完整", "partial": "不完整", "unknown": "未知"}
+
+
+def key_figure_lines(a: dict, package_dir: Path) -> list[str]:
+    """A3-02 數據摘要: deterministic figures of one analysis and its package. The Dashboard's keyFigures()
+    (site/src/data/repository.ts) produces the same lines; reports.test.tsx checks they are identical."""
+    pkg = Path(package_dir)
+    m = load(pkg / "manifest.json")
+    companies = _jsonl(pkg / "companies.jsonl")
+    parts = _jsonl(pkg / "participations.jsonl")
+    off = m["completeness"]["official_exhibitor_count"]
+    countries: dict[str, int] = {}
+    for c in companies:
+        k = c.get("country") or "未知"
+        countries[k] = countries.get(k, 0) + 1
+    top = sorted(countries.items(), key=lambda x: (-x[1], x[0]))[:5]
+    rels: dict[str, int] = {}
+    for r in a.get("relationships", []):
+        rels[r["relationship_type"]] = rels.get(r["relationship_type"], 0) + 1
+    pri = {k: sum(1 for r in a.get("recommendations", []) if r["priority"] == k) for k in ("high", "medium", "low")}
+    scored = [s for s in a.get("scores", []) if s["subject"]["entity_type"] == "company"]
+    best = max(scored, key=lambda s: s["total_points"]) if scored else None
+    lines = [
+        f"已取得企業：{len(companies)} 家（完整度：{COMPLETENESS.get(m['completeness_status'], m['completeness_status'])}；官方公布參展商：{'未知' if off is None else off}）",
+        "主要國家／地區（只計已取得企業）：" + ("、".join(f"{k} {v}" for k, v in top) or "無"),
+        f"列於名單的參展紀錄：{sum(1 for p in parts if p.get('listing_status') == 'listed')} 筆",
+        "關係候選（AI 推論）：" + ("、".join(f"{REL.get(k, k)} {v}" for k, v in sorted(rels.items(), key=lambda x: (-x[1], x[0]))) or "無"),
+        "建議（AI 推論）：" + "、".join(f"優先度{LEVEL[k]} {v}" for k, v in pri.items()),
+        f"已評分企業（AI 推論）：{len(scored)} 家" + (f"；最高 {best['total_points']}／{best['max_total_points']} 分" if best else ""),
+    ]
+    if m["completeness_status"] != "complete":
+        lines.append("資料不完整：以上數字只代表實際取得的部分，不計算比例")
+    return [f"- {x}" for x in lines]
+
+
 def render_report(analysis_path: Path, package_dir: Path, show_cost: bool = True) -> str:
     """Markdown report (A2-12/A2-13) built ONLY from a validated analysis JSON (+ names and source details from its package).
 
@@ -287,6 +322,10 @@ def render_report(analysis_path: Path, package_dir: Path, show_cost: bool = True
         if a.get("analysis_config", {}).get("bxr_products_status") in {"draft", "mixed"}:
             out.append("- ⚠️ 產品資料未核定：使用的 BXR 產品卡尚待 Eric 審核，只有名稱與功能定位，不代表正式規格。")
         return out
+
+    def key_figures():
+        # A3-02: figures computed from the package and the analysis only (same lines as ReportViewer's keyFigures)
+        return key_figure_lines(a, pkg)
 
     def summary():
         return [a["summary"]] if a.get("summary") else []
@@ -363,7 +402,7 @@ def render_report(analysis_path: Path, package_dir: Path, show_cost: bool = True
         out.append(f"- 分析 ID：`{a['analysis_id']}`｜審核：{REVIEW.get(a['review_status'], a['review_status'])}")
         return out
 
-    fns = {"header": header, "analysis_config": analysis_config, "appendix": appendix, "data_status": data_status, "summary": summary, "conclusions": conclusions, "scores": scores,
+    fns = {"header": header, "analysis_config": analysis_config, "appendix": appendix, "data_status": data_status, "key_figures": key_figures, "summary": summary, "conclusions": conclusions, "scores": scores,
            "relationships": relationships, "recommendations": recommendations, "uncertainties": uncertainties, "sources": sources}
     # never drop content: a section that has data is rendered even if the template does not list it
     order = list(t["sections"])

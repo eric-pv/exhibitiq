@@ -16,7 +16,7 @@
     "config:default-library": "sha256:69c9f34406aabad146e20c917988e14fb16dd527a2078576c0c8200d04e8fcf0",
     "config:bxr-opportunity": "sha256:2e0b6810f4f4c792ed819b49ed85914e95b05cba2b6f3610b3ec8cd41feb711e",
     "compare:example+golden": "sha256:3ef8c26aa262b222f3c6d1945880ec83f57fc7bbf2b4f23ad93a0392c48d7143",
-    "report:example": "sha256:56182a31d6c4204a9b3488b7ef02af47f4a1877439db2b07b6513c7844b9dde4",
-    "report:golden": "sha256:b021259858bc0fb636542da2651fb67d0c75501ef1cbdc4b790991eb0458278b"
+    "report:example": "sha256:a10ac90154c4ca66798384174a6fa9e4d054bd24dacc0529586a9c161962d1dc",
+    "report:golden": "sha256:86ab471d50d82bf79b166a4c037be637c5fd1eb6583c26fcb8c47df9d547e5b0"
   }
 }
