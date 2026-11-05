@@ -59,9 +59,9 @@ def test_keywords_change_without_code_change(tmp_path):
     assert pt.match(pkg, prof)["co_A"]["terms"] == []
 
 
-def test_mode_a_uses_draft_cards_and_reports_status():
+def test_mode_a_reports_product_card_status():
     r = pt.relate(G / "package", "bxr-opportunity")
-    assert r["mode"] == "bxr_opportunity" and r["bxr_products_status"] == "draft"
+    assert r["mode"] == "bxr_opportunity" and r["bxr_products_status"] == "approved"  # Eric approved the 8 cards 2026-11-05
 
 
 def test_score_uses_profile_weights_and_has_no_booth_factor(tmp_path):

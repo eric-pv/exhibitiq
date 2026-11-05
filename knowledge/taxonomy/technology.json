@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0-draft.5",
   "dimension": "technology",
-  "approval_status": "draft",
+  "approval_status": "approved",
   "terms": [
     {
       "term_id": "technology.simulation",
@@ -72,6 +72,8 @@
       ]
     }
   ],
-  "updated_at": "2026-11-04",
-  "notes": "A2-06 草稿：分類詞與關鍵字由 Claude Code 依通用產業詞彙擬定，尚未經 Eric 核定（approval_status: draft）。核定前分析只能把分類結果標為推論並列出不確定性。"
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定為起始分類詞；使用者可在「分析設定」以分析主題新增或修改關鍵字，不受此限。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
 }

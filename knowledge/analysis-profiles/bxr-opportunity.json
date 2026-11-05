@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0-draft.6",
   "profile_id": "bxr-opportunity",
-  "version": 1,
-  "name": "BXR 商機分析（產品卡待審核）",
+  "version": 2,
+  "name": "BXR 商機分析",
   "description": "A 模式起始主題：以 8 張待審核 BXR 產品卡的功能定位與初始關鍵字辨識潛在客戶、競爭對手、合作夥伴與通路。使用者可自行調整。",
   "mode": "bxr_opportunity",
   "keywords": [
@@ -149,7 +149,16 @@
       "bxr-wargame-table"
     ]
   },
-  "updated_at": "2026-11-04T12:00:00Z",
+  "updated_at": "2026-11-05T08:00:00Z",
   "updated_by": "Claude Code（A2-05）",
-  "notes": "產品卡皆為 draft；以此設定產生的報告必須提示「產品資料未核定」。評分模型由 A2-16 加入。"
+  "notes": "8 張產品卡已由 Eric 於 2026-11-05 核定（名稱與功能定位，無規格）。評分模型 opportunity@2（已核定），配分可在「分析設定」調整。",
+  "score_model": {
+    "score_model_id": "opportunity@2",
+    "weights": {
+      "keyword_fit": 40,
+      "product_fit": 20,
+      "presence": 10,
+      "contact_signal": 20
+    }
+  }
 }
