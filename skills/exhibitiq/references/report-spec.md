@@ -5,6 +5,9 @@
 ## 報告類型（對應 `analysis_type`）
 展覽概況、企業情報、商機排序、競爭態勢、合作與通路、市場趨勢、產品推薦、參展策略、跨展覽比較。
 
+## 視覺規格（A3-01）
+版面、標示與顏色規則見 [`report-visual-spec.md`](report-visual-spec.md)。
+
 ## 版型（A2-12）
 各 `analysis_type` 的報告名稱與章節順序定義在 [`../templates/report-templates.json`](../templates/report-templates.json)。`exhibitiq_tools.py report` 依此輸出 Markdown（A2-13）；分析結果未通過驗證時不產生報告。有資料的章節一律輸出，不會因版型未列而遺漏。
 
