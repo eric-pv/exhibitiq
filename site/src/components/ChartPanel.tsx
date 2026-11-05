@@ -1,5 +1,4 @@
 import { Card, Typography } from "antd";
-import * as echarts from "echarts";
 import { useEffect, useRef } from "react";
 import { color } from "../theme/tokens";
 import { EmptyState } from "./states/States";
@@ -19,7 +18,12 @@ export function ChartPanel(props: { title: string; note: string; data: ChartDatu
 
   useEffect(() => {
     if (!el.current || props.data.length === 0) return;
-    const chart = echarts.init(el.current, undefined, { renderer: "svg" });
+    // ECharts is about half of the bundle: load it only when a chart is shown (W4-04).
+    let cancelled = false;
+    let cleanup = () => {};
+    import("echarts").then((echarts) => {
+      if (cancelled || !el.current) return;
+      const chart = echarts.init(el.current, undefined, { renderer: "svg" });
     chart.setOption({
       animation: false,
       color: PALETTE,
@@ -29,10 +33,12 @@ export function ChartPanel(props: { title: string; note: string; data: ChartDatu
       yAxis: { type: "category", data: props.data.map((d) => d.name), inverse: true },
       series: [{ type: "bar", data: props.data.map((d) => d.value), barMaxWidth: 28, label: { show: true, position: "right" } }],
     });
-    chart.on("click", (e) => onSelect.current?.(String(e.name)));
-    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => chart.resize());
-    ro?.observe(el.current);
-    return () => { ro?.disconnect(); chart.dispose(); };
+      chart.on("click", (e: { name: unknown }) => onSelect.current?.(String(e.name)));
+      const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => chart.resize());
+      ro?.observe(el.current);
+      cleanup = () => { ro?.disconnect(); chart.dispose(); };
+    });
+    return () => { cancelled = true; cleanup(); };
   }, [props.data]);
 
   return (

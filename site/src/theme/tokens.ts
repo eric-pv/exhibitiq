@@ -32,6 +32,9 @@ export const antdTheme: ThemeConfig = {
     colorPrimary: color.brand,
     colorText: color.text,
     colorTextSecondary: color.textMuted,
+    // WCAG AA contrast for secondary/description text (Lighthouse W4-04); antd's default 45% black is too light.
+    colorTextDescription: color.textMuted,
+    colorTextTertiary: color.textMuted,
     colorBorder: color.border,
     colorBgLayout: color.canvas,
     colorSuccess: color.success,
