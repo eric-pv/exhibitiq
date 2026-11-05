@@ -195,10 +195,13 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
         year: ed.year,
         latestDatasetId: ed.latest_dataset_id,
         lastAcquisition: ed.last_acquisition
-          ? { method: ed.last_acquisition.method, status: ed.last_acquisition.status, finishedAt: ed.last_acquisition.finished_at, notes: ed.last_acquisition.notes ?? null }
+          ? { method: ed.last_acquisition.method, status: ed.last_acquisition.status, finishedAt: ed.last_acquisition.finished_at, notes: ed.last_acquisition.notes ?? null,
+              crawlRunId: ed.last_acquisition.crawl_run_id ?? null, recordsExtracted: ed.last_acquisition.records_extracted ?? null, errorCount: ed.last_acquisition.error_count ?? null }
           : null,
         datasets: ed.datasets.map((ds) => ({
-          datasetId: ds.dataset_id, dataOrigin: ds.data_origin, validation: ds.validation.status,
+          datasetId: ds.dataset_id, dataOrigin: ds.data_origin, validation: ds.validation.status, createdAt: ds.created_at, schemaVersion: ds.schema_version,
+          validatedAt: ds.validation.validated_at ?? null, validator: ds.validation.validator ? `${ds.validation.validator.name} ${ds.validation.validator.version}` : null,
+          validationErrors: ds.validation.error_count ?? null, isLatest: ds.dataset_id === ed.latest_dataset_id,
           completeness: { status: ds.completeness_status, official: ds.official_exhibitor_count, collected: ds.collected_participation_count },
         })),
       };
@@ -276,7 +279,7 @@ export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultA
     analyses,
     settings,
     reportTemplates: readJson(join(REPO, "skills", "exhibitiq", "templates", "report-templates.json")),
-    notices: index.notices.map((n) => ({ level: n.level, message: n.message, occurredAt: n.occurred_at })),
+    notices: index.notices.map((n) => ({ level: n.level, message: n.message, occurredAt: n.occurred_at, exhibitionId: n.exhibition_id ?? null, datasetId: n.dataset_id ?? null })),
   };
 }
 

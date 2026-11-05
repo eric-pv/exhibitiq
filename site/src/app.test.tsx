@@ -25,7 +25,7 @@ describe("navigation", () => {
     expect(new Set(NAV_ITEMS.map((n) => n.path)).size).toBe(9);
   });
 
-  const BUILT = new Set(["overview", "companies", "opportunities", "exhibitions", "reports", "settings", "intel"]);
+  const BUILT = new Set(["overview", "companies", "opportunities", "exhibitions", "reports", "settings", "intel", "status"]);
   test.each(NAV_ITEMS.filter((n) => !BUILT.has(n.key)).map((n) => [n.path, n] as const))("route %s shows its title and the unified 建置中 state", (path, n) => {
     wrap(<App />, path);
     expect(screen.getAllByText(n.label).length).toBeGreaterThan(0);
@@ -36,8 +36,8 @@ describe("navigation", () => {
 
   test("clicking a menu item navigates", () => {
     wrap(<App />, "/");
-    fireEvent.click(screen.getAllByText("資料及系統狀態")[0]);
-    expect(screen.getByText(t.underConstruction.body("W2-05"))).toBeTruthy();
+    fireEvent.click(screen.getAllByText("BXR 產品推薦")[0]);
+    expect(screen.getByText(t.underConstruction.body("W3-03"))).toBeTruthy();
   });
 });
 

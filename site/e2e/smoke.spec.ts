@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const SHOTS = process.env.SCREENSHOT_DIR;
-const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心", "分析設定", "展覽情報與比較"]); // pages that are no longer 「建置中」
+const BUILT = new Set(["系統總覽", "參展商與企業情報", "商機分析與評分", "展覽搜尋與新增", "AI 報告中心", "分析設定", "展覽情報與比較", "資料及系統狀態"]); // pages that are no longer 「建置中」
 const MENU = ["系統總覽", "展覽搜尋與新增", "展覽情報與比較", "參展商與企業情報", "商機分析與評分", "BXR 產品推薦", "AI 報告中心", "分析設定", "資料及系統狀態"];
 
 test.beforeEach(async ({ page }, info) => {
@@ -155,4 +155,12 @@ test("compare (W3-01): editions side by side, missing data shown as 資料不足
   await expect(page.getByTestId("compare-table").getByText("資料不足").first()).toBeVisible();
   await page.waitForTimeout(300);
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/w3-01-${info.project.name}-compare.png`, fullPage: true });
+});
+
+test("status (W2-05): acquisition incl. failures, validation, notices", async ({ page }, info) => {
+  await page.goto("/#/status");
+  await expect(page.getByTestId("status-acquisition")).toBeVisible();
+  await expect(page.getByTestId("failed-note")).toBeVisible();
+  await page.waitForTimeout(300);
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/w2-05-${info.project.name}-status.png`, fullPage: true });
 });
