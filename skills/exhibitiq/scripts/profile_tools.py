@@ -295,3 +295,118 @@ def history(package_dirs: list[Path], profile=None) -> dict:
         "year_over_year": steps,
         "incomplete_years": [p["year"] for p in pk if p["completeness_status"] != "complete"],
     }
+
+
+# ---------------------------------------------------------------- A3-07: known relationships (human benchmark)
+KNOWN_COLUMNS = ("company_name", "aliases", "country", "website", "relationship", "source", "notes")
+KNOWN_REQUIRED = ("company_name", "relationship", "source")
+
+
+def _norm(s: str) -> str:
+    """Name key for matching: case-insensitive, punctuation/spaces removed (CJK kept)."""
+    return re.sub(r"[\W_]+", "", (s or "").casefold())
+
+
+def _domain(s: str) -> str:
+    s = re.sub(r"^[a-z]+://", "", (s or "").strip().casefold())
+    return re.sub(r"^www\.", "", s.split("/")[0])
+
+
+def load_known(csv_path: Path) -> tuple[list[dict], list[str]]:
+    """Read the known-relationship list (docs/specs/known-relationships.md). Returns (rows, errors); any error -> unusable."""
+    import csv
+    errors, rows = [], []
+    text = Path(csv_path).read_text(encoding="utf-8-sig")  # Excel saves UTF-8 with BOM
+    reader = csv.DictReader(text.splitlines())
+    cols = [c.strip() for c in (reader.fieldnames or [])]
+    missing = [c for c in KNOWN_REQUIRED if c not in cols]
+    if missing:
+        return [], [f"missing column(s): {', '.join(missing)}; header must be: {','.join(KNOWN_COLUMNS)}"]
+    unknown = [c for c in cols if c not in KNOWN_COLUMNS]
+    if unknown:
+        errors.append(f"unknown column(s): {', '.join(unknown)}; allowed: {','.join(KNOWN_COLUMNS)}")
+    for i, raw in enumerate(reader, start=2):
+        r = {k.strip(): (v or "").strip() for k, v in raw.items() if k}
+        if not any(r.values()):
+            continue
+        for c in KNOWN_REQUIRED:
+            if not r.get(c):
+                errors.append(f"line {i}: {c} is empty")
+        rels = [x.strip() for x in r.get("relationship", "").split(";") if x.strip()]
+        bad = [x for x in rels if x not in REL_TYPES]
+        if bad:
+            errors.append(f"line {i}: relationship {bad} not in {list(REL_TYPES)}")
+        rows.append({"line": i, "company_name": r.get("company_name", ""),
+                     "aliases": [a.strip() for a in r.get("aliases", "").split(";") if a.strip()],
+                     "country": r.get("country") or None, "website": r.get("website") or None,
+                     "relationships": rels, "source": r.get("source", ""), "notes": r.get("notes") or None})
+    keys = {}
+    for r in rows:
+        k = _norm(r["company_name"])
+        if k in keys:
+            errors.append(f"line {r['line']}: duplicate company_name (same as line {keys[k]})")
+        keys.setdefault(k, r["line"])
+    if not rows:
+        errors.append("no data rows")
+    return rows, errors
+
+
+def benchmark(known_csv: Path, package_dir: Path, profile=None) -> dict:
+    """A3-07: compare relate() candidates with the human known-relationship list for one package.
+
+    Matching (deterministic): normalised company name or alias against the package's name / name_en / name_zh_hant /
+    aliases, or website domain against website/domains. The list is the human answer key but it is NOT complete,
+    so a candidate that is not in the list is "not listed" (cannot be judged), never counted as wrong.
+    """
+    rows, errors = load_known(known_csv)
+    if errors:
+        raise ValueError("known list is invalid: " + "; ".join(errors))
+    d = Path(package_dir)
+    m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
+    companies = _jsonl(d / "companies.jsonl")
+    by_name, by_domain = {}, {}
+    for c in companies:
+        for n in [c.get("name"), c.get("name_en"), c.get("name_zh_hant"), *[a["name"] for a in c.get("aliases", [])]]:
+            if n:
+                by_name.setdefault(_norm(n), c["company_id"])
+        for dom in [c.get("website"), *c.get("domains", [])]:
+            if dom:
+                by_domain.setdefault(_domain(dom), c["company_id"])
+    rel = relate(d, profile)
+    predicted = {cid: {x["relationship_type"] for x in v if x["relationship_type"] != "unknown"} for cid, v in rel["companies"].items()}
+    entries, matched_ids = [], set()
+    for r in rows:
+        cid, how = None, None
+        for n in [r["company_name"], *r["aliases"]]:
+            if _norm(n) in by_name:
+                cid, how = by_name[_norm(n)], "name"
+                break
+        if cid is None and r["website"] and _domain(r["website"]) in by_domain:
+            cid, how = by_domain[_domain(r["website"])], "website"
+        got = sorted(predicted.get(cid, set())) if cid else []
+        entries.append({"line": r["line"], "company_name": r["company_name"], "company_id": cid, "matched_by": how,
+                        "expected": r["relationships"], "predicted": got,
+                        "found": sorted(set(r["relationships"]) & set(got)) if cid else [],
+                        "missed": sorted(set(r["relationships"]) - set(got)) if cid else [],
+                        "other_candidates": sorted(set(got) - set(r["relationships"])) if cid else []})
+        if cid:
+            matched_ids.add(cid)
+    per_type = {}
+    for t in REL_TYPES:
+        inpkg = [e for e in entries if e["company_id"] and t in e["expected"]]
+        hit = [e for e in inpkg if t in e["predicted"]]
+        per_type[t] = {"known": sum(t in e["expected"] for e in entries), "in_package": len(inpkg), "detected": len(hit),
+                       "recall": round(len(hit) / len(inpkg), 4) if inpkg else None,
+                       "not_listed_candidates": sorted(c for c, s in predicted.items() if t in s and c not in matched_ids)}
+    return {
+        "dataset_id": m["dataset_id"], "exhibition_id": m["exhibition_id"], "data_origin": m["data_origin"],
+        "completeness_status": m["completeness_status"],
+        "profile_id": rel["profile_id"], "profile_version": rel["profile_version"], "mode": rel["mode"],
+        "known_rows": len(rows), "matched_rows": sum(1 for e in entries if e["company_id"]),
+        "per_relationship": per_type, "entries": entries,
+        "notes": [n for n in [
+            "名單不是完整答案：不在名單上的候選企業無法判斷對錯，不計為錯誤",
+            "關係判斷只是關鍵字訊號（signal_only），召回率代表初篩能力，不代表已確認的事實",
+            None if m["completeness_status"] == "complete" else "資料包不完整：名單上的企業沒有出現，可能只是尚未取得",
+        ] if n],
+    }
