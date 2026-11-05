@@ -67,7 +67,7 @@
 - **GitHub Actions**：手動或排程執行爬蟲、ETL、Schema 驗證、測試、資料包生成與可公開報告的發布。排程可能延遲，Actions 並非永不停止的常駐服務。
 - **GitHub 檔案式資料儲存**：JSON／JSONL／CSV／manifest，保留來源及版本。**GitHub 不是資料庫伺服器**；比賽版不導入 PostgreSQL、Supabase、常駐 FastAPI、VPS，除非你另行批准。
 - 大型、頻繁變動的快照不可無限制累積在 Git history；依資料量選擇 Releases、Actions Artifacts 或日後核准的物件儲存。Actions Artifacts 可能有保留期限，不可當作唯一永久資料來源。須記錄資料包位置、雜湊、版本及取得時間。
-- GitHub Pages 只能發布經你核准的非機密靜態成果；Repo 與 GitHub Pages 網站都是公開的。不可將公司敏感資料、個資、金鑰提交到 Repo 或發布到網站。對外展示網址：https://magician-eric.github.io/exhibitiq/（`gh-pages` 分支，發布前須通過 `npm run pages:check`：只含合成資料或你核准公開的內容，並通過安全掃描）。
+- GitHub Pages 只能發布經你核准的非機密靜態成果；Repo 與 GitHub Pages 網站都是公開的。不可將公司敏感資料、個資、金鑰提交到 Repo 或發布到網站。對外展示網址：https://eric-pv.github.io/exhibitiq/（`gh-pages` 分支，發布前須通過 `npm run pages:check`：只含合成資料或你核准公開的內容，並通過安全掃描）。
 - Skill 以 `skills/exhibitiq/SKILL.md`、references、scripts 組成。可在有 GitHub 存取權的 Claude Code 雲端工作環境使用；**不假設 Claude 網頁聊天會自動安裝或執行此 Skill**。
 - GitHub Actions 寫入資料需使用專用受限權限與 concurrency 控制；不要讓爬蟲 workflow 自動寫入 `main` 而繞過階段驗收。比賽期間建議寫入專用資料分支／建立資料更新 PR／或保存版本化資料產物，經規定流程納入整合版本。
 

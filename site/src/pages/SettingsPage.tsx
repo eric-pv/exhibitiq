@@ -10,7 +10,6 @@ import { t } from "../i18n/zh-TW";
 import { color, space } from "../theme/tokens";
 
 const s = t.settings;
-const SUBMIT_URL = "https://github.com/magician-eric/exhibitiq/upload/dev/ai-intelligence/knowledge/analysis-profiles";
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));
 const download = (name: string, text: string) => {
   const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
@@ -176,7 +175,7 @@ export function SettingsPage() {
                       <Space wrap>
                         <Button type="primary" icon={<DownloadOutlined />} disabled={errors.length > 0} data-testid="profile-export"
                           onClick={() => download(`${current.profile_id}.json`, JSON.stringify(forSubmission(current, st.submitted), null, 2) + "\n")}>{s.export}</Button>
-                        <Button href={SUBMIT_URL} target="_blank" rel="noopener noreferrer">{s.openGithub}</Button>
+                        <Typography.Text code>{s.submitPath}</Typography.Text>
                       </Space>
                       <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>{s.submitSteps}</Typography.Paragraph>
                     </Space>) },

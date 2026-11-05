@@ -17,8 +17,8 @@ ExhibitIQ is a cloud-only, GitHub-first, **general-purpose** AI exhibition intel
 3. Implement only that work item. Run the relevant cloud tests, validate schema compatibility, document limitations.
 4. **Every independently verifiable work item gets its own GitHub PR**, base = your OWN dev branch (never `main`). Title format: `【<merger> 合併】[<work-item-id>] <summary>` (see item 6). Include changed files, tests and results, schema impact, evidence (screenshots or preview for any `site/` change) and limitations.
 5. **Merge your own PR** into your own dev branch. No review by the other developer is required. **V2.4: Claude Code itself merges its PR into its own `dev/*` branch once all relevant tests pass** (Eric approved 2026-11-04). It never merges into `main`, never merges the other person's branch, and still stops for owner decisions (MVP scope, product data, architecture, shared-schema approval).
-6. **Every PR names its merger (Issue #15).** People: **Eric** = project owner (`ai`, GitHub `magician-eric`); **Albert** = colleague (`data`, GitHub `acyihung-infinityandbeyond`).
-   - Base `dev/ai-intelligence` or `main` → title starts with `【Eric 合併】`, first body line `> **合併人：Eric**`, assignee `magician-eric`.
+6. **Every PR names its merger (Issue #15).** People: **Eric** = project owner (`ai`, GitHub `eric-pv`); **Albert** = colleague (`data`, GitHub `acyihung-infinityandbeyond`).
+   - Base `dev/ai-intelligence` or `main` → title starts with `【Eric 合併】`, first body line `> **合併人：Eric**`, assignee `eric-pv`.
    - Base `dev/data-platform` (including shared-file sync PRs) → title starts with `【Albert 合併】`, first body line `> ⚠️ **合併人：Albert。Eric 請勿合併。**`, assignee `acyihung-infinityandbeyond`.
    - When reporting to the user, the first line states the merger, e.g. `合併人：Albert（請轉給 Albert，Eric 不要按合併）`.
 7. The project owner keeps `docs/PROGRESS.md` up to date from merged PRs. Albert reports progress through PR descriptions and does not edit `PROGRESS.md`.
