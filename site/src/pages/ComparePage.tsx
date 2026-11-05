@@ -9,7 +9,7 @@ import { CompletenessIndicator } from "../components/status/CompletenessIndicato
 import { DataOriginBanner } from "../components/status/DataOriginBanner";
 import { SourceRefs, shortTime } from "../components/status/SourceRef";
 import { StatusBadge } from "../components/status/StatusBadge";
-import { bundle, getComparison, type ComparisonColumn } from "../data/repository";
+import { bundle, getComparison, getHistory, type ComparisonColumn, type HistoryStep } from "../data/repository";
 import { t } from "../i18n/zh-TW";
 import { space } from "../theme/tokens";
 
@@ -69,6 +69,40 @@ export function ComparePage() {
             data={v.columns.filter((col) => col.companyCount !== null).map((col) => ({ name: col.label, value: col.companyCount! }))} />
         </Space>
       )}
+      <HistorySection profileId={profileId} exhibitionId={params.get("h")} onPick={(id) => set("h", id)} />
     </>
+  );
+}
+
+/** 歷史趨勢 (W3-02): one exhibition across years; fewer than two years with a package -> 資料不足. */
+function HistorySection(props: { profileId: string | null; exhibitionId: string | null; onPick: (id: string) => void }) {
+  const h = t.history;
+  const exhibitions = bundle.exhibitions;
+  const id = props.exhibitionId ?? exhibitions[0]?.exhibitionId ?? null;
+  const v = useMemo(() => (id ? getHistory(id, props.profileId) : null), [id, props.profileId]);
+  const unknown = (n: number | null) => (n === null ? <Typography.Text type="secondary">{h.unknown}</Typography.Text> : n);
+  return (
+    <Card title={h.title} data-testid="history" style={{ marginTop: space.md }}>
+      <Space direction="vertical" size={space.md} style={{ width: "100%" }}>
+        <Select style={{ minWidth: 260 }} value={id ?? undefined} placeholder={h.exhibition} data-testid="history-select"
+          options={exhibitions.map((e) => ({ value: e.exhibitionId, label: e.name }))} onChange={props.onPick} />
+        {!v || v.status === "insufficient" ? <EmptyState message={h.insufficient} /> : (
+          <>
+            <Alert type="info" showIcon message={h.note} />
+            <Table size="small" pagination={false} rowKey="year" data-testid="history-years" scroll={{ x: 480 }} dataSource={v.years}
+              columns={[{ title: h.year, dataIndex: "year" },
+                { title: c.completeness, key: "comp", render: (_: unknown, y: (typeof v.years)[number]) => <CompletenessIndicator {...y.completeness} /> },
+                ...v.keywords.map((k) => ({ title: <Space size={4}><ClaimBadge kind="ai_inferred" />{k.label}</Space>, key: k.term_id,
+                  render: (_: unknown, y: (typeof v.years)[number]) => `${c.hits(y.keywords[k.term_id].count)}${y.keywords[k.term_id].share !== null ? `（${Math.round(y.keywords[k.term_id].share! * 100)}%）` : ""}` }))]} />
+            <Table<HistoryStep> size="small" pagination={false} rowKey={(s) => `${s.fromYear}-${s.toYear}`} data-testid="history-steps" dataSource={v.steps}
+              columns={[{ title: h.period, key: "p", render: (_, s) => `${s.fromYear} → ${s.toYear}` },
+                { title: h.returning, dataIndex: "returning" },
+                { title: h.newCount, key: "n", render: (_, s) => unknown(s.newCount) },
+                { title: h.notSeenAgain, key: "g", render: (_, s) => unknown(s.notSeenAgain) }]} />
+            <ChartPanel testId="history-chart" title={h.chart} note={h.chartNote} data={v.years.map((y) => ({ name: String(y.year), value: y.companyCount }))} />
+          </>
+        )}
+      </Space>
+    </Card>
   );
 }

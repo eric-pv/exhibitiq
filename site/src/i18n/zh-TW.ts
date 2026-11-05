@@ -150,6 +150,13 @@ export const t = {
     hits: (n: number) => `${n} 家命中`,
     chart: "各展覽已取得企業數", chartNote: "只包含有驗證通過資料包的屆次；完整度不是「完整」時，數字只代表實際取得的部分。",
   },
+  history: {
+    title: "歷史趨勢", exhibition: "選擇展覽",
+    insufficient: "資料不足：這個展覽只有一個年度（或沒有）驗證通過的資料包，無法判斷歷史趨勢。",
+    note: "同一展覽各年度的最新資料包。「再次參展」是兩年資料都出現的企業（事實）；前一年資料不完整時無法判斷「新參展」，後一年資料不完整時無法判斷「未再參展」，顯示「無法判斷」，不以推測補足。",
+    chart: "各年度已取得企業數", chartNote: "完整度不是「完整」時，數字只代表實際取得的部分，年度之間的差異不一定是真實變化。",
+    period: "期間", returning: "再次參展", newCount: "新參展", notSeenAgain: "未再參展", unknown: "無法判斷", year: "年度",
+  },
   appendix: {
     schema: "Schema 版本", skill: "Skill 版本", model: "模型", knowledge: "知識庫版本", template: "報告版型", input: "輸入資料包", other: "其他輸入資料包",
     config: "分析設定", cost: "分析成本", id: "分析 ID", notRecorded: "未記錄", legacyConfig: "未記錄（舊版格式）", measured: "實際量測",
