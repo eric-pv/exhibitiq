@@ -19,7 +19,8 @@
     "pretypecheck": "npm run -s bundle",
     "pretest": "npm run -s bundle",
     "prebuild": "npm run -s bundle",
-    "security": "node scripts/security-check.mjs"
+    "security": "node scripts/security-check.mjs",
+    "pages:check": "node scripts/pages-check.mjs"
   },
   "dependencies": {
     "@ant-design/icons": "5.6.1",

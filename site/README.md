@@ -69,3 +69,9 @@ React 18、Vite 6、TypeScript 5、Ant Design 5（`zh_TW` 語系）、ECharts 5�
 
 `npm run build && npm run build:single && npm run security`：掃描 `dist/`、`dist-single/` 與 `src/`，發現任何 Token、API Key、私鑰、Bearer 憑證，或呼叫 GitHub API／LLM API 的程式就失敗。規則本身由 `src/security.test.ts` 測試。
 公開版（GitHub Pages）的內容白名單要等專案負責人決定發布方式後再加入（開發計畫「待專案負責人決定」）。
+
+## GitHub Pages（W4-06，Eric 2026-11-05 決定）
+
+**GitHub Pages 是公開網站。** 發布前必須通過 `npm run build:single && npm run pages:check`：網站內只要有真實（collected）資料或分析結果就拒絕發布，除非專案負責人核准該內容可以公開（`PAGES_ALLOW_COLLECTED=1`）；同時執行安全掃描（W4-05）。
+
+發布方式：把 `dist-single/index.html` 放到 `gh-pages` 分支根目錄（每次以單一 commit 取代，避免 Git 歷史變大），GitHub 設定 Settings → Pages → Deploy from a branch → `gh-pages` / root。之後若改由 Actions 自動部署，workflow 由 data 負責（`.github/workflows/`）。
