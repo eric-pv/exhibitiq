@@ -67,6 +67,7 @@
 | A3-05 | 報告版本與追溯附錄 | [#78](https://github.com/magician-eric/exhibitiq/pull/78) | `dev/ai-intelligence` | 2026-11-05 |
 | W4-02 | 所有頁面三種尺寸的截圖與版面測試 | [#79](https://github.com/magician-eric/exhibitiq/pull/79) | `dev/ai-intelligence` | 2026-11-05 |
 | W4-05 | 安全檢查 `npm run security` | [#80](https://github.com/magician-eric/exhibitiq/pull/80) | `dev/ai-intelligence` | 2026-11-05 |
+| A3-08 | Skill 可重現性檢查 | [#81](https://github.com/magician-eric/exhibitiq/pull/81) | `dev/ai-intelligence` | 2026-11-05 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -74,7 +75,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A3-08 | Skill 可重現性檢查 `repro_check.py --check`（輸出雜湊；已在另一個乾淨 clone 驗證一致） | 本 PR |
+| W3-05 | CSV 匯出（Excel 可開）：BOM、CRLF、引號處理、防止公式注入；企業、展覽、商機排名都可匯出（xlsx 不做） | 本 PR |
 
 ## 待處理（Phase 1）
 

@@ -28,3 +28,12 @@ test("companies page renders table, filters from URL, and missing booth as 未�
   expect(within(table).getByText("未公布")).toBeTruthy();
   expect(screen.getByTestId("csv-export")).toBeTruthy();
 });
+
+test("W3-05: CSV is Excel-safe — CRLF rows, quoted newlines/quotes, formula cells neutralised, numbers kept", () => {
+  const csv = toCsv(["a", "b", "c"], [["=HYPERLINK(\"x\")", -5, "line1\nline2"], ["@cmd", "+1", "正常"]]);
+  const lines = csv.slice(1).split("\r\n");
+  expect(lines[0]).toBe("a,b,c");
+  expect(lines[1]).toBe(`"'=HYPERLINK(""x"")",-5,"line1\nline2"`);
+  expect(lines[2]).toBe("'@cmd,'+1,正常");
+  expect(csv.endsWith("\r\n")).toBe(true);
+});
