@@ -41,7 +41,7 @@ ExhibitIQ is a cloud-only, GitHub-first, **general-purpose** AI exhibition intel
   - Past exhibition-specific research (e.g. earlier source assessments) is kept as historical record only, never as a dependency.
 - **No exhibition is hard-coded in core code.** Core code, schemas, analysis logic and Dashboard pages/navigation must not depend on a specific exhibition's name, ID, URL, fields or counts. Exhibition-specific differences live only in exhibition registration data, source configs, source adapters or import mappings. Adding another exhibition must not require changing core code.
 - Never assume every exhibition can be fully acquired automatically. Each new exhibition goes through source assessment; automatic, semi-automatic, file import, manual entry, partial success and insufficient data are all valid, explicitly labelled outcomes.
-- One GitHub Private Monorepo. All development, execution, testing and crawling in cloud workspaces/GitHub Actions; no local computer compute requirement.
+- One GitHub Monorepo, **public since 2026-11-05 (Eric's decision): everything committed — code, docs, data packages, analysis results, PR discussions — is visible to anyone.** Real (collected) data, analysis of it, company/customer information and anything confidential may be committed only after the project owner approves it as publishable. All development, execution, testing and crawling in cloud workspaces/GitHub Actions; no local computer compute requirement.
 - GitHub stores versioned JSON/JSONL/CSV/manifests, code and reports. GitHub is NOT a transactional database. No PostgreSQL, Supabase, VPS or always-on FastAPI unless explicitly approved.
 - `schemas/` is the ONLY shared data contract. Shared schema changes require project owner approval and matching fixture/tests updates.
 - `crawler/`, `etl/` and Actions own acquisition, deterministic cleaning, provenance and data packaging.
@@ -52,7 +52,7 @@ ExhibitIQ is a cloud-only, GitHub-first, **general-purpose** AI exhibition intel
 - Raw evidence is immutable; inferred analysis must never overwrite sourced facts, and the Dashboard must never display AI inference as verified fact.
 - Use source IDs, timestamps, hashes and completeness statuses. Never invent counts, company facts, citations, scores or confidence.
 - Use reusable modules, no duplicate frameworks. Limit Git history growth; do not assume Actions artifacts are permanent.
-- No secrets in Git or in the frontend. Never publish private intelligence to public GitHub Pages. Protect workflows from concurrent writes and overly broad token permissions.
+- No secrets in Git or in the frontend. Never publish private intelligence to the public repo or to GitHub Pages; the public Dashboard is published only from the `gh-pages` branch after `npm run pages:check` (site/README.md). Protect workflows from concurrent writes and overly broad token permissions.
 
 ## Stop and ask the project owner if
 - Task changes architecture, shared schema, storage choice, public/private publishing or module ownership.

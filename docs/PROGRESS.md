@@ -71,6 +71,8 @@
 | W3-05 | CSV 匯出（Excel 可開、防公式注入） | [#82](https://github.com/magician-eric/exhibitiq/pull/82) | `dev/ai-intelligence` | 2026-11-05 |
 | W4-04 | Lighthouse 實測紀錄與初步優化 | [#83](https://github.com/magician-eric/exhibitiq/pull/83) | `dev/ai-intelligence` | 2026-11-05 |
 | A4-01 | 驗收清單與測試案例 | [#84](https://github.com/magician-eric/exhibitiq/pull/84) | `dev/ai-intelligence` | 2026-11-05 |
+| A3-01 | 報告視覺規格 | [#85](https://github.com/magician-eric/exhibitiq/pull/85) | `dev/ai-intelligence` | 2026-11-05 |
+| W4-06（檢查） | 公開網頁發布檢查 `pages:check` | [#86](https://github.com/magician-eric/exhibitiq/pull/86) | `dev/ai-intelligence` | 2026-11-05 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -78,7 +80,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A3-01 | 報告視覺規格（`references/report-visual-spec.md`：沿用設計系統、A4 版面、標示規則、章節） | 本 PR |
+| W4-06 | Repo 改為公開；展示網址 https://magician-eric.github.io/exhibitiq/（`gh-pages`，發布前 `pages:check`）；規範文件更新 | 本 PR |
 
 ## 待處理（Phase 1）
 
@@ -100,7 +102,6 @@
 
 | 事項 | 需要在何時決定 |
 |---|---|
-| Phase 4 給評審的操作網址：公開的去敏感版 GitHub Pages（需確認帳號方案）、受保護的外部託管（新服務）、或只做現場操作 | Phase 3 結束前 |
 | 是否需要網頁一鍵執行（新增展覽、觸發擷取、執行分析）：需要後端代理或 GitHub App 等新服務；預設不做，改用 Actions 手動執行（總規範 §4.1） | Phase 3 開始前 |
 | 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用） | Phase 3 開始前 |
 
