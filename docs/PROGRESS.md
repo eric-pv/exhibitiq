@@ -108,6 +108,7 @@ Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https
 | D4-06 | 爬蟲與資料格式維護手冊（Albert） | [#108](https://github.com/eric-pv/exhibitiq/pull/108) | `dev/data-platform` | 2026-11-09 |
 | A3-07（名單） | 競品名單 19 筆（Eric 提供）提交到 `knowledge/benchmarks/` | [#109](https://github.com/eric-pv/exhibitiq/pull/109) | `dev/ai-intelligence` | 2026-11-09 |
 | — | data 端優先順序寫進 PROGRESS；白話文規則寫進 CLAUDE.md；#90 改寫為四項待辦 | [#110](https://github.com/eric-pv/exhibitiq/pull/110) | `dev/ai-intelligence` | 2026-11-09 |
+| — | CLAUDE.md「Data role」：data 端以 PROGRESS 與協調 Issue 為優先 | [#111](https://github.com/eric-pv/exhibitiq/pull/111) | `dev/ai-intelligence` | 2026-11-09 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -115,7 +116,7 @@ Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| — | CLAUDE.md 新增「Data role」：data 端的 Claude Code 以 PROGRESS 與 [coord] Issue 為優先，並說明原因 | 本 PR |
+| — | 記錄 Eric 決定：Albert 端不等決定；抓不到的展覽改由使用者上傳 | 本 PR |
 
 ## 待處理（Phase 1）
 
@@ -156,6 +157,8 @@ Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https
 | W3-07 | 可以執行時就開始（不等 D2-13）；與 Albert 的 Claude 透過 Issue 留言溝通 |
 | 開發期間的資料 | 所有該進 repo 的資料（含公司內部資料，例如競品名單）都直接提交，不用考慮公開與否；專案結束時整個 repo 改為不公開。密碼、Token、金鑰仍然不提交 |
 | 競品名單（A3-07） | 由 Eric 提供（Albert 的競品簡報），放在 `knowledge/benchmarks/known-competitors.csv` |
+| Albert 端的決定 | Albert 的 Claude 不等 Albert 決定，照預設做法繼續 |
+| 抓不到的展覽 | 基本爬蟲抓不到時，網站顯示「無法自動取得」，請使用者自己找名單上傳（`data/uploads/<展覽ID>/<年份>/`），經匯入工具轉成資料包；系統只負責分析 |
 
 ## 待專案負責人決定
 
