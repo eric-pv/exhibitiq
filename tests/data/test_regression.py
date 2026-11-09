@@ -19,7 +19,7 @@ from tests.data import regression_outputs as ro
 
 ROOT = Path(__file__).resolve().parents[2]
 TESTS = Path(__file__).resolve().parent
-CLIS = ["etl.validate", "etl.report", "etl.build_index", "etl.catalog", "tests.data.regression_outputs"]
+CLIS = ["etl.validate", "etl.report", "etl.build_index", "etl.catalog", "etl.integrity", "tests.data.regression_outputs"]
 
 
 @pytest.mark.parametrize("name", list(ro.OUTPUTS))

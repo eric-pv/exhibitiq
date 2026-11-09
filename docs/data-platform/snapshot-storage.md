@@ -48,5 +48,5 @@ assert verify_run(run_dir) == []
 
 - 把這些檔案提交到 Git、開資料更新 PR（D2-05／D2-13 的 workflow）。
 - 把多次執行的 source / crawl_run 彙整進資料包（D2-11）。
-- Release、Actions Artifact、外部儲存；保留期限（`retained_until`）管理；壓縮。
+- Release、Actions Artifact、外部儲存；保留期限（`retained_until`）管理；壓縮。（資料包層級的快照驗證與備份檔見 D4-03 `integrity-and-backup.md`；保存位置仍未決定。）
 - 清理舊的執行目錄（不刪除是刻意的，刪除屬人工決定）。
