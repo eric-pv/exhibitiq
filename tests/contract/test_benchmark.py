@@ -79,3 +79,9 @@ def test_excel_bom_and_cli(tmp_path):
     assert subprocess.run([sys.executable, str(TOOLS), "validate-known", str(bad)], capture_output=True).returncode == 1
     out = subprocess.run([sys.executable, str(TOOLS), "benchmark", str(KNOWN), str(G)], capture_output=True, text=True, check=True)
     assert json.loads(out.stdout)["known_rows"] == 3
+
+
+def test_owner_provided_competitor_list_is_valid():
+    rows, errors = pt.load_known(ROOT / "knowledge" / "benchmarks" / "known-competitors.csv")
+    assert errors == [] and len(rows) >= 19
+    assert all(r["source"] for r in rows)
