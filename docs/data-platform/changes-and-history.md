@@ -53,5 +53,5 @@
 
 - 人工合併流程（決定 `merged`）；`carry_forward` 只尊重已存在的決定。
 - 展覽或屆次紀錄（`exhibition` / `edition`）本身的欄位變更比對。
-- 跨屆次的「同一屆多個資料包」歷史瀏覽（只用每屆最新的）；歷史索引的發布與 Dashboard 讀取（D2-12、D3-04）。
+- 跨屆次的「同一屆多個資料包」歷史瀏覽（本模組只用每屆最新的）：見 D3-04 的 `etl/catalog.py timeline`／`diff`（`catalog.md`）。歷史索引的發布與 Dashboard 讀取不在 data 範圍。
 - 官方筆數與完整度報告（D2-09）。
