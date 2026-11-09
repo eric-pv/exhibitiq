@@ -60,7 +60,7 @@ export function ExhibitionsPage() {
 export function ExhibitionDetailPage() {
   const { exhibitionId = "" } = useParams();
   const r = useMemo(() => getExhibitionRows().find((x) => x.exhibitionId === exhibitionId) ?? null, [exhibitionId]);
-  const back = <Link to="/exhibitions"><Button icon={<ArrowLeftOutlined />}>{e.back}</Button></Link>;
+  const back = <Space wrap><Link to={`/intel?h=${encodeURIComponent(exhibitionId)}`} data-testid="exhibition-intel-link"><Button>{e.viewIntel}</Button></Link><Link to="/exhibitions"><Button icon={<ArrowLeftOutlined />}>{e.back}</Button></Link></Space>;
   if (!r) return (<><PageHeader title={t.nav.exhibitionSearch} extra={back} /><EmptyState message={e.notFound(exhibitionId)} /></>);
   return (
     <>

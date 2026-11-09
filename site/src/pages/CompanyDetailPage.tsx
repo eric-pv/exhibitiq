@@ -8,7 +8,7 @@ import { EmptyState } from "../components/states/States";
 import { ClaimBadge, type ClaimKind } from "../components/status/ClaimBadge";
 import { DataOriginBanner } from "../components/status/DataOriginBanner";
 import { SourceRef, SourceRefs, shortTime } from "../components/status/SourceRef";
-import { getCompanyDetail, type CompanyDetail, type ResolvedSource } from "../data/repository";
+import { getCompanyAnalyses, getCompanyDetail, type CompanyDetail, type ResolvedSource } from "../data/repository";
 import { t } from "../i18n/zh-TW";
 import { layout, space } from "../theme/tokens";
 
@@ -82,7 +82,7 @@ export function CompanyDetailPage() {
 
         <Card title={c.participations} data-testid="company-participations">
           <DataTable<Participation> rowKey="key" dataSource={d.participations} pagination={false} scroll={{ x: 1100 }} columns={[
-            { title: c.col.exhibition, render: (_, p) => `${p.exhibitionName}（${p.year}）` },
+            { title: c.col.exhibition, render: (_, p) => <Link to={`/exhibitions/${encodeURIComponent(p.exhibitionId)}`} data-testid="participation-exhibition">{`${p.exhibitionName}（${p.year}）`}</Link> },
             { title: c.col.nameAsListed, dataIndex: "nameAsListed" },
             { title: c.col.type, render: (_, p) => c.participationType[p.participationType] ?? p.participationType },
             { title: c.col.booth, render: (_, p) => (p.booth ? [p.hall, p.booth].filter(Boolean).join(" / ") : <Typography.Text type="secondary">{t.companies.noBooth}</Typography.Text>) },
@@ -93,6 +93,8 @@ export function CompanyDetailPage() {
             { title: c.col.sources, render: (_, p) => <SourceRefs sources={p.sources} numbering={numbering} /> },
           ]} />
         </Card>
+
+        <CompanyAnalyses companyId={companyId} />
 
         <Card title={c.sources} data-testid="company-sources">
           <List size="small" dataSource={distinct} renderItem={(s) => (
@@ -109,5 +111,33 @@ export function CompanyDetailPage() {
         </Card>
       </Space>
     </>
+  );
+}
+
+/** W3-06: links from a company to every analysis that mentions it (AI output, labelled). */
+function CompanyAnalyses({ companyId }: { companyId: string }) {
+  const xs = useMemo(() => getCompanyAnalyses(companyId), [companyId]);
+  const rel = t.opportunities.relType;
+  return (
+    <Card title={<Space><ClaimBadge kind="ai_inferred" />{c.analyses}</Space>} data-testid="company-analyses">
+      {xs.length === 0 ? <Typography.Text type="secondary">{c.noAnalyses}</Typography.Text> : (
+        <>
+          <Typography.Paragraph type="secondary">{c.analysesNote}</Typography.Paragraph>
+          <List size="small" dataSource={xs} renderItem={(x) => (
+            <List.Item>
+              <Space wrap>
+                <Typography.Text strong>{x.title}</Typography.Text>
+                <Typography.Text type="secondary">{shortTime(x.generatedAt)}</Typography.Text>
+                {x.score && <Tag>{c.rank(x.score.rank, x.score.total, x.score.max)}</Tag>}
+                {x.relationships.map((r) => <Tag key={r}>{rel[r] ?? r}</Tag>)}
+                {(x.conclusions > 0 || x.recommendations > 0) && <Typography.Text type="secondary">{c.mentions(x.conclusions, x.recommendations)}</Typography.Text>}
+                {x.score && <Link to={`/opportunities?analysis=${encodeURIComponent(x.analysisId)}`} data-testid="company-analysis-opportunity">{c.openOpportunity}</Link>}
+                <Link to={`/reports?analysis=${encodeURIComponent(x.analysisId)}`} data-testid="company-analysis-report">{c.openReport}</Link>
+              </Space>
+            </List.Item>
+          )} />
+        </>
+      )}
+    </Card>
   );
 }

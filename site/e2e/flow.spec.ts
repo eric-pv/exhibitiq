@@ -57,3 +57,21 @@ test("main flow: overview → exhibition → compare/history → company → opp
 
   expect(errors).toEqual([]);
 });
+
+test("W3-06 cross-page links: chart → filtered list, company → report, report ↔ opportunities, exhibition → history", async ({ page }, info) => {
+  test.skip(info.project.name === "mobile"); // same links; the menu flow on mobile is covered in smoke.spec.ts
+  await page.goto("/#/opportunities");
+  await page.getByTestId("ranking-table").getByRole("link").first().click();
+  await expect(page.getByTestId("company-analyses")).toBeVisible();
+  await page.getByTestId("company-analysis-report").first().click();
+  await expect(page.getByTestId("report-viewer")).toBeVisible();
+  await page.getByTestId("report-opportunity-link").click();
+  await expect(page.getByTestId("ranking-table")).toBeVisible();
+  await page.getByTestId("opportunity-exhibition-link").click();
+  await expect(page.getByTestId("exhibition-editions")).toBeVisible();
+  await page.getByTestId("exhibition-intel-link").click();
+  await expect(page).toHaveURL(/#\/intel\?h=/);
+  await expect(page.getByTestId("history")).toBeVisible();
+  await page.getByTestId("compare-exhibition-link").first().click();
+  await expect(page.getByTestId("exhibition-editions")).toBeVisible();
+});

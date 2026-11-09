@@ -8,7 +8,7 @@ import { MemoryRouter } from "react-router-dom";
 // @ts-expect-error plain ESM build script without type declarations
 import { buildBundle, REPO } from "../scripts/build-bundle.mjs";
 import App from "./App";
-import { bundle, getCompanyDetail, getCompanyRows } from "./data/repository";
+import { bundle, getCompanyAnalyses, getCompanyDetail, getCompanyRows } from "./data/repository";
 import type { Bundle } from "./data/types";
 
 vi.mock("echarts", () => ({ init: () => ({ setOption() {}, on() {}, resize() {}, dispose() {} }) }));
@@ -94,4 +94,17 @@ test("company list links each name to its detail page", () => {
   renderAt("/companies");
   const links = screen.getAllByTestId("company-link");
   expect(links[0].getAttribute("href")).toMatch(/^\/companies\/co_/);
+});
+
+test("W3-06: company ↔ analyses ↔ exhibition links (scores, relationships, mentions); nothing for an unmentioned company", () => {
+  const scored = bundle.analyses.flatMap((a) => a.detail.scores.map((s) => s.subject)).find((s) => s.entity_type === "company")!.entity_id;
+  const xs = getCompanyAnalyses(scored);
+  expect(xs.length).toBeGreaterThan(0);
+  expect(xs.some((x) => x.score && x.score.max > 0)).toBe(true);
+  expect(getCompanyAnalyses("co_does_not_exist")).toEqual([]);
+  render(<ConfigProvider locale={zhTW}><MemoryRouter initialEntries={[`/companies/${scored}`]}><App /></MemoryRouter></ConfigProvider>);
+  const card = screen.getByTestId("company-analyses");
+  expect(within(card).getAllByTestId("company-analysis-report")[0].getAttribute("href")).toMatch(/^\/reports\?analysis=/);
+  expect(within(card).getAllByTestId("company-analysis-opportunity")[0].getAttribute("href")).toMatch(/^\/opportunities\?analysis=/);
+  expect(screen.getAllByTestId("participation-exhibition")[0].getAttribute("href")).toMatch(/^\/exhibitions\//);
 });

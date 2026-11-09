@@ -44,7 +44,7 @@ export function OverviewPage() {
 
         <Row gutter={[space.md, space.md]}>
           <Col xs={24} lg={12}>
-            <ChartPanel testId="chart-country" title={t.overview.countryChart} note={t.overview.countryChartNote} data={o.countryDistribution} onSelect={() => go("/companies")} />
+            <ChartPanel testId="chart-country" title={t.overview.countryChart} note={t.overview.countryChartNote} data={o.countryDistribution} onSelect={(name) => go(`/companies?country=${encodeURIComponent(name)}`)} />
           </Col>
           <Col xs={24} lg={12}>
             <ChartPanel
