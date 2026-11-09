@@ -9,6 +9,8 @@ Usage (from the repo root):
   python skills/exhibitiq/scripts/exhibitiq_tools.py save-analysis ANALYSIS_JSON PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py report ANALYSIS_JSON PACKAGE_DIR > report.md
   python skills/exhibitiq/scripts/exhibitiq_tools.py trend EXHIBITION_ID [--profile ID] [--index PATH]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py prepare EXHIBITION_ID [YEAR] [--profile ID] [--top N]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py finalize ANALYSIS_JSON PACKAGE_DIR [--no-save]
   python skills/exhibitiq/scripts/exhibitiq_tools.py quality ANALYSIS_JSON PACKAGE_DIR
   python skills/exhibitiq/scripts/exhibitiq_tools.py validate-known KNOWN_CSV
   python skills/exhibitiq/scripts/exhibitiq_tools.py benchmark KNOWN_CSV PACKAGE_DIR [--profile ID]
@@ -439,6 +441,16 @@ def main(argv: list[str] | None = None) -> int:
     sp = sub.add_parser("compare")
     sp.add_argument("package_dirs", type=Path, nargs="+")
     sp.add_argument("--profile", default=None)
+    sp = sub.add_parser("prepare")
+    sp.add_argument("exhibition_id")
+    sp.add_argument("year", nargs="?", type=int)
+    sp.add_argument("--profile", default=None)
+    sp.add_argument("--top", type=int, default=40, help="companies sent to Claude in detail (the rest as one line each)")
+    sp.add_argument("--index", type=Path, default=None)
+    sp = sub.add_parser("finalize")
+    sp.add_argument("analysis", type=Path)
+    sp.add_argument("package_dir", type=Path)
+    sp.add_argument("--no-save", action="store_true", help="validate and render only (no write to reports/analysis/)")
     sp = sub.add_parser("quality")
     sp.add_argument("analysis", type=Path)
     sp.add_argument("package_dir", type=Path)
@@ -479,6 +491,14 @@ def main(argv: list[str] | None = None) -> int:
         elif a.cmd == "compare":
             import profile_tools
             print(json.dumps(profile_tools.compare(a.package_dirs, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "prepare":
+            import session_tools
+            print(json.dumps(session_tools.prepare(a.exhibition_id, a.year, a.profile, a.top, idx), ensure_ascii=False, indent=2))
+        elif a.cmd == "finalize":
+            import session_tools
+            r = session_tools.finalize(a.analysis, a.package_dir, save=not a.no_save)
+            print(json.dumps(r, ensure_ascii=False, indent=2))
+            return 0 if r["ok"] else 1
         elif a.cmd == "quality":
             import quality_check
             print(json.dumps(quality_check.quality_report(a.analysis, a.package_dir), ensure_ascii=False, indent=2))

@@ -27,6 +27,8 @@ description: ExhibitIQ exhibition intelligence analysis. Use when asked to analy
 ## 4. 工作流程
 
 輔助程式：`python skills/exhibitiq/scripts/exhibitiq_tools.py`，子命令 `list`、`select`、`validate-package`、`classify`／`score`／`relate`（都可加 `--profile <分析設定檔>`；關係為多標籤候選，見 `references/relationship-rules.md`）、`config <profile>`（產生分析結果的 `analysis_config`）、`compare <package_dir>... --profile`（跨展覽／跨年度比較與關鍵字趨勢）、`trend <exhibition_id> --profile`（同一展覽的歷史趨勢：各年度家數、關鍵字、再次參展／新參展／未再參展；資料不完整時不判斷新增與流失，只有一個年度時回報資料不足）、`value <package_dir> --profile`（展覽商務價值與拜訪候選，不含預算）、`validate-known`／`benchmark`（已知企業關係名單＝人工標準樣本的格式檢查與比對，見 `docs/specs/known-relationships.md`）、`validate-analysis`、`quality`（建議品質檢查 QC1–QC9，只警告不阻擋）、`save-analysis`、`report`（用法見 `README.md`）。
+> **建議做法（省訂閱額度，Eric 2026-11-09）：** 先執行 `prepare <exhibition_id> [年份] --profile <主題>`。它會完成下面第 1～4 步所有不需要 AI 的工作，產生 `.work/` 下的 `brief.json`（精簡資料：前 N 家企業的來源文字、候選與評分，其餘一行一家）和 `draft.json`（所有確定性欄位已填好，評分不可修改）。只讀 `brief.json`，在 `draft.json` 填寫判斷，再執行 `finalize <draft.json> <package_dir>`（= 第 6～7 步）。
+
 1. 讀取資料集索引，選定展覽與屆次，取得最新資料包路徑。
 2. 執行 `python -m etl.validate <package_dir>`（尚未整合時用 `exhibitiq_tools.py validate-package`）；失敗就停止並回報錯誤，不分析。
 3. 讀取 `manifest.json`；記下 `dataset_id`、`content_hash`、`data_origin`、`completeness_status`。合成資料的分析結果必須標 `data_origin: synthetic`。

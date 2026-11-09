@@ -13,6 +13,7 @@ import { bundle, getExhibitionRows, matchesExhibition, toCsv, type EditionRow, t
 import { t } from "../i18n/zh-TW";
 import { space } from "../theme/tokens";
 import { AddExhibition } from "./AddExhibition";
+import { RunAnalysis } from "./RunAnalysis";
 
 const e = t.exhibitions;
 const method = (m: string) => e.methodLabel[m] ?? m;
@@ -83,6 +84,7 @@ export function ExhibitionDetailPage() {
             ...(r.acquisition.notes ? [{ key: "n", label: e.notes, children: r.acquisition.notes }] : []),
           ]} />
         </Card>
+        <RunAnalysis row={r} />
         <Card title={e.editions} data-testid="exhibition-editions">
           <DataTable<EditionRow> rowKey="editionId" dataSource={r.editions} pagination={false} scroll={{ x: 900 }} columns={[
             { title: e.edition, render: (_, d) => d.year },
