@@ -81,6 +81,11 @@ export const t = {
     col: { exhibition: "展覽（年份）", nameAsListed: "名單上的名稱", type: "參展類型", booth: "展位", categories: "來源分類", seen: "首次／最近出現", status: "查證狀態", sources: "來源" },
     participationType: { exhibitor: "參展商", co_exhibitor: "聯合參展", sponsor: "贊助商", unknown: "未知" } as Record<string, string>,
     timeline: (first: string, last: string) => `${first} ／ ${last}`,
+    analyses: "AI 分析中提到這家企業", noAnalyses: "目前沒有分析結果提到這家企業。",
+    analysesNote: "以下都是 AI 分析結果（推論），不是已查證的事實；點選可查看評分拆解或完整報告。",
+    rank: (r: number | null, total: number, max: number) => `${r !== null ? `第 ${r} 名，` : ""}${total}／${max} 分`,
+    mentions: (c: number, r: number) => `結論 ${c} 則、建議 ${r} 則`,
+    openOpportunity: "商機分析", openReport: "報告",
   },
   exhibitions: {
     search: "搜尋展覽名稱、國家或年份", country: "國家／地區", year: "年份", acquisitionStatus: "來源評估",
@@ -89,7 +94,7 @@ export const t = {
     noPackage: "尚無資料包", notFound: (id: string) => `找不到展覽 ${id}：它不在資料集索引中。`, back: "返回展覽清單",
     assessment: "來源評估", assessedAt: "評估時間", report: "評估報告", notes: "說明",
     editions: "屆次與資料包", edition: "屆次", lastAcquisition: "最近一次取得", finishedAt: "完成時間", validation: "驗證", dataset: "最新資料包",
-    viewCompanies: "查看參展商",
+    viewCompanies: "查看參展商", viewIntel: "比較與歷史趨勢",
     addHint: "新增展覽的表單在 W3-07 加入；目前請由 GitHub Actions「新增展覽」workflow 登錄（D2-13）。",
     methodLabel: { automatic: "自動擷取", semi_automatic: "半自動", file_import: "檔案匯入", authorized_file: "授權檔案", manual_entry: "人工輸入", undetermined: "尚未決定" } as Record<string, string>,
     csvHeaders: ["exhibition_id", "name", "country", "years", "acquisition_method", "assessment_status", "completeness", "collected", "official"],
@@ -171,6 +176,7 @@ export const t = {
     productsUnapproved: "產品資料未核定：使用的 BXR 產品卡尚待 Eric 審核，只有名稱與功能定位，不代表正式規格。",
   },
   opportunities: {
+    openReport: "查看完整報告", openExhibition: "查看展覽", openOpportunity: "查看商機分析與評分拆解",
     analysis: "分析結果", noAnalysis: "尚無含商機評分的分析結果。請先以 ExhibitIQ Skill 執行 score 並回存分析結果。",
     aiNotice: "本頁的排名、評分、關係分類與建議都是 AI 分析結果（推論），不是已查證的事實。每一項都附上依據的來源；沒有依據的因子不計分。",
     generatedAt: "產生時間", model: "評分模型", input: "輸入資料包", skill: "Skill 版本", review: "審核狀態",

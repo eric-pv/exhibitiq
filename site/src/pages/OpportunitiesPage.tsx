@@ -36,6 +36,10 @@ export function OpportunitiesPage() {
         <Alert type="info" showIcon icon={<span />} message={<Space wrap><ClaimBadge kind="ai_inferred" />{o.aiNotice}</Space>} data-testid="ai-notice" />
         <Card title={a.title} data-testid="analysis-meta">
           {d.summary && <Typography.Paragraph>{d.summary}</Typography.Paragraph>}
+          <Space wrap style={{ marginBottom: space.sm }}>
+            <Link to={`/reports?analysis=${encodeURIComponent(a.analysisId)}`} data-testid="opportunity-report-link">{o.openReport}</Link>
+            {v.exhibitionId && <Link to={`/exhibitions/${encodeURIComponent(v.exhibitionId)}`} data-testid="opportunity-exhibition-link">{o.openExhibition}</Link>}
+          </Space>
           <Descriptions size="small" column={{ xs: 1, md: 2 }} items={[
             { key: "review", label: o.review, children: <Tag>{t.overview.reviewed[a.reviewStatus]}</Tag> },
             { key: "at", label: o.generatedAt, children: shortTime(a.generatedAt) },

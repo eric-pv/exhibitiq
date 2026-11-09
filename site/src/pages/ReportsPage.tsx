@@ -2,7 +2,7 @@ import { PrinterOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Select, Space } from "antd";
 import { useMemo, useState } from "react";
 import { loadShowCost, saveShowCost } from "../data/displayPrefs";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { PageHeader } from "../components/layout/PageHeader";
 import { ReportViewer } from "../components/ReportViewer";
 import { EmptyState } from "../components/states/States";
@@ -27,6 +27,7 @@ export function ReportsPage() {
             <Select value={a.analysisId} style={{ width: 320, maxWidth: "100%" }} onChange={(id) => setParams({ analysis: id }, { replace: true })}
               options={list.map((x) => ({ value: x.analysisId, label: `${x.title}（${shortTime(x.generatedAt)}）` }))} data-testid="report-select" />
             <Checkbox checked={showCost} onChange={(e) => { setShowCost(e.target.checked); saveShowCost(e.target.checked); }} data-testid="show-cost">{t.appendix.showCost}</Checkbox>
+            {a.detail.scores.length > 0 && <Link to={`/opportunities?analysis=${encodeURIComponent(a.analysisId)}`} data-testid="report-opportunity-link">{t.opportunities.openOpportunity}</Link>}
             <Button type="primary" icon={<PrinterOutlined />} onClick={() => window.print()} data-testid="export-pdf">匯出 PDF（列印）</Button>
           </Space>
         } />

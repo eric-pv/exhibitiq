@@ -1,6 +1,6 @@
 import { Alert, Card, Select, Space, Table, Typography } from "antd";
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { ChartPanel } from "../components/ChartPanel";
 import { PageHeader } from "../components/layout/PageHeader";
 import { EmptyState } from "../components/states/States";
@@ -63,7 +63,7 @@ export function ComparePage() {
           <Card data-testid="compare-table">
             <Table<Row> size="small" pagination={false} rowKey="key" dataSource={rows} scroll={{ x: 240 + v.columns.length * 220 }}
               columns={[{ title: c.metric, dataIndex: "label", fixed: "left", width: 200 },
-                ...v.columns.map((col) => ({ title: col.label, key: col.editionId, width: 220, render: (_: unknown, r: Row) => r.cell(col) }))]} />
+                ...v.columns.map((col) => ({ title: <Link to={`/exhibitions/${encodeURIComponent(col.exhibitionId)}`} data-testid="compare-exhibition-link">{col.label}</Link>, key: col.editionId, width: 220, render: (_: unknown, r: Row) => r.cell(col) }))]} />
           </Card>
           <ChartPanel testId="compare-chart" title={c.chart} note={c.chartNote}
             data={v.columns.filter((col) => col.companyCount !== null).map((col) => ({ name: col.label, value: col.companyCount! }))} />

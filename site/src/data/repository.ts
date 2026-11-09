@@ -1,5 +1,5 @@
 import bundleJson from "../generated/bundle.json";
-import type { AnalysisDetail, Bundle, Completeness, FieldSources, SourceInfo } from "./types";
+import type { AnalysisDetail, Bundle, Completeness, EntityRef, FieldSources, SourceInfo } from "./types";
 
 /** The only entry point pages use to read data (DEVELOPMENT_PLAN.md §3). */
 export const bundle = bundleJson as unknown as Bundle;
@@ -180,7 +180,7 @@ export interface RankingRow {
 }
 
 export interface OpportunityView {
-  analysis: Analysis; dataOrigin: "synthetic" | "collected"; completeness: Completeness;
+  analysis: Analysis; dataOrigin: "synthetic" | "collected"; completeness: Completeness; exhibitionId: string;
   ranking: RankingRow[];
   claims: Map<string, Conclusion>;
   uncertainties: Map<string, AnalysisDetail["uncertainties"][number]>;
@@ -220,7 +220,7 @@ export function getAnalysisView(a: Analysis, b: Bundle = bundle): OpportunityVie
     }))
     .sort((x, y) => (x.rank ?? Infinity) - (y.rank ?? Infinity) || y.total - x.total);
   return {
-    analysis: a, dataOrigin: a.dataOrigin, completeness: ds.completeness, ranking,
+    analysis: a, dataOrigin: a.dataOrigin, completeness: ds.completeness, ranking, exhibitionId: ds.exhibitionId,
     claims: new Map(a.detail.conclusions.map((c) => [c.claimId, c])),
     uncertainties: new Map(a.detail.uncertainties.map((u) => [u.uncertaintyId, u])),
     source: (id) => ds.sources[id] ?? { sourceId: id, missing: true as const },
@@ -381,4 +381,23 @@ export function keyFigures(a: Analysis, b: Bundle = bundle) {
     ...(c.status !== "complete" ? ["資料不完整：以上數字只代表實際取得的部分，不計算比例"] : []),
   ];
   return { lines, countries: countries.map(([name, value]) => ({ name, value })) };
+}
+
+/**
+ * W3-06: every analysis that mentions one company (score, relationship candidate, conclusion or recommendation subject),
+ * so the company page can link to the opportunity view and the report. Everything listed is AI output.
+ */
+export function getCompanyAnalyses(companyId: string, b: Bundle = bundle) {
+  const isMe = (e: EntityRef) => e.entity_type === "company" && e.entity_id === companyId;
+  return getAnalyses(b).map((a) => {
+    const d = a.detail;
+    const score = d.scores.find((s) => isMe(s.subject)) ?? null;
+    return {
+      analysisId: a.analysisId, title: a.title, generatedAt: a.generatedAt, reviewStatus: a.reviewStatus,
+      score: score ? { rank: score.rank, total: score.total, max: score.max } : null,
+      relationships: d.relationships.filter((r) => r.companyId === companyId).map((r) => r.type),
+      conclusions: d.conclusions.filter((c) => c.subjects.some(isMe)).length,
+      recommendations: d.recommendations.filter((r) => r.subjects.some(isMe)).length,
+    };
+  }).filter((x) => x.score || x.relationships.length || x.conclusions || x.recommendations);
 }
