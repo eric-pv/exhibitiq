@@ -18,7 +18,7 @@ npx playwright test                                    # 端到端、三種尺�
 | # | 指標 | 狀態 | 證據（測試或指令） | 尚缺 |
 |---|---|---|---|---|
 | V1 | 兩組不同結構的展覽資料走同一流程，第二組不改核心程式 | ◐ | `site/src/compare.test.tsx`（範例＋黃金樣本，兩種結構）、`tests/contract/test_golden_v1.py` | 一組真實合法資料（D2-02／D2-03）；A4-10 測試 |
-| V2 | 在 Dashboard 新增未收錄的展覽並走完流程 | ⏳ | — | W3-07（依賴 D2-13） |
+| V2 | 在 Dashboard 新增未收錄的展覽並走完流程 | ◐ | `site/src/add-exhibition.test.tsx`（登錄內容通過 A1-10 Schema、建議 ID、可能重複、不送出任何請求）、`e2e/flow.spec.ts`「W3-07」 | D2-13 workflow；之後的取得、分析與展示 |
 | V3 | 取得失敗在系統狀態頁顯示原因，不阻礙其他展覽 | ✅ | `site/src/status.test.tsx`、`e2e/smoke.spec.ts`「status (W2-05)」 | 真實失敗紀錄（資料集索引） |
 | V4 | 任一事實欄位可追溯到 `source_id`、取得時間、快照雜湊 | ✅ | `site/src/company-detail.test.tsx`（含「引用不存在的來源 → bundle 失敗」） | — |
 | V5 | AI 推論不冒充事實；推論有依據、信心、不確定性 | ✅ | `tests/contract/test_evidence_check.py`（EV1–EV3）、`site/src/opportunities.test.tsx` | — |

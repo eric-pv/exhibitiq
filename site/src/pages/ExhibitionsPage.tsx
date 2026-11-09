@@ -1,5 +1,5 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Alert, Button, Card, Descriptions, Input, Select, Space, Typography } from "antd";
+import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Descriptions, Input, Select, Space, Typography } from "antd";
 import { useMemo } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { DataTable } from "../components/DataTable";
@@ -12,6 +12,7 @@ import { StatusBadge } from "../components/status/StatusBadge";
 import { bundle, getExhibitionRows, matchesExhibition, toCsv, type EditionRow, type ExhibitionRow } from "../data/repository";
 import { t } from "../i18n/zh-TW";
 import { space } from "../theme/tokens";
+import { AddExhibition } from "./AddExhibition";
 
 const e = t.exhibitions;
 const method = (m: string) => e.methodLabel[m] ?? m;
@@ -25,12 +26,16 @@ export function ExhibitionsPage() {
   const q = params.get("q") ?? "", country = params.get("country"), year = params.get("year"), st = params.get("status");
   const set = (k: string, v: string | null) => { const n = new URLSearchParams(params); if (v) n.set(k, v); else n.delete(k); setParams(n, { replace: true }); };
   const filtered = rows.filter((r) => matchesExhibition(r, q) && (!country || (r.country ?? "未知") === country) && (!year || r.years.includes(Number(year))) && (!st || r.acquisition.status === st));
+  const adding = params.get("add") === "1";
   const uniq = (v: string[]) => [...new Set(v)].sort().map((x) => ({ value: x, label: x }));
   return (
     <>
       <PageHeader title={t.nav.exhibitionSearch} />
       <DataOriginBanner origin={bundle.dataOrigin} />
-      <Alert type="info" showIcon message={e.addHint} style={{ margin: `${space.md}px 0` }} />
+      <Space style={{ margin: `${space.md}px 0` }}>
+        <Button type={adding ? "default" : "primary"} icon={<PlusOutlined />} onClick={() => set("add", adding ? null : "1")} data-testid="add-toggle">{adding ? e.add.close : e.add.open}</Button>
+      </Space>
+      {adding && <AddExhibition />}
       <Space wrap style={{ marginBottom: space.md }}>
         <Input.Search allowClear placeholder={e.search} defaultValue={q} onSearch={(v) => set("q", v)} style={{ width: 260 }} data-testid="exhibition-search" />
         <Select allowClear placeholder={e.country} value={country} onChange={(v) => set("country", v ?? null)} options={uniq(rows.map((r) => r.country ?? "未知"))} style={{ width: 140 }} />
