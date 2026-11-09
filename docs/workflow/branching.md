@@ -23,7 +23,7 @@
    **每個 PR 都要標明合併人**（Issue #15）：
    | PR base | 合併人 | 標題開頭 | 內文第一行 | Assignee |
    |---|---|---|---|---|
-   | `dev/ai-intelligence`、`main` | Eric | `【Eric 合併】` | `> **合併人：Eric**` | `magician-eric` |
+   | `dev/ai-intelligence`、`main` | Eric | `【Eric 合併】` | `> **合併人：Eric**` | `eric-pv` |
    | `dev/data-platform`（含同步 PR） | Albert | `【Albert 合併】` | `> ⚠️ **合併人：Albert。Eric 請勿合併。**` | `acyihung-infinityandbeyond` |
 6. 前一項合併後，再從更新後的 `dev/*` 開始下一項（除非另有指示）。
 7. 專案負責人依已合併的 PR 更新 [`PROGRESS.md`](../PROGRESS.md)；同事在 PR 描述中回報進度，不修改 `PROGRESS.md`。
@@ -31,7 +31,7 @@
 
 ## 階段整合
 
-- 只有雙方在開發計畫中該階段的工作都完成、PR 都已合併到各自的 `dev/*` 之後才進行。
+- **V2.4：階段是檢查點，不是關卡。** 雙方各自連續做下一個 Phase；整合在雙方都完成某 Phase 時由專案負責人進行，不阻擋任何人。各自的 Claude Code 在測試通過後自行合併到自己的 `dev/*`；共用檔案由 data 端開工時自行同步（`module-boundaries.md` §4.3）。
 - 由專案負責人依 [`階段整合_ChatGPT指令模板.md`](階段整合_ChatGPT指令模板.md) 另行下達整合指令。
 - 從 `main` 建立 `integration/phase-N`，整合兩條 dev 主線並執行端到端測試（含 Dashboard 與截圖），再建立 base=`main` 的 PR。
 - 只有專案負責人驗收通過後才能合併 `main`；合併後，兩條 `dev/*` 以安全合併方式同步 `main`，不得丟棄未合併的工作。

@@ -1,6 +1,6 @@
 # ExhibitIQ 資料集索引與管線狀態契約 v1
 
-> 狀態：`1.0.0-draft.4`（Phase 1 草案期，依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) §3.1）
+> 狀態：`1.0.0-draft.5`（Phase 1 草案期，依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) §3.1）
 > 負責人：專案負責人（`ai`）。工作項目 A1-07。
 > 機器可讀契約：[`schemas/v1/dataset_index.schema.json`](../../schemas/v1/dataset_index.schema.json)。本文件與 Schema 衝突時，以 Schema 為準。
 
@@ -80,5 +80,5 @@ dataset_index
 
 ## 8. 不包含
 
-- 「新增展覽」的登錄內容與存放位置屬於 A1-10（需要專案負責人決定）。本契約只描述**已登錄**的展覽。
+- 「新增展覽」的登錄資料見 [`exhibition-registry-contract.md`](exhibition-registry-contract.md)（A1-10）。資料集索引只列出 `accepted` 的登錄（RG6）。
 - 事件日誌（D1-07 的 JSONL）不在契約內；系統狀態頁需要的內容以 `last_acquisition` 和 `notices` 提供。

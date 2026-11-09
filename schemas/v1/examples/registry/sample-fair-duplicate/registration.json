@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "exhibition_id": "sample-fair-duplicate",
+  "name": "Sample Industry Fair",
+  "country": "ZZ",
+  "website": "https://example.org/",
+  "years": [
+    2026
+  ],
+  "registration_status": "rejected",
+  "duplicate_of": "sample-fair",
+  "requested_by": "Example User",
+  "requested_at": "2026-11-03T08:00:00Z",
+  "request_channel": "dashboard_form",
+  "notes": "合成範例：官網與名稱和 sample-fair 相同，判定為重複登錄。"
+}
