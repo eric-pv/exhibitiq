@@ -61,6 +61,7 @@ ExhibitIQ is a cloud-only, GitHub-first, **general-purpose** AI exhibition intel
 - The requested feature depends on unavailable cloud permissions, credentials or execution capabilities.
 
 ## Required final task response
+- **Plain language for people (Eric 2026-11-09):** anything written for Eric or Albert to read — conclusions, requests for data, decisions they must make — is in plain Traditional Chinese: what was done, what is needed from them, what they must decide. No code names, commands or jargon; when one is unavoidable, explain it in one short sentence.
 - **Merger (Eric or Albert) on the first line**; work item ID and phase; feature branch and PR URL; **PR base branch**.
 - Files changed; behavior implemented; tests and results; sample input/output; screenshots for `site/` changes.
 - Schema compatibility; known limitations; manual verification steps.
