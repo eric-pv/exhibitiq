@@ -1,0 +1,325 @@
+{
+ "demo-trade-show-2025.20261104T030000Z": {
+  "completeness": {
+   "collected_participation_count": 3,
+   "listed_participations": 3,
+   "notes": "合成範例：官方文件寫 3 家，已列出 3 家，因此為 complete。",
+   "official_count_as_of": "2026-11-04",
+   "official_count_source_id": "src_01JFSB00000000000000000003",
+   "official_exhibitor_count": 3,
+   "status": "complete"
+  },
+  "counts": {
+   "by_participation_type": {
+    "exhibitor": 1,
+    "sponsor": 1,
+    "unknown": 1
+   },
+   "by_verification_status": {
+    "human_confirmed": 1,
+    "insufficient_data": 1,
+    "unverified": 4
+   },
+   "changes": 0,
+   "companies": 3,
+   "crawl_runs": 2,
+   "crawl_runs_by_status": {
+    "failed": 1,
+    "succeeded": 1
+   },
+   "listed": 3,
+   "participations": 3,
+   "removed": 0,
+   "sources": 3
+  },
+  "data_origin": "synthetic",
+  "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+  "edition_id": "demo-trade-show-2025",
+  "field_coverage": {
+   "companies": {
+    "aliases": {
+     "missing": 3,
+     "present": 0
+    },
+    "country": {
+     "missing": 3,
+     "present": 0
+    },
+    "description": {
+     "missing": 3,
+     "present": 0
+    },
+    "domains": {
+     "missing": 3,
+     "present": 0
+    },
+    "name_en": {
+     "missing": 3,
+     "present": 0
+    },
+    "name_zh_hant": {
+     "missing": 3,
+     "present": 0
+    },
+    "website": {
+     "missing": 3,
+     "present": 0
+    }
+   },
+   "participations": {
+    "booth": {
+     "missing": 3,
+     "present": 0
+    },
+    "categories_as_listed": {
+     "missing": 3,
+     "present": 0
+    },
+    "country_as_listed": {
+     "missing": 3,
+     "present": 0
+    },
+    "hall": {
+     "missing": 3,
+     "present": 0
+    },
+    "products_as_listed": {
+     "missing": 3,
+     "present": 0
+    },
+    "website_as_listed": {
+     "missing": 3,
+     "present": 0
+    }
+   }
+  },
+  "gaps": [
+   "Synthetic test data: not a fact about any real exhibition.",
+   "1 crawl run(s) did not fully succeed: run_01JFRB00000000000000000002 (failed)",
+   "2 source snapshot(s) were not stored; their content cannot be re-checked."
+  ],
+  "quality_flags": [
+   {
+    "count": 3,
+    "flag": "companies_without_website"
+   },
+   {
+    "detail": "no participation has a booth",
+    "flag": "no_booth_information"
+   }
+  ],
+  "valid": true,
+  "validation_findings": []
+ },
+ "sample-fair-2026.20261104T010000Z": {
+  "completeness": {
+   "collected_participation_count": 4,
+   "listed_participations": 4,
+   "notes": "合成範例：名單頁寫 5 家，只列出 4 家，因此為 partial。",
+   "official_count_as_of": "2026-11-04",
+   "official_count_source_id": "src_01JFSA00000000000000000001",
+   "official_exhibitor_count": 5,
+   "status": "partial"
+  },
+  "counts": {
+   "by_participation_type": {
+    "co_exhibitor": 1,
+    "exhibitor": 3
+   },
+   "by_verification_status": {
+    "insufficient_data": 1,
+    "unverified": 6,
+    "verified": 1
+   },
+   "changes": 0,
+   "companies": 4,
+   "crawl_runs": 1,
+   "crawl_runs_by_status": {
+    "succeeded": 1
+   },
+   "listed": 4,
+   "participations": 4,
+   "removed": 0,
+   "sources": 2
+  },
+  "data_origin": "synthetic",
+  "dataset_id": "sample-fair-2026.20261104T010000Z",
+  "edition_id": "sample-fair-2026",
+  "field_coverage": {
+   "companies": {
+    "aliases": {
+     "missing": 3,
+     "present": 1
+    },
+    "country": {
+     "missing": 0,
+     "present": 4
+    },
+    "description": {
+     "missing": 3,
+     "present": 1
+    },
+    "domains": {
+     "missing": 2,
+     "present": 2
+    },
+    "name_en": {
+     "missing": 3,
+     "present": 1
+    },
+    "name_zh_hant": {
+     "missing": 3,
+     "present": 1
+    },
+    "website": {
+     "missing": 3,
+     "present": 1
+    }
+   },
+   "participations": {
+    "booth": {
+     "missing": 1,
+     "present": 3
+    },
+    "categories_as_listed": {
+     "missing": 0,
+     "present": 4
+    },
+    "country_as_listed": {
+     "missing": 3,
+     "present": 1
+    },
+    "hall": {
+     "missing": 0,
+     "present": 4
+    },
+    "products_as_listed": {
+     "missing": 3,
+     "present": 1
+    },
+    "website_as_listed": {
+     "missing": 3,
+     "present": 1
+    }
+   }
+  },
+  "gaps": [
+   "The official count is 5 but 4 listed participations were collected (difference +1).",
+   "Synthetic test data: not a fact about any real exhibition.",
+   "1 source snapshot(s) were not stored; their content cannot be re-checked."
+  ],
+  "quality_flags": [
+   {
+    "count": 3,
+    "flag": "companies_without_website"
+   }
+  ],
+  "valid": true,
+  "validation_findings": []
+ },
+ "sample-fair-2026.20261104T020000Z": {
+  "completeness": {
+   "collected_participation_count": 4,
+   "listed_participations": 4,
+   "notes": "合成範例：更新後的名單頁寫 4 家，已列出 4 家（另有 1 筆已下架），因此為 complete。",
+   "official_count_as_of": "2026-11-04",
+   "official_count_source_id": "src_01JFSA00000000000000000003",
+   "official_exhibitor_count": 4,
+   "status": "complete"
+  },
+  "counts": {
+   "by_participation_type": {
+    "co_exhibitor": 1,
+    "exhibitor": 4
+   },
+   "by_verification_status": {
+    "insufficient_data": 1,
+    "unverified": 8,
+    "verified": 1
+   },
+   "changes": 5,
+   "companies": 5,
+   "crawl_runs": 2,
+   "crawl_runs_by_status": {
+    "succeeded": 2
+   },
+   "listed": 4,
+   "participations": 5,
+   "removed": 1,
+   "sources": 3
+  },
+  "data_origin": "synthetic",
+  "dataset_id": "sample-fair-2026.20261104T020000Z",
+  "edition_id": "sample-fair-2026",
+  "field_coverage": {
+   "companies": {
+    "aliases": {
+     "missing": 4,
+     "present": 1
+    },
+    "country": {
+     "missing": 0,
+     "present": 5
+    },
+    "description": {
+     "missing": 4,
+     "present": 1
+    },
+    "domains": {
+     "missing": 3,
+     "present": 2
+    },
+    "name_en": {
+     "missing": 4,
+     "present": 1
+    },
+    "name_zh_hant": {
+     "missing": 4,
+     "present": 1
+    },
+    "website": {
+     "missing": 4,
+     "present": 1
+    }
+   },
+   "participations": {
+    "booth": {
+     "missing": 0,
+     "present": 5
+    },
+    "categories_as_listed": {
+     "missing": 0,
+     "present": 5
+    },
+    "country_as_listed": {
+     "missing": 4,
+     "present": 1
+    },
+    "hall": {
+     "missing": 0,
+     "present": 5
+    },
+    "products_as_listed": {
+     "missing": 4,
+     "present": 1
+    },
+    "website_as_listed": {
+     "missing": 4,
+     "present": 1
+    }
+   }
+  },
+  "gaps": [
+   "Synthetic test data: not a fact about any real exhibition.",
+   "1 source snapshot(s) were not stored; their content cannot be re-checked."
+  ],
+  "quality_flags": [
+   {
+    "count": 3,
+    "flag": "companies_without_website"
+   }
+  ],
+  "valid": true,
+  "validation_findings": []
+ }
+}
