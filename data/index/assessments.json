@@ -1,0 +1,10 @@
+{
+ "iacp": {
+  "name": "IACP Conference & Exhibition",
+  "method": "file_import",
+  "status": "partially_feasible",
+  "assessed_at": "2026-11-09T07:00:00Z",
+  "report_path": "docs/data-platform/iacp-2026-source-assessment.md",
+  "notes": "Automatic acquisition not feasible: robots.txt disallows the list data path (/8_0/ajax) for all agents and the whole site for AI crawlers. A PDF printed from the public exhibitor gallery by a person was imported; the page states 662 exhibitors and 662 were read."
+ }
+}

@@ -1,0 +1,68 @@
+{
+ "exhibitions": [
+  {
+   "acquisition": {
+    "assessed_at": "2026-11-09T07:00:00Z",
+    "method": "file_import",
+    "notes": "Automatic acquisition not feasible: robots.txt disallows the list data path (/8_0/ajax) for all agents and the whole site for AI crawlers. A PDF printed from the public exhibitor gallery by a person was imported; the page states 662 exhibitors and 662 were read.",
+    "report_path": "docs/data-platform/iacp-2026-source-assessment.md",
+    "status": "partially_feasible"
+   },
+   "editions": [
+    {
+     "datasets": [
+      {
+       "collected_participation_count": 662,
+       "completeness_status": "complete",
+       "content_hash": "sha256:e14886f3c31743ac3a3f068f941d03253a0aeac376a9c152f457917a0be1c009",
+       "created_at": "2026-11-09T07:12:20Z",
+       "data_origin": "collected",
+       "dataset_id": "iacp-2026.20261109T071220Z",
+       "location": {
+        "locator": "data/packages/iacp/2026/iacp-2026.20261109T071220Z",
+        "storage": "git"
+       },
+       "official_exhibitor_count": 662,
+       "record_counts": {
+        "companies": 662,
+        "participations": 662,
+        "sources": 1
+       },
+       "schema_version": "1.0.0-draft.7",
+       "validation": {
+        "error_count": 0,
+        "status": "passed",
+        "validated_at": "2026-11-09T07:12:58Z",
+        "validator": {
+         "name": "exhibitiq-etl-validate",
+         "version": "1.0.0"
+        }
+       }
+      }
+     ],
+     "edition_id": "iacp-2026",
+     "last_acquisition": {
+      "crawl_run_id": "run_01M6ZJD6HZTDMBQ7R4GPET5RQA",
+      "dataset_id": "iacp-2026.20261109T071220Z",
+      "error_count": 0,
+      "finished_at": "2026-11-09T07:12:21Z",
+      "method": "file_import",
+      "records_extracted": 662,
+      "status": "succeeded"
+     },
+     "latest_dataset_id": "iacp-2026.20261109T071220Z",
+     "year": 2026
+    }
+   ],
+   "exhibition_id": "iacp",
+   "name": "IACP Conference & Exhibition"
+  }
+ ],
+ "generated_at": "2026-11-09T07:12:58Z",
+ "generator": {
+  "name": "exhibitiq-etl",
+  "version": "1.0.0"
+ },
+ "notices": [],
+ "schema_version": "1.0.0-draft.7"
+}

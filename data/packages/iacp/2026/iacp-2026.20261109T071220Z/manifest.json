@@ -1,0 +1,73 @@
+{
+  "completeness": {
+    "collected_participation_count": 662,
+    "official_count_as_of": "2026-11-09",
+    "official_count_source_id": "src_01M6ZJD6J156M8XCRREP6CTAWJ",
+    "official_exhibitor_count": 662
+  },
+  "completeness_status": "complete",
+  "content_hash": "sha256:e14886f3c31743ac3a3f068f941d03253a0aeac376a9c152f457917a0be1c009",
+  "crawl_run_ids": [
+    "run_01M6ZJD6HZTDMBQ7R4GPET5RQA"
+  ],
+  "created_at": "2026-11-09T07:12:20Z",
+  "data_origin": "collected",
+  "dataset_id": "iacp-2026.20261109T071220Z",
+  "edition_id": "iacp-2026",
+  "edition_year": 2026,
+  "exhibition_id": "iacp",
+  "files": {
+    "changes.jsonl": {
+      "bytes": 0,
+      "records": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "companies.jsonl": {
+      "bytes": 142732,
+      "records": 662,
+      "sha256": "sha256:423abf8b93b6c31abc9820b83f8930f78869885ea462089e480b85d2e3d51960"
+    },
+    "crawl_runs.jsonl": {
+      "bytes": 362,
+      "records": 1,
+      "sha256": "sha256:35d99f9f2582ab8e2ecf2eaf42c5a425f52d833e18baed965ab57de576782b8b"
+    },
+    "edition.json": {
+      "bytes": 393,
+      "records": 1,
+      "sha256": "sha256:95565c19839e6cc68e0cf7a5d4ac08c4d502bf2574ac06595c916f21f6d5bad8"
+    },
+    "exhibition.json": {
+      "bytes": 257,
+      "records": 1,
+      "sha256": "sha256:7c108af964f7a065beb9ba86c5046941a2f2a0967049d38a070aa00fd8a1319d"
+    },
+    "participations.jsonl": {
+      "bytes": 267214,
+      "records": 662,
+      "sha256": "sha256:e9ec48a6a869f2088ef435eb1ecb403de73f929f8162243f70bee1c7f71bd4e5"
+    },
+    "sources.jsonl": {
+      "bytes": 531,
+      "records": 1,
+      "sha256": "sha256:b07cb846572a9a13d1dd0df9dca0b458d615bf34126236daf6b1e345c9841cc0"
+    }
+  },
+  "notes": "Imported from a PDF that a person (Albert) printed from the organizer's public exhibitor gallery in a browser on 2026-11-09 (PDF CreationDate 2026-11-09T07:05:46Z); not crawled. The site's robots.txt disallows /8_0/ajax for all agents and the whole site for AI crawlers (ClaudeBot, GPTBot and others); publication of this list in a public repository is the project owner's decision. Official count 662 is the 'All Exhibitors (662)' heading of the same page.",
+  "previous_dataset_id": null,
+  "producer": {
+    "name": "exhibitiq-etl-import-file",
+    "version": "1.0.0"
+  },
+  "record_counts": {
+    "changes": 0,
+    "companies": 662,
+    "crawl_runs": 1,
+    "participations": 662,
+    "sources": 1
+  },
+  "schema_version": "1.0.0-draft.7",
+  "source_snapshot_ids": [
+    "src_01M6ZJD6J156M8XCRREP6CTAWJ"
+  ]
+}
