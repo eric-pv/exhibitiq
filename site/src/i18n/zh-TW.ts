@@ -95,6 +95,14 @@ export const t = {
     assessment: "來源評估", assessedAt: "評估時間", report: "評估報告", notes: "說明",
     editions: "屆次與資料包", edition: "屆次", lastAcquisition: "最近一次取得", finishedAt: "完成時間", validation: "驗證", dataset: "最新資料包",
     viewCompanies: "查看參展商", viewIntel: "比較與歷史趨勢",
+    run: {
+      title: "執行 AI 分析（Claude Code 工作階段）",
+      intro: "分析使用專案負責人的 Claude 訂閱，在 Claude Code 工作階段中執行（不另外付 API 費用；分析時請先暫停其他工作）。網站不執行分析：複製下方指示，貼到 Claude Code。程式會先完成所有不需要 AI 的步驟並濃縮資料，Claude 只撰寫判斷；驗證不通過的結果不能發布。",
+      noPackage: "這個展覽還沒有驗證通過的資料包，無法分析。",
+      estimate: (n: number, tokens: number) => `已取得 ${n} 筆參展紀錄；預估讀入約 ${tokens.toLocaleString("en-US")} token（不含 Claude 的思考與輸出）`,
+      estimateNote: "字元估算，誤差約 ±30%。工作階段每一輪都會重讀對話，實際使用的訂閱額度通常是這個數字的數倍；完成後報告附錄可記錄實際用量。",
+      copy: "複製分析指示", copied: "已複製", copyFailed: "瀏覽器不允許複製，請手動選取",
+    },
     add: {
       open: "新增展覽", close: "收起新增表單", title: "新增展覽（產生登錄內容）",
       intro: "填寫展覽名稱、年份、國家與官網，產生登錄內容（A1-10）。網站不會送出任何資料，也不需要帳號；登錄由 GitHub Actions「新增展覽」workflow 以資料更新 PR 完成，之後經來源評估、取得或匯入、標準化與分析，結果會出現在下方清單。",

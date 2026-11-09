@@ -22,6 +22,18 @@ python $T report <analysis.json> <package_dir> > <analysis_id>.md
 - `validate-package` 在 `etl.validate`（資料工程）可匯入時使用它；Phase 1 整合前改用契約參考檢查，並在輸出註明。
 - 沒有可用資料包的展覽（例如取得失敗），`select` 會回報原因並以代碼 2 結束，**不會勉強分析**。
 
+## 用 Claude 訂閱執行一次分析（Eric 2026-11-09）
+
+分析在 Claude Code 工作階段中執行，使用專案負責人的 Claude 訂閱，不另外付 API 費用；分析時先暫停其他工作。Dashboard 的展覽詳情頁「執行 AI 分析」可以產生要貼給 Claude Code 的指示。
+
+```bash
+python $T prepare <exhibition_id> [年份] --profile <主題> [--top 40]   # 不用 AI：驗證、評分、精簡資料 brief.json、草稿 draft.json、預估 token
+#   → Claude 只讀 brief.json，在 draft.json 寫結論、不確定性、關係與建議（評分不改）
+python $T finalize <draft.json> <package_dir> [--no-save]          # 證據驗證 → 品質檢查 → 存檔 → 報告（.work/reports/）
+```
+- `.work/` 不提交到 Git。`--top` 是詳細送給 Claude 的企業數，其餘每家一行；越少越省額度。
+- token 數是字元估算（±30%）；工作階段每一輪都會重讀對話，實際使用的訂閱額度通常是讀入量的數倍。
+
 ## 範例（黃金樣本，合成資料）
 ```bash
 G=data/samples/golden/v1

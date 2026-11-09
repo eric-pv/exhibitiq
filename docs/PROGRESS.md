@@ -1,6 +1,6 @@
 # ExhibitIQ 開發進度
 
-> 最後更新：2026-11-09（W3-07 展覽新增表單）｜負責人：專案負責人（`ai`）
+> 最後更新：2026-11-09（用 Claude 訂閱執行分析）｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
 > **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
 
@@ -84,6 +84,7 @@
 | A3-02 | 報告「數據摘要」章節與國家／地區圖表（`report-templates@4`） | [#97](https://github.com/eric-pv/exhibitiq/pull/97) | `dev/ai-intelligence` | 2026-11-05 |
 | W3-06 | 跨頁連結與資料關聯、詳情頁版面測試 | [#98](https://github.com/eric-pv/exhibitiq/pull/98) | `dev/ai-intelligence` | 2026-11-09 |
 | A3-03 | 建議品質檢查 `quality`（QC1–QC9） | [#99](https://github.com/eric-pv/exhibitiq/pull/99) | `dev/ai-intelligence` | 2026-11-09 |
+| W3-07 | 展覽新增表單（A1-10 登錄內容；workflow 待 D2-13） | [#100](https://github.com/eric-pv/exhibitiq/pull/100) | `dev/ai-intelligence` | 2026-11-09 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -91,7 +92,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W3-07 | 展覽新增表單：產生 A1-10 登錄內容（瀏覽器內 Schema 驗證、建議 ID、可能重複提示、複製／下載）；D2-13 workflow 尚未建立，介面已在 Issue #90 提案 | 本 PR |
+| A2-03（執行分析） | 用 Claude 訂閱執行分析：`prepare`（不用 AI 的步驟、精簡資料、草稿、預估 token）／`finalize`（驗證、品質、存檔、報告）；展覽詳情頁「執行 AI 分析」產生給 Claude Code 的指示 | 本 PR |
 
 ## 待處理（Phase 1）
 
@@ -122,12 +123,21 @@
 | 真實資料 | 開發期間暫時放進公開 repo；正式版改為不公開 |
 | 展示網址 | 帳號改名為 `eric-pv`；https://eric-pv.github.io/exhibitiq/（公司防火牆阻擋中，待 IT 放行） |
 
+## Eric 決定紀錄（2026-11-09）
+
+| 事項 | 決定 |
+|---|---|
+| AI 分析 | 比賽需要「直接分析」功能。使用 **Claude 訂閱**（Claude Code 工作階段）執行，不另外付 API 費用；分析時暫停其他工作 |
+| 使用的帳號 | 目前用 Eric 的帳號；之後再決定綁定誰的帳號 |
+| 網頁一鍵執行、Actions 自動分析 | Eric 與 Albert 討論中（目前不做） |
+| W3-07 | 可以執行時就開始（不等 D2-13）；與 Albert 的 Claude 透過 Issue 留言溝通 |
+
 ## 待專案負責人決定
 
 | 事項 | 需要在何時決定 |
 |---|---|
 | 是否需要網頁一鍵執行（新增展覽、觸發擷取、執行分析）：需要後端代理或 GitHub App 等新服務；預設不做，改用 Actions 手動執行（總規範 §4.1） | Phase 3 開始前 |
-| 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用） | Phase 3 開始前 |
+| 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用）：2026-11-09 決定先用 Claude 訂閱在工作階段中分析；Actions 自動化與 Albert 討論中 | — |
 
 ## 已存在的 Issue（歷史紀錄）
 

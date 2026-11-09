@@ -21,3 +21,6 @@ site/src/generated/
 
 # Local Claude Code skill link (skills/exhibitiq/README.md)
 .claude/skills/
+
+# Analysis work files (session_tools.py prepare/finalize; not committed)
+.work/
