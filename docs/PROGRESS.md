@@ -85,6 +85,8 @@
 | W3-06 | 跨頁連結與資料關聯、詳情頁版面測試 | [#98](https://github.com/eric-pv/exhibitiq/pull/98) | `dev/ai-intelligence` | 2026-11-09 |
 | A3-03 | 建議品質檢查 `quality`（QC1–QC9） | [#99](https://github.com/eric-pv/exhibitiq/pull/99) | `dev/ai-intelligence` | 2026-11-09 |
 | W3-07 | 展覽新增表單（A1-10 登錄內容；workflow 待 D2-13） | [#100](https://github.com/eric-pv/exhibitiq/pull/100) | `dev/ai-intelligence` | 2026-11-09 |
+| — | 共用檔案同步（Schema `1.0.0-draft.7`）、驗證器 R3 改讀 `COMPATIBILITY.json`、合成樣本重生（Albert） | [#101](https://github.com/eric-pv/exhibitiq/pull/101) | `dev/data-platform` | 2026-11-09 |
+| A2-03（執行分析） | 用 Claude 訂閱執行分析：`prepare`／`finalize`、展覽詳情頁「執行 AI 分析」 | [#102](https://github.com/eric-pv/exhibitiq/pull/102) | `dev/ai-intelligence` | 2026-11-09 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -92,7 +94,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A2-03（執行分析） | 用 Claude 訂閱執行分析：`prepare`（不用 AI 的步驟、精簡資料、草稿、預估 token）／`finalize`（驗證、品質、存檔、報告）；展覽詳情頁「執行 AI 分析」產生給 Claude Code 的指示 | 本 PR |
+| — | 共用文件修正（Albert #101 指出）：資料包契約 R3 改為讀 `COMPATIBILITY.json`；同步命令加入 `docs/acceptance` | 本 PR |
 
 ## 待處理（Phase 1）
 
