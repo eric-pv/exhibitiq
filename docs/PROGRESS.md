@@ -1,8 +1,19 @@
 # ExhibitIQ 開發進度
 
-> 最後更新：2026-11-09（競品名單）｜負責人：專案負責人（`ai`）
+> 最後更新：2026-11-09（data 端優先順序、白話文規則）｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
 > **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
+
+## data 端下一步（Eric 2026-11-09 指定，先做這些再做其他項目）
+
+Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https://github.com/eric-pv/exhibitiq/issues/90)。
+
+1. **D2-02**：用合法公開來源做出第一個真實資料包，並提交 `data/index/datasets.json`。
+2. **D2-03**：第二個名單格式不同的展覽（只加設定，不改核心程式）。
+3. **D2-05 → D2-13**：「新增展覽」流程，介面照 #90，不用再確認。
+4. 在 #90 貼上可重現性檢查（`repro_check --check`）的結果。
+
+寫給 Albert 本人看的結論與資料需求，一律用白話中文（見 `CLAUDE.md`）。
 
 ## 目前階段
 
@@ -89,6 +100,11 @@
 | A2-03（執行分析） | 用 Claude 訂閱執行分析：`prepare`／`finalize`、展覽詳情頁「執行 AI 分析」 | [#102](https://github.com/eric-pv/exhibitiq/pull/102) | `dev/ai-intelligence` | 2026-11-09 |
 | — | 共用文件修正：R3 讀 `COMPATIBILITY.json`；同步命令加入 `docs/acceptance` | [#103](https://github.com/eric-pv/exhibitiq/pull/103) | `dev/ai-intelligence` | 2026-11-09 |
 | D3-04 | 資料包搜尋、屆次時間軸與歷史差異（Albert） | [#104](https://github.com/eric-pv/exhibitiq/pull/104) | `dev/data-platform` | 2026-11-09 |
+| D3-08 | 資料工程模組回歸測試（Albert） | [#105](https://github.com/eric-pv/exhibitiq/pull/105) | `dev/data-platform` | 2026-11-09 |
+| D4-03 | 資料快照、備份與重新生成（Albert） | [#106](https://github.com/eric-pv/exhibitiq/pull/106) | `dev/data-platform` | 2026-11-09 |
+| D4-07 | 資料品質關卡與來源失效測試（Albert） | [#107](https://github.com/eric-pv/exhibitiq/pull/107) | `dev/data-platform` | 2026-11-09 |
+| D4-06 | 爬蟲與資料格式維護手冊（Albert） | [#108](https://github.com/eric-pv/exhibitiq/pull/108) | `dev/data-platform` | 2026-11-09 |
+| A3-07（名單） | 競品名單 19 筆（Eric 提供）提交到 `knowledge/benchmarks/` | [#109](https://github.com/eric-pv/exhibitiq/pull/109) | `dev/ai-intelligence` | 2026-11-09 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -96,7 +112,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| A3-07（名單） | 競品名單 19 筆（Eric 提供）提交到 `knowledge/benchmarks/`，格式檢查通過；等真實資料包後執行 `benchmark` | 本 PR |
+| — | data 端優先順序與白話文規則寫進 PROGRESS／CLAUDE.md；#90 改寫為四項待辦 | 本 PR |
 
 ## 待處理（Phase 1）
 
