@@ -147,8 +147,9 @@ class _Run:
         for message in self.schemas.errors("manifest", self.manifest):
             self.add("R2", message, MANIFEST_FILE)
         declared = self.manifest.get("schema_version")
-        if declared != self.schemas.version:
-            self.add("R3", f"schema_version is {declared!r}, schemas/v1/VERSION is {self.schemas.version!r}", MANIFEST_FILE)
+        if declared not in self.schemas.accepted:
+            accepted = ", ".join(self.schemas.accepted)
+            self.add("R3", f"schema_version is {declared!r}, schemas/v1/COMPATIBILITY.json accepts {accepted}", MANIFEST_FILE)
 
     # --------------------------------------------------------------- R4, R5
     def _load(self, name: str) -> list[dict[str, Any]] | None:

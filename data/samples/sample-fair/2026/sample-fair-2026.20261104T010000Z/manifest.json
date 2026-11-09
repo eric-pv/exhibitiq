@@ -67,7 +67,7 @@
     "participations": 4,
     "sources": 2
   },
-  "schema_version": "1.0.0-draft.4",
+  "schema_version": "1.0.0-draft.7",
   "source_snapshot_ids": [
     "src_01JFSA00000000000000000001",
     "src_01JFSA00000000000000000002"

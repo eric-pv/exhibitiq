@@ -35,10 +35,12 @@ python -m etl.validate data/samples/sample-fair/2026/sample-fair-2026.20261104T0
 ```
 
 - 程式是決定性的：固定 ID、固定時間，相同輸入產生逐位元組相同的結果。
-- `schema_version` 讀自 `schemas/v1/VERSION`。**Schema 草案版本升級並同步到 `dev/data-platform` 後，必須重新產生**；否則驗證器的 R3 與「樣本與產生程式輸出一致」的測試會失敗，這是刻意的提醒。manifest 不參與 `content_hash`，所以升版只改變 manifest，資料檔案與 `content_hash` 不變。
+- `schema_version` 讀自 `schemas/v1/VERSION`。**Schema 草案版本升級並同步到 `dev/data-platform` 後，必須重新產生**；否則「樣本與產生程式輸出一致」的測試會失敗（舊版若已不在 `COMPATIBILITY.json` 的 `accepted`，R3 也會失敗），這是刻意的提醒。manifest 不參與 `content_hash`，所以升版只改變 manifest，資料檔案與 `content_hash` 不變。
 - 不要手改樣本檔案：改產生程式，再重新產生。
 
 ## 4. 驗證結果（2026-11-04，雲端容器）
+
+> 2026-11-09：同步 Schema `1.0.0-draft.7` 後重新產生，3 個 manifest 只改 `schema_version`（draft.4 → draft.7），資料檔與 `content_hash` 不變；3 個資料包通過 `python -m etl.validate`。
 
 - 3 個資料包都通過 `python -m etl.validate`（R1–R11，Schema `1.0.0-draft.3`）。
 - `tests/data/test_samples.py` 共 21 個測試，證明驗證器**證明不了**的事：

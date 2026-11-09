@@ -20,6 +20,7 @@ from referencing.exceptions import Unresolvable
 
 DEFAULT_SCHEMA_DIR = Path(__file__).resolve().parents[1] / "schemas" / "v1"
 _SUFFIX = ".schema.json"
+COMPATIBILITY_FILE = "COMPATIBILITY.json"
 
 
 class SchemaError(RuntimeError):
@@ -36,6 +37,7 @@ class SchemaSet:
         if not version_file.is_file():
             raise SchemaError(f"missing {version_file}")
         self.version = version_file.read_text(encoding="utf-8").strip()
+        self.accepted = self._load_accepted()
 
         self._schemas: dict[str, dict[str, Any]] = {}
         for path in paths:
@@ -52,6 +54,26 @@ class SchemaSet:
             (schema["$id"], Resource.from_contents(schema)) for schema in self._schemas.values()
         )
         self._validators: dict[str, Draft202012Validator] = {}
+
+    def _load_accepted(self) -> tuple[str, ...]:
+        """Versions a package may declare: ``COMPATIBILITY.json`` ``accepted`` (Schema draft.6+).
+
+        Without that file only ``VERSION`` is accepted. The file must name ``VERSION`` as
+        ``current`` and include it in ``accepted``, so new data is always written at ``VERSION``.
+        """
+        path = self.directory / COMPATIBILITY_FILE
+        if not path.is_file():
+            return (self.version,)
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError as exc:
+            raise SchemaError(f"{path}: invalid JSON: {exc}") from exc
+        accepted = data.get("accepted") if isinstance(data, dict) else None
+        if not isinstance(accepted, list) or not accepted or not all(isinstance(v, str) and v for v in accepted):
+            raise SchemaError(f"{path}: 'accepted' must be a non-empty list of version strings")
+        if data.get("current") != self.version or self.version not in accepted:
+            raise SchemaError(f"{path}: 'current' must equal VERSION ({self.version!r}) and be listed in 'accepted'")
+        return tuple(dict.fromkeys(accepted))
 
     def entities(self) -> list[str]:
         return sorted(self._schemas)

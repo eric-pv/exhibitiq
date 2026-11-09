@@ -19,6 +19,7 @@ import pytest
 
 from etl.jsonl import canonical_line
 from etl.package import DATA_FILES, MANIFEST_FILE, RECORD_SETS, compute_integrity, read_package, write_manifest
+from etl.schema_registry import SchemaSet
 from etl.validate import Report, main, validate_package
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -123,6 +124,13 @@ def test_package_with_changes_for_a_later_dataset_is_valid(tmp_path: Path) -> No
         m["changes"] = [change]
 
     report = validate_package(build(tmp_path, edit=edit))
+    assert report.ok, report.text()
+
+
+@pytest.mark.parametrize("version", SchemaSet().accepted)
+def test_every_accepted_schema_version_is_valid(tmp_path: Path, version: str) -> None:
+    """R3 follows schemas/v1/COMPATIBILITY.json: older accepted drafts stay valid without rewriting."""
+    report = validate_package(build(tmp_path, edit=lambda m: m["manifest"].update(schema_version=version)))
     assert report.ok, report.text()
 
 
