@@ -6,7 +6,9 @@
 
 ## data 端下一步（Eric 2026-11-09 指定，先做這些再做其他項目）
 
-Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https://github.com/eric-pv/exhibitiq/issues/90)。
+Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https://github.com/eric-pv/exhibitiq/issues/90)；**這裡的順序優先於開發計畫的順序**（`CLAUDE.md`「Data role」）。
+
+**為什麼：** 比賽展示和剩下的所有驗收（MVP V1、Phase 2 的真實 AI 分析、通用性驗收、Phase 4）都需要真實展覽資料包和「新增展覽」流程。沒有真實資料包之前，其他測試、手冊和後續階段項目都無法讓專案往前。
 
 1. **D2-02**：用合法公開來源做出第一個真實資料包，並提交 `data/index/datasets.json`。
 2. **D2-03**：第二個名單格式不同的展覽（只加設定，不改核心程式）。
@@ -105,6 +107,7 @@ Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https
 | D4-07 | 資料品質關卡與來源失效測試（Albert） | [#107](https://github.com/eric-pv/exhibitiq/pull/107) | `dev/data-platform` | 2026-11-09 |
 | D4-06 | 爬蟲與資料格式維護手冊（Albert） | [#108](https://github.com/eric-pv/exhibitiq/pull/108) | `dev/data-platform` | 2026-11-09 |
 | A3-07（名單） | 競品名單 19 筆（Eric 提供）提交到 `knowledge/benchmarks/` | [#109](https://github.com/eric-pv/exhibitiq/pull/109) | `dev/ai-intelligence` | 2026-11-09 |
+| — | data 端優先順序寫進 PROGRESS；白話文規則寫進 CLAUDE.md；#90 改寫為四項待辦 | [#110](https://github.com/eric-pv/exhibitiq/pull/110) | `dev/ai-intelligence` | 2026-11-09 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -112,7 +115,7 @@ Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| — | data 端優先順序與白話文規則寫進 PROGRESS／CLAUDE.md；#90 改寫為四項待辦 | 本 PR |
+| — | CLAUDE.md 新增「Data role」：data 端的 Claude Code 以 PROGRESS 與 [coord] Issue 為優先，並說明原因 | 本 PR |
 
 ## 待處理（Phase 1）
 

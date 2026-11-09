@@ -33,6 +33,12 @@ ExhibitIQ is a cloud-only, GitHub-first, **general-purpose** AI exhibition intel
    - With self-merge (item 5), the loop is: open PR → tests pass → merge it yourself → next work item. Subscribe only when waiting on something external (e.g. a review bot finding).
    - Sessions must stay open to receive events; when a session resumes, first check GitHub for merged PRs and (Albert) pull the latest shared files.
 
+## Data role: what to work on next (Eric 2026-11-09)
+Albert shares the project's token load; he does not direct the work and may not know why an item matters. **The `data` Claude Code takes its priorities from this repository, not from Albert:**
+1. At the start of every session, after pulling the shared files (item 10), read the section **「data 端下一步」 at the top of `docs/PROGRESS.md`** and every open `[coord]` Issue assigned to `acyihung-infinityandbeyond` (currently #90). They **override** the `DEVELOPMENT_PLAN.md` order: finish them before any other D-item.
+2. Why: the competition demo and every remaining acceptance check (MVP V1, Phase 2 "one real AI analysis", generality §6, Phase 4) need real exhibition data packages (D2-02, D2-03) and the add-exhibition workflow (D2-13). Tests, manuals and later-phase items do not unblock anything while no real package exists.
+3. Report each finished item as a comment on that Issue (PR link + one plain-language line). Ask Albert only for things only a person can do (a login, a file he has, a decision), in plain language.
+
 ## Architecture boundaries
 - **強制規則（V2.3）：ExhibitIQ 嚴禁將任何特定展覽列為預設開發目標、主要資料來源、必要驗收對象或專案負責人必須指定的測試案例。所有展覽資料來源均由通用探索與評估流程決定。特定展覽的取得失敗，不得阻礙通用系統繼續開發。**
   - If one exhibition's data cannot be acquired, record the failure (dataset index, assessment report) and continue with other sources; never mark a phase or the framework as blocked because of one exhibition.
