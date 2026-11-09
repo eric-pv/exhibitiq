@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 CORE_DIRS = ("crawler", "etl")
 # Names of real exhibitions that appeared in project discussions; extend as needed.
-FORBIDDEN = re.compile(r"\b(mspo|tadte|eurosatory|dsei)\b", re.IGNORECASE)
+FORBIDDEN = re.compile(r"\b(mspo|tadte|eurosatory|dsei|iacp|mapyourshow)\b", re.IGNORECASE)
 
 
 def _core_python_files() -> list[Path]:

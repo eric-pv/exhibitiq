@@ -1,0 +1,19 @@
+{
+  "crawl_run_id": "run_01M6ZJD6HZTDMBQ7R4GPET5RQA",
+  "crawler": {
+    "name": "printed-listing",
+    "version": "1.0.0"
+  },
+  "edition_id": "iacp-2026",
+  "exhibition_id": "iacp",
+  "finished_at": "2026-11-09T07:12:21Z",
+  "started_at": "2026-11-09T07:12:20Z",
+  "stats": {
+    "error_count": 0,
+    "records_extracted": 662,
+    "requests_attempted": 1,
+    "requests_succeeded": 1
+  },
+  "status": "succeeded",
+  "trigger": "import"
+}
