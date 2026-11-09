@@ -65,6 +65,7 @@ AI Skill 讀取（專案負責人的範圍；資料包是兩邊的介面）
 | D3-04 | 跨資料包企業搜尋、同一屆所有資料包的時間軸（`previous_dataset_id` 鏈檢查）、任兩個資料包的差異輸出（**已完成**，見 `catalog.md`） | `etl/catalog.py` |
 | D3-08 | 資料工程模組回歸測試：整條流程輸出的基準檔、模組測試覆蓋與命令列檢查（**已完成**，見 `regression-tests.md`） | `tests/data/regression_outputs.py`、`tests/data/regression/` |
 | D4-03 | 快照驗證、資料包逐位元組重新產生檢查、可重現且可驗證的備份與還原（**已完成**，見 `integrity-and-backup.md`） | `etl/integrity.py` |
+| D4-07 | 資料品質關卡（Q1–Q5：失敗／空名單／大幅縮水阻擋）與 13 種來源失效端到端測試（**已完成**，見 `quality-and-source-failures.md`） | `etl/quality.py`、`tests/data/test_quality_and_failures.py` |
 | D2-11 | 組裝含 manifest 與來源索引的資料包，通過驗證程式才發布（**已完成**，見 `assemble-package.md`） | `etl/assemble.py` |
 | D1-11 | 通用的展覽來源探索與可行性評估流程與範本（**已完成**，見 `source-assessment-process.md`、`source-assessment-template.md`） | `docs/data-platform/` |
 | Phase 2 | 共用爬蟲框架與來源註冊機制（D2-01）、測試展覽的來源適配器與匯入轉換（展覽差異只放在來源設定、適配器或對應設定）、去重與別名、完整度報告、資料包發布、新增展覽 workflow（D2-13） | `crawler/`、`etl/`、`data/`、`.github/workflows/` |
