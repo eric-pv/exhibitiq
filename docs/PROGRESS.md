@@ -1,6 +1,6 @@
 # ExhibitIQ 開發進度
 
-> 最後更新：2026-11-09（用 Claude 訂閱執行分析）｜負責人：專案負責人（`ai`）
+> 最後更新：2026-11-09（競品名單）｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
 > **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
 
@@ -87,6 +87,8 @@
 | W3-07 | 展覽新增表單（A1-10 登錄內容；workflow 待 D2-13） | [#100](https://github.com/eric-pv/exhibitiq/pull/100) | `dev/ai-intelligence` | 2026-11-09 |
 | — | 共用檔案同步（Schema `1.0.0-draft.7`）、驗證器 R3 改讀 `COMPATIBILITY.json`、合成樣本重生（Albert） | [#101](https://github.com/eric-pv/exhibitiq/pull/101) | `dev/data-platform` | 2026-11-09 |
 | A2-03（執行分析） | 用 Claude 訂閱執行分析：`prepare`／`finalize`、展覽詳情頁「執行 AI 分析」 | [#102](https://github.com/eric-pv/exhibitiq/pull/102) | `dev/ai-intelligence` | 2026-11-09 |
+| — | 共用文件修正：R3 讀 `COMPATIBILITY.json`；同步命令加入 `docs/acceptance` | [#103](https://github.com/eric-pv/exhibitiq/pull/103) | `dev/ai-intelligence` | 2026-11-09 |
+| D3-04 | 資料包搜尋、屆次時間軸與歷史差異（Albert） | [#104](https://github.com/eric-pv/exhibitiq/pull/104) | `dev/data-platform` | 2026-11-09 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -94,7 +96,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| — | 共用文件修正（Albert #101 指出）：資料包契約 R3 改為讀 `COMPATIBILITY.json`；同步命令加入 `docs/acceptance` | 本 PR |
+| A3-07（名單） | 競品名單 19 筆（Eric 提供）提交到 `knowledge/benchmarks/`，格式檢查通過；等真實資料包後執行 `benchmark` | 本 PR |
 
 ## 待處理（Phase 1）
 
@@ -133,6 +135,8 @@
 | 使用的帳號 | 目前用 Eric 的帳號；之後再決定綁定誰的帳號 |
 | 網頁一鍵執行、Actions 自動分析 | Eric 與 Albert 討論中（目前不做） |
 | W3-07 | 可以執行時就開始（不等 D2-13）；與 Albert 的 Claude 透過 Issue 留言溝通 |
+| 開發期間的資料 | 所有該進 repo 的資料（含公司內部資料，例如競品名單）都直接提交，不用考慮公開與否；專案結束時整個 repo 改為不公開。密碼、Token、金鑰仍然不提交 |
+| 競品名單（A3-07） | 由 Eric 提供（Albert 的競品簡報），放在 `knowledge/benchmarks/known-competitors.csv` |
 
 ## 待專案負責人決定
 
