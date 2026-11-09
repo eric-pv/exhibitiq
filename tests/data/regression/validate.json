@@ -1,0 +1,20 @@
+{
+ "demo-trade-show-2025.20261104T030000Z": {
+  "findings": [],
+  "ok": true,
+  "package_dir": "<repo>/data/samples/demo-trade-show/2025/demo-trade-show-2025.20261104T030000Z",
+  "schema_version": "1.0.0-draft.7"
+ },
+ "sample-fair-2026.20261104T010000Z": {
+  "findings": [],
+  "ok": true,
+  "package_dir": "<repo>/data/samples/sample-fair/2026/sample-fair-2026.20261104T010000Z",
+  "schema_version": "1.0.0-draft.7"
+ },
+ "sample-fair-2026.20261104T020000Z": {
+  "findings": [],
+  "ok": true,
+  "package_dir": "<repo>/data/samples/sample-fair/2026/sample-fair-2026.20261104T020000Z",
+  "schema_version": "1.0.0-draft.7"
+ }
+}

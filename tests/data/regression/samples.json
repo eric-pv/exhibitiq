@@ -1,0 +1,154 @@
+{
+ "packages": [
+  {
+   "completeness_status": "complete",
+   "content_hash": "sha256:801bb057b37d77239543d14a87e1bd930d936e2ea74de11e5590075e43d59946",
+   "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+   "files": {
+    "changes.jsonl": {
+     "bytes": 0,
+     "records": 0,
+     "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "companies.jsonl": {
+     "bytes": 532,
+     "records": 3,
+     "sha256": "sha256:800b15ec70541934a7313221fb80b0ef330437b833427c36a08346ca8d484f78"
+    },
+    "crawl_runs.jsonl": {
+     "bytes": 1246,
+     "records": 2,
+     "sha256": "sha256:a1e0b2a0e6f81979e842450e3f6d1f384c9e9f0c75c811534a7a242534a1799e"
+    },
+    "edition.json": {
+     "bytes": 303,
+     "records": 1,
+     "sha256": "sha256:4a258ddd251bfa07bceb9cdc3ef05409d50bff44c24b8f2c8601fa5726e46170"
+    },
+    "exhibition.json": {
+     "bytes": 292,
+     "records": 1,
+     "sha256": "sha256:dc40944eeb28aebbc0ed63e7b186a3d77327dff36160d8edbea291b17ffb1601"
+    },
+    "participations.jsonl": {
+     "bytes": 960,
+     "records": 3,
+     "sha256": "sha256:01fd98f308b8218f162f0b30fd65f55924b7596b6d3f18dade6d2d5727c84234"
+    },
+    "sources.jsonl": {
+     "bytes": 1519,
+     "records": 3,
+     "sha256": "sha256:ab38d4442b970797840d980b1c5dce4a974cd67a713c3abea6028fd71cdd178c"
+    }
+   },
+   "record_counts": {
+    "changes": 0,
+    "companies": 3,
+    "crawl_runs": 2,
+    "participations": 3,
+    "sources": 3
+   },
+   "schema_version": "1.0.0-draft.7"
+  },
+  {
+   "completeness_status": "partial",
+   "content_hash": "sha256:f32ed66541bedb6dd05fc281f1c6bf70b5af46621ac521d587021c6c95232d27",
+   "dataset_id": "sample-fair-2026.20261104T010000Z",
+   "files": {
+    "changes.jsonl": {
+     "bytes": 0,
+     "records": 0,
+     "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "companies.jsonl": {
+     "bytes": 1880,
+     "records": 4,
+     "sha256": "sha256:70abb447b9a0c63f7454e92fb866d9558e76274ddae81a4310af8d36dc31c685"
+    },
+    "crawl_runs.jsonl": {
+     "bytes": 504,
+     "records": 1,
+     "sha256": "sha256:9ab5111727716b6d55a1d9374d1c9a6e71b96e299d5061185fe41662e846927f"
+    },
+    "edition.json": {
+     "bytes": 513,
+     "records": 1,
+     "sha256": "sha256:64d76071ab4bcfbbc588a161b235769a3fd58faff2b4e908264a98846c488a12"
+    },
+    "exhibition.json": {
+     "bytes": 451,
+     "records": 1,
+     "sha256": "sha256:6fe892f7b322044d420f1954d146f52a2f8ce816c648ea4d65a2777a445a85f0"
+    },
+    "participations.jsonl": {
+     "bytes": 2506,
+     "records": 4,
+     "sha256": "sha256:77840bee06a0f2f088948c2b7dbc91b44406586c6e61b782a67c2f310a6104f3"
+    },
+    "sources.jsonl": {
+     "bytes": 1164,
+     "records": 2,
+     "sha256": "sha256:b70bf0c9cdc4f2ce7a9e2fec097dd943b9ff921dac5d68bf4650fef140d5f686"
+    }
+   },
+   "record_counts": {
+    "changes": 0,
+    "companies": 4,
+    "crawl_runs": 1,
+    "participations": 4,
+    "sources": 2
+   },
+   "schema_version": "1.0.0-draft.7"
+  },
+  {
+   "completeness_status": "complete",
+   "content_hash": "sha256:5ad8031c4e22264996bb602efa73d5f22f33144c75db269ede94855875f08123",
+   "dataset_id": "sample-fair-2026.20261104T020000Z",
+   "files": {
+    "changes.jsonl": {
+     "bytes": 2541,
+     "records": 5,
+     "sha256": "sha256:e6c77928a30e10141354fed43c1489eaf2e9f78988ed8167949232e90bdcf596"
+    },
+    "companies.jsonl": {
+     "bytes": 2349,
+     "records": 5,
+     "sha256": "sha256:cac8d51de08d22a430edd1a21e290aefc38ba10989925dadd2c07c8e76dd2c22"
+    },
+    "crawl_runs.jsonl": {
+     "bytes": 1010,
+     "records": 2,
+     "sha256": "sha256:5d5fb4d50dd2ace45ade597bce3227364b89ae4b34216cb9b85bfada62dbcc1c"
+    },
+    "edition.json": {
+     "bytes": 513,
+     "records": 1,
+     "sha256": "sha256:64d76071ab4bcfbbc588a161b235769a3fd58faff2b4e908264a98846c488a12"
+    },
+    "exhibition.json": {
+     "bytes": 451,
+     "records": 1,
+     "sha256": "sha256:6fe892f7b322044d420f1954d146f52a2f8ce816c648ea4d65a2777a445a85f0"
+    },
+    "participations.jsonl": {
+     "bytes": 3222,
+     "records": 5,
+     "sha256": "sha256:763b8817e569a2f577dd55e1276cd790eeb445ea499ef3d99ddeb4b1a85e477a"
+    },
+    "sources.jsonl": {
+     "bytes": 1802,
+     "records": 3,
+     "sha256": "sha256:cc0331ae8f8957af9f5b76b1a6f0fb8ad7383559dc1a09a224eb0677eb8a6ee2"
+    }
+   },
+   "record_counts": {
+    "changes": 5,
+    "companies": 5,
+    "crawl_runs": 2,
+    "participations": 5,
+    "sources": 3
+   },
+   "schema_version": "1.0.0-draft.7"
+  }
+ ]
+}

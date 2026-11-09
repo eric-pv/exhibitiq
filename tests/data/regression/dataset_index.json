@@ -1,0 +1,158 @@
+{
+ "exhibitions": [
+  {
+   "acquisition": {
+    "method": "undetermined",
+    "status": "not_assessed"
+   },
+   "editions": [
+    {
+     "datasets": [
+      {
+       "collected_participation_count": 3,
+       "completeness_status": "complete",
+       "content_hash": "sha256:801bb057b37d77239543d14a87e1bd930d936e2ea74de11e5590075e43d59946",
+       "created_at": "2026-11-04T03:10:00Z",
+       "data_origin": "synthetic",
+       "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+       "location": {
+        "locator": "data/samples/demo-trade-show/2025/demo-trade-show-2025.20261104T030000Z",
+        "storage": "git"
+       },
+       "official_exhibitor_count": 3,
+       "record_counts": {
+        "companies": 3,
+        "participations": 3,
+        "sources": 3
+       },
+       "schema_version": "1.0.0-draft.7",
+       "validation": {
+        "error_count": 0,
+        "status": "passed",
+        "validated_at": "2026-11-09T00:00:00Z",
+        "validator": {
+         "name": "exhibitiq-etl-validate",
+         "version": "1.0.0"
+        }
+       }
+      }
+     ],
+     "edition_id": "demo-trade-show-2025",
+     "last_acquisition": {
+      "crawl_run_id": "run_01JFRB00000000000000000001",
+      "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+      "error_count": 0,
+      "finished_at": "2026-11-04T03:07:00Z",
+      "method": "undetermined",
+      "records_extracted": 3,
+      "status": "succeeded"
+     },
+     "latest_dataset_id": "demo-trade-show-2025.20261104T030000Z",
+     "year": 2025
+    }
+   ],
+   "exhibition_id": "demo-trade-show",
+   "name": "Demo Trade Show (Synthetic)"
+  },
+  {
+   "acquisition": {
+    "method": "undetermined",
+    "status": "not_assessed"
+   },
+   "country": "ZZ",
+   "editions": [
+    {
+     "datasets": [
+      {
+       "collected_participation_count": 4,
+       "completeness_status": "partial",
+       "content_hash": "sha256:f32ed66541bedb6dd05fc281f1c6bf70b5af46621ac521d587021c6c95232d27",
+       "created_at": "2026-11-04T01:00:00Z",
+       "data_origin": "synthetic",
+       "dataset_id": "sample-fair-2026.20261104T010000Z",
+       "location": {
+        "locator": "data/samples/sample-fair/2026/sample-fair-2026.20261104T010000Z",
+        "storage": "git"
+       },
+       "official_exhibitor_count": 5,
+       "record_counts": {
+        "companies": 4,
+        "participations": 4,
+        "sources": 2
+       },
+       "schema_version": "1.0.0-draft.7",
+       "validation": {
+        "error_count": 0,
+        "status": "passed",
+        "validated_at": "2026-11-09T00:00:00Z",
+        "validator": {
+         "name": "exhibitiq-etl-validate",
+         "version": "1.0.0"
+        }
+       }
+      },
+      {
+       "collected_participation_count": 4,
+       "completeness_status": "complete",
+       "content_hash": "sha256:5ad8031c4e22264996bb602efa73d5f22f33144c75db269ede94855875f08123",
+       "created_at": "2026-11-04T02:00:00Z",
+       "data_origin": "synthetic",
+       "dataset_id": "sample-fair-2026.20261104T020000Z",
+       "location": {
+        "locator": "data/samples/sample-fair/2026/sample-fair-2026.20261104T020000Z",
+        "storage": "git"
+       },
+       "official_exhibitor_count": 4,
+       "record_counts": {
+        "companies": 5,
+        "participations": 5,
+        "sources": 3
+       },
+       "schema_version": "1.0.0-draft.7",
+       "validation": {
+        "error_count": 0,
+        "status": "passed",
+        "validated_at": "2026-11-09T00:00:00Z",
+        "validator": {
+         "name": "exhibitiq-etl-validate",
+         "version": "1.0.0"
+        }
+       }
+      }
+     ],
+     "edition_id": "sample-fair-2026",
+     "last_acquisition": {
+      "crawl_run_id": "run_01JFRA00000000000000000002",
+      "dataset_id": "sample-fair-2026.20261104T020000Z",
+      "error_count": 0,
+      "finished_at": "2026-11-04T01:42:00Z",
+      "method": "undetermined",
+      "records_extracted": 4,
+      "status": "succeeded"
+     },
+     "latest_dataset_id": "sample-fair-2026.20261104T020000Z",
+     "year": 2026
+    }
+   ],
+   "exhibition_id": "sample-fair",
+   "name": "Sample Fair (Synthetic)",
+   "name_zh_hant": "範例展覽（合成資料）",
+   "website": "https://www.example.com/sample-fair/"
+  }
+ ],
+ "generated_at": "2026-11-09T00:00:00Z",
+ "generator": {
+  "name": "exhibitiq-etl",
+  "version": "1.0.0"
+ },
+ "notices": [
+  {
+   "dataset_id": "sample-fair-2026.20261104T010000Z",
+   "exhibition_id": "sample-fair",
+   "level": "info",
+   "message": "sample-fair-2026.20261104T010000Z: completeness is partial (official 5, collected 4).",
+   "occurred_at": "2026-11-04T01:00:00Z"
+  }
+ ],
+ "schema_version": "1.0.0-draft.7"
+}
