@@ -2,6 +2,27 @@
 
 格式依 [`VERSIONING.md`](VERSIONING.md)。每筆紀錄包含：版本、日期、Issue／PR、變更類別（MAJOR／MINOR／PATCH／draft）、變更內容、相容性與遷移說明。最新的放最上面。
 
+## 1.0.0-draft.7 — 2026-11-05
+
+- 工作項目：A3-05（Eric 2026-11-05 核准）
+- 類別：draft（只新增，相容）
+- 內容：`analysis_result` 新增選填 `cost`（`recorded`、`input_tokens`、`output_tokens`、`amount`、`currency`、`measured_by`、`notes`）。只記錄實際量測值；`recorded=false` 時不得有數字。報告是否顯示成本由使用者勾選（比賽顯示、正式版隱藏）。
+- 相容性：舊資料不需改寫；`COMPATIBILITY.json` 接受 draft.5、draft.6、draft.7。
+
+## 1.0.0-draft.6 — 2026-11-04
+
+- 工作項目：A2-15（Eric 2026-11-04 核准）
+- 類別：draft（只新增，相容）
+- 內容：新增 `analysis_profile.schema.json`（分析設定檔：模式、關鍵字、企業關係訊號、評分權重）；`common.schema.json` 新增 `analysis_profile_id`、`analysis_mode`、`keyword`；`analysis_result` 新增選填 `analysis_config`（規則 AR11）；新增 `examples/profile/` 與 `examples/analysis/analysis_result.with_config.example.json`。規格見 [`docs/specs/analysis-profile-contract.md`](../docs/specs/analysis-profile-contract.md)。
+- 相容性：**草案期例外：舊資料不需改寫。** 新增 [`v1/COMPATIBILITY.json`](v1/COMPATIBILITY.json)，驗證程式接受 `1.0.0-draft.5` 與 `1.0.0-draft.6`；新產生的資料寫 `1.0.0-draft.6`。資料工程的驗證程式若比對 `VERSION` 完全相同，同步後請改為讀取 `COMPATIBILITY.json` 的 `accepted`。
+
+## 1.0.0-draft.5 — 2026-11-04
+
+- 工作項目：A1-10
+- 類別：draft
+- 內容：新增 `exhibition_registration.schema.json`（展覽名冊：`data/registry/<exhibition_id>/registration.json`）與 `examples/registry/`。規格見 [`docs/specs/exhibition-registry-contract.md`](../docs/specs/exhibition-registry-contract.md)。
+- 相容性：既有欄位沒有改變；**只有版本號改變**。資料包、資料集索引、分析結果與知識庫檔案的 `schema_version` 必須改成 `1.0.0-draft.5`。
+
 ## 1.0.0-draft.4 — 2026-11-04
 
 - 工作項目：A1-09

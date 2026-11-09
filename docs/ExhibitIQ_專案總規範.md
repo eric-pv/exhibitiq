@@ -56,16 +56,18 @@
 
 每項任務：開發計畫中的工作項目 → ChatGPT 指令 → Claude Code 開發與測試 → PR（可在 GitHub 前端看到）→ 任務擁有者自行合併到自己的 dev 分支 → 下一項工作。一般工作不需要建立 Issue（見 §9）。PR 需列出工作項目編號、變更檔案、測試結果、資料格式影響、已知限制。若測試未通過，先修正再合併；PR 存在不等於工作已完成。
 
-**階段同步：** 完成 `integration/phase-N` → `main` 後，下一階段開始前，兩條 `dev/*` 必須由整合後 `main` 更新；採用安全合併／必要時重建分支，不強制覆寫未備份的工作。若有跨分支共用 Schema 變更，先由你批准並在兩邊以相同契約實作；不必提前做程式整合。
+**V2.4 獨立作業（Eric 2026-11-04 核准）：** 階段是檢查點而不是關卡，雙方各自連續往下一個 Phase 做，不互相等待；各自的 Claude Code 在測試全部通過後自行合併到自己的 `dev/*`（`main` 只由你合併）；共用檔案由 Albert 那邊開工時自行從 `dev/ai-intelligence` 取得。
+
+**階段同步：** 完成 `integration/phase-N` → `main` 後，在方便的時點把整合後的 `main` 安全合併進兩條 `dev/*`；採用安全合併／必要時重建分支，不強制覆寫未備份的工作。若有跨分支共用 Schema 變更，先由你批准並在兩邊以相同契約實作；不必提前做程式整合。
 
 ## 4. 技術與成本原則：100% 雲端、GitHub 優先
 
-- **唯一 Private Monorepo**：GitHub 為程式碼、規格、版本化資料及報告的中心。
+- **唯一 Monorepo（2026-11-05 起為公開 Repo，Eric 決定）**：GitHub 為程式碼、規格、版本化資料及報告的中心。**提交的所有內容（程式碼、文件、資料包、分析結果、PR 討論）任何人都看得到**；真實資料、其分析結果、企業或客戶資訊及任何機密內容，須經你核准可以公開後才能提交。
 - **不依賴任何人的本機運算**：兩人的電腦只用瀏覽器／遠端 Claude Code 操作。需執行 Python、測試或工具時，使用具終端機的雲端工作區（例如 GitHub Codespaces，須確認實際帳號支援 Claude Code）或 GitHub Actions。
 - **GitHub Actions**：手動或排程執行爬蟲、ETL、Schema 驗證、測試、資料包生成與可公開報告的發布。排程可能延遲，Actions 並非永不停止的常駐服務。
 - **GitHub 檔案式資料儲存**：JSON／JSONL／CSV／manifest，保留來源及版本。**GitHub 不是資料庫伺服器**；比賽版不導入 PostgreSQL、Supabase、常駐 FastAPI、VPS，除非你另行批准。
 - 大型、頻繁變動的快照不可無限制累積在 Git history；依資料量選擇 Releases、Actions Artifacts 或日後核准的物件儲存。Actions Artifacts 可能有保留期限，不可當作唯一永久資料來源。須記錄資料包位置、雜湊、版本及取得時間。
-- GitHub Pages 只能發布經你核准的非機密靜態成果；Private Repo **不代表 GitHub Pages 網站自動保密**。不可將公司敏感資料、個資、金鑰發布到公開網站。各階段的 Dashboard 私有預覽使用 GitHub Actions artifact 或雲端預覽；對外展示網址的方式由你另行核准。
+- GitHub Pages 只能發布經你核准的非機密靜態成果；Repo 與 GitHub Pages 網站都是公開的。不可將公司敏感資料、個資、金鑰提交到 Repo 或發布到網站。對外展示網址：https://eric-pv.github.io/exhibitiq/（`gh-pages` 分支，發布前須通過 `npm run pages:check`：只含合成資料或你核准公開的內容，並通過安全掃描）。
 - Skill 以 `skills/exhibitiq/SKILL.md`、references、scripts 組成。可在有 GitHub 存取權的 Claude Code 雲端工作環境使用；**不假設 Claude 網頁聊天會自動安裝或執行此 Skill**。
 - GitHub Actions 寫入資料需使用專用受限權限與 concurrency 控制；不要讓爬蟲 workflow 自動寫入 `main` 而繞過階段驗收。比賽期間建議寫入專用資料分支／建立資料更新 PR／或保存版本化資料產物，經規定流程納入整合版本。
 
@@ -165,7 +167,7 @@ BXR 產品範圍包含 AI XR SUT BOX、BXR POLICE BOX、GP-S、UAV／USV 相關�
 - 「不修改核心程式」的判斷：第二個展覽的 PR 只新增或修改展覽登錄資料、來源設定、來源適配器、匯入對應設定及資料檔，不修改 `etl/` 的標準化與驗證程式、`schemas/`、`skills/` 的分析邏輯或 `site/` 的頁面程式。
 - 各階段的具體檢查項目見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md) §6。
 
-**每個階段的驗收與整合（你）：** 雙方都完成開發計畫中該階段的工作，PR 都已各自合併到自己的 dev 分支後，你取得兩條分支現況與 PR 清單，請 ChatGPT 產生該階段整合指令，由 Claude Code 在 `integration/phase-N` 整合、執行端到端測試（含 Dashboard 與截圖），你驗收通過後才更新 `main`。Phase 4 結束時建立競賽版 Release。
+**每個階段的驗收與整合（你）：** 整合不阻擋任何人繼續開發。雙方都完成開發計畫中該階段的工作、PR 都已各自合併到自己的 dev 分支後，你取得兩條分支現況與 PR 清單，請 ChatGPT 產生該階段整合指令，由 Claude Code 在 `integration/phase-N` 整合、執行端到端測試（含 Dashboard 與截圖），你驗收通過後才更新 `main`。Phase 4 結束時建立競賽版 Release。
 
 ## 9. 工作項目、PR 與 Issue
 

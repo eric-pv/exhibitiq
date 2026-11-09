@@ -28,7 +28,7 @@ report.ok; report.findings; report.rules()   # Finding(rule, message, file, line
 |---|---|
 | R1 | 8 個檔案（`manifest.json` 與 7 個資料檔）全部存在 |
 | R2 | `manifest.json` 可讀，且通過 `manifest.schema.json` |
-| R3 | `schema_version` 與 `schemas/v1/VERSION` 完全相同（草案期） |
+| R3 | `schema_version` 是 `schemas/v1/COMPATIBILITY.json` 的 `accepted` 之一（Schema draft.6 起；目前 draft.5–draft.7）。沒有該檔時退回與 `schemas/v1/VERSION` 完全相同。`COMPATIBILITY.json` 的 `current` 必須等於 `VERSION` 且列在 `accepted`，否則載入 Schema 即失敗。新產生的資料一律寫 `VERSION`。 |
 | R4 | 每筆紀錄通過對應的 Schema；`exhibition.json`、`edition.json` 各剛好 1 筆 |
 | R5 | UTF-8 無 BOM、LF、結尾換行、無空白行、無重複的物件鍵、無 NaN；每行是 canonical 形式 |
 | R6 | JSONL 主鍵不重複，且依 UTF-8 位元組順序遞增 |

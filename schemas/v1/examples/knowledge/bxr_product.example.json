@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0-draft.4",
+  "schema_version": "1.0.0-draft.5",
   "product_id": "bxr-example-device",
   "name": "範例產品（合成）",
   "name_en": "Example Device (Synthetic)",

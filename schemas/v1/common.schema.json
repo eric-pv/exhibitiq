@@ -181,6 +181,60 @@
       "pattern": "^bxr-[a-z0-9]+(-[a-z0-9]+)*$",
       "maxLength": 60,
       "description": "BXR 產品 ID：bxr- 加小寫英數與連字號，例如 bxr-police-box。產品卡定義屬於 A1-09。"
+    },
+    "analysis_profile_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "description": "分析設定檔（主題）ID：小寫英數與連字號。"
+    },
+    "analysis_mode": {
+      "type": "string",
+      "enum": [
+        "bxr_opportunity",
+        "industry_research",
+        "competitor_research"
+      ],
+      "description": "bxr_opportunity=A. BXR 商機分析；industry_research=B. 產業與技術研究（不使用 BXR 產品卡）；competitor_research=C. 競爭對手研究（不依賴 BXR 產品卡）。"
+    },
+    "keyword": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "term_id",
+        "category",
+        "label",
+        "enabled"
+      ],
+      "properties": {
+        "term_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,127}$"
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "description": "分類，例如 technology、product、application、industry、need、competitor；使用者可自訂，不限定領域。"
+        },
+        "label": {
+          "$ref": "#/$defs/short_text"
+        },
+        "label_en": {
+          "$ref": "#/$defs/short_text"
+        },
+        "synonyms": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/short_text"
+          }
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "notes": {
+          "$ref": "#/$defs/text"
+        }
+      }
     }
   }
 }

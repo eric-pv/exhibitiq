@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/exhibition_registration.schema.json",
+  "title": "ExhibitionRegistration 展覽登錄資料",
+  "description": "一個展覽被加入 ExhibitIQ 時的登錄資料（展覽名冊的一筆），存為 data/registry/<exhibition_id>/registration.json。這是使用者提供的『要處理哪個展覽』，不是來源事實；展覽的事實資料一律來自資料包（exhibition.json、edition.json）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "exhibition_id",
+    "name",
+    "years",
+    "registration_status",
+    "requested_by",
+    "requested_at",
+    "request_channel"
+  ],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0-draft.5",
+        "1.0.0-draft.6",
+        "1.0.0-draft.7"
+      ],
+      "description": "必須是 schemas/v1/COMPATIBILITY.json 的 accepted 版本之一；新產生的資料寫 VERSION。"
+    },
+    "exhibition_id": {
+      "$ref": "common.schema.json#/$defs/exhibition_id"
+    },
+    "name": {
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/$defs/short_text"
+        }
+      ],
+      "description": "使用者輸入的展覽名稱（原文）。"
+    },
+    "name_zh_hant": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "name_en": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "country": {
+      "$ref": "common.schema.json#/$defs/country_code"
+    },
+    "website": {
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/$defs/http_url"
+        }
+      ],
+      "description": "使用者提供的官方網站，作為來源探索的起點；不代表已查證。"
+    },
+    "years": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 1900,
+        "maximum": 2100
+      },
+      "description": "要處理的屆次年份。"
+    },
+    "registration_status": {
+      "type": "string",
+      "enum": [
+        "requested",
+        "accepted",
+        "rejected",
+        "retired"
+      ],
+      "description": "requested=剛提出；accepted=已接受，進入來源評估與取得；rejected=重複或無效（必須說明）；retired=不再處理。取得結果不放在這裡，而是記錄在資料集索引。"
+    },
+    "duplicate_of": {
+      "$ref": "common.schema.json#/$defs/exhibition_id"
+    },
+    "requested_by": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "requested_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "request_channel": {
+      "type": "string",
+      "enum": [
+        "dashboard_form",
+        "actions_dispatch",
+        "manual"
+      ],
+      "description": "dashboard_form=由 Dashboard 新增表單產生；actions_dispatch=由 GitHub Actions 手動執行輸入；manual=直接在 repo 建立。"
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "registration_status": {
+            "const": "rejected"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "notes"
+        ]
+      }
+    }
+  ]
+}

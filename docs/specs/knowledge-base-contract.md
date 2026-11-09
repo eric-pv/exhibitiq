@@ -1,6 +1,6 @@
 # ExhibitIQ 知識庫契約 v1（BXR 產品與分析分類）
 
-> 狀態：`1.0.0-draft.4`（Phase 1 草案期，依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) §3.1）
+> 狀態：`1.0.0-draft.5`（Phase 1 草案期，依 [`schemas/VERSIONING.md`](../../schemas/VERSIONING.md) §3.1）
 > 負責人：Eric（`ai`）。工作項目 A1-09。
 > 機器可讀契約：[`schemas/v1/bxr_product.schema.json`](../../schemas/v1/bxr_product.schema.json)、[`schemas/v1/taxonomy.schema.json`](../../schemas/v1/taxonomy.schema.json)。
 
