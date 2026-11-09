@@ -75,3 +75,27 @@ test("W3-06 cross-page links: chart → filtered list, company → report, repor
   await page.getByTestId("compare-exhibition-link").first().click();
   await expect(page.getByTestId("exhibition-editions")).toBeVisible();
 });
+
+test("W3-07 add exhibition: form → valid registration → download; nothing is sent", async ({ page }, info) => {
+  const posts: string[] = [];
+  page.on("request", (r) => { if (r.method() !== "GET") posts.push(r.url()); });
+  await page.goto("/#/exhibitions");
+  await page.getByTestId("add-toggle").click();
+  await page.getByTestId("add-name").fill("New Fair");
+  await page.getByTestId("add-country").fill("TW");
+  await page.getByTestId("add-website").fill("https://new-fair.example/");
+  await page.getByTestId("add-requested-by").fill("Eric");
+  await page.getByTestId("add-years").click();
+  await page.locator(".ant-select-item-option").first().click();
+  await page.keyboard.press("Escape");
+  await expect(page.getByTestId("add-valid")).toBeVisible();
+  await expect(page.getByTestId("add-json")).toContainText('"request_channel": "dashboard_form"');
+  await expect(page.getByTestId("add-no-workflow")).toBeVisible();
+  if (info.project.name === "desktop") {
+    const [dl] = await Promise.all([page.waitForEvent("download"), page.getByTestId("add-download").click()]);
+    expect(dl.suggestedFilename()).toBe("registration.json");
+  }
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+  expect(posts).toEqual([]);
+});

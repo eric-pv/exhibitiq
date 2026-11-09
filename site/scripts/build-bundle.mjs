@@ -65,7 +65,7 @@ function loadSettings(v) {
   }) : [];
   const td = join(kd, "taxonomy");
   const termLabels = existsSync(td) ? Object.fromEntries(readdirSync(td).filter((f) => f.endsWith(".json")).flatMap((f) => readJson(join(td, f)).terms.map((t) => [t.term_id, t.label]))) : {};
-  const schemas = Object.fromEntries(["common", "analysis_profile"].map((n) => [n, readJson(join(SCHEMAS, `${n}.schema.json`))]));
+  const schemas = Object.fromEntries(["common", "analysis_profile", "exhibition_registration"].map((n) => [n, readJson(join(SCHEMAS, `${n}.schema.json`))]));
   return { profiles, products, scoreModels, schemas, termLabels };
 }
 
