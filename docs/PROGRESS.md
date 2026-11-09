@@ -6,16 +6,11 @@
 
 ## data 端下一步（Eric 2026-11-09 指定，先做這些再做其他項目）
 
-Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https://github.com/eric-pv/exhibitiq/issues/90)；**這裡的順序優先於開發計畫的順序**（`CLAUDE.md`「Data role」）。
+Albert 的 Claude Code 每次開始工作前請先看 [Issue #114](https://github.com/eric-pv/exhibitiq/issues/114)；**它的順序優先於開發計畫的順序**（`CLAUDE.md`「Data role」）。#90 已結束（真實資料 #113 完成）。
 
-**為什麼：** 比賽展示和剩下的所有驗收（MVP V1、Phase 2 的真實 AI 分析、通用性驗收、Phase 4）都需要真實展覽資料包和「新增展覽」流程。沒有真實資料包之前，其他測試、手冊和後續階段項目都無法讓專案往前。
+**流程（Eric 指定）：** 選類別與年份 → 自動找出展覽清單（候選） → 人工挑選 → 爬蟲逐一抓參展商 → 記錄回系統；抓不到的請使用者上傳，系統只負責分析。
 
-1. **D2-02**：用合法公開來源做出第一個真實資料包，並提交 `data/index/datasets.json`。
-2. **D2-03**：第二個名單格式不同的展覽（只加設定，不改核心程式）。
-3. **D2-05 → D2-13**：「新增展覽」流程，介面照 #90，不用再確認。
-4. 在 #90 貼上可重現性檢查（`repro_check --check`）的結果。
-
-寫給 Albert 本人看的結論與資料需求，一律用白話中文（見 `CLAUDE.md`）。
+**為什麼：** 比賽展示和剩下的驗收都需要真實資料包與自動取得能力。
 
 ## 目前階段
 
@@ -109,6 +104,8 @@ Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https
 | A3-07（名單） | 競品名單 19 筆（Eric 提供）提交到 `knowledge/benchmarks/` | [#109](https://github.com/eric-pv/exhibitiq/pull/109) | `dev/ai-intelligence` | 2026-11-09 |
 | — | data 端優先順序寫進 PROGRESS；白話文規則寫進 CLAUDE.md；#90 改寫為四項待辦 | [#110](https://github.com/eric-pv/exhibitiq/pull/110) | `dev/ai-intelligence` | 2026-11-09 |
 | — | CLAUDE.md「Data role」：data 端以 PROGRESS 與協調 Issue 為優先 | [#111](https://github.com/eric-pv/exhibitiq/pull/111) | `dev/ai-intelligence` | 2026-11-09 |
+| — | 記錄 Eric 決定：Albert 端不等決定；抓不到的展覽改由使用者上傳 | [#112](https://github.com/eric-pv/exhibitiq/pull/112) | `dev/ai-intelligence` | 2026-11-09 |
+| D2-02 | 第一份真實資料：IACP 2026 參展商名單（人工列印 PDF 匯入，662/662）（Albert） | [#113](https://github.com/eric-pv/exhibitiq/pull/113) | `dev/data-platform` | 2026-11-09 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -116,7 +113,7 @@ Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| — | 記錄 Eric 決定：Albert 端不等決定；抓不到的展覽改由使用者上傳 | 本 PR |
+| — | data 端待辦改由 #114 追蹤（#90 結束）；流程：探索 → 挑選 → 逐一爬取 | 本 PR |
 
 ## 待處理（Phase 1）
 
@@ -158,6 +155,7 @@ Albert 的 Claude Code 每次開始工作前請先看這裡與 [Issue #90](https
 | 開發期間的資料 | 所有該進 repo 的資料（含公司內部資料，例如競品名單）都直接提交，不用考慮公開與否；專案結束時整個 repo 改為不公開。密碼、Token、金鑰仍然不提交 |
 | 競品名單（A3-07） | 由 Eric 提供（Albert 的競品簡報），放在 `knowledge/benchmarks/known-competitors.csv` |
 | Albert 端的決定 | Albert 的 Claude 不等 Albert 決定，照預設做法繼續 |
+| 資料取得流程 | 選類別與年份 → 自動找出展覽清單 → 人工挑選 → 爬蟲逐一抓取 → 記錄回系統（#114） |
 | 抓不到的展覽 | 基本爬蟲抓不到時，網站顯示「無法自動取得」，請使用者自己找名單上傳（`data/uploads/<展覽ID>/<年份>/`），經匯入工具轉成資料包；系統只負責分析 |
 
 ## 待專案負責人決定
