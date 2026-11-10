@@ -108,8 +108,10 @@ function defaultIndex() {
   return existsSync(real) ? real : join(SCHEMAS, "examples", "index", "dataset_index.example.json");
 }
 function defaultAnalyses() {
+  // Real analyses go with the real dataset index: before phase integration this branch has saved analyses of packages
+  // that live on dev/data-platform, so without data/index/datasets.json the examples are used (never an empty site).
   const real = join(REPO, "reports", "analysis");
-  return existsSync(real) ? real : join(SCHEMAS, "examples", "analysis");
+  return existsSync(real) && existsSync(join(REPO, "data", "index", "datasets.json")) ? real : join(SCHEMAS, "examples", "analysis");
 }
 
 export function buildBundle({ indexPath = defaultIndex(), analysesDir = defaultAnalyses() } = {}) {
