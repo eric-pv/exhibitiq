@@ -4,6 +4,7 @@
                               [--origin URL] [--raw data/raw] [--packages data/packages]
                               [--registry data/registry/companies.json] [--official-count N --official-as-of YYYY-MM-DD]
                               [--data-origin collected] [--created-at 2026-11-09T08:00:00Z] [--accept Q3 ...] [--notes TEXT]
+                              [--country-aliases ALIASES.json]
 
 Generic: everything about a particular exhibition is in the source config (adapter and its options) and the
 package info file. Steps, each the existing module's own behaviour:
@@ -27,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections.abc import Sequence
 from datetime import date, datetime, timezone
@@ -34,6 +36,7 @@ from pathlib import Path
 from typing import Any
 
 import crawler.file_import  # noqa: F401  (registers the file-import adapter)
+import crawler.pdf_layout_table  # noqa: F401  (registers the pdf-layout-table adapter)
 import crawler.printed_listing  # noqa: F401  (registers the printed-listing adapter)
 from crawler.file_import import import_files
 from crawler.source_config import ConfigError, load_source_config
@@ -80,6 +83,17 @@ def load_info(path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     return data["exhibition"], data["edition"]
 
 
+def load_country_aliases(path: Path) -> dict[str, str]:
+    """Spellings of countries in a source mapped to ISO 3166-1 alpha-2 codes (a source's mapping, not a guess)."""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise ValueError(f"cannot read {path}: {exc}") from None
+    if not isinstance(data, dict) or not all(isinstance(k, str) and isinstance(v, str) and re.fullmatch(r"[A-Z]{2}", v) for k, v in data.items()):
+        raise ValueError(f"{path}: expected {{\"spelling\": \"ISO alpha-2 code\"}}")
+    return data
+
+
 def _log_warnings(log_text: str) -> list[str]:
     found = []
     for line in log_text.splitlines():
@@ -115,6 +129,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--created-at", type=_utc)
     parser.add_argument("--accept", nargs="*", default=[], choices=list(CODES))
     parser.add_argument("--notes", help="how the file was obtained (written to manifest.notes)")
+    parser.add_argument("--country-aliases", type=Path, help='JSON {"spelling in the file": "ISO 3166-1 alpha-2"} for the raw country field')
     args = parser.parse_args(argv)
 
     try:
@@ -124,6 +139,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             raise ValueError(f"{args.file} is not a file")
         origin = args.origin or config.start_urls[0]
         registry = CompanyRegistry.load(args.registry) if args.registry.is_file() else CompanyRegistry()
+        country_aliases = load_country_aliases(args.country_aliases) if args.country_aliases else {}
     except (ConfigError, RegistryError, ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -150,7 +166,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     source_id = sources[0]["source_id"]
     stamps = {s["source_id"]: s["retrieved_at"] for s in sources}
     try:
-        built = build_records([RawListing(r.data, r.source_id) for r in result.records], edition_id=config.edition_id, retrieved_at=stamps, registry=registry)
+        built = build_records([RawListing(r.data, r.source_id) for r in result.records], edition_id=config.edition_id, retrieved_at=stamps, registry=registry,
+                              country_aliases=country_aliases)
     except BuildError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

@@ -1,0 +1,17 @@
+{
+ "exhibition": {
+  "name": "Defence Services Asia (DSA) Exhibition & Conference",
+  "country": "MY",
+  "notes": "Name as on the cover of the exhibitor list ('19th Defence Services Asia Exhibition & Conference', since 1988), held with NATSEC ASIA. Country from 'MITEC, Kuala Lumpur'."
+ },
+ "edition": {
+  "year": 2026,
+  "name": "DSA 2026 & NATSEC ASIA 2026",
+  "start_date": "2026-04-20",
+  "end_date": "2026-04-23",
+  "venue": "MITEC",
+  "city": "Kuala Lumpur",
+  "country": "MY",
+  "notes": "Dates, venue and city as on the cover ('20 - 23 April 2026, MITEC, Kuala Lumpur'). The list covers DSA 2026 and NATSEC ASIA 2026 together (page title)."
+ }
+}

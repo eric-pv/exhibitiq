@@ -28,8 +28,9 @@
 | [regression-tests.md](regression-tests.md) | 回歸測試與基準檔 | D3-08 |
 | [integrity-and-backup.md](integrity-and-backup.md) | 快照驗證、重新產生、備份與還原 | D4-03 |
 | [quality-and-source-failures.md](quality-and-source-failures.md) | 品質關卡、來源失效測試 | D4-07 |
-| [import-file.md](import-file.md) | 一個檔案到資料包的命令列、`printed-listing` 適配器、已提交真實資料的檢查 | D2-02 |
+| [import-file.md](import-file.md) | 一個檔案到資料包的命令列、`printed-listing` 與 `pdf-layout-table` 適配器、已提交真實資料的檢查 | D2-02、D2-03 |
 | [iacp-2026-source-assessment.md](iacp-2026-source-assessment.md) | IACP 2026 來源評估（第一份真實資料；自動擷取不可行，人工列印 PDF 匯入） | D2-02 |
+| [dsa-2026-source-assessment.md](dsa-2026-source-assessment.md) | DSA 2026 來源評估（第二個不同結構：主辦單位 PDF 表格） | D2-03 |
 | [maintenance.md](maintenance.md) | 本文件 | D4-06 |
 
 ## 2. 資料格式速查
@@ -83,7 +84,7 @@ ID：`src_`、`run_`、`co_`、`pt_`、`chg_` ＋ ULID（`etl/ids.py`）；`data
 
 1. 依 `source-assessment-process.md` 評估並寫報告；結果寫入 `data/index/assessments.json`。來源有 captcha、登入、403/429 或條款禁止 → **停止並回報**，不繞過。
 2. 寫來源設定 TOML（欄位見 `run-logging-and-errors.md` §2）：`name`、`exhibition_id`、`edition_id`、`source_type`（Schema 的 enum）、`start_urls`、`allowed_domains`，選填 `adapter`、`[options]`。設定檔不得含 token／密碼類欄位。
-3. 檔案來源（CSV／Excel／HTML 表格／PDF 文字層）：`adapter = "file-import"`，在 `[options.mapping]` 寫欄位對應（`file-import.md` §2）；瀏覽器列印的名單頁用 `adapter = "printed-listing"`（`import-file.md` §2）。**不需要寫程式**。設定放 `data/sources/<exhibition_id>/`，再用 `python -m etl.import_file` 匯入。
+3. 檔案來源（CSV／Excel／HTML 表格／PDF 文字層）：`adapter = "file-import"`，在 `[options.mapping]` 寫欄位對應（`file-import.md` §2）；瀏覽器列印的名單頁用 `adapter = "printed-listing"`（`import-file.md` §2）；主辦單位的 PDF 表格用 `adapter = "pdf-layout-table"`（§3），國家寫法另附 `--country-aliases` 對照表。**不需要寫程式**。設定放 `data/sources/<exhibition_id>/`，再用 `python -m etl.import_file` 匯入。
 4. 網頁結構特殊才寫適配器（`crawler-framework.md` §6）：只做解析、不做 I/O、不寫死展覽名稱或網址（`tests/data/test_no_hardcoded_exhibition.py` 會檢查）。
 5. 跑一次，確認 `crawler.store.verify_run(run_dir) == []`、`crawl_run.status`，再走 §3 的流程；品質關卡阻擋時看證據，不要硬發布。
 

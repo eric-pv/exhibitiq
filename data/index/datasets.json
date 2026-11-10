@@ -2,6 +2,64 @@
  "exhibitions": [
   {
    "acquisition": {
+    "assessed_at": "2026-11-10T08:00:00Z",
+    "method": "file_import",
+    "notes": "The organizer publishes the exhibitor list as a PDF table (updated as of 6 April 2026). Imported with the pdf-layout-table adapter: 1184 rows, 1172 participations after same-name rows were merged. No total exhibitor count is stated, so completeness is unknown. The organizer's site was not crawled or checked from this environment.",
+    "report_path": "docs/data-platform/dsa-2026-source-assessment.md",
+    "status": "feasible"
+   },
+   "country": "MY",
+   "editions": [
+    {
+     "datasets": [
+      {
+       "collected_participation_count": 1172,
+       "completeness_status": "unknown",
+       "content_hash": "sha256:c580a303ad7f38866acf7a9531db768a188af6f830644f4ee26cb021908a7d1f",
+       "created_at": "2026-11-10T08:07:42Z",
+       "data_origin": "collected",
+       "dataset_id": "dsa-2026.20261110T080742Z",
+       "location": {
+        "locator": "data/packages/dsa/2026/dsa-2026.20261110T080742Z",
+        "storage": "git"
+       },
+       "official_exhibitor_count": null,
+       "record_counts": {
+        "companies": 1172,
+        "participations": 1172,
+        "sources": 1
+       },
+       "schema_version": "1.0.0-draft.7",
+       "validation": {
+        "error_count": 0,
+        "status": "passed",
+        "validated_at": "2026-11-10T08:11:22Z",
+        "validator": {
+         "name": "exhibitiq-etl-validate",
+         "version": "1.0.0"
+        }
+       }
+      }
+     ],
+     "edition_id": "dsa-2026",
+     "last_acquisition": {
+      "crawl_run_id": "run_01M727Z9TV8A01MY3X2QWRZJ9Q",
+      "dataset_id": "dsa-2026.20261110T080742Z",
+      "error_count": 0,
+      "finished_at": "2026-11-10T08:07:44Z",
+      "method": "file_import",
+      "records_extracted": 1184,
+      "status": "succeeded"
+     },
+     "latest_dataset_id": "dsa-2026.20261110T080742Z",
+     "year": 2026
+    }
+   ],
+   "exhibition_id": "dsa",
+   "name": "Defence Services Asia (DSA) Exhibition & Conference"
+  },
+  {
+   "acquisition": {
     "assessed_at": "2026-11-09T07:00:00Z",
     "method": "file_import",
     "notes": "Automatic acquisition not feasible: robots.txt disallows the list data path (/8_0/ajax) for all agents and the whole site for AI crawlers. A PDF printed from the public exhibitor gallery by a person was imported; the page states 662 exhibitors and 662 were read.",
@@ -32,7 +90,7 @@
        "validation": {
         "error_count": 0,
         "status": "passed",
-        "validated_at": "2026-11-09T07:12:58Z",
+        "validated_at": "2026-11-10T08:11:22Z",
         "validator": {
          "name": "exhibitiq-etl-validate",
          "version": "1.0.0"
@@ -58,11 +116,19 @@
    "name": "IACP Conference & Exhibition"
   }
  ],
- "generated_at": "2026-11-09T07:12:58Z",
+ "generated_at": "2026-11-10T08:11:22Z",
  "generator": {
   "name": "exhibitiq-etl",
   "version": "1.0.0"
  },
- "notices": [],
+ "notices": [
+  {
+   "dataset_id": "dsa-2026.20261110T080742Z",
+   "exhibition_id": "dsa",
+   "level": "info",
+   "message": "dsa-2026.20261110T080742Z: completeness is unknown (no official count).",
+   "occurred_at": "2026-11-10T08:07:42Z"
+  }
+ ],
  "schema_version": "1.0.0-draft.7"
 }
