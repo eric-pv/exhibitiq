@@ -3,7 +3,8 @@ import { ConfigProvider } from "antd";
 import zhTW from "antd/locale/zh_TW";
 import { MemoryRouter } from "react-router-dom";
 import App from "./App";
-import { bundle, getExhibitionRows, matchesExhibition } from "./data/repository";
+import { bundle, getExhibitionRows, listStatus, matchesExhibition } from "./data/repository";
+import { uploadUrl } from "./data/registration";
 
 vi.mock("echarts", () => ({ init: () => ({ setOption() {}, on() {}, resize() {}, dispose() {} }) }));
 const renderAt = (p: string) => render(<ConfigProvider locale={zhTW}><MemoryRouter initialEntries={[p]}><App /></MemoryRouter></ConfigProvider>);
@@ -37,4 +38,23 @@ test("list page filters from URL; detail page shows assessment and editions", ()
 test("unknown exhibition shows empty state", () => {
   renderAt("/exhibitions/no-such-expo");
   expect(screen.getByText(/找不到展覽 no-such-expo/)).toBeTruthy();
+});
+
+test("list status: obtained vs not obtained with the reason from the index; upload link for editions without a list", () => {
+  const rows = getExhibitionRows();
+  const withList = rows.find((r) => r.hasPackage)!, without = rows.find((r) => !r.hasPackage)!;
+  expect(listStatus(withList)).toEqual({ obtained: true, reason: null });
+  const s = listStatus(without);
+  expect(s.obtained).toBe(false);
+  expect(s.reason).toBe(without.acquisition.notes ?? without.editions.map((e) => e.lastAcquisition?.notes).find((n) => !!n) ?? null);
+  expect(uploadUrl("some-expo", 2026)).toBe("https://github.com/eric-pv/exhibitiq/upload/dev/data-platform/data/uploads/some-expo/2026");
+  render(<ConfigProvider locale={zhTW}><MemoryRouter initialEntries={["/exhibitions"]}><App /></MemoryRouter></ConfigProvider>);
+  expect(screen.getAllByTestId("list-status").map((x) => x.textContent)).toEqual(expect.arrayContaining(["已取得", "未取得"]));
+  expect(screen.getAllByTestId("list-note")[0].textContent).toContain("建議自行搜尋名單並上傳");
+});
+
+test("exhibition without a list: detail page offers the upload button", () => {
+  const without = getExhibitionRows().find((r) => !r.hasPackage)!;
+  render(<ConfigProvider locale={zhTW}><MemoryRouter initialEntries={[`/exhibitions/${without.exhibitionId}`]}><App /></MemoryRouter></ConfigProvider>);
+  expect(screen.getAllByTestId("upload-button")[0].getAttribute("href")).toContain(`/data/uploads/${without.exhibitionId}/`);
 });

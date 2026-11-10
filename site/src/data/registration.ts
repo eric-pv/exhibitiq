@@ -11,6 +11,8 @@ import { bundle } from "./repository";
 export const REPO_URL = "https://github.com/eric-pv/exhibitiq";
 /** File name of the D2-13 workflow under .github/workflows/ once data engineering has merged it (proposed in Issue #90). */
 export const ADD_EXHIBITION_WORKFLOW: string | null = null;
+/** Where a user uploads an exhibitor list that could not be acquired automatically (Eric 2026-11-09; imported by data engineering). */
+export const uploadUrl = (exhibitionId: string, year: number) => `${REPO_URL}/upload/dev/data-platform/data/uploads/${encodeURIComponent(exhibitionId)}/${year}`;
 export const workflowUrl = (file: string | null = ADD_EXHIBITION_WORKFLOW) => (file ? `${REPO_URL}/actions/workflows/${file}` : null);
 
 export interface RegistrationInput {

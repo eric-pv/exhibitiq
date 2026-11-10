@@ -106,6 +106,8 @@ Albert 的 Claude Code 每次開始工作前請先看 [Issue #114](https://githu
 | — | CLAUDE.md「Data role」：data 端以 PROGRESS 與協調 Issue 為優先 | [#111](https://github.com/eric-pv/exhibitiq/pull/111) | `dev/ai-intelligence` | 2026-11-09 |
 | — | 記錄 Eric 決定：Albert 端不等決定；抓不到的展覽改由使用者上傳 | [#112](https://github.com/eric-pv/exhibitiq/pull/112) | `dev/ai-intelligence` | 2026-11-09 |
 | D2-02 | 第一份真實資料：IACP 2026 參展商名單（人工列印 PDF 匯入，662/662）（Albert） | [#113](https://github.com/eric-pv/exhibitiq/pull/113) | `dev/data-platform` | 2026-11-09 |
+| — | data 端待辦改由 #114 追蹤（#90 結束） | [#115](https://github.com/eric-pv/exhibitiq/pull/115) | `dev/ai-intelligence` | 2026-11-09 |
+| A3（真實分析） | 第一份真實 AI 分析：IACP 2026（5 家已知競品參展；名單只有名稱，已請資料端補簡介、代理品牌與新聞） | [#116](https://github.com/eric-pv/exhibitiq/pull/116) | `dev/ai-intelligence` | 2026-11-10 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -113,7 +115,7 @@ Albert 的 Claude Code 每次開始工作前請先看 [Issue #114](https://githu
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| — | data 端待辦改由 #114 追蹤（#90 結束）；流程：探索 → 挑選 → 逐一爬取 | 本 PR |
+| W3-07（擴充） | 展覽清單新增「參展商名單：已取得／未取得」「備註（無法取得原因、建議上傳）」；沒有名單的屆次可上傳名單 | 本 PR |
 
 ## 待處理（Phase 1）
 

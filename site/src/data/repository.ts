@@ -401,3 +401,13 @@ export function getCompanyAnalyses(companyId: string, b: Bundle = bundle) {
     };
   }).filter((x) => x.score || x.relationships.length || x.conclusions || x.recommendations);
 }
+
+/**
+ * Eric 2026-11-09: the exhibition list shows whether an exhibitor list was obtained and, when not, why (from the
+ * dataset index: assessment notes, then the latest acquisition note) and that the user can upload the list.
+ */
+export function listStatus(r: ExhibitionRow): { obtained: boolean; reason: string | null } {
+  if (r.hasPackage) return { obtained: true, reason: null };
+  const lastNote = r.editions.map((e) => e.lastAcquisition?.notes).find((n) => !!n) ?? null;
+  return { obtained: false, reason: r.acquisition.notes ?? lastNote };
+}
