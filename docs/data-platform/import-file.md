@@ -1,7 +1,7 @@
-# 從一個檔案到資料包：`etl.import_file` 與 `printed-listing` 適配器
+# 從一個檔案到資料包：`etl.import_file` 與 `printed-listing`、`pdf-layout-table` 適配器
 
-> 工作項目：D2-02（第一份真實資料）｜負責人：data｜程式：`etl/import_file.py`、`crawler/printed_listing.py`
-> 測試：`tests/data/test_import_file.py`、`tests/data/test_printed_listing.py`、`tests/data/test_collected_packages.py`
+> 工作項目：D2-02（第一份真實資料）、D2-03（第二個不同結構）｜負責人：data｜程式：`etl/import_file.py`、`crawler/printed_listing.py`、`crawler/pdf_layout_table.py`
+> 測試：`tests/data/test_import_file.py`、`tests/data/test_printed_listing.py`、`tests/data/test_pdf_layout_table.py`、`tests/data/test_collected_packages.py`
 > 本文件只記錄已實作並測試過的行為。
 
 ## 1. `python -m etl.import_file`
@@ -24,6 +24,7 @@ python -m etl.build_index      # 之後重建資料集索引
 - `--info`：`{"exhibition": {...}, "edition": {"year": 2026, ...}}`。**每個值都必須是匯入的檔案本身寫的**；兩筆紀錄只引用該檔案（`source_ids`），標為 `unverified`。不能自己設 `source_ids`、`verification_status`、ID。
 - `--official-count`：同一檔案寫的展商總數。沒有就不要給（完整度會是 `unknown`）。
 - `--origin`：檔案的取得網址，預設為來源設定的第一個 `start_urls`。
+- `--country-aliases`：`{"檔案中的國家寫法": "ISO 3166-1 alpha-2"}`。國家寫法因來源而異，屬來源的對應設定（D2-07 不內建猜測）；表中沒有的寫法只保留在 `country_as_listed`。
 - 結束碼：0 已寫出資料包；1 品質關卡阻擋或建構失敗（證據保留、未發布）；2 輸入錯誤。
 
 ## 2. `printed-listing` 適配器
@@ -47,13 +48,36 @@ python -m etl.build_index      # 之後重建資料集索引
 
 讀到的筆數與標題宣稱的不同、或段落後有無法歸為一筆的文字，都會產生警告（不隱藏）；找不到段落標題、沒有任何一筆、PDF 加密或沒有文字層 → `parse_error`（快照仍保留）。不做 OCR。
 
-## 3. 已提交的真實資料（`data_origin: collected`）
+## 3. `pdf-layout-table` 適配器
 
-`tests/data/test_collected_packages.py` 對 `data/packages/` 下每個資料包檢查：通過驗證、快照存在且雜湊正確、可逐位元組重新產生；若 `data/sources/` 有該屆的來源設定，**從快照重新解析的名單必須與資料包相同**；完整度與官方筆數一致；索引的 `latest_dataset_id` 指向每屆最新的資料包。
+主辦單位公布的 PDF 表格名單，文字層常常沒有欄位分隔，長儲存格換行，而且多行儲存格**垂直置中**（三行名稱的第一行在列號上方）。逐行讀文字無法判斷某一行屬於哪一列，所以這個適配器讀每段文字在頁面上的座標：
 
-目前：IACP 2026（662／662，`complete`），來源評估見 `iacp-2026-source-assessment.md`。
+1. **列**：以最左欄符合 `row_number`（預設 `^\d+$`）的文字為錨點；其他文字歸到垂直距離最近的錨點，超過 `max_row_offset`（預設 14 pt）的不屬於表格（標題、頁碼），不在 `ignore_text` 中的會產生警告。
+2. **欄**：全文件中最常用的水平起點，彼此至少相隔 `min_column_gap`（預設 20 pt）；緊接在同一行前一段文字之後（一個字寬內）的片段不算欄位起點。每段文字歸到它左邊最近的欄。
+3. **接字**：同一儲存格由上到下、由左到右；同一行的片段只在頁面上真的有間隔（依字型的 `/Widths` 算出前一段的結束位置；沒有字寬表時以每字 0.5 em、全形字 1 em 估算）或原文帶空白時補空白；換行補空白，但行尾是 `-`、`，`，或前一行整行沒有空白（長字被強制斷開）時不補。
+4. 列號不連續、沒有名稱的列都會警告。拒絕加密 PDF，不做 OCR。
 
-## 4. 限制
+| 選項 | 必填 | 內容 |
+|---|---|---|
+| `columns` | 是 | 由左到右的原始欄位；列號欄為 `_number`（必須最左），`_skip` 丟棄該欄 |
+| `ignore_text` | | 表格外預期會出現的文字（標題、表頭、頁碼、更新日期） |
+| `row_number` | | 列號的正規表示式 |
+| `max_row_offset`、`min_column_gap` | | 見上 |
+
+## 4. 已提交的真實資料（`data_origin: collected`）
+
+`tests/data/test_collected_packages.py` 對 `data/packages/` 下每個資料包檢查：通過驗證、快照存在且雜湊正確、可逐位元組重新產生；若 `data/sources/` 有該屆的來源設定，**從快照重新解析的名單必須與資料包相同**（名稱比對鍵相同；每種拼法都完整出現在參展名稱或企業別名中；每個攤位都在攤位或備註中）；完整度與官方筆數一致；索引的 `latest_dataset_id` 指向每屆最新的資料包。
+
+目前：
+
+| 屆次 | 結構 | 適配器 | 結果 | 來源評估 |
+|---|---|---|---|---|
+| IACP 2026 | 瀏覽器列印的名單頁 | `printed-listing` | 662／662，`complete` | `iacp-2026-source-assessment.md` |
+| DSA 2026 | 主辦單位 PDF 表格（5 欄、多行置中） | `pdf-layout-table` | 1184 列 → 1172 筆，`unknown`（無宣稱總數） | `dsa-2026-source-assessment.md` |
+
+兩個展覽共用企業登錄表：同名公司在兩屆拿到同一個 `company_id`（目前 11 家），可做跨展覽比較。
+
+## 5. 限制
 
 - 名稱經 `etl.normalize.clean_text`（NFKC）存入 `exhibitor_name_as_listed`，例如「™」變「TM」、全形括號變半形（D2-07 既有行為）；原文在快照中。
 - 一次一個檔案；多檔來源請分次匯入（每次都會攜帶前一包）。

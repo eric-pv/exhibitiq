@@ -1,0 +1,31 @@
+# DSA 2026 & NATSEC ASIA 2026 participating companies: the organizer's own PDF exhibitor list
+# ("Updated as of 6 April 2026 (7pm)"), provided by a person (file import). The exact download URL was not recorded;
+# the organizer's site printed on the cover is cited. See docs/data-platform/dsa-2026-source-assessment.md.
+name = "dsa-2026-participating-companies-pdf"
+exhibition_id = "dsa"
+edition_id = "dsa-2026"
+source_type = "pdf_import"
+start_urls = ["https://www.dsaexhibition.com/"]
+allowed_domains = ["dsaexhibition.com"]
+adapter = "pdf-layout-table"
+
+[options]
+# table columns left to right: No. | Exhibitor | Country/Region | "aca" (booth) | Pavillion
+columns = ["_number", "exhibitor_name_as_listed", "country", "booth", "hall"]
+# text on every page outside the table rows: title, column headers, page number, update note, cover
+ignore_text = [
+  '^DEFENCE SERVICE ASIA$',
+  '^\(DSA\)$',
+  '^2026 & NATIONAL SECURITY ASIA$',
+  '^\(NATSEC ASIA\)$',
+  '^2026$',
+  '^PARTICIPATING COMPANIES$',
+  '^Exhibitor$',
+  '^Country/$',
+  '^Region$',
+  '^aca$',
+  '^Pavillion$',
+  '^Updated as of 6 April 2026 \(7pm\)$',
+  '^\d{1,2}$',
+  '^EXHIBITOR LIST',
+]

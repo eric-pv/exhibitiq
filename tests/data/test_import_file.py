@@ -122,3 +122,13 @@ def test_bad_input_exits_2_before_anything_is_written(work: Path, capsys) -> Non
     (work / "bad.toml").write_text("name = 1\n", encoding="utf-8")
     assert main(["--config", "bad.toml", "--file", "source.toml", "--info", "info.json"]) == 2
     assert not (work / "data").exists()
+
+
+def test_country_aliases_from_the_source_mapping(work: Path, capsys) -> None:
+    (work / "source.toml").write_text(CONFIG + '[[options.mapping.columns]]\nsource = "Country"\nfield = "country"\n', encoding="utf-8")
+    (work / "countries.json").write_text(json.dumps({"Exampleland": "ZZ"}), encoding="utf-8")
+    assert run(work, "Company,Booth,Country\nAlpha Synthetic Ltd,A1,Exampleland\nBeta Synthetic,B2,Nowhere\n", "--country-aliases", "countries.json") == 0
+    companies = {c["name"]: c for c in read_package(packages(work)[0]).records["companies"]}
+    assert companies["Alpha Synthetic Ltd"]["country"] == "ZZ" and "country" not in companies["Beta Synthetic"]  # unknown spelling: not guessed
+    (work / "bad.json").write_text(json.dumps({"Exampleland": "zz"}), encoding="utf-8")
+    assert run(work, FULL, "--country-aliases", "bad.json") == 2

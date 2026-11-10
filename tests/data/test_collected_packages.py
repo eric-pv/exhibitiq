@@ -8,12 +8,13 @@ from pathlib import Path
 import pytest
 
 import crawler.file_import  # noqa: F401
+import crawler.pdf_layout_table  # noqa: F401
 import crawler.printed_listing  # noqa: F401
 from crawler.adapters import default_registry, resolve_adapter
 from crawler.models import Request, Response
 from crawler.source_config import load_source_config
 from etl.integrity import check_regenerable, verify_snapshots
-from etl.normalize import clean_text
+from etl.normalize import clean_text, name_keys
 from etl.package import read_package
 from etl.validate import validate_package
 
@@ -41,16 +42,28 @@ def test_the_source_config_reads_the_same_list_from_the_snapshot(package: Path) 
     if config is None:
         pytest.skip("no source config for this edition in data/sources/")
     adapter = resolve_adapter(config, default_registry)
-    expected = {(p["exhibitor_name_as_listed"], p.get("booth")) for p in pkg.records["participations"] if p["listing_status"] == "listed"}
-    found: set[tuple[str, str | None]] = set()
+    listed = [p for p in pkg.records["participations"] if p["listing_status"] == "listed"]
+    found_names: set[str] = set()
+    found_booths: set[str] = set()
+    exact_names: set[str] = set()
     for source in pkg.records["sources"]:
         data = (ROOT / source["snapshot"]["locator"]).read_bytes()
         response = Response(source["url"], source["url"], 200, {}, data, source.get("media_type"))
         parsed = adapter.parse(response, Request(source["url"]), config)
-        # build_records stores names cleaned with etl.normalize.clean_text (NFKC: "™" -> "TM", full-width -> ASCII)
-        found |= {(clean_text(r["exhibitor_name_as_listed"]), clean_text(r["booth"]) if r.get("booth") else None) for r in parsed.records}
         assert parsed.warnings == []
-    assert found == expected
+        # build_records stores names cleaned with etl.normalize.clean_text (NFKC: "™" -> "TM", full-width -> ASCII)
+        found_names |= {name_keys(r["exhibitor_name_as_listed"]).exact for r in parsed.records}
+        exact_names |= {clean_text(r["exhibitor_name_as_listed"]) for r in parsed.records}
+        found_booths |= {clean_text(r["booth"]) for r in parsed.records if r.get("booth")}
+    # rows listed under the same name key are one participation (the other spellings and booths go to notes/aliases)
+    assert found_names == {name_keys(p["exhibitor_name_as_listed"]).exact for p in listed}
+    # (the same name with different countries stays separate companies, so there can be more participations than keys)
+    # every spelling read today is in the package, exactly (spaces included): as the listed name or as an alias
+    spellings = {p["exhibitor_name_as_listed"] for p in listed} | {a["name"] for c in pkg.records["companies"] for a in c.get("aliases", [])}
+    assert exact_names <= spellings, sorted(exact_names - spellings)[:10]
+    kept = " | ".join(f"{p.get('booth', '')} {p.get('notes', '')}" for p in listed)
+    assert all(booth in kept for booth in found_booths)
+    expected = found_names
     completeness = pkg.manifest["completeness"]
     if completeness["official_exhibitor_count"] is not None:
         assert pkg.manifest["completeness_status"] == ("complete" if completeness["official_exhibitor_count"] == len(expected) else "partial")
