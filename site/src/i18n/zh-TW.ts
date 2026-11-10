@@ -95,6 +95,9 @@ export const t = {
     assessment: "來源評估", assessedAt: "評估時間", report: "評估報告", notes: "說明",
     editions: "屆次與資料包", edition: "屆次", lastAcquisition: "最近一次取得", finishedAt: "完成時間", validation: "驗證", dataset: "最新資料包",
     viewCompanies: "查看參展商", viewIntel: "比較與歷史趨勢",
+    list: "參展商名單", listObtained: "已取得", listMissing: "未取得", note: "備註",
+    noteMissing: (reason: string | null) => `${reason ? `無法自動取得：${reason.replace(/[。.]+$/, "")}。` : "尚未取得名單。"}建議自行搜尋名單並上傳。`,
+    upload: { title: "上傳參展商名單", intro: "這個屆次還沒有參展商名單。請自行搜尋名單（網頁存檔、PDF、Excel 或 CSV），上傳到下面的位置；上傳後系統會轉成資料，之後就能分析。上傳需要登入 GitHub 並有本專案的權限。", button: (y: number) => `上傳 ${y} 年名單` },
     run: {
       title: "執行 AI 分析（Claude Code 工作階段）",
       intro: "分析使用專案負責人的 Claude 訂閱，在 Claude Code 工作階段中執行（不另外付 API 費用；分析時請先暫停其他工作）。網站不執行分析：複製下方指示，貼到 Claude Code。程式會先完成所有不需要 AI 的步驟並濃縮資料，Claude 只撰寫判斷；驗證不通過的結果不能發布。",

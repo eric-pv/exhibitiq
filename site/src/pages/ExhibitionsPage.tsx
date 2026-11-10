@@ -1,5 +1,5 @@
 import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Descriptions, Input, Select, Space, Typography } from "antd";
+import { Button, Card, Descriptions, Input, Select, Space, Tag, Typography } from "antd";
 import { useMemo } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { DataTable } from "../components/DataTable";
@@ -9,7 +9,8 @@ import { CompletenessIndicator } from "../components/status/CompletenessIndicato
 import { DataOriginBanner } from "../components/status/DataOriginBanner";
 import { shortTime } from "../components/status/SourceRef";
 import { StatusBadge } from "../components/status/StatusBadge";
-import { bundle, getExhibitionRows, matchesExhibition, toCsv, type EditionRow, type ExhibitionRow } from "../data/repository";
+import { bundle, getExhibitionRows, listStatus, matchesExhibition, toCsv, type EditionRow, type ExhibitionRow } from "../data/repository";
+import { uploadUrl } from "../data/registration";
 import { t } from "../i18n/zh-TW";
 import { space } from "../theme/tokens";
 import { AddExhibition } from "./AddExhibition";
@@ -56,6 +57,8 @@ export function ExhibitionsPage() {
           { title: e.method, render: (_, r) => method(r.acquisition.method) },
           { title: e.acquisitionStatus, render: (_, r) => <StatusBadge status={r.acquisition.status} /> },
           { title: e.completeness, render: (_, r) => <Completeness r={r} /> },
+          { title: e.list, render: (_, r) => <Tag color={listStatus(r).obtained ? "success" : "warning"} data-testid="list-status">{listStatus(r).obtained ? e.listObtained : e.listMissing}</Tag> },
+          { title: e.note, width: 280, render: (_, r) => (listStatus(r).obtained ? "—" : <Typography.Text type="secondary" data-testid="list-note">{e.noteMissing(listStatus(r).reason)}</Typography.Text>) },
         ]}
       />
     </>
@@ -84,6 +87,14 @@ export function ExhibitionDetailPage() {
             ...(r.acquisition.notes ? [{ key: "n", label: e.notes, children: r.acquisition.notes }] : []),
           ]} />
         </Card>
+        {r.editions.some((d) => !d.latest) && (
+          <Card title={e.upload.title} data-testid="upload-list">
+            <Typography.Paragraph type="secondary">{e.upload.intro}</Typography.Paragraph>
+            <Space wrap>{r.editions.filter((d) => !d.latest).map((d) => (
+              <Button key={d.editionId} href={uploadUrl(r.exhibitionId, d.year)} target="_blank" rel="noopener noreferrer" data-testid="upload-button">{e.upload.button(d.year)}</Button>
+            ))}</Space>
+          </Card>
+        )}
         <RunAnalysis row={r} />
         <Card title={e.editions} data-testid="exhibition-editions">
           <DataTable<EditionRow> rowKey="editionId" dataSource={r.editions} pagination={false} scroll={{ x: 900 }} columns={[
