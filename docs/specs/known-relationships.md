@@ -1,6 +1,6 @@
 # 已知企業關係名單（人工標準樣本）規格
 
-> A3-07｜負責人：專案負責人（`ai`）｜名單內容由 Albert（`data`）提供（Eric 2026-11-05 決定，Issue #90）
+> A3-07｜負責人：專案負責人（`ai`）｜名單由 Eric 於 2026-11-09 提供（原訂由 Albert 提供，Issue #90）
 
 ## 1. 用途
 
@@ -8,7 +8,7 @@
 
 ## 2. 檔案位置與格式
 
-- **位置：** `data/samples/known-competitors.csv`（Albert 提交到 `dev/data-platform`；階段整合後兩邊都看得到）。合成範例：`data/samples/golden/v1/known/known-relationships.csv`。
+- **位置：** `knowledge/benchmarks/known-competitors.csv`（Eric 2026-11-09 提供，整理自公司內部競品簡報：19 筆，含補充競品 Ikramatic；簡報判定「非直接競爭」的 Shooting-Soft 不列入）。合成範例：`data/samples/golden/v1/known/known-relationships.csv`。
 - **編碼：** UTF-8，可以有 BOM（Excel「CSV UTF-8」存檔即可）；逗號分隔；第一列是欄位名稱。
 - **欄位（順序不限，名稱要一致）：**
 
@@ -40,8 +40,8 @@ Another Corp,,US,,partner;channel,https://news.example.com/123,曾共同參展
 ## 4. 驗證與使用
 
 ```bash
-python skills/exhibitiq/scripts/exhibitiq_tools.py validate-known data/samples/known-competitors.csv
-python skills/exhibitiq/scripts/exhibitiq_tools.py benchmark data/samples/known-competitors.csv <資料包目錄> --profile <分析設定>
+python skills/exhibitiq/scripts/exhibitiq_tools.py validate-known knowledge/benchmarks/known-competitors.csv
+python skills/exhibitiq/scripts/exhibitiq_tools.py benchmark knowledge/benchmarks/known-competitors.csv <資料包目錄> --profile <分析設定>
 ```
 
 - `validate-known`：檢查欄位、關係類型、必填與重複；`ok: false` 時列出每一列的問題（exit 1）。
