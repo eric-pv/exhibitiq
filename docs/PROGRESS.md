@@ -1,8 +1,16 @@
 # ExhibitIQ 開發進度
 
-> 最後更新：2026-11-09（W3-07 展覽新增表單）｜負責人：專案負責人（`ai`）
+> 最後更新：2026-11-09（data 端優先順序、白話文規則）｜負責人：專案負責人（`ai`）
 > 工作項目編號見 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md)。
 > **更新方式：** 本檔只由 `ai` 修改（V2.2 共用規範修訂由 data 經專案負責人特別授權一併更新本檔，屬一次性例外）（同步到 `dev/data-platform` 時會覆蓋，對方修改會遺失）。資料工程的進度以 Albert 合併到 `dev/data-platform` 的 PR 為準，由 `ai` 讀取後更新本檔；只記錄已經在 GitHub 上查證的狀態。
+
+## data 端下一步（Eric 2026-11-09 指定，先做這些再做其他項目）
+
+Albert 的 Claude Code 每次開始工作前請先看 [Issue #114](https://github.com/eric-pv/exhibitiq/issues/114)；**它的順序優先於開發計畫的順序**（`CLAUDE.md`「Data role」）。#90 已結束（真實資料 #113 完成）。
+
+**流程（Eric 指定）：** 選類別與年份 → 自動找出展覽清單（候選） → 人工挑選 → 爬蟲逐一抓參展商 → 記錄回系統；抓不到的請使用者上傳，系統只負責分析。
+
+**為什麼：** 比賽展示和剩下的驗收都需要真實資料包與自動取得能力。
 
 ## 目前階段
 
@@ -84,6 +92,24 @@
 | A3-02 | 報告「數據摘要」章節與國家／地區圖表（`report-templates@4`） | [#97](https://github.com/eric-pv/exhibitiq/pull/97) | `dev/ai-intelligence` | 2026-11-05 |
 | W3-06 | 跨頁連結與資料關聯、詳情頁版面測試 | [#98](https://github.com/eric-pv/exhibitiq/pull/98) | `dev/ai-intelligence` | 2026-11-09 |
 | A3-03 | 建議品質檢查 `quality`（QC1–QC9） | [#99](https://github.com/eric-pv/exhibitiq/pull/99) | `dev/ai-intelligence` | 2026-11-09 |
+| W3-07 | 展覽新增表單（A1-10 登錄內容；workflow 待 D2-13） | [#100](https://github.com/eric-pv/exhibitiq/pull/100) | `dev/ai-intelligence` | 2026-11-09 |
+| — | 共用檔案同步（Schema `1.0.0-draft.7`）、驗證器 R3 改讀 `COMPATIBILITY.json`、合成樣本重生（Albert） | [#101](https://github.com/eric-pv/exhibitiq/pull/101) | `dev/data-platform` | 2026-11-09 |
+| A2-03（執行分析） | 用 Claude 訂閱執行分析：`prepare`／`finalize`、展覽詳情頁「執行 AI 分析」 | [#102](https://github.com/eric-pv/exhibitiq/pull/102) | `dev/ai-intelligence` | 2026-11-09 |
+| — | 共用文件修正：R3 讀 `COMPATIBILITY.json`；同步命令加入 `docs/acceptance` | [#103](https://github.com/eric-pv/exhibitiq/pull/103) | `dev/ai-intelligence` | 2026-11-09 |
+| D3-04 | 資料包搜尋、屆次時間軸與歷史差異（Albert） | [#104](https://github.com/eric-pv/exhibitiq/pull/104) | `dev/data-platform` | 2026-11-09 |
+| D3-08 | 資料工程模組回歸測試（Albert） | [#105](https://github.com/eric-pv/exhibitiq/pull/105) | `dev/data-platform` | 2026-11-09 |
+| D4-03 | 資料快照、備份與重新生成（Albert） | [#106](https://github.com/eric-pv/exhibitiq/pull/106) | `dev/data-platform` | 2026-11-09 |
+| D4-07 | 資料品質關卡與來源失效測試（Albert） | [#107](https://github.com/eric-pv/exhibitiq/pull/107) | `dev/data-platform` | 2026-11-09 |
+| D4-06 | 爬蟲與資料格式維護手冊（Albert） | [#108](https://github.com/eric-pv/exhibitiq/pull/108) | `dev/data-platform` | 2026-11-09 |
+| A3-07（名單） | 競品名單 19 筆（Eric 提供）提交到 `knowledge/benchmarks/` | [#109](https://github.com/eric-pv/exhibitiq/pull/109) | `dev/ai-intelligence` | 2026-11-09 |
+| — | data 端優先順序寫進 PROGRESS；白話文規則寫進 CLAUDE.md；#90 改寫為四項待辦 | [#110](https://github.com/eric-pv/exhibitiq/pull/110) | `dev/ai-intelligence` | 2026-11-09 |
+| — | CLAUDE.md「Data role」：data 端以 PROGRESS 與協調 Issue 為優先 | [#111](https://github.com/eric-pv/exhibitiq/pull/111) | `dev/ai-intelligence` | 2026-11-09 |
+| — | 記錄 Eric 決定：Albert 端不等決定；抓不到的展覽改由使用者上傳 | [#112](https://github.com/eric-pv/exhibitiq/pull/112) | `dev/ai-intelligence` | 2026-11-09 |
+| D2-02 | 第一份真實資料：IACP 2026 參展商名單（人工列印 PDF 匯入，662/662）（Albert） | [#113](https://github.com/eric-pv/exhibitiq/pull/113) | `dev/data-platform` | 2026-11-09 |
+| — | data 端待辦改由 #114 追蹤（#90 結束） | [#115](https://github.com/eric-pv/exhibitiq/pull/115) | `dev/ai-intelligence` | 2026-11-09 |
+| A3（真實分析） | 第一份真實 AI 分析：IACP 2026（5 家已知競品參展；名單只有名稱，已請資料端補簡介、代理品牌與新聞） | [#116](https://github.com/eric-pv/exhibitiq/pull/116) | `dev/ai-intelligence` | 2026-11-10 |
+| W3-07（擴充） | 展覽清單：名單取得狀態、無法取得原因、上傳名單 | [#117](https://github.com/eric-pv/exhibitiq/pull/117) | `dev/ai-intelligence` | 2026-11-10 |
+| A4-08 | 公開內容與資料安全檢查；整個 repo 的金鑰掃描測試 | [#118](https://github.com/eric-pv/exhibitiq/pull/118) | `dev/ai-intelligence` | 2026-11-10 |
 
 `A1-02` 的兩條 dev 分支已建立（`dev/ai-intelligence`、`dev/data-platform`）。
 
@@ -91,7 +117,7 @@
 
 | 編號 | 項目 | 狀態 |
 |---|---|---|
-| W3-07 | 展覽新增表單：產生 A1-10 登錄內容（瀏覽器內 Schema 驗證、建議 ID、可能重複提示、複製／下載）；D2-13 workflow 尚未建立，介面已在 Issue #90 提案 | 本 PR |
+| A4-06 | 模組共用、歷史版本、跨展覽比較驗證紀錄；新增資料包多版本測試 | 本 PR |
 
 ## 待處理（Phase 1）
 
@@ -122,12 +148,26 @@
 | 真實資料 | 開發期間暫時放進公開 repo；正式版改為不公開 |
 | 展示網址 | 帳號改名為 `eric-pv`；https://eric-pv.github.io/exhibitiq/（公司防火牆阻擋中，待 IT 放行） |
 
+## Eric 決定紀錄（2026-11-09）
+
+| 事項 | 決定 |
+|---|---|
+| AI 分析 | 比賽需要「直接分析」功能。使用 **Claude 訂閱**（Claude Code 工作階段）執行，不另外付 API 費用；分析時暫停其他工作 |
+| 使用的帳號 | 目前用 Eric 的帳號；之後再決定綁定誰的帳號 |
+| 網頁一鍵執行、Actions 自動分析 | Eric 與 Albert 討論中（目前不做） |
+| W3-07 | 可以執行時就開始（不等 D2-13）；與 Albert 的 Claude 透過 Issue 留言溝通 |
+| 開發期間的資料 | 所有該進 repo 的資料（含公司內部資料，例如競品名單）都直接提交，不用考慮公開與否；專案結束時整個 repo 改為不公開。密碼、Token、金鑰仍然不提交 |
+| 競品名單（A3-07） | 由 Eric 提供（Albert 的競品簡報），放在 `knowledge/benchmarks/known-competitors.csv` |
+| Albert 端的決定 | Albert 的 Claude 不等 Albert 決定，照預設做法繼續 |
+| 資料取得流程 | 選類別與年份 → 自動找出展覽清單 → 人工挑選 → 爬蟲逐一抓取 → 記錄回系統（#114） |
+| 抓不到的展覽 | 基本爬蟲抓不到時，網站顯示「無法自動取得」，請使用者自己找名單上傳（`data/uploads/<展覽ID>/<年份>/`），經匯入工具轉成資料包；系統只負責分析 |
+
 ## 待專案負責人決定
 
 | 事項 | 需要在何時決定 |
 |---|---|
 | 是否需要網頁一鍵執行（新增展覽、觸發擷取、執行分析）：需要後端代理或 GitHub App 等新服務；預設不做，改用 Actions 手動執行（總規範 §4.1） | Phase 3 開始前 |
-| 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用） | Phase 3 開始前 |
+| 是否在 Actions 自動執行 AI 分析（需要 API 金鑰與費用）：2026-11-09 決定先用 Claude 訂閱在工作階段中分析；Actions 自動化與 Albert 討論中 | — |
 
 ## 已存在的 Issue（歷史紀錄）
 

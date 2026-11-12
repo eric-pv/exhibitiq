@@ -158,7 +158,7 @@ data/packages/<exhibition_id>/<edition_year>/<dataset_id>/
 |---|---|
 | R1 | 第 3 節的 8 個檔案全部存在 |
 | R2 | `manifest.json` 通過 `manifest.schema.json` |
-| R3 | `schema_version` 與 `schemas/v1/VERSION` 相同（草案期） |
+| R3 | `schema_version` 是 `schemas/v1/COMPATIBILITY.json` 的 `accepted` 版本之一（draft.6 起；新產生的資料寫 `VERSION`） |
 | R4 | 每一筆紀錄通過對應的 Schema；`exhibition.json`、`edition.json` 各剛好 1 筆 |
 | R5 | 序列化符合第 5 節（UTF-8 無 BOM、LF、結尾換行、canonical 形式） |
 | R6 | JSONL 主鍵不重複，並依位元組順序排列 |

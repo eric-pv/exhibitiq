@@ -80,7 +80,7 @@
 3. 只取共用路徑（不使用 merge／cherry-pick 整條 commit，避免帶入功能程式）：
 
    ```bash
-   git checkout origin/dev/ai-intelligence -- CLAUDE.md README.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
+   git checkout origin/dev/ai-intelligence -- CLAUDE.md README.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs docs/acceptance .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
    ```
 
    第一次同步另外刪除舊版編號規範檔（4.2 所列）。之後若 `docs/` 新增其他共用子目錄，一併列入上述命令並更新本節。`git checkout` 不會刪除來源端已移除的檔案；這類檔案要另外 `git rm`，4.4 的檢查會列出它們。
@@ -93,7 +93,7 @@
 
 ```bash
 git fetch origin dev/ai-intelligence dev/data-platform
-git diff --stat origin/dev/ai-intelligence origin/dev/data-platform -- CLAUDE.md README.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
+git diff --stat origin/dev/ai-intelligence origin/dev/data-platform -- CLAUDE.md README.md docs/ExhibitIQ_專案總規範.md docs/DEVELOPMENT_PLAN.md docs/PROGRESS.md docs/workflow docs/architecture docs/specs docs/acceptance .github/ISSUE_TEMPLATE .github/pull_request_template.md schemas
 ```
 
 ### 4.5 限制

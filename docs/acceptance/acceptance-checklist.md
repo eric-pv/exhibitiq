@@ -28,7 +28,7 @@ npx playwright test                                    # 端到端、三種尺�
 | V9 | 網頁報告與 PDF 內容一致 | ✅ | `site/src/reports.test.tsx`（網頁與 Markdown 章節、結論、來源一致）、`e2e`「reports (W3-04)」（列印版面、PDF） | 自動 PDF workflow（D3-01） |
 | V10 | 完整流程：展覽 → 企業 → 商機 → 產品建議 → 報告 → PDF | ◐ | `site/e2e/flow.spec.ts`（W4-01：單一測試走完整條流程，含 PDF）；展示腳本 `docs/acceptance/demo-script.md` | 「新增展覽」一段（W3-07／D2-13）；真實資料 |
 | V11 | 桌機、平板、手機都可以操作 | ✅ | `e2e/layout.spec.ts`（9 頁 × 3 尺寸，不得橫向捲動） | 完整響應式調整（W3-06） |
-| V12 | 前端沒有 Token、API Key；公開版只含核准內容 | ◐ | `npm run security`、`site/src/security.test.ts` | 公開版白名單（發布方式待決定） |
+| V12 | 前端沒有 Token、API Key；公開版只含核准內容 | ✅ | `npm run security`、`npm run pages:check`、`site/src/security.test.ts`、`tests/contract/test_public_content.py`（整個 repo）；檢查紀錄 `docs/acceptance/a4-08-public-content-review.md` | — |
 | V13 | 資料更新後可重新產生；兩人可在雲端獨立執行 Skill | ◐ | `tests/contract/test_repro.py`、另一個乾淨 clone 驗證一致 | Albert 工作區執行（A4-04）；A4-05 |
 | V14 | 合成資料在畫面與報告上明確標示 | ✅ | `DataOriginBanner` 各頁測試、報告「資料狀態」章節（`test_skill_tools.py`） | — |
 
