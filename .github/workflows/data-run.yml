@@ -1,0 +1,55 @@
+# Data run (D2-05, restored 2026-11-12 at Albert's request): crawling and imports run here, in GitHub's runners,
+# because the cloud workspace has no local DNS. See docs/data-platform/data-run.md.
+#
+# Trigger: a push to a branch named data-run/<anything> whose data-run/request.json lists allow-listed steps
+# (etl/data_run.py). The result (data/ and data-run/report.json) is committed back to the same branch; a person or
+# Claude Code reviews it and opens a pull request to dev/data-platform. This workflow never writes main or dev/*.
+# (workflow_dispatch and schedule only work from the default branch, main, which only the project owner changes.)
+name: data-run
+
+on:
+  push:
+    branches:
+      - "data-run/**"
+
+permissions:
+  contents: write  # only to push the result back to the data-run/* branch that triggered the run
+
+concurrency:
+  group: data-run-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    # pushes made with GITHUB_TOKEN do not start workflows; the message check is a second guard against loops
+    if: ${{ !contains(github.event.head_commit.message, '[data-run result]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run the request
+        id: run
+        continue-on-error: true
+        run: python -m etl.data_run data-run/request.json --report data-run/report.json
+      - name: Commit the result to this data-run branch
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          case "$BRANCH" in data-run/*) ;; *) echo "refusing to push to $BRANCH"; exit 1;; esac
+          git config user.name "exhibitiq-data-run"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data data-run/report.json
+          if git diff --cached --quiet; then echo "nothing to commit"; else
+            git commit -m "[data-run result] ${GITHUB_RUN_ID}: ${{ steps.run.outcome }}"
+            git push origin "HEAD:refs/heads/$BRANCH"
+          fi
+      - name: Fail if the request failed
+        if: ${{ steps.run.outcome != 'success' }}
+        run: exit 1
