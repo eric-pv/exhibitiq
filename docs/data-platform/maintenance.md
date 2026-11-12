@@ -30,6 +30,7 @@
 | [quality-and-source-failures.md](quality-and-source-failures.md) | 品質關卡、來源失效測試 | D4-07 |
 | [import-file.md](import-file.md) | 一個檔案到資料包的命令列、`printed-listing` 與 `pdf-layout-table` 適配器、已提交真實資料的檢查 | D2-02、D2-03 |
 | [iacp-2026-source-assessment.md](iacp-2026-source-assessment.md) | IACP 2026 來源評估（第一份真實資料；自動擷取不可行，人工列印 PDF 匯入） | D2-02 |
+| [enrich.md](enrich.md) | 以參展商官網補強資料包（網站自述、明確代理聲明、近期新聞），產生新版資料包 | #114 1A |
 | [dsa-2026-source-assessment.md](dsa-2026-source-assessment.md) | DSA 2026 來源評估（第二個不同結構：主辦單位 PDF 表格） | D2-03 |
 | [maintenance.md](maintenance.md) | 本文件 | D4-06 |
 
@@ -69,6 +70,7 @@ ID：`src_`、`run_`、`co_`、`pt_`、`chg_` ＋ ULID（`etl/ids.py`）；`data
 | 指令 | 用途 |
 |---|---|
 | `python -m etl.import_file --config ... --file ... --info ...` | 一個檔案 → 證據 → 紀錄 → 品質關卡 → 資料包 |
+| `python -m etl.enrich --package ... --targets ...` | 以參展商官網補強資料包（新版，舊版保留） |
 | `python -m etl.validate PACKAGE_DIR` | 驗證資料包（R1–R11） |
 | `python -m etl.report PACKAGE_DIR [--json]` | 完整度與品質報告 |
 | `python -m etl.build_index [--packages data/packages]` | 產生 `data/index/datasets.json` |
