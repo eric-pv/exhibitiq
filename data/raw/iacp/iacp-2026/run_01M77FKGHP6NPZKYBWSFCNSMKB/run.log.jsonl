@@ -1,0 +1,6 @@
+{"adapter":"company-site","crawl_run_id":"run_01M77FKGHP6NPZKYBWSFCNSMKB","event":"run_started","exhibition_id":"iacp","level":"INFO","source":"iacp-2026-theissen-training-systems-site","ts":"2026-11-12T08:57:17Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:17Z","url":"https://theissentraining.com/robots.txt"}
+{"crawl_delay":null,"event":"robots","level":"INFO","message":"robots.txt rules","mode":"rules","origin":"https://theissentraining.com","ts":"2026-11-12T08:57:17Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:19Z","url":"https://theissentraining.com/"}
+{"count":1,"event":"records_extracted","level":"INFO","source_id":"src_01M77FKJMGFZNEVANE0CS1A36Q","ts":"2026-11-12T08:57:19Z","url":"https://theissentraining.com/"}
+{"error_count":0,"event":"run_finished","level":"INFO","records_extracted":1,"requests_attempted":2,"requests_succeeded":2,"status":"succeeded","ts":"2026-11-12T08:57:19Z"}

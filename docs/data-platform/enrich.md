@@ -39,7 +39,17 @@ python -m etl.build_index
 
 IACP 2026 的 14 家目標：13 家找到官網（`data/sources/iacp/iacp-2026.enrich.json`），1 家（Scenario Trainer, Inc）查無官網。13 個網站的 robots.txt 都允許一般讀取首頁（AI 爬蟲與一般爬蟲同規則）；VirTra 禁止讀 feed（會遵守）；Paladin Drones 的伺服器 TLS 握手失敗。
 
-**尚未產生真實的新版資料包**：本雲端工作環境沒有本機 DNS（由代理伺服器解析網址），而爬蟲的安全檢查要求先在本機解析網址、確認不是內部網路，因此在這個環境全部判為連線失敗。放寬這項安全檢查的修改被系統的安全審查擋下，沒有套用。Albert 於 2026-11-12 選擇在 GitHub Actions 執行（見 `data-run.md`）。
+**已執行（2026-11-12，GitHub Actions data-run [run 43187104863](https://github.com/eric-pv/exhibitiq/actions/runs/43187104863)，見 `data-run.md`）**：新版資料包 `iacp-2026.20261112T085736Z`（前一版 `iacp-2026.20261109T071220Z` 保留），14 筆企業修改紀錄。
+
+| 結果 | 公司 |
+|---|---|
+| 取得官網與網站自述（11 家） | InVeris、MILO、Operator XR、V-Armed、Ti Training Corp、Theissen Training Systems、Peerless VR、Virtual Academy、DroneShield、Zephyr Drone Simulator、Rapid Drone |
+| 近 12 個月相關新聞 | V-Armed 8 則、Ti Training Corp 10 則（多為網站部落格文章；來源類型用最接近的 `press_release`，備註寫明來自網站 feed） |
+| 讀不到 | VirTra：網站回應 403（拒絕存取）→ 依規定停止，不重試、不繞過；Paladin Drones：對方伺服器加密連線握手失敗 |
+| 查無官網 | Scenario Trainer, Inc Smart Firearms Training Devices |
+| 代理／經銷聲明 | 11 個首頁都沒有明確的代理說法，因此沒有標記任何代理商 |
+
+MILO、Rapid Drone 的 feed 沒有項目；Virtual Academy 的 feed 項目不符合主題或時間。
 
 ## 5. 不包含
 

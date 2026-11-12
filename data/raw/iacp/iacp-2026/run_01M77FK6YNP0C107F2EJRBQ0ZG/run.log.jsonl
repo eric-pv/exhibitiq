@@ -1,0 +1,7 @@
+{"adapter":"company-site","crawl_run_id":"run_01M77FK6YNP0C107F2EJRBQ0ZG","event":"run_started","exhibition_id":"iacp","level":"INFO","source":"iacp-2026-virtra-site","ts":"2026-11-12T08:57:07Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:07Z","url":"https://www.virtra.com/robots.txt"}
+{"crawl_delay":null,"event":"robots","level":"INFO","message":"robots.txt rules","mode":"rules","origin":"https://www.virtra.com","ts":"2026-11-12T08:57:07Z"}
+{"event":"request","http_status":403,"level":"WARNING","succeeded":false,"ts":"2026-11-12T08:57:09Z","url":"https://www.virtra.com/"}
+{"code":"access_blocked","event":"error","http_status":403,"level":"ERROR","message":"HTTP 403 for https://www.virtra.com/","retryable":false,"ts":"2026-11-12T08:57:09Z","url":"https://www.virtra.com/"}
+{"event":"blocked","level":"ERROR","message":"access blocked: stopping this source, not working around it","ts":"2026-11-12T08:57:09Z","url":"https://www.virtra.com/"}
+{"error_count":1,"event":"run_finished","level":"INFO","records_extracted":0,"requests_attempted":2,"requests_succeeded":1,"status":"failed","ts":"2026-11-12T08:57:09Z"}
