@@ -1,0 +1,5 @@
+{"steps": [
+ {"command": "enrich", "package": "data/packages/iacp/2026/iacp-2026.20261109T071220Z", "targets": "data/sources/iacp/iacp-2026.enrich.json",
+  "notes": "Enriched from exhibitors' own websites (Issue #114 item 1A) in GitHub Actions (data-run). Previous package: iacp-2026.20261109T071220Z (exhibitor list imported from a PDF a person printed from the organizer's gallery). The organizer's per-exhibitor pages were not used: the site's robots.txt disallows AI crawlers."},
+ {"command": "build_index"}
+]}
