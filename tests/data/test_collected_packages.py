@@ -46,7 +46,9 @@ def test_the_source_config_reads_the_same_list_from_the_snapshot(package: Path) 
     found_names: set[str] = set()
     found_booths: set[str] = set()
     exact_names: set[str] = set()
-    for source in pkg.records["sources"]:
+    list_sources = [s for s in pkg.records["sources"] if s["source_type"] == config.source_type and s.get("url") in config.start_urls]
+    assert list_sources, "no source of the list's own config in the package"
+    for source in list_sources:  # other sources (e.g. exhibitors' websites added by etl.enrich) are not the list
         data = (ROOT / source["snapshot"]["locator"]).read_bytes()
         response = Response(source["url"], source["url"], 200, {}, data, source.get("media_type"))
         parsed = adapter.parse(response, Request(source["url"]), config)

@@ -1,0 +1,19 @@
+{
+  "crawl_run_id": "run_01M77FJWFG20C2DWJM5M4B1G88",
+  "crawler": {
+    "name": "company-site",
+    "version": "1.0.0"
+  },
+  "edition_id": "iacp-2026",
+  "exhibition_id": "iacp",
+  "finished_at": "2026-11-12T08:57:07Z",
+  "started_at": "2026-11-12T08:56:56Z",
+  "stats": {
+    "error_count": 0,
+    "records_extracted": 11,
+    "requests_attempted": 3,
+    "requests_succeeded": 3
+  },
+  "status": "succeeded",
+  "trigger": "manual"
+}
