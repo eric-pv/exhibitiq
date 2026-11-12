@@ -69,6 +69,7 @@ AI Skill 讀取（專案負責人的範圍；資料包是兩邊的介面）
 | D4-06 | 爬蟲與資料格式維護手冊：文件索引、格式速查、新增來源與失效處理、Schema 升版、備份；由測試確認提到的檔案與指令存在（**已完成**，見 `maintenance.md`） | `docs/data-platform/maintenance.md`、`tests/data/test_maintenance_docs.py` |
 | D2-02 | 第一份真實資料（IACP 2026，人工列印 PDF 匯入，662／662）；通用的檔案匯入命令列與 `printed-listing` 適配器（**已完成檔案匯入部分**，見 `import-file.md`；網站自動擷取對此來源不可行） | `etl/import_file.py`、`crawler/printed_listing.py`、`data/sources/` |
 | D2-03 | 第二個不同結構的真實資料（DSA 2026 主辦單位 PDF 表格，1184 列）；通用的 `pdf-layout-table` 適配器（以文字座標讀表格）；`etl.import_file --country-aliases`（**已完成**，見 `import-file.md`、`dsa-2026-source-assessment.md`） | `crawler/pdf_layout_table.py`、`data/sources/dsa/` |
+| #114 1A | 以參展商官網補強資料包：`company-site` 適配器、`etl.enrich`（**程式完成**；真實執行受雲端環境 DNS 限制，見 `enrich.md` §4） | `crawler/company_site.py`、`etl/enrich.py` |
 | D2-11 | 組裝含 manifest 與來源索引的資料包，通過驗證程式才發布（**已完成**，見 `assemble-package.md`） | `etl/assemble.py` |
 | D1-11 | 通用的展覽來源探索與可行性評估流程與範本（**已完成**，見 `source-assessment-process.md`、`source-assessment-template.md`） | `docs/data-platform/` |
 | Phase 2 | 共用爬蟲框架與來源註冊機制（D2-01）、測試展覽的來源適配器與匯入轉換（展覽差異只放在來源設定、適配器或對應設定）、去重與別名、完整度報告、資料包發布、新增展覽 workflow（D2-13） | `crawler/`、`etl/`、`data/`、`.github/workflows/` |
