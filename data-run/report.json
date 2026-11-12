@@ -1,0 +1,25 @@
+{
+ "ok": true,
+ "steps": [
+  {
+   "argv": [
+    "--package",
+    "data/packages/iacp/2026/iacp-2026.20261109T071220Z",
+    "--targets",
+    "data/sources/iacp/iacp-2026.enrich.json",
+    "--notes",
+    "Enriched from exhibitors' own websites (Issue #114 item 1A) in GitHub Actions (data-run). Previous package: iacp-2026.20261109T071220Z (exhibitor list imported from a PDF a person printed from the organizer's gallery). The organizer's per-exhibitor pages were not used: the site's robots.txt disallows AI crawlers."
+   ],
+   "exit_code": 0,
+   "module": "etl.enrich",
+   "output": "{\n \"changes\": 14,\n \"dataset_id\": \"iacp-2026.20261112T085736Z\",\n \"package\": \"data/packages/iacp/2026/iacp-2026.20261112T085736Z\",\n \"previous_dataset_id\": \"iacp-2026.20261109T071220Z\",\n \"targets\": [\n  {\n   \"exhibitor\": \"Scenario Trainer, Inc Smart Firearms Training Devices\",\n   \"result\": \"website not found\"\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"InVeris\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"MILO\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"Operator XR\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"V-Armed\",\n   \"news\": 8,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"failed\",\n   \"description\": false,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"VirTra\",\n   \"news\": 0,\n   \"result\": \"site not readable\",\n   \"website\": false\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"Ti Training Corp\",\n   \"news\": 10,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"Theissen Training Systems\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"Peerless VR\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"Virtual Academy\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"DroneShield\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"Zephyr Drone Simulator\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  },\n  {\n   \"crawl_status\": \"failed\",\n   \"description\": false,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"Paladin Drones\",\n   \"news\": 0,\n   \"result\": \"site not readable\",\n   \"website\": false\n  },\n  {\n   \"crawl_status\": \"succeeded\",\n   \"description\": true,\n   \"distribution_statements\": 0,\n   \"exhibitor\": \"Rapid Drone\",\n   \"news\": 0,\n   \"result\": \"enriched\",\n   \"website\": true\n  }\n ]\n}\n"
+  },
+  {
+   "argv": [],
+   "exit_code": 0,
+   "module": "etl.build_index",
+   "output": "wrote data/index/datasets.json: 2 exhibition(s), 2 edition(s), 1 notice(s)\n"
+  }
+ ],
+ "version": 1
+}

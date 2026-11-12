@@ -1,0 +1,6 @@
+{"adapter":"company-site","crawl_run_id":"run_01M77FKJMQAA6YFNCABEXWR5HV","event":"run_started","exhibition_id":"iacp","level":"INFO","source":"iacp-2026-peerless-vr-site","ts":"2026-11-12T08:57:19Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:19Z","url":"https://www.peerlessvr.com/robots.txt"}
+{"crawl_delay":null,"event":"robots","level":"INFO","message":"robots.txt rules","mode":"rules","origin":"https://www.peerlessvr.com","ts":"2026-11-12T08:57:19Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:21Z","url":"https://www.peerlessvr.com/"}
+{"count":1,"event":"records_extracted","level":"INFO","source_id":"src_01M77FKMRJAK3578QZRVVCJYEZ","ts":"2026-11-12T08:57:21Z","url":"https://www.peerlessvr.com/"}
+{"error_count":0,"event":"run_finished","level":"INFO","records_extracted":1,"requests_attempted":2,"requests_succeeded":2,"status":"succeeded","ts":"2026-11-12T08:57:21Z"}
