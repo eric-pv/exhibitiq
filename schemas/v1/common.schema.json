@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/common.schema.json",
+  "title": "ExhibitIQ 共用定義",
+  "description": "所有 v1 Schema 共用的型別定義。只有 $defs，不直接驗證任何資料。",
+  "$defs": {
+    "schema_version": {
+      "type": "string",
+      "description": "完整 Schema 版本號（semver）。草案期必須與 schemas/v1/VERSION 完全相同。",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$"
+    },
+    "exhibition_id": {
+      "type": "string",
+      "description": "展覽 ID：小寫英數與連字號的穩定代號，例如 mspo、tadte。由專案負責人或資料工程指定後不得變更。",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 40
+    },
+    "edition_id": {
+      "type": "string",
+      "description": "屆次 ID：<exhibition_id>-<西元年>，同年多屆時可加小寫後綴，例如 mspo-2026。",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*-[0-9]{4}(?:-[a-z0-9]+)?$",
+      "maxLength": 60
+    },
+    "dataset_id": {
+      "type": "string",
+      "description": "資料包 ID：<edition_id>.<建立時間 UTC，YYYYMMDDTHHMMSSZ>，例如 mspo-2026.20261103T060000Z。",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*-[0-9]{4}(?:-[a-z0-9]+)?\\.[0-9]{8}T[0-9]{6}Z$",
+      "maxLength": 80
+    },
+    "company_id": {
+      "type": "string",
+      "description": "企業 ID：co_ + ULID。一經指派永不變更、不重複使用、不由名稱推導。",
+      "pattern": "^co_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "participation_id": {
+      "type": "string",
+      "description": "參展紀錄 ID：pt_ + ULID。",
+      "pattern": "^pt_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "source_id": {
+      "type": "string",
+      "description": "來源 ID：src_ + ULID。每一次取得（每一份快照）一個來源 ID。",
+      "pattern": "^src_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "crawl_run_id": {
+      "type": "string",
+      "description": "擷取批次 ID：run_ + ULID。",
+      "pattern": "^run_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "change_id": {
+      "type": "string",
+      "description": "變更紀錄 ID：chg_ + ULID。",
+      "pattern": "^chg_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "utc_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC 時間，RFC 3339，必須以 Z 結尾。",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,6})?Z$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "sha256: 加 64 個小寫十六進位字元。",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "git_commit": {
+      "type": "string",
+      "description": "完整 40 字元 Git commit SHA。",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "country_code": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 國家代碼（大寫）。合成資料使用 ZZ。",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "language_tag": {
+      "type": "string",
+      "description": "BCP 47 語言標籤，例如 en、pl、zh-Hant。",
+      "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+    },
+    "http_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://",
+      "maxLength": 2048
+    },
+    "hostname": {
+      "type": "string",
+      "description": "小寫網域名稱，不含協定與路徑。",
+      "pattern": "^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$",
+      "maxLength": 253
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S",
+      "maxLength": 4000
+    },
+    "short_text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S",
+      "maxLength": 500
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "source_ids": {
+      "type": "array",
+      "description": "支持這筆紀錄的來源 ID，至少一個。",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/source_id"
+      }
+    },
+    "field_sources": {
+      "type": "object",
+      "description": "選填：個別欄位的來源。鍵為本紀錄的欄位名稱，值為來源 ID 陣列。未列出的欄位以紀錄層級的 source_ids 為準。",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/source_ids"
+      }
+    },
+    "fact_verification_status": {
+      "type": "string",
+      "description": "來源事實的查證狀態。verified=已與官方或第一手來源核對；unverified=已取得來源但尚未核對；human_confirmed=經人工確認；insufficient_data=來源不足以確認。核心資料不得使用 ai_inferred，AI 推論只能出現在分析結果契約（P1-AI-05）。",
+      "enum": [
+        "verified",
+        "unverified",
+        "human_confirmed",
+        "insufficient_data"
+      ]
+    },
+    "completeness_status": {
+      "type": "string",
+      "description": "complete=已與官方公布筆數核對且一致；partial=已知不完整；unknown=無法確認完整度。",
+      "enum": [
+        "complete",
+        "partial",
+        "unknown"
+      ]
+    },
+    "data_origin": {
+      "type": "string",
+      "description": "collected=實際擷取的資料；synthetic=合成測試資料，不得作為分析事實。",
+      "enum": [
+        "collected",
+        "synthetic"
+      ]
+    },
+    "alias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "source_ids"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/short_text"
+        },
+        "lang": {
+          "$ref": "#/$defs/language_tag"
+        },
+        "source_ids": {
+          "$ref": "#/$defs/source_ids"
+        }
+      }
+    },
+    "bxr_product_id": {
+      "type": "string",
+      "pattern": "^bxr-[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 60,
+      "description": "BXR 產品 ID：bxr- 加小寫英數與連字號，例如 bxr-police-box。產品卡定義屬於 A1-09。"
+    },
+    "analysis_profile_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "description": "分析設定檔（主題）ID：小寫英數與連字號。"
+    },
+    "analysis_mode": {
+      "type": "string",
+      "enum": [
+        "bxr_opportunity",
+        "industry_research",
+        "competitor_research"
+      ],
+      "description": "bxr_opportunity=A. BXR 商機分析；industry_research=B. 產業與技術研究（不使用 BXR 產品卡）；competitor_research=C. 競爭對手研究（不依賴 BXR 產品卡）。"
+    },
+    "keyword": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "term_id",
+        "category",
+        "label",
+        "enabled"
+      ],
+      "properties": {
+        "term_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,127}$"
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "description": "分類，例如 technology、product、application、industry、need、competitor；使用者可自訂，不限定領域。"
+        },
+        "label": {
+          "$ref": "#/$defs/short_text"
+        },
+        "label_en": {
+          "$ref": "#/$defs/short_text"
+        },
+        "synonyms": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/short_text"
+          }
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "notes": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "dimension": "technology",
+  "approval_status": "approved",
+  "terms": [
+    {
+      "term_id": "technology.simulation",
+      "label": "模擬",
+      "synonyms": [
+        "Simulation",
+        "Simulator",
+        "模擬"
+      ]
+    },
+    {
+      "term_id": "technology.xr",
+      "label": "擴增／虛擬實境",
+      "synonyms": [
+        "AR",
+        "Augmented",
+        "MR",
+        "VR",
+        "Virtual Reality",
+        "XR",
+        "擴增實境",
+        "虛擬實境"
+      ]
+    },
+    {
+      "term_id": "technology.ai",
+      "label": "人工智慧",
+      "synonyms": [
+        "AI",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "人工智慧"
+      ]
+    },
+    {
+      "term_id": "technology.sensors",
+      "label": "感測",
+      "synonyms": [
+        "Optronics",
+        "Radar",
+        "Sensor",
+        "光電",
+        "感測",
+        "雷達"
+      ]
+    },
+    {
+      "term_id": "technology.unmanned",
+      "label": "無人載具",
+      "synonyms": [
+        "Drone",
+        "UAV",
+        "UGV",
+        "USV",
+        "Unmanned",
+        "無人",
+        "無人機"
+      ]
+    },
+    {
+      "term_id": "technology.communications",
+      "label": "通訊",
+      "synonyms": [
+        "C4I",
+        "Communication",
+        "Radio",
+        "通訊"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定為起始分類詞；使用者可在「分析設定」以分析主題新增或修改關鍵字，不受此限。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
+}

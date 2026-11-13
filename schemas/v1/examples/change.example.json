@@ -1,0 +1,14 @@
+{
+  "change_id": "chg_01JCH000000000000000000001",
+  "dataset_id": "example-expo-2026.20261110T000000Z",
+  "previous_dataset_id": "example-expo-2026.20261103T000000Z",
+  "entity_type": "participation",
+  "entity_id": "pt_01JCP000000000000000000002",
+  "change_type": "modified",
+  "field_changes": [
+    {"field": "booth", "before": null, "after": "B-12"}
+  ],
+  "detected_at": "2026-11-10T00:00:00Z",
+  "source_ids": ["src_01JCS000000000000000000003"],
+  "notes": "合成測試資料（synthetic）：示範第二個資料包中，展位從未列出變為 B-12。"
+}

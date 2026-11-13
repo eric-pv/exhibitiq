@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "dimension": "industry",
+  "approval_status": "approved",
+  "terms": [
+    {
+      "term_id": "industry.defense",
+      "label": "國防",
+      "synonyms": [
+        "Defence",
+        "Defense",
+        "Military",
+        "國防",
+        "軍事"
+      ]
+    },
+    {
+      "term_id": "industry.security",
+      "label": "國土安全與執法",
+      "synonyms": [
+        "Law Enforcement",
+        "Police",
+        "Security",
+        "安全",
+        "警政"
+      ]
+    },
+    {
+      "term_id": "industry.aerospace",
+      "label": "航太",
+      "synonyms": [
+        "Aerospace",
+        "Aviation",
+        "Space",
+        "太空",
+        "航空"
+      ]
+    },
+    {
+      "term_id": "industry.maritime",
+      "label": "海事",
+      "synonyms": [
+        "Maritime",
+        "Naval",
+        "Shipbuilding",
+        "海事",
+        "造船"
+      ]
+    },
+    {
+      "term_id": "industry.industrial",
+      "label": "一般製造",
+      "synonyms": [
+        "Industrial",
+        "Manufacturing",
+        "製造"
+      ]
+    },
+    {
+      "term_id": "industry.ict",
+      "label": "資通訊",
+      "synonyms": [
+        "ICT",
+        "IT",
+        "Software",
+        "Telecom",
+        "資通訊",
+        "軟體"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定為起始分類詞；使用者可在「分析設定」以分析主題新增或修改關鍵字，不受此限。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
+}

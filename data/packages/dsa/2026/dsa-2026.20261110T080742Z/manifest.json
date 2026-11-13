@@ -1,0 +1,72 @@
+{
+  "completeness": {
+    "collected_participation_count": 1172,
+    "official_count_source_id": null,
+    "official_exhibitor_count": null
+  },
+  "completeness_status": "unknown",
+  "content_hash": "sha256:c580a303ad7f38866acf7a9531db768a188af6f830644f4ee26cb021908a7d1f",
+  "crawl_run_ids": [
+    "run_01M727Z9TV8A01MY3X2QWRZJ9Q"
+  ],
+  "created_at": "2026-11-10T08:07:42Z",
+  "data_origin": "collected",
+  "dataset_id": "dsa-2026.20261110T080742Z",
+  "edition_id": "dsa-2026",
+  "edition_year": 2026,
+  "exhibition_id": "dsa",
+  "files": {
+    "changes.jsonl": {
+      "bytes": 0,
+      "records": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "companies.jsonl": {
+      "bytes": 275936,
+      "records": 1172,
+      "sha256": "sha256:0f1b9d26b63910d5869fc68666752edecf4a715465f8a3c6be87184038d06759"
+    },
+    "crawl_runs.jsonl": {
+      "bytes": 362,
+      "records": 1,
+      "sha256": "sha256:b4004d612e8211d4ff093d1c81f92dbd7cd1edeb6ea0f0ca1a5c599e13a0d826"
+    },
+    "edition.json": {
+      "bytes": 445,
+      "records": 1,
+      "sha256": "sha256:bc328fd1b3a2ae34b62444b49f502fde69ce5d2aa30b68f63994f92140a7404c"
+    },
+    "exhibition.json": {
+      "bytes": 363,
+      "records": 1,
+      "sha256": "sha256:7c8819fd4f763a2ab6b0fb6bad745c6b9f80b7a8a816c35827214c8c99552071"
+    },
+    "participations.jsonl": {
+      "bytes": 514826,
+      "records": 1172,
+      "sha256": "sha256:41144eacfdb734c5a8f8ca5a2065321f7096bfeff17ae6ca2f3bd6535b485d9f"
+    },
+    "sources.jsonl": {
+      "bytes": 478,
+      "records": 1,
+      "sha256": "sha256:c9d55dfca238664701d21f50310ddec3823dd5982d274e6688a70d31d23f245f"
+    }
+  },
+  "notes": "Imported from the organizer's PDF exhibitor list 'DSA 2026 & NATSEC ASIA 2026 Participating Companies', updated as of 6 April 2026 (7pm) (PDF ModDate 2026-04-08T10:03:29Z), provided by a person (Albert) on 2026-11-10. The exact download URL was not recorded; the source cites the organizer's site printed on the cover (www.dsaexhibition.com). The list numbers 1184 rows; no total exhibitor count is stated, so completeness is unknown. The 'Pavillion' column is recorded as hall.",
+  "previous_dataset_id": null,
+  "producer": {
+    "name": "exhibitiq-etl-import-file",
+    "version": "1.0.0"
+  },
+  "record_counts": {
+    "changes": 0,
+    "companies": 1172,
+    "crawl_runs": 1,
+    "participations": 1172,
+    "sources": 1
+  },
+  "schema_version": "1.0.0-draft.7",
+  "source_snapshot_ids": [
+    "src_01M727Z9TXFH56F0RY7Z3PH14A"
+  ]
+}

@@ -1,0 +1,4 @@
+{"adapter":"printed-listing","crawl_run_id":"run_01M6ZJD6HZTDMBQ7R4GPET5RQA","event":"run_started","exhibition_id":"iacp","level":"INFO","source":"iacp-2026-exhibitor-list-print","ts":"2026-11-09T07:12:20Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-09T07:12:20Z","url":"https://iacp2026.mapyourshow.com/8_0/explore/exhibitor-gallery.cfm?featured=false"}
+{"count":662,"event":"records_extracted","level":"INFO","source_id":"src_01M6ZJD6J156M8XCRREP6CTAWJ","ts":"2026-11-09T07:12:21Z","url":"https://iacp2026.mapyourshow.com/8_0/explore/exhibitor-gallery.cfm?featured=false"}
+{"error_count":0,"event":"run_finished","level":"INFO","records_extracted":662,"requests_attempted":1,"requests_succeeded":1,"status":"succeeded","ts":"2026-11-09T07:12:21Z"}

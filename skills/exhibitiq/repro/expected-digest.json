@@ -1,0 +1,22 @@
+{
+  "python": "3.13.18",
+  "digests": {
+    "validate-package:example": "sha256:b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "classify:example:default-library": "sha256:fe55a432be790b5eab999f0e5c157f0d2f946361470968a1add6fe54cf51abed",
+    "relate:example:default-library": "sha256:29e8cd541a615dc08f6bb9694b85d1d24217fb06374be32a765747fb43c003b5",
+    "classify:example:bxr-opportunity": "sha256:1d9c084ca55b0d31a3151c3c2bcbf7810da6acf6871322574b607ffe46c08e8e",
+    "relate:example:bxr-opportunity": "sha256:c3c4bc950953d2b6ed3210f64cd6ada9600c90e58f9b8883b22642cdf0c5639c",
+    "score:example:opportunity@1": "sha256:775442dee0d6035e7029f7d7e486585899d3cb29109ed4d5e81a1ddb51b664cd",
+    "validate-package:golden": "sha256:b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "classify:golden:default-library": "sha256:7fabba5c9ac3d16fbbde7b7fa42e17342aa6b232bc7000d7018e6630aa7acdb8",
+    "relate:golden:default-library": "sha256:caa3761a07e0cceca449a74763cc7af2a3cd227fbc5b9670ecc02de1cc43f06b",
+    "classify:golden:bxr-opportunity": "sha256:5af15f466de93f612b818c6919cd7146dc530b265b913a2f6099c548b76b75b1",
+    "relate:golden:bxr-opportunity": "sha256:4e8f07409163f8aed3dd2314f8d042cfd872c2a217b0ec4cfbfac3134d5d0337",
+    "score:golden:opportunity@1": "sha256:b613d1d6dcf177c08e3df5978b520c5c6360d2d4f233ffafab2860d1658d68e8",
+    "config:default-library": "sha256:69c9f34406aabad146e20c917988e14fb16dd527a2078576c0c8200d04e8fcf0",
+    "config:bxr-opportunity": "sha256:2e0b6810f4f4c792ed819b49ed85914e95b05cba2b6f3610b3ec8cd41feb711e",
+    "compare:example+golden": "sha256:3ef8c26aa262b222f3c6d1945880ec83f57fc7bbf2b4f23ad93a0392c48d7143",
+    "report:example": "sha256:a10ac90154c4ca66798384174a6fa9e4d054bd24dacc0529586a9c161962d1dc",
+    "report:golden": "sha256:86ab471d50d82bf79b166a4c037be637c5fd1eb6583c26fcb8c47df9d547e5b0"
+  }
+}

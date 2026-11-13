@@ -1,0 +1,223 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "analysis_id": "ana_01JCA000000000000000000001",
+  "analysis_type": "opportunity_ranking",
+  "title": "範例國防展 2026 商機排序（合成範例）",
+  "summary": "示範如何區分來源事實、AI 推論與資料不足，以及如何拆解商機評分。",
+  "input_dataset_id": "example-expo-2026.20261103T000000Z",
+  "input_hash": "sha256:68fc94dcaeaed1d23842f327b6b3cd05e07cca6610372ebb086622b03fb4d74b",
+  "data_origin": "synthetic",
+  "skill_version": "0.0.0-example",
+  "generated_at": "2026-11-03T08:00:00Z",
+  "review_status": "draft",
+  "evidence_source_ids": [
+    "src_01JCS000000000000000000001",
+    "src_01JCS000000000000000000002"
+  ],
+  "conclusions": [
+    {
+      "claim_id": "cl-001",
+      "claim_type": "fact",
+      "statement": "官方參展商名單列出 Synthetic Simulation Systems Ltd.，展位 A-01，分類為「Simulation & Training」。",
+      "subjects": [
+        {
+          "entity_type": "company",
+          "entity_id": "co_01JCC000000000000000000001"
+        }
+      ],
+      "evidence_source_ids": [
+        "src_01JCS000000000000000000001"
+      ],
+      "verification_status": "unverified"
+    },
+    {
+      "claim_id": "cl-002",
+      "claim_type": "inference",
+      "statement": "Synthetic Simulation Systems Ltd. 的主要業務可能是模擬訓練系統，與 BXR 的模擬產品線相關。",
+      "subjects": [
+        {
+          "entity_type": "company",
+          "entity_id": "co_01JCC000000000000000000001"
+        }
+      ],
+      "evidence_source_ids": [
+        "src_01JCS000000000000000000001",
+        "src_01JCS000000000000000000002"
+      ],
+      "confidence": "medium",
+      "rationale": "參展分類為「Simulation & Training」，企業網站的介紹頁也以模擬訓練為主。",
+      "uncertainty_ids": [
+        "un-001"
+      ]
+    },
+    {
+      "claim_id": "cl-003",
+      "claim_type": "unknown",
+      "statement": "Placeholder Training Devices GmbH 的產品領域無法判斷。",
+      "subjects": [
+        {
+          "entity_type": "company",
+          "entity_id": "co_01JCC000000000000000000002"
+        }
+      ],
+      "missing_data": "來源只列出公司名稱，沒有分類、展位或網站。"
+    }
+  ],
+  "uncertainties": [
+    {
+      "uncertainty_id": "un-001",
+      "description": "分類來自參展商自填的類別，未經第三方確認。",
+      "impact": "medium"
+    },
+    {
+      "uncertainty_id": "un-002",
+      "description": "官方公布 3 家參展商，只取得 2 家（完整度 partial），排名可能遺漏其他企業。",
+      "impact": "high"
+    }
+  ],
+  "scores": [
+    {
+      "score_id": "sc-001",
+      "score_model_id": "opportunity@1",
+      "subject": {
+        "entity_type": "company",
+        "entity_id": "co_01JCC000000000000000000001"
+      },
+      "total_points": 40,
+      "max_total_points": 70,
+      "rank": 1,
+      "factors": [
+        {
+          "factor_id": "domain_fit",
+          "label": "業務領域適配",
+          "status": "scored",
+          "points": 30,
+          "max_points": 40,
+          "evidence_source_ids": [
+            "src_01JCS000000000000000000001",
+            "src_01JCS000000000000000000002"
+          ],
+          "claim_ids": [
+            "cl-002"
+          ],
+          "rationale": "分類與網站都指向模擬訓練。"
+        },
+        {
+          "factor_id": "booth_known",
+          "label": "展位已公布",
+          "status": "scored",
+          "points": 10,
+          "max_points": 10,
+          "evidence_source_ids": [
+            "src_01JCS000000000000000000001"
+          ],
+          "claim_ids": [
+            "cl-001"
+          ],
+          "rationale": "官方名單列出展位 A-01。"
+        },
+        {
+          "factor_id": "contact_signal",
+          "label": "合作或採購訊號",
+          "status": "insufficient_data",
+          "points": 0,
+          "max_points": 20,
+          "rationale": "來源中沒有採購或合作相關資訊，不計分。"
+        }
+      ]
+    },
+    {
+      "score_id": "sc-002",
+      "score_model_id": "opportunity@1",
+      "subject": {
+        "entity_type": "company",
+        "entity_id": "co_01JCC000000000000000000002"
+      },
+      "total_points": 0,
+      "max_total_points": 70,
+      "rank": 2,
+      "factors": [
+        {
+          "factor_id": "domain_fit",
+          "label": "業務領域適配",
+          "status": "insufficient_data",
+          "points": 0,
+          "max_points": 40,
+          "claim_ids": [
+            "cl-003"
+          ],
+          "rationale": "無法判斷產品領域，不計分。"
+        },
+        {
+          "factor_id": "booth_known",
+          "label": "展位已公布",
+          "status": "insufficient_data",
+          "points": 0,
+          "max_points": 10,
+          "rationale": "來源未列出展位。"
+        },
+        {
+          "factor_id": "contact_signal",
+          "label": "合作或採購訊號",
+          "status": "insufficient_data",
+          "points": 0,
+          "max_points": 20,
+          "rationale": "來源中沒有相關資訊。"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "relationship_id": "rel-001",
+      "company_id": "co_01JCC000000000000000000001",
+      "relationship_type": "potential_customer",
+      "rationale": "業務領域與 BXR 模擬產品線相關，可能有整合或採購需求。",
+      "confidence": "low",
+      "evidence_source_ids": [
+        "src_01JCS000000000000000000001",
+        "src_01JCS000000000000000000002"
+      ],
+      "claim_ids": [
+        "cl-002"
+      ],
+      "uncertainty_ids": [
+        "un-001"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "recommendation_id": "rec-001",
+      "recommendation_type": "visit_priority",
+      "statement": "展期間優先拜訪 Synthetic Simulation Systems Ltd.（展位 A-01）。",
+      "rationale": "商機評分最高，且展位已公布。",
+      "priority": "high",
+      "subjects": [
+        {
+          "entity_type": "company",
+          "entity_id": "co_01JCC000000000000000000001"
+        }
+      ],
+      "assumptions": [
+        "展位資訊在展期前不會變動。"
+      ],
+      "based_on_claim_ids": [
+        "cl-001",
+        "cl-002"
+      ],
+      "score_ids": [
+        "sc-001"
+      ],
+      "evidence_source_ids": [
+        "src_01JCS000000000000000000001",
+        "src_01JCS000000000000000000002"
+      ],
+      "uncertainty_ids": [
+        "un-001",
+        "un-002"
+      ]
+    }
+  ],
+  "notes": "合成測試資料（synthetic）：示範分析結果格式，內容不代表任何真實企業或分析。"
+}

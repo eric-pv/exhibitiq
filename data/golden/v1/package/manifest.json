@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "dataset_id": "golden-fair-2025.20261104T000000Z",
+  "exhibition_id": "golden-fair",
+  "edition_id": "golden-fair-2025",
+  "edition_year": 2025,
+  "created_at": "2026-11-04T00:00:00Z",
+  "data_origin": "synthetic",
+  "producer": {
+    "name": "golden-generator",
+    "version": "0.0.0"
+  },
+  "previous_dataset_id": null,
+  "crawl_run_ids": [
+    "run_01JDR000000000000000000001"
+  ],
+  "source_snapshot_ids": [
+    "src_01JDS000000000000000000001",
+    "src_01JDS000000000000000000002",
+    "src_01JDS000000000000000000003"
+  ],
+  "files": {
+    "changes.jsonl": {
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "records": 0
+    },
+    "companies.jsonl": {
+      "sha256": "sha256:b66071e86be480899bbdae3cf5646c0a6bc40d92b122ab6dd1abcfe36e81e122",
+      "bytes": 911,
+      "records": 3
+    },
+    "crawl_runs.jsonl": {
+      "sha256": "sha256:261e8d3c1a9d6616d0815aba7eba7127a222078e611571c1fff66b7918290583",
+      "bytes": 489,
+      "records": 1
+    },
+    "edition.json": {
+      "sha256": "sha256:012d45d531f6d0e833c4b9c960d5006900e29fbc82a9b4e69a559fe12bf74276",
+      "bytes": 222,
+      "records": 1
+    },
+    "exhibition.json": {
+      "sha256": "sha256:ad1e99c9c614111feb7d5e4df3d374e66de1937fd6981b4f656c606b24036b31",
+      "bytes": 338,
+      "records": 1
+    },
+    "participations.jsonl": {
+      "sha256": "sha256:2a750fec52d2ab665fb25baefd3083d6b0953197be4b7fca0ff472955cd13496",
+      "bytes": 1122,
+      "records": 3
+    },
+    "sources.jsonl": {
+      "sha256": "sha256:404efe26662ec7330adeba6d33c47f33e6e40dbd1540b3d9dff590ec34220406",
+      "bytes": 1205,
+      "records": 3
+    }
+  },
+  "record_counts": {
+    "companies": 3,
+    "participations": 3,
+    "sources": 3,
+    "crawl_runs": 1,
+    "changes": 0
+  },
+  "content_hash": "sha256:a9944c5595784649dee9aa54f8223c1ff0d728edc7e56925e1c11c8658e73970",
+  "completeness_status": "unknown",
+  "completeness": {
+    "official_exhibitor_count": null,
+    "official_count_source_id": null,
+    "collected_participation_count": 2,
+    "notes": "合成：官方未公布參展商數。"
+  },
+  "notes": "黃金樣本（合成資料，synthetic）：整合測試用，所有名稱、網址與數字皆為虛構。"
+}

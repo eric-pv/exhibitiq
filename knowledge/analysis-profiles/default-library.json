@@ -1,0 +1,364 @@
+{
+  "schema_version": "1.0.0-draft.6",
+  "profile_id": "default-library",
+  "version": 2,
+  "name": "預設詞庫（起點）",
+  "description": "由 knowledge/taxonomy 草稿轉成的起始詞庫，只是起點；使用者可以在「分析設定」新增任何領域的主題與關鍵字。",
+  "mode": "industry_research",
+  "keywords": [
+    {
+      "term_id": "application.training",
+      "category": "application",
+      "label": "訓練",
+      "enabled": true,
+      "synonyms": [
+        "Trainer",
+        "Training",
+        "訓練"
+      ]
+    },
+    {
+      "term_id": "application.wargaming",
+      "category": "application",
+      "label": "兵棋推演",
+      "enabled": true,
+      "synonyms": [
+        "Wargame",
+        "Wargaming",
+        "兵棋"
+      ]
+    },
+    {
+      "term_id": "application.command-control",
+      "category": "application",
+      "label": "指揮管制",
+      "enabled": true,
+      "synonyms": [
+        "C2",
+        "C4ISR",
+        "Command",
+        "Control",
+        "指揮",
+        "管制"
+      ]
+    },
+    {
+      "term_id": "application.maintenance",
+      "category": "application",
+      "label": "維修保養",
+      "enabled": true,
+      "synonyms": [
+        "MRO",
+        "Maintenance",
+        "維修"
+      ]
+    },
+    {
+      "term_id": "application.surveillance",
+      "category": "application",
+      "label": "監偵",
+      "enabled": true,
+      "synonyms": [
+        "ISR",
+        "Reconnaissance",
+        "Surveillance",
+        "偵察",
+        "監控"
+      ]
+    },
+    {
+      "term_id": "capability.scenario-training",
+      "category": "capability",
+      "label": "情境訓練",
+      "enabled": true,
+      "synonyms": [
+        "Scenario",
+        "情境"
+      ]
+    },
+    {
+      "term_id": "capability.immersive-simulation",
+      "category": "capability",
+      "label": "沉浸式模擬",
+      "enabled": true,
+      "synonyms": [
+        "Immersive",
+        "沉浸"
+      ]
+    },
+    {
+      "term_id": "capability.data-analytics",
+      "category": "capability",
+      "label": "資料分析",
+      "enabled": true,
+      "synonyms": [
+        "Analytics",
+        "Data",
+        "分析"
+      ]
+    },
+    {
+      "term_id": "capability.system-integration",
+      "category": "capability",
+      "label": "系統整合",
+      "enabled": true,
+      "synonyms": [
+        "Integration",
+        "Integrator",
+        "整合"
+      ]
+    },
+    {
+      "term_id": "industry.defense",
+      "category": "industry",
+      "label": "國防",
+      "enabled": true,
+      "synonyms": [
+        "Defence",
+        "Defense",
+        "Military",
+        "國防",
+        "軍事"
+      ]
+    },
+    {
+      "term_id": "industry.security",
+      "category": "industry",
+      "label": "國土安全與執法",
+      "enabled": true,
+      "synonyms": [
+        "Law Enforcement",
+        "Police",
+        "Security",
+        "安全",
+        "警政"
+      ]
+    },
+    {
+      "term_id": "industry.aerospace",
+      "category": "industry",
+      "label": "航太",
+      "enabled": true,
+      "synonyms": [
+        "Aerospace",
+        "Aviation",
+        "Space",
+        "太空",
+        "航空"
+      ]
+    },
+    {
+      "term_id": "industry.maritime",
+      "category": "industry",
+      "label": "海事",
+      "enabled": true,
+      "synonyms": [
+        "Maritime",
+        "Naval",
+        "Shipbuilding",
+        "海事",
+        "造船"
+      ]
+    },
+    {
+      "term_id": "industry.industrial",
+      "category": "industry",
+      "label": "一般製造",
+      "enabled": true,
+      "synonyms": [
+        "Industrial",
+        "Manufacturing",
+        "製造"
+      ]
+    },
+    {
+      "term_id": "industry.ict",
+      "category": "industry",
+      "label": "資通訊",
+      "enabled": true,
+      "synonyms": [
+        "ICT",
+        "IT",
+        "Software",
+        "Telecom",
+        "資通訊",
+        "軟體"
+      ]
+    },
+    {
+      "term_id": "need.procurement",
+      "category": "need",
+      "label": "採購需求",
+      "enabled": true,
+      "synonyms": [
+        "procurement",
+        "tender",
+        "採購",
+        "標案"
+      ]
+    },
+    {
+      "term_id": "need.partnership",
+      "category": "need",
+      "label": "合作夥伴",
+      "enabled": true,
+      "synonyms": [
+        "agent",
+        "distributor",
+        "partner",
+        "代理",
+        "合作"
+      ]
+    },
+    {
+      "term_id": "need.localization",
+      "category": "need",
+      "label": "在地化",
+      "enabled": true,
+      "synonyms": [
+        "local",
+        "localization",
+        "在地"
+      ]
+    },
+    {
+      "term_id": "problem.training-cost",
+      "category": "problem",
+      "label": "訓練成本高",
+      "enabled": true,
+      "synonyms": [
+        "cost",
+        "成本"
+      ]
+    },
+    {
+      "term_id": "problem.live-training-risk",
+      "category": "problem",
+      "label": "實地訓練風險",
+      "enabled": true,
+      "synonyms": [
+        "risk",
+        "safety",
+        "安全",
+        "風險"
+      ]
+    },
+    {
+      "term_id": "problem.readiness",
+      "category": "problem",
+      "label": "戰備整備",
+      "enabled": true,
+      "synonyms": [
+        "readiness",
+        "整備"
+      ]
+    },
+    {
+      "term_id": "technology.simulation",
+      "category": "technology",
+      "label": "模擬",
+      "enabled": true,
+      "synonyms": [
+        "Simulation",
+        "Simulator",
+        "模擬"
+      ]
+    },
+    {
+      "term_id": "technology.xr",
+      "category": "technology",
+      "label": "擴增／虛擬實境",
+      "enabled": true,
+      "synonyms": [
+        "AR",
+        "Augmented",
+        "MR",
+        "VR",
+        "Virtual Reality",
+        "XR",
+        "擴增實境",
+        "虛擬實境"
+      ]
+    },
+    {
+      "term_id": "technology.ai",
+      "category": "technology",
+      "label": "人工智慧",
+      "enabled": true,
+      "synonyms": [
+        "AI",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "人工智慧"
+      ]
+    },
+    {
+      "term_id": "technology.sensors",
+      "category": "technology",
+      "label": "感測",
+      "enabled": true,
+      "synonyms": [
+        "Optronics",
+        "Radar",
+        "Sensor",
+        "光電",
+        "感測",
+        "雷達"
+      ]
+    },
+    {
+      "term_id": "technology.unmanned",
+      "category": "technology",
+      "label": "無人載具",
+      "enabled": true,
+      "synonyms": [
+        "Drone",
+        "UAV",
+        "UGV",
+        "USV",
+        "Unmanned",
+        "無人",
+        "無人機"
+      ]
+    },
+    {
+      "term_id": "technology.communications",
+      "category": "technology",
+      "label": "通訊",
+      "enabled": true,
+      "synonyms": [
+        "C4I",
+        "Communication",
+        "Radio",
+        "通訊"
+      ]
+    }
+  ],
+  "relationship_signals": {
+    "channel": [
+      "distributor",
+      "distribution",
+      "reseller",
+      "dealer",
+      "agent",
+      "代理",
+      "經銷",
+      "代理商",
+      "經銷商"
+    ],
+    "partner": [
+      "integrator",
+      "system integration",
+      "systems integration",
+      "OEM",
+      "ODM",
+      "solution provider",
+      "系統整合",
+      "整合商",
+      "合作夥伴"
+    ]
+  },
+  "updated_at": "2026-11-05T08:00:00Z",
+  "updated_by": "Claude Code（A2-15）",
+  "notes": "分類詞由 Eric 於 2026-11-05 核定為起始詞庫；使用者可在「分析設定」新增或修改。"
+}

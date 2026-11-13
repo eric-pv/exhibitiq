@@ -1,0 +1,19 @@
+{
+  "crawl_run_id": "run_01M727Z9TV8A01MY3X2QWRZJ9Q",
+  "crawler": {
+    "name": "pdf-layout-table",
+    "version": "1.0.0"
+  },
+  "edition_id": "dsa-2026",
+  "exhibition_id": "dsa",
+  "finished_at": "2026-11-10T08:07:44Z",
+  "started_at": "2026-11-10T08:07:42Z",
+  "stats": {
+    "error_count": 0,
+    "records_extracted": 1184,
+    "requests_attempted": 1,
+    "requests_succeeded": 1
+  },
+  "status": "succeeded",
+  "trigger": "import"
+}

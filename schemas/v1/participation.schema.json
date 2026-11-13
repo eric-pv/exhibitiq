@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/participation.schema.json",
+  "title": "Participation",
+  "description": "參展紀錄",
+  "type": "object",
+  "required": [
+    "participation_id",
+    "company_id",
+    "edition_id",
+    "exhibitor_name_as_listed",
+    "participation_type",
+    "listing_status",
+    "source_ids",
+    "verification_status"
+  ],
+  "properties": {
+    "participation_id": {
+      "$ref": "common.schema.json#/$defs/participation_id"
+    },
+    "company_id": {
+      "$ref": "common.schema.json#/$defs/company_id"
+    },
+    "edition_id": {
+      "$ref": "common.schema.json#/$defs/edition_id"
+    },
+    "exhibitor_name_as_listed": {
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/$defs/short_text"
+        }
+      ],
+      "description": "來源上列出的參展商名稱原文，不做正規化。"
+    },
+    "participation_type": {
+      "type": "string",
+      "enum": [
+        "exhibitor",
+        "co_exhibitor",
+        "sponsor",
+        "unknown"
+      ]
+    },
+    "listing_status": {
+      "type": "string",
+      "enum": [
+        "listed",
+        "removed"
+      ],
+      "description": "removed=先前列出但最新擷取已不在名單中；紀錄保留，不刪除。"
+    },
+    "booth": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "hall": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "country_as_listed": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "website_as_listed": {
+      "$ref": "common.schema.json#/$defs/http_url"
+    },
+    "categories_as_listed": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/short_text"
+      },
+      "description": "來源上的分類原文；正規化分類屬於 P1-AI-06。"
+    },
+    "products_as_listed": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/short_text"
+      }
+    },
+    "first_seen_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "last_seen_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "source_ids": {
+      "$ref": "common.schema.json#/$defs/source_ids"
+    },
+    "field_sources": {
+      "$ref": "common.schema.json#/$defs/field_sources"
+    },
+    "verification_status": {
+      "$ref": "common.schema.json#/$defs/fact_verification_status"
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  },
+  "additionalProperties": false
+}

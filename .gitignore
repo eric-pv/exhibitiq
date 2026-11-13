@@ -1,0 +1,26 @@
+# ExhibitIQ — owner: ai (docs/architecture/module-boundaries.md §2)
+# Generated files only. Never ignore data, schemas or reports here.
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Web Dashboard (site/)
+node_modules/
+site/dist/
+site/dist-single/
+site/test-results/
+site/playwright-report/
+site/*.tsbuildinfo
+site/src/generated/
+
+# Editors / OS
+.DS_Store
+
+# Local Claude Code skill link (skills/exhibitiq/README.md)
+.claude/skills/
+
+# Analysis work files (session_tools.py prepare/finalize; not committed)
+.work/

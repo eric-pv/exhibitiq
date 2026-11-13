@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/change.schema.json",
+  "title": "Change",
+  "description": "變更紀錄",
+  "type": "object",
+  "required": [
+    "change_id",
+    "dataset_id",
+    "previous_dataset_id",
+    "entity_type",
+    "entity_id",
+    "change_type",
+    "detected_at"
+  ],
+  "properties": {
+    "change_id": {
+      "$ref": "common.schema.json#/$defs/change_id"
+    },
+    "dataset_id": {
+      "$ref": "common.schema.json#/$defs/dataset_id"
+    },
+    "previous_dataset_id": {
+      "$ref": "common.schema.json#/$defs/dataset_id"
+    },
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "exhibition",
+        "edition",
+        "company",
+        "participation"
+      ]
+    },
+    "entity_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "change_type": {
+      "type": "string",
+      "enum": [
+        "added",
+        "removed",
+        "modified"
+      ]
+    },
+    "field_changes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "before",
+          "after"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.]*$"
+          },
+          "before": true,
+          "after": true
+        }
+      }
+    },
+    "detected_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "source_ids": {
+      "$ref": "common.schema.json#/$defs/source_ids"
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "change_type": {
+            "const": "modified"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "field_changes"
+        ]
+      }
+    }
+  ]
+}

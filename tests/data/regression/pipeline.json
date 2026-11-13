@@ -1,0 +1,108 @@
+{
+ "package": {
+  "completeness_status": "unknown",
+  "content_hash": "sha256:2f4a2a54142bfc2483b060d2127175763d660d1b35341e288af7be4d81dc6733",
+  "dataset_id": "example-expo-2026.20261104T080000Z",
+  "files": {
+   "changes.jsonl": {
+    "bytes": 0,
+    "records": 0,
+    "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "companies.jsonl": {
+    "bytes": 646,
+    "records": 2,
+    "sha256": "sha256:77af9caeb3fb1d2e0093c0555acb5ed0cc5aeb66a08433ea00d1466eefae9e55"
+   },
+   "crawl_runs.jsonl": {
+    "bytes": 372,
+    "records": 1,
+    "sha256": "sha256:afac230bdd4edcade5abad9e2dd4989e490edb77862c97adf2ddfc4f6f5518d3"
+   },
+   "edition.json": {
+    "bytes": 161,
+    "records": 1,
+    "sha256": "sha256:796dbdfb9ab19f526800b88f7e8c984f29d0e47fa6e22719009642a1d3bf4dd9"
+   },
+   "exhibition.json": {
+    "bytes": 138,
+    "records": 1,
+    "sha256": "sha256:bd95f167607e82972060c761adff5c8c9f63c38583976f8a0a7e0a362d7d6697"
+   },
+   "participations.jsonl": {
+    "bytes": 1055,
+    "records": 2,
+    "sha256": "sha256:6866c1bccedf3e2ebd679b132ccdc00f96af9275cadfdb70edf2fd3f5c43e138"
+   },
+   "sources.jsonl": {
+    "bytes": 493,
+    "records": 1,
+    "sha256": "sha256:db0f7c83ce58b01868717cb1327f891b53e78a20b93c47f2077c36ef793f2635"
+   }
+  },
+  "record_counts": {
+   "changes": 0,
+   "companies": 2,
+   "crawl_runs": 1,
+   "participations": 2,
+   "sources": 1
+  },
+  "schema_version": "1.0.0-draft.7"
+ },
+ "partial": {
+  "completeness": {
+   "collected_participation_count": 2,
+   "official_count_as_of": "2026-11-01",
+   "official_count_source_id": "src_01M6FZWDR00000000000000002",
+   "official_exhibitor_count": 5
+  },
+  "completeness_status": "partial",
+  "content_hash": "sha256:2f4a2a54142bfc2483b060d2127175763d660d1b35341e288af7be4d81dc6733",
+  "dataset_id": "example-expo-2026.20261104T080000Z",
+  "files": {
+   "changes.jsonl": {
+    "bytes": 0,
+    "records": 0,
+    "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "companies.jsonl": {
+    "bytes": 646,
+    "records": 2,
+    "sha256": "sha256:77af9caeb3fb1d2e0093c0555acb5ed0cc5aeb66a08433ea00d1466eefae9e55"
+   },
+   "crawl_runs.jsonl": {
+    "bytes": 372,
+    "records": 1,
+    "sha256": "sha256:afac230bdd4edcade5abad9e2dd4989e490edb77862c97adf2ddfc4f6f5518d3"
+   },
+   "edition.json": {
+    "bytes": 161,
+    "records": 1,
+    "sha256": "sha256:796dbdfb9ab19f526800b88f7e8c984f29d0e47fa6e22719009642a1d3bf4dd9"
+   },
+   "exhibition.json": {
+    "bytes": 138,
+    "records": 1,
+    "sha256": "sha256:bd95f167607e82972060c761adff5c8c9f63c38583976f8a0a7e0a362d7d6697"
+   },
+   "participations.jsonl": {
+    "bytes": 1055,
+    "records": 2,
+    "sha256": "sha256:6866c1bccedf3e2ebd679b132ccdc00f96af9275cadfdb70edf2fd3f5c43e138"
+   },
+   "sources.jsonl": {
+    "bytes": 493,
+    "records": 1,
+    "sha256": "sha256:db0f7c83ce58b01868717cb1327f891b53e78a20b93c47f2077c36ef793f2635"
+   }
+  },
+  "record_counts": {
+   "changes": 0,
+   "companies": 2,
+   "crawl_runs": 1,
+   "participations": 2,
+   "sources": 1
+  },
+  "schema_version": "1.0.0-draft.7"
+ }
+}

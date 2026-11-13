@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "dimension": "application",
+  "approval_status": "approved",
+  "terms": [
+    {
+      "term_id": "application.training",
+      "label": "訓練",
+      "synonyms": [
+        "Trainer",
+        "Training",
+        "訓練"
+      ]
+    },
+    {
+      "term_id": "application.wargaming",
+      "label": "兵棋推演",
+      "synonyms": [
+        "Wargame",
+        "Wargaming",
+        "兵棋"
+      ]
+    },
+    {
+      "term_id": "application.command-control",
+      "label": "指揮管制",
+      "synonyms": [
+        "C2",
+        "C4ISR",
+        "Command",
+        "Control",
+        "指揮",
+        "管制"
+      ]
+    },
+    {
+      "term_id": "application.maintenance",
+      "label": "維修保養",
+      "synonyms": [
+        "MRO",
+        "Maintenance",
+        "維修"
+      ]
+    },
+    {
+      "term_id": "application.surveillance",
+      "label": "監偵",
+      "synonyms": [
+        "ISR",
+        "Reconnaissance",
+        "Surveillance",
+        "偵察",
+        "監控"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定為起始分類詞；使用者可在「分析設定」以分析主題新增或修改關鍵字，不受此限。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
+}

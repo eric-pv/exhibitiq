@@ -1,0 +1,8 @@
+{"adapter":"company-site","crawl_run_id":"run_01M77FKZ7ZP3N2FA9ZDHHQHY3P","event":"run_started","exhibition_id":"iacp","level":"INFO","source":"iacp-2026-rapid-drone-site","ts":"2026-11-12T08:57:32Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:32Z","url":"https://rapid-drone.com/robots.txt"}
+{"crawl_delay":null,"event":"robots","level":"INFO","message":"robots.txt rules","mode":"rules","origin":"https://rapid-drone.com","ts":"2026-11-12T08:57:32Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:34Z","url":"https://rapid-drone.com/"}
+{"count":1,"event":"records_extracted","level":"INFO","source_id":"src_01M77FM1D58Y3KBAK21Y1BB1K3","ts":"2026-11-12T08:57:34Z","url":"https://rapid-drone.com/"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:36Z","url":"https://rapid-drone.com/feed/"}
+{"count":0,"event":"records_extracted","level":"INFO","source_id":"src_01M77FM3XQ2X5593DB3HQ8BDE6","ts":"2026-11-12T08:57:36Z","url":"https://rapid-drone.com/feed/"}
+{"error_count":0,"event":"run_finished","level":"INFO","records_extracted":1,"requests_attempted":3,"requests_succeeded":3,"status":"succeeded","ts":"2026-11-12T08:57:36Z"}

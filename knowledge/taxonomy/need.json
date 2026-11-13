@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "dimension": "need",
+  "approval_status": "approved",
+  "terms": [
+    {
+      "term_id": "need.procurement",
+      "label": "採購需求",
+      "synonyms": [
+        "procurement",
+        "tender",
+        "採購",
+        "標案"
+      ]
+    },
+    {
+      "term_id": "need.partnership",
+      "label": "合作夥伴",
+      "synonyms": [
+        "agent",
+        "distributor",
+        "partner",
+        "代理",
+        "合作"
+      ]
+    },
+    {
+      "term_id": "need.localization",
+      "label": "在地化",
+      "synonyms": [
+        "local",
+        "localization",
+        "在地"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定為起始分類詞；使用者可在「分析設定」以分析主題新增或修改關鍵字，不受此限。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "product_id": "bxr-example-device",
+  "name": "範例產品（合成）",
+  "name_en": "Example Device (Synthetic)",
+  "summary": "示範產品卡格式。所有內容都是虛構的，不得作為分析依據。",
+  "capabilities": [
+    "capability.example-scenario-training"
+  ],
+  "specifications": [
+    {
+      "name": "範例規格",
+      "value": "示範值",
+      "source_index": 0
+    }
+  ],
+  "sources": [
+    {
+      "title": "範例型錄（合成）",
+      "version": "0",
+      "provided_by": "Example Provider",
+      "provided_at": "2026-11-04"
+    }
+  ],
+  "approval_status": "draft",
+  "updated_at": "2026-11-04",
+  "notes": "合成範例（synthetic）：示範格式，不代表任何真實 BXR 產品。"
+}

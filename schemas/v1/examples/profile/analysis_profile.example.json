@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0.0-draft.6",
+  "profile_id": "example-opportunity",
+  "version": 1,
+  "name": "範例：模擬訓練商機（合成）",
+  "description": "合成範例（synthetic）：示範 A 模式設定檔與 analysis_config。",
+  "mode": "bxr_opportunity",
+  "keywords": [
+    {
+      "term_id": "technology.simulation",
+      "category": "technology",
+      "label": "模擬",
+      "label_en": "Simulation",
+      "synonyms": [
+        "Simulation",
+        "Simulator"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "application.training",
+      "category": "application",
+      "label": "訓練",
+      "label_en": "Training",
+      "synonyms": [
+        "Training"
+      ],
+      "enabled": true
+    },
+    {
+      "term_id": "custom.legacy-term",
+      "category": "custom",
+      "label": "停用的詞",
+      "enabled": false
+    }
+  ],
+  "relationship_signals": {
+    "channel": [
+      "distributor"
+    ],
+    "partner": [
+      "integrator"
+    ]
+  },
+  "score_model": {
+    "score_model_id": "opportunity@1",
+    "weights": {
+      "domain_fit": 40,
+      "booth_known": 10,
+      "contact_signal": 20
+    }
+  },
+  "targets": {
+    "bxr_product_ids": []
+  },
+  "updated_at": "2026-11-04T12:00:00Z"
+}

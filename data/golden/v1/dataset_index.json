@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "generated_at": "2026-11-04T02:00:00Z",
+  "generator": {
+    "name": "golden-generator",
+    "version": "0.0.0"
+  },
+  "exhibitions": [
+    {
+      "exhibition_id": "golden-fair",
+      "name": "Golden Test Fair (Synthetic)",
+      "name_zh_hant": "黃金測試展（合成資料）",
+      "country": "ZZ",
+      "acquisition": {
+        "method": "file_import",
+        "status": "partially_feasible",
+        "assessed_at": "2026-11-03T08:00:00Z",
+        "report_path": "data/golden/v1/README.md",
+        "notes": "合成：只有可匯入的名單檔，官方筆數未公布。"
+      },
+      "editions": [
+        {
+          "edition_id": "golden-fair-2025",
+          "year": 2025,
+          "latest_dataset_id": "golden-fair-2025.20261104T000000Z",
+          "last_acquisition": {
+            "method": "file_import",
+            "status": "partial",
+            "crawl_run_id": "run_01JDR000000000000000000001",
+            "finished_at": "2026-11-03T10:08:00Z",
+            "records_extracted": 3,
+            "error_count": 0,
+            "dataset_id": "golden-fair-2025.20261104T000000Z"
+          },
+          "datasets": [
+            {
+              "dataset_id": "golden-fair-2025.20261104T000000Z",
+              "location": {
+                "storage": "git",
+                "locator": "data/golden/v1/package"
+              },
+              "created_at": "2026-11-04T00:00:00Z",
+              "data_origin": "synthetic",
+              "schema_version": "1.0.0-draft.5",
+              "content_hash": "sha256:a9944c5595784649dee9aa54f8223c1ff0d728edc7e56925e1c11c8658e73970",
+              "record_counts": {
+                "companies": 3,
+                "participations": 3,
+                "sources": 3
+              },
+              "completeness_status": "unknown",
+              "official_exhibitor_count": null,
+              "collected_participation_count": 2,
+              "validation": {
+                "status": "passed",
+                "validated_at": "2026-11-04T00:10:00Z",
+                "validator": {
+                  "name": "golden-generator",
+                  "version": "0.0.0"
+                },
+                "error_count": 0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notices": []
+}

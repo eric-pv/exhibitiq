@@ -1,0 +1,859 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exhibitiq.invalid/schemas/v1/analysis_result.schema.json",
+  "title": "AnalysisResult 分析結果",
+  "description": "一次 AI 分析的完整結果，是 Dashboard、Markdown 與 PDF 報告的唯一內容來源。規則見 docs/specs/analysis-result-contract.md。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "analysis_id",
+    "analysis_type",
+    "title",
+    "input_dataset_id",
+    "input_hash",
+    "data_origin",
+    "skill_version",
+    "generated_at",
+    "review_status",
+    "evidence_source_ids",
+    "conclusions",
+    "uncertainties",
+    "recommendations"
+  ],
+  "properties": {
+    "schema_version": {
+      "description": "必須是 schemas/v1/COMPATIBILITY.json 的 accepted 版本之一；新產生的資料寫 VERSION。",
+      "enum": [
+        "1.0.0-draft.5",
+        "1.0.0-draft.6",
+        "1.0.0-draft.7"
+      ]
+    },
+    "analysis_id": {
+      "type": "string",
+      "pattern": "^ana_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "ana_ + ULID。"
+    },
+    "analysis_type": {
+      "type": "string",
+      "enum": [
+        "exhibition_overview",
+        "company_intelligence",
+        "opportunity_ranking",
+        "competitive_landscape",
+        "partner_channel",
+        "market_trend",
+        "product_recommendation",
+        "exhibition_strategy",
+        "cross_exhibition_comparison"
+      ]
+    },
+    "title": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "summary": {
+      "$ref": "common.schema.json#/$defs/text"
+    },
+    "input_dataset_id": {
+      "$ref": "common.schema.json#/$defs/dataset_id"
+    },
+    "input_hash": {
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/$defs/sha256"
+        }
+      ],
+      "description": "輸入資料包 manifest 的 content_hash。"
+    },
+    "additional_inputs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dataset_id",
+          "content_hash"
+        ],
+        "properties": {
+          "dataset_id": {
+            "$ref": "common.schema.json#/$defs/dataset_id"
+          },
+          "content_hash": {
+            "$ref": "common.schema.json#/$defs/sha256"
+          }
+        }
+      },
+      "description": "跨展會或跨年度比較時的其他資料包。"
+    },
+    "knowledge_version": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "data_origin": {
+      "$ref": "common.schema.json#/$defs/data_origin"
+    },
+    "skill_version": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "provider": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        },
+        "name": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        }
+      }
+    },
+    "generated_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "human_reviewed",
+        "approved",
+        "rejected"
+      ],
+      "description": "draft=尚未人工審核，Dashboard 必須顯示「未審核」。"
+    },
+    "reviewed_by": {
+      "$ref": "common.schema.json#/$defs/short_text"
+    },
+    "reviewed_at": {
+      "$ref": "common.schema.json#/$defs/utc_timestamp"
+    },
+    "evidence_source_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "common.schema.json#/$defs/source_id"
+      },
+      "description": "本分析引用的所有來源 ID，必須等於所有子項目引用的來源 ID 聯集。"
+    },
+    "conclusions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim_id",
+          "claim_type",
+          "statement"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "pattern": "^cl-[a-z0-9]+(-[a-z0-9]+)*$",
+            "maxLength": 60
+          },
+          "claim_type": {
+            "type": "string",
+            "enum": [
+              "fact",
+              "inference",
+              "unknown"
+            ],
+            "description": "fact=引用資料包中的來源事實；inference=AI 推論；unknown=資料不足，無法判斷。"
+          },
+          "statement": {
+            "$ref": "common.schema.json#/$defs/text"
+          },
+          "topic": {
+            "$ref": "common.schema.json#/$defs/short_text"
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "entity_type",
+                "entity_id"
+              ],
+              "properties": {
+                "entity_type": {
+                  "type": "string",
+                  "enum": [
+                    "exhibition",
+                    "edition",
+                    "company",
+                    "participation"
+                  ]
+                },
+                "entity_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                }
+              }
+            }
+          },
+          "evidence_source_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "common.schema.json#/$defs/source_id"
+            }
+          },
+          "verification_status": {
+            "$ref": "common.schema.json#/$defs/fact_verification_status"
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "description": "定性信心等級。不使用數字百分比，避免產生沒有依據的精確度。"
+          },
+          "rationale": {
+            "$ref": "common.schema.json#/$defs/text"
+          },
+          "uncertainty_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^un-[a-z0-9]+(-[a-z0-9]+)*$",
+              "maxLength": 60
+            }
+          },
+          "missing_data": {
+            "$ref": "common.schema.json#/$defs/text"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "claim_type": {
+                  "const": "fact"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "evidence_source_ids",
+                "verification_status"
+              ],
+              "properties": {
+                "evidence_source_ids": {
+                  "minItems": 1
+                },
+                "verification_status": {
+                  "not": {
+                    "const": "insufficient_data"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "claim_type": {
+                  "const": "inference"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "evidence_source_ids",
+                "confidence",
+                "rationale",
+                "uncertainty_ids"
+              ],
+              "properties": {
+                "evidence_source_ids": {
+                  "minItems": 1
+                },
+                "uncertainty_ids": {
+                  "minItems": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "claim_type": {
+                  "const": "unknown"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "missing_data"
+              ],
+              "not": {
+                "required": [
+                  "confidence"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "uncertainty_id",
+          "description",
+          "impact"
+        ],
+        "properties": {
+          "uncertainty_id": {
+            "type": "string",
+            "pattern": "^un-[a-z0-9]+(-[a-z0-9]+)*$",
+            "maxLength": 60
+          },
+          "description": {
+            "$ref": "common.schema.json#/$defs/text"
+          },
+          "impact": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          }
+        }
+      }
+    },
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "score_id",
+          "score_model_id",
+          "subject",
+          "total_points",
+          "max_total_points",
+          "rank",
+          "factors"
+        ],
+        "properties": {
+          "score_id": {
+            "type": "string",
+            "pattern": "^sc-[a-z0-9]+(-[a-z0-9]+)*$",
+            "maxLength": 60
+          },
+          "score_model_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*@[0-9]+$",
+            "description": "評分模型與版本，例如 opportunity@1。同一份分析中同一模型的因子組合必須一致。"
+          },
+          "subject": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "entity_type",
+              "entity_id"
+            ],
+            "properties": {
+              "entity_type": {
+                "type": "string",
+                "enum": [
+                  "exhibition",
+                  "edition",
+                  "company",
+                  "participation"
+                ]
+              },
+              "entity_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              }
+            }
+          },
+          "total_points": {
+            "type": "number",
+            "minimum": 0
+          },
+          "max_total_points": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "factors": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "factor_id",
+                "label",
+                "status",
+                "points",
+                "max_points",
+                "rationale"
+              ],
+              "properties": {
+                "factor_id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$",
+                  "maxLength": 60
+                },
+                "label": {
+                  "$ref": "common.schema.json#/$defs/short_text"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "scored",
+                    "insufficient_data"
+                  ],
+                  "description": "insufficient_data=沒有足夠證據，這個因子不計分（points 必須為 0）。"
+                },
+                "points": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "max_points": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "evidence_source_ids": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "common.schema.json#/$defs/source_id"
+                  }
+                },
+                "claim_ids": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^cl-[a-z0-9]+(-[a-z0-9]+)*$",
+                    "maxLength": 60
+                  }
+                },
+                "rationale": {
+                  "$ref": "common.schema.json#/$defs/text"
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "status": {
+                        "const": "scored"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "evidence_source_ids"
+                    ],
+                    "properties": {
+                      "evidence_source_ids": {
+                        "minItems": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "status": {
+                        "const": "insufficient_data"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "points": {
+                        "const": 0
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relationship_id",
+          "company_id",
+          "relationship_type",
+          "rationale",
+          "confidence",
+          "evidence_source_ids",
+          "uncertainty_ids"
+        ],
+        "properties": {
+          "relationship_id": {
+            "type": "string",
+            "pattern": "^rel-[a-z0-9]+(-[a-z0-9]+)*$",
+            "maxLength": 60
+          },
+          "company_id": {
+            "$ref": "common.schema.json#/$defs/company_id"
+          },
+          "relationship_type": {
+            "type": "string",
+            "enum": [
+              "potential_customer",
+              "competitor",
+              "partner",
+              "channel",
+              "unrelated",
+              "unknown"
+            ]
+          },
+          "rationale": {
+            "$ref": "common.schema.json#/$defs/text"
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "description": "定性信心等級。不使用數字百分比，避免產生沒有依據的精確度。"
+          },
+          "evidence_source_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "common.schema.json#/$defs/source_id"
+            }
+          },
+          "claim_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^cl-[a-z0-9]+(-[a-z0-9]+)*$",
+              "maxLength": 60
+            }
+          },
+          "uncertainty_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^un-[a-z0-9]+(-[a-z0-9]+)*$",
+              "maxLength": 60
+            },
+            "minItems": 1
+          }
+        },
+        "description": "企業關係分類一律是 AI 推論，必須附依據、信心等級與不確定性。"
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "recommendation_id",
+          "recommendation_type",
+          "statement",
+          "rationale",
+          "priority",
+          "based_on_claim_ids",
+          "evidence_source_ids"
+        ],
+        "properties": {
+          "recommendation_id": {
+            "type": "string",
+            "pattern": "^rec-[a-z0-9]+(-[a-z0-9]+)*$",
+            "maxLength": 60
+          },
+          "recommendation_type": {
+            "type": "string",
+            "enum": [
+              "visit_priority",
+              "exhibit_product",
+              "participation_decision",
+              "partnership",
+              "market_entry",
+              "other"
+            ]
+          },
+          "statement": {
+            "$ref": "common.schema.json#/$defs/text"
+          },
+          "rationale": {
+            "$ref": "common.schema.json#/$defs/text"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "entity_type",
+                "entity_id"
+              ],
+              "properties": {
+                "entity_type": {
+                  "type": "string",
+                  "enum": [
+                    "exhibition",
+                    "edition",
+                    "company",
+                    "participation"
+                  ]
+                },
+                "entity_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                }
+              }
+            }
+          },
+          "product_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "common.schema.json#/$defs/bxr_product_id"
+            },
+            "description": "只能引用經專案負責人核准的 BXR 產品（knowledge/bxr-products/，A1-09）。"
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "$ref": "common.schema.json#/$defs/text"
+            }
+          },
+          "based_on_claim_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^cl-[a-z0-9]+(-[a-z0-9]+)*$",
+              "maxLength": 60
+            },
+            "minItems": 1
+          },
+          "score_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^sc-[a-z0-9]+(-[a-z0-9]+)*$",
+              "maxLength": 60
+            }
+          },
+          "evidence_source_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "common.schema.json#/$defs/source_id"
+            }
+          },
+          "uncertainty_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^un-[a-z0-9]+(-[a-z0-9]+)*$",
+              "maxLength": 60
+            }
+          }
+        }
+      }
+    },
+    "notes": {
+      "$ref": "common.schema.json#/$defs/text"
+    },
+    "analysis_config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "profile_version",
+        "profile_hash",
+        "mode",
+        "keywords_snapshot"
+      ],
+      "description": "選填（draft.6 新增）：這次分析使用的分析設定，供重現與追溯。舊的分析結果沒有此欄位仍然有效。",
+      "properties": {
+        "profile_id": {
+          "$ref": "common.schema.json#/$defs/analysis_profile_id"
+        },
+        "profile_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "profile_hash": {
+          "$ref": "common.schema.json#/$defs/sha256",
+          "description": "設定檔正規化 JSON 的 SHA-256（規格 §4）。"
+        },
+        "mode": {
+          "$ref": "common.schema.json#/$defs/analysis_mode"
+        },
+        "keywords_snapshot": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/keyword"
+          },
+          "description": "當次啟用的關鍵字完整快照。"
+        },
+        "score_model_id": {
+          "$ref": "common.schema.json#/$defs/short_text"
+        },
+        "bxr_products_status": {
+          "type": "string",
+          "enum": [
+            "not_used",
+            "draft",
+            "approved",
+            "mixed"
+          ],
+          "description": "A 模式使用的 BXR 產品卡核定狀態；不是 approved 時報告必須提示。"
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recorded"
+      ],
+      "description": "選填（draft.7）：這次 AI 分析的成本。只記錄實際量測值，不得估算；沒有量測值時 recorded=false。報告是否顯示由使用者勾選（比賽顯示、正式版隱藏）。",
+      "properties": {
+        "recorded": {
+          "type": "boolean",
+          "description": "true=以下數字是實際量測值。"
+        },
+        "input_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "description": "金額（依 currency）。"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "measured_by": {
+          "$ref": "common.schema.json#/$defs/short_text",
+          "description": "數字來源，例如 Claude Code /cost、API usage。"
+        },
+        "notes": {
+          "$ref": "common.schema.json#/$defs/text"
+        }
+      },
+      "if": {
+        "properties": {
+          "recorded": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {
+            "required": [
+              "input_tokens",
+              "output_tokens"
+            ]
+          },
+          {
+            "required": [
+              "amount",
+              "currency"
+            ]
+          }
+        ]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "input_tokens"
+              ]
+            },
+            {
+              "required": [
+                "output_tokens"
+              ]
+            },
+            {
+              "required": [
+                "amount"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "review_status": {
+            "enum": [
+              "human_reviewed",
+              "approved",
+              "rejected"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "reviewed_by",
+          "reviewed_at"
+        ]
+      }
+    }
+  ]
+}

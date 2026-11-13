@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "dimension": "problem",
+  "approval_status": "approved",
+  "terms": [
+    {
+      "term_id": "problem.training-cost",
+      "label": "訓練成本高",
+      "synonyms": [
+        "cost",
+        "成本"
+      ]
+    },
+    {
+      "term_id": "problem.live-training-risk",
+      "label": "實地訓練風險",
+      "synonyms": [
+        "risk",
+        "safety",
+        "安全",
+        "風險"
+      ]
+    },
+    {
+      "term_id": "problem.readiness",
+      "label": "戰備整備",
+      "synonyms": [
+        "readiness",
+        "整備"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定為起始分類詞；使用者可在「分析設定」以分析主題新增或修改關鍵字，不受此限。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
+}

@@ -1,0 +1,31 @@
+{
+  "score_model_id": "opportunity@2",
+  "approval_status": "approved",
+  "notes": "Eric 於 2026-11-05 核定（V2.5）。因子固定、配分由分析設定檔 score_model.weights 決定，可在 Dashboard「分析設定」調整；沒有設定的因子用 default_max_points。取消「展位已公布」加分。只用於有商業目的的設定（A 模式，或 C 模式明確指定）。",
+  "factors": [
+    {
+      "factor_id": "keyword_fit",
+      "label": "主題關鍵字符合",
+      "default_max_points": 40,
+      "method": "設定檔中啟用的關鍵字在來源原文命中：每個不同關鍵字 10 分，最高為配分上限"
+    },
+    {
+      "factor_id": "product_fit",
+      "label": "BXR 產品適配",
+      "default_max_points": 20,
+      "method": "A 模式：命中類別為 product 的關鍵字（來自產品卡功能定位）；產品卡未核定時報告須提示。B、C 模式不計"
+    },
+    {
+      "factor_id": "presence",
+      "label": "目前列於參展名單",
+      "default_max_points": 10,
+      "method": "listing_status listed"
+    },
+    {
+      "factor_id": "contact_signal",
+      "label": "合作或採購訊號",
+      "default_max_points": 20,
+      "method": "需要閱讀來源（Skill 推論）；確定性階段一律資料不足"
+    }
+  ]
+}

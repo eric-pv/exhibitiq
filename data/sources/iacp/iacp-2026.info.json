@@ -1,0 +1,15 @@
+{
+ "exhibition": {
+  "name": "IACP Conference & Exhibition",
+  "notes": "Name as printed in the page footer and title ('IACP 2026 Conference & Exhibition') without the year."
+ },
+ "edition": {
+  "year": 2026,
+  "name": "IACP 2026 Conference & Exhibition",
+  "start_date": "2026-10-24",
+  "end_date": "2026-10-27",
+  "city": "Orlando",
+  "country": "US",
+  "notes": "Dates and place as printed in the page header ('Oct. 24- 27', 'Orlando, FL'); country US from the state code FL."
+ }
+}
