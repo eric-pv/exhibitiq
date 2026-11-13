@@ -30,7 +30,7 @@ export const color = {
 export const space = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 } as const;
 export const radius = { sm: 4, md: 8 } as const;
 export const fontSize = { sm: 13, base: 15, lg: 17, h3: 21, h2: 26, h1: 32 } as const;
-export const layout = { siderWidth: 232, headerHeight: 56, contentMaxWidth: 1280, mobileBreakpoint: "lg" } as const;
+export const layout = { siderWidth: 264, headerHeight: 56, contentMaxWidth: 1280, mobileBreakpoint: "lg" } as const;
 
 export const antdTheme: ThemeConfig = {
   token: {

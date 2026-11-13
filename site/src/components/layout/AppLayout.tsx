@@ -29,15 +29,16 @@ export function AppLayout({ banner, children }: { banner?: ReactNode; children: 
         style={
           isMobile
             ? { borderRight: `1px solid ${color.navNavy}`, position: "fixed", top: 0, left: 0, height: "100vh", zIndex: 1000 }
-            : { borderRight: `1px solid ${color.navNavy}` }
+            : { borderRight: `1px solid ${color.navNavy}`, position: "sticky", top: 0, height: "100vh", overflowY: "auto" }
         }
-        zeroWidthTriggerStyle={{ top: space.sm }}
+        // When the phone menu is open, keep the menu button inside the menu so nothing sticks out past its edge.
+        zeroWidthTriggerStyle={isCollapsed ? { top: space.sm } : { top: space.sm, insetInlineEnd: space.sm, background: color.navNavySelected }}
         data-testid="side-nav"
       >
         {/* Hide the contents when collapsed: a 0-width Sider would otherwise let the menu overflow on top of the page. */}
         <div style={{ display: isCollapsed ? "none" : "block" }}>
         <div style={{ padding: space.md }}>
-          <img src={logo} alt={t.appName} data-testid="brand-logo" style={{ height: 46, display: "block", marginLeft: -6, marginBottom: space.xs }} />
+          <img src={logo} alt={t.appName} data-testid="brand-logo" style={{ width: isMobile ? 180 : 228, maxWidth: "100%", height: "auto", display: "block", marginBottom: space.xs }} />
           <Typography.Text style={{ color: color.navText }}>{t.appSubtitle}</Typography.Text>
         </div>
         <Menu
