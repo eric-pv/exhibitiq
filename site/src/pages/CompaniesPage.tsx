@@ -1,9 +1,9 @@
-import { Input, Select, Space, Tag, Typography } from "antd";
+import { Input, Select, Space, Typography } from "antd";
 import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { DataTable } from "../components/DataTable";
 import { PageHeader } from "../components/layout/PageHeader";
-import { ClaimBadge, type ClaimKind } from "../components/status/ClaimBadge";
+import { ClaimIcon, type ClaimKind } from "../components/status/ClaimBadge";
 import { DataOriginBanner } from "../components/status/DataOriginBanner";
 import { bundle, getCompanyRows, matchesQuery, toCsv, type CompanyRow } from "../data/repository";
 import { t } from "../i18n/zh-TW";
@@ -39,9 +39,7 @@ export function CompaniesPage() {
             render: (_, r) => <Space direction="vertical" size={0}><Link to={`/companies/${encodeURIComponent(r.companyId)}`} data-testid="company-link">{r.name}</Link>{r.aliases.length > 0 && <Typography.Text type="secondary">{r.aliases.join("、")}</Typography.Text>}</Space> },
           { title: c.country, dataIndex: "country", render: (v) => v ?? "未知", sorter: (a, b) => (a.country ?? "").localeCompare(b.country ?? "") },
           { title: c.exhibition, render: (_, r) => `${r.exhibitionName}（${r.year}）` },
-          { title: c.booth, render: (_, r) => (r.booths.length ? r.booths.join("、") : <Typography.Text type="secondary">{c.noBooth}</Typography.Text>) },
-          { title: c.listing, render: (_, r) => (r.listed ? <Tag>{c.listed}</Tag> : <Tag color="default">{c.removed}</Tag>) },
-          { title: c.status, render: (_, r) => <ClaimBadge kind={r.verificationStatus as ClaimKind} /> },
+          { title: c.status, width: 90, align: "center", render: (_, r) => <ClaimIcon kind={r.verificationStatus as ClaimKind} /> },
         ]}
       />
     </>

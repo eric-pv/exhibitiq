@@ -21,11 +21,12 @@ test("CSV has a UTF-8 BOM and escapes commas", () => {
   expect(csv).toContain('"x,y",');
 });
 
-test("companies page renders table, filters from URL, and missing booth as 未公布", () => {
+test("companies page renders table, filters from URL; verification shown as a compact icon (no booth / listing columns)", () => {
   render(<ConfigProvider locale={zhTW}><MemoryRouter initialEntries={["/companies?q=placeholder"]}><App /></MemoryRouter></ConfigProvider>);
   const table = screen.getByTestId("company-table");
   expect(within(table).getAllByRole("row").length).toBe(2); // header + 1 filtered row
-  expect(within(table).getByText("未公布")).toBeTruthy();
+  expect(within(table).queryByText("未公布")).toBeNull();
+  expect(within(table).getAllByTestId("claim-icon")[0].getAttribute("aria-label")).toBeTruthy();
   expect(screen.getByTestId("csv-export")).toBeTruthy();
 });
 

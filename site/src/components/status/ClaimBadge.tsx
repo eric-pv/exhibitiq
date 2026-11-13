@@ -1,5 +1,5 @@
 import { CheckCircleOutlined, ClockCircleOutlined, ExperimentOutlined, QuestionCircleOutlined, UserOutlined, WarningOutlined } from "@ant-design/icons";
-import { Tag } from "antd";
+import { Tag, Tooltip } from "antd";
 import type { ReactNode } from "react";
 import { t } from "../../i18n/zh-TW";
 import { color } from "../../theme/tokens";
@@ -15,6 +15,18 @@ export const CLAIM_STYLE: Record<ClaimKind, { color: string; icon: ReactNode }> 
   ai_inferred: { color: color.inference, icon: <ExperimentOutlined /> },
   unknown: { color: color.warning, icon: <QuestionCircleOutlined /> },
 };
+
+/** Compact list marker (Eric 2026-11-13): ✓ verified / confirmed, △ everything else; the text is in the tooltip and aria-label. */
+export function ClaimIcon({ kind }: { kind: ClaimKind }) {
+  const ok = kind === "verified" || kind === "human_confirmed";
+  return (
+    <Tooltip title={t.claim[kind]}>
+      <span role="img" aria-label={t.claim[kind]} data-claim={kind} data-testid="claim-icon" style={{ color: ok ? color.success : color.warning, fontSize: "1.15em" }}>
+        {ok ? <CheckCircleOutlined /> : <WarningOutlined />}
+      </span>
+    </Tooltip>
+  );
+}
 
 /** Always colour + icon + text, so status never depends on colour alone. */
 export function ClaimBadge({ kind }: { kind: ClaimKind }) {

@@ -213,6 +213,7 @@ export const t = {
     confidence: "信心", level: { low: "低", medium: "中", high: "高" } as Record<string, string>,
     missingData: "缺少的資料",
     relType: { potential_customer: "潛在客戶", competitor: "競爭對手", partner: "合作夥伴", channel: "通路", unrelated: "不相關", unknown: "未知" } as Record<string, string>,
+    showSources: (n: number) => `來源（${n}）`, hideSources: "收合來源", basedOn: "依據結論", priorityLabel: (l: string) => `優先度：${l}`,
     recType: { visit_priority: "拜訪優先順序", exhibit_product: "展品", participation_decision: "參展決策", partnership: "合作", market_entry: "市場進入", other: "其他" } as Record<string, string>,
     csvHeaders: ["rank", "company_id", "company", "total_points", "max_total_points", "scored_factors", "relationship", "relationship_confidence", "analysis_id", "review_status", "data_origin"],
   },
