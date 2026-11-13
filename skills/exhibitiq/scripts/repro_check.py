@@ -23,7 +23,7 @@ import profile_tools as pt  # noqa: E402
 
 EXPECTED = ROOT / "skills" / "exhibitiq" / "repro" / "expected-digest.json"
 EX = ROOT / "schemas" / "v1" / "examples"
-G = ROOT / "data" / "samples" / "golden" / "v1"
+G = ROOT / "data" / "golden" / "v1"
 
 
 def _h(obj) -> str:

@@ -12,7 +12,7 @@ import evidence_check as ev  # noqa: E402
 
 PKG = ROOT / "schemas" / "v1" / "examples" / "package"
 BASE = json.loads((ROOT / "schemas/v1/examples/analysis/analysis_result.example.json").read_text(encoding="utf-8"))
-G = ROOT / "data" / "samples" / "golden" / "v1"
+G = ROOT / "data" / "golden" / "v1"
 
 
 def claim(a, t):

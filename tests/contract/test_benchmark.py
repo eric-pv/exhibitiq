@@ -11,8 +11,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "skills" / "exhibitiq" / "scripts"))
 import profile_tools as pt  # noqa: E402
 
-G = ROOT / "data" / "samples" / "golden" / "v1" / "package"
-KNOWN = ROOT / "data" / "samples" / "golden" / "v1" / "known" / "known-relationships.csv"
+G = ROOT / "data" / "golden" / "v1" / "package"
+KNOWN = ROOT / "data" / "golden" / "v1" / "known" / "known-relationships.csv"
 TOOLS = ROOT / "skills" / "exhibitiq" / "scripts" / "exhibitiq_tools.py"
 HEADER = "company_name,aliases,country,website,relationship,source,notes\n"
 

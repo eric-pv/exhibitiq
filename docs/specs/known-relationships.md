@@ -8,7 +8,7 @@
 
 ## 2. 檔案位置與格式
 
-- **位置：** `knowledge/benchmarks/known-competitors.csv`（Eric 2026-11-09 提供，整理自公司內部競品簡報：19 筆，含補充競品 Ikramatic；簡報判定「非直接競爭」的 Shooting-Soft 不列入）。合成範例：`data/samples/golden/v1/known/known-relationships.csv`。
+- **位置：** `knowledge/benchmarks/known-competitors.csv`（Eric 2026-11-09 提供，整理自公司內部競品簡報：19 筆，含補充競品 Ikramatic；簡報判定「非直接競爭」的 Shooting-Soft 不列入）。合成範例：`data/golden/v1/known/known-relationships.csv`。
 - **編碼：** UTF-8，可以有 BOM（Excel「CSV UTF-8」存檔即可）；逗號分隔；第一列是欄位名稱。
 - **欄位（順序不限，名稱要一致）：**
 
