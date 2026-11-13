@@ -26,6 +26,7 @@ WORK = ROOT / ".work"
 SKILL_FILES = [HERE.parent / "SKILL.md", *sorted((HERE.parent / "references").glob("*.md"))]
 TYPE_BY_MODE = {"bxr_opportunity": "opportunity_ranking", "industry_research": "market_trend", "competitor_research": "competitive_landscape"}
 B32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+NEWS_TYPES = {"press_release", "news_article"}
 
 
 def estimate_tokens(text: str) -> int:
@@ -73,14 +74,20 @@ def prepare(exhibition_id: str, year: int | None = None, profile: str | None = N
     scores = pt.score(pkg, prof)
     value = pt.exhibition_value(pkg, prof)
     by_score = {s["subject"]["entity_id"]: s for s in scores}
-    order = sorted(companies, key=lambda c: (-(by_score[c]["total_points"] if c in by_score else 0), -len(hits.get(c, {}).get("terms", [])), c))
+    enriched = {c for c, r in companies.items() if r.get("description")}
+    order = sorted(companies, key=lambda c: (c not in enriched, -(by_score[c]["total_points"] if c in by_score else 0), -len(hits.get(c, {}).get("terms", [])), c))
     detail, rest = order[:top], order[top:]
 
     def card(cid):
         c = companies[cid]
         ps = [p for p in parts if p["company_id"] == cid]
+        csrc = set(c["source_ids"]) | {x for ids in c.get("field_sources", {}).values() for x in ids}
+        news = [{"source_id": x, "title": sources[x].get("title"), "url": sources[x].get("url"), "publisher": sources[x].get("publisher"),
+                 "notes": sources[x].get("notes")} for x in sorted(csrc) if x in sources and sources[x]["source_type"] in NEWS_TYPES]
         return {"company_id": cid, "name": c["name"], "country": c.get("country"), "website": c.get("website"),
                 "verification_status": c["verification_status"],
+                "description": c.get("description"), "description_source_ids": c.get("field_sources", {}).get("description", []),
+                "news": news,
                 "listed_as": [{"name": p["exhibitor_name_as_listed"], "listing_status": p["listing_status"], "booth": p.get("booth"),
                                "categories": p.get("categories_as_listed", []), "products": p.get("products_as_listed", []),
                                "source_ids": p["source_ids"]} for p in ps],
@@ -90,7 +97,8 @@ def prepare(exhibition_id: str, year: int | None = None, profile: str | None = N
                            "max": by_score[cid]["max_total_points"]} if cid in by_score else None)}
 
     used = sorted({s for cid in detail for p in parts if p["company_id"] == cid for s in p["source_ids"]} |
-                  {s for cid in detail for s in companies[cid]["source_ids"]})
+                  {s for cid in detail for s in companies[cid]["source_ids"]} |
+                  {s for cid in detail for ids in companies[cid].get("field_sources", {}).values() for s in ids})
     brief = {
         "dataset": {"dataset_id": m["dataset_id"], "exhibition_id": m["exhibition_id"], "edition_id": m["edition_id"], "year": m.get("edition_year"),
                     "content_hash": sel["content_hash"], "data_origin": m["data_origin"], "completeness_status": m["completeness_status"],
