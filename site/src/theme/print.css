@@ -16,3 +16,7 @@
 
 /* Long IDs and hashes (code) must wrap instead of widening the page on phones (W4-02). */
 .report code, .report .ant-typography code { white-space: normal; overflow-wrap: anywhere; word-break: break-all; }
+
+/* Collapsed source lists (on screen) are always printed in full, so the PDF keeps every citation. */
+.sources-collapsed { display: none; }
+@media print { .sources-collapsed { display: block !important; } .sources-toggle { display: none !important; } }

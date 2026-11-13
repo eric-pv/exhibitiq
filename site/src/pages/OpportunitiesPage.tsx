@@ -2,6 +2,7 @@ import { Alert, Card, Descriptions, List, Select, Space, Tag, Typography } from 
 import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { DataTable } from "../components/DataTable";
+import { RecommendationCard } from "../components/RecommendationCard";
 import { PageHeader } from "../components/layout/PageHeader";
 import { ScoreBar, ScoreBreakdown } from "../components/ScoreBreakdown";
 import { EmptyState } from "../components/states/States";
@@ -72,18 +73,7 @@ export function OpportunitiesPage() {
 
         {d.recommendations.length > 0 && (
           <Card title={o.recommendations} data-testid="recommendations">
-            <List dataSource={d.recommendations} renderItem={(r) => (
-              <List.Item>
-                <Space direction="vertical" size={4} style={{ width: "100%" }}>
-                  <Space wrap><ClaimBadge kind="ai_inferred" /><Tag>{o.recType[r.type] ?? r.type}</Tag><Tag>{t.opportunities.priority[r.priority]}</Tag>
-                    <Typography.Text strong>{r.statement}</Typography.Text></Space>
-                  {r.rationale && <Typography.Text type="secondary">{o.rationale}：{r.rationale}</Typography.Text>}
-                  {r.assumptions.length > 0 && <Typography.Text type="secondary">{o.assumptions}：{r.assumptions.join("；")}</Typography.Text>}
-                  {r.uncertaintyIds.length > 0 && <Typography.Text type="secondary">{o.uncertainties}：{r.uncertaintyIds.map((id) => v.uncertainties.get(id)?.description ?? id).join("；")}</Typography.Text>}
-                  <SourceRefs sources={r.sourceIds.map(v.source)} />
-                </Space>
-              </List.Item>
-            )} />
+            {d.recommendations.map((r) => <RecommendationCard key={r.recommendationId} r={r} view={v} />)}
           </Card>
         )}
 

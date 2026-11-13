@@ -5,6 +5,7 @@ import type { Bundle } from "../data/types";
 import { t } from "../i18n/zh-TW";
 import { space } from "../theme/tokens";
 import { ChartPanel } from "./ChartPanel";
+import { RecommendationCard } from "./RecommendationCard";
 import { ScoreBar, ScoreBreakdown } from "./ScoreBreakdown";
 import { ClaimBadge, type ClaimKind } from "./status/ClaimBadge";
 import { CompletenessIndicator } from "./status/CompletenessIndicator";
@@ -124,16 +125,7 @@ export function ReportViewer({ view, b = bundle, showCost = true }: { view: Oppo
       )} />
     ),
     recommendations: () => d.recommendations.length > 0 && (
-      <List size="small" dataSource={d.recommendations} renderItem={(r) => (
-        <List.Item><Space direction="vertical" size={2}>
-          <Space wrap><ClaimBadge kind="ai_inferred" /><Tag>優先度：{o.level[r.priority]}</Tag><Typography.Text strong>{r.statement}</Typography.Text></Space>
-          {r.rationale && <Typography.Text type="secondary">{o.rationale}：{r.rationale}</Typography.Text>}
-          {r.assumptions.length > 0 && <Typography.Text type="secondary">{o.assumptions}：{r.assumptions.join("；")}</Typography.Text>}
-          {r.claimIds.length > 0 && <Typography.Text type="secondary">依據結論：{r.claimIds.map((id) => view.claims.get(id)?.statement ?? id).join("；")}</Typography.Text>}
-          {r.uncertaintyIds.length > 0 && <Typography.Text type="secondary">{o.uncertainties}：{r.uncertaintyIds.map((id) => view.uncertainties.get(id)?.description ?? id).join("；")}</Typography.Text>}
-          {refs(r.sourceIds)}
-        </Space></List.Item>
-      )} />
+      <div>{d.recommendations.map((r) => <RecommendationCard key={r.recommendationId} r={r} view={view} numbering={num} showClaims />)}</div>
     ),
     uncertainties: () => d.uncertainties.length > 0 && (
       <List size="small" dataSource={d.uncertainties} renderItem={(u) => <List.Item><Space wrap><Tag>{o.impact}：{o.level[u.impact]}</Tag>{u.description}</Space></List.Item>} />

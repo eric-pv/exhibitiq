@@ -24,7 +24,7 @@ export const color = {
 
 export const space = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 } as const;
 export const radius = { sm: 4, md: 8 } as const;
-export const fontSize = { sm: 12, base: 14, lg: 16, h3: 20, h2: 24, h1: 30 } as const;
+export const fontSize = { sm: 13, base: 15, lg: 17, h3: 21, h2: 26, h1: 32 } as const;
 export const layout = { siderWidth: 232, headerHeight: 56, contentMaxWidth: 1280, mobileBreakpoint: "lg" } as const;
 
 export const antdTheme: ThemeConfig = {
@@ -43,11 +43,16 @@ export const antdTheme: ThemeConfig = {
     colorInfo: color.info,
     borderRadius: radius.md,
     fontSize: fontSize.base,
+    fontSizeSM: fontSize.sm,
+    fontSizeLG: fontSize.lg,
+    lineHeight: 1.7,
     fontFamily:
       '-apple-system, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Roboto, "Helvetica Neue", Arial, sans-serif',
   },
   components: {
     Layout: { headerBg: color.surface, siderBg: color.surface, headerHeight: layout.headerHeight, headerPadding: `0 ${space.md}px` },
-    Menu: { itemSelectedBg: color.brandSoft, itemSelectedColor: color.brand },
+    Menu: { itemSelectedBg: color.brandSoft, itemSelectedColor: color.brand, itemHeight: 44, fontSize: fontSize.base },
+    Table: { cellPaddingBlock: 14 },
+    Card: { headerFontSize: fontSize.lg },
   },
 };
