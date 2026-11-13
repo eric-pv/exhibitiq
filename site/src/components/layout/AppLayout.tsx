@@ -1,3 +1,4 @@
+import logo from "../../assets/brand/exhibitiq-horizontal-light.svg";
 import { Grid, Layout, Menu, Typography } from "antd";
 import { useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -36,7 +37,7 @@ export function AppLayout({ banner, children }: { banner?: ReactNode; children: 
         {/* Hide the contents when collapsed: a 0-width Sider would otherwise let the menu overflow on top of the page. */}
         <div style={{ display: isCollapsed ? "none" : "block" }}>
         <div style={{ padding: space.md }}>
-          <Typography.Title level={4} style={{ margin: 0, color: color.brand }}>{t.appName}</Typography.Title>
+          <img src={logo} alt={t.appName} data-testid="brand-logo" style={{ height: 46, display: "block", marginLeft: -6, marginBottom: space.xs }} />
           <Typography.Text type="secondary">{t.appSubtitle}</Typography.Text>
         </div>
         <Menu
@@ -52,9 +53,12 @@ export function AppLayout({ banner, children }: { banner?: ReactNode; children: 
         </div>
       </Layout.Sider>
       <Layout>
-        <Layout.Header style={{ display: "flex", alignItems: "center", borderBottom: `1px solid ${color.border}` }}>
-          <Typography.Text strong style={{ marginLeft: isMobile ? space.xl : 0 }}>{current?.label ?? t.appName}</Typography.Text>
-        </Layout.Header>
+        {/* Desktop: the page title below already names the page, so no top bar (Eric 2026-11-13). Phone: a slim bar keeps room for the menu button. */}
+        {isMobile && (
+          <Layout.Header style={{ display: "flex", alignItems: "center", borderBottom: `1px solid ${color.border}` }}>
+            <Typography.Text strong style={{ marginLeft: space.xl }}>{current?.label ?? t.appName}</Typography.Text>
+          </Layout.Header>
+        )}
         {banner}
         <Layout.Content style={{ padding: isMobile ? space.md : space.lg }}>
           <div style={{ maxWidth: layout.contentMaxWidth, margin: "0 auto" }}>{children}</div>
