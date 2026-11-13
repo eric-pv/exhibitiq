@@ -67,7 +67,8 @@ def test_works_without_bxr_profile(tmp_path):
 
 
 def test_cli_trend_reads_the_index_and_reports_no_package_clearly():
-    out = subprocess.run([sys.executable, str(TOOLS), "trend", "example-expo"], capture_output=True, text=True, check=True)
+    idx = str(ROOT / "schemas/v1/examples/index/dataset_index.example.json")  # explicit: a real index may exist after integration
+    out = subprocess.run([sys.executable, str(TOOLS), "trend", "example-expo", "--index", idx], capture_output=True, text=True, check=True)
     assert json.loads(out.stdout)["status"] == "insufficient"
-    bad = subprocess.run([sys.executable, str(TOOLS), "trend", "sample-fair"], capture_output=True, text=True)
+    bad = subprocess.run([sys.executable, str(TOOLS), "trend", "sample-fair", "--index", idx], capture_output=True, text=True)
     assert bad.returncode == 2 and "no validated package" in bad.stderr

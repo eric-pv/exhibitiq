@@ -59,5 +59,6 @@ def test_finalize_valid_analysis_renders_report_and_saves_only_when_asked(tmp_pa
 
 
 def test_cli_prepare_reports_missing_package_clearly():
-    bad = subprocess.run([sys.executable, str(TOOLS), "prepare", "sample-fair"], capture_output=True, text=True)
+    idx = str(ROOT / "schemas/v1/examples/index/dataset_index.example.json")  # explicit: a real index may exist after integration
+    bad = subprocess.run([sys.executable, str(TOOLS), "prepare", "sample-fair", "--index", idx], capture_output=True, text=True)
     assert bad.returncode == 2 and "no validated package" in bad.stderr
