@@ -12,7 +12,7 @@ import profile_tools as pt  # noqa: E402
 import profile_check as pf  # noqa: E402
 import analysis_check as ac  # noqa: E402
 
-G = ROOT / "data" / "samples" / "golden" / "v1"
+G = ROOT / "data" / "golden" / "v1"
 FIRE = json.loads((ROOT / "schemas/v1/examples/profile/analysis_profile.industry.example.json").read_text(encoding="utf-8"))
 
 

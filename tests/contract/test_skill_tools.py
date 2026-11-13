@@ -11,7 +11,7 @@ import package_check as pc
 spec = importlib.util.spec_from_file_location("exhibitiq_tools", pc.ROOT / "skills" / "exhibitiq" / "scripts" / "exhibitiq_tools.py")
 tools = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(tools)
-G = pc.ROOT / "data" / "samples" / "golden" / "v1"
+G = pc.ROOT / "data" / "golden" / "v1"
 EX_INDEX = pc.SCHEMA_DIR / "examples" / "index" / "dataset_index.example.json"
 
 

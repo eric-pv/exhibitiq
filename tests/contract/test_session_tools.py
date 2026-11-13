@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "skills" / "exhibitiq" / "scripts"))
 import profile_tools as pt  # noqa: E402
 import session_tools as st  # noqa: E402
 
-G = ROOT / "data" / "samples" / "golden" / "v1"
+G = ROOT / "data" / "golden" / "v1"
 TOOLS = ROOT / "skills" / "exhibitiq" / "scripts" / "exhibitiq_tools.py"
 NOW = datetime(2026, 11, 9, 3, 0, 0, tzinfo=timezone.utc)
 

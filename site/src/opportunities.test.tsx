@@ -13,7 +13,7 @@ import type { Bundle } from "./data/types";
 
 vi.mock("echarts", () => ({ init: () => ({ setOption() {}, on() {}, resize() {}, dispose() {} }) }));
 
-const G = join(REPO, "data", "samples", "golden", "v1");
+const G = join(REPO, "data", "golden", "v1");
 const golden = () => buildBundle({ indexPath: join(G, "dataset_index.json"), analysesDir: join(G, "expected", "analysis") }) as Bundle;
 
 test.each([["example", undefined], ["golden", golden]])("%s: ranking ordered by rank; totals equal the sum of scored factors; unscored factors have 0 points and no evidence", (_n, mk) => {

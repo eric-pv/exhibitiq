@@ -8,7 +8,7 @@ import index_check as ic
 import knowledge_check as kc
 import package_check as pc
 
-G = pc.ROOT / "data" / "samples" / "golden" / "v1"
+G = pc.ROOT / "data" / "golden" / "v1"
 
 
 def load(p):

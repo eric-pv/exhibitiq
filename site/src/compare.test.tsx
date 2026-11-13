@@ -17,7 +17,7 @@ vi.mock("echarts", () => ({ init: () => ({ setOption() {}, on() {}, resize() {},
 /** Example index + golden index merged: two structurally different exhibitions, plus one edition without a package. */
 function twoExhibitions(): Bundle {
   const ex = JSON.parse(readFileSync(join(REPO, "schemas/v1/examples/index/dataset_index.example.json"), "utf8"));
-  const g = JSON.parse(readFileSync(join(REPO, "data/samples/golden/v1/dataset_index.json"), "utf8"));
+  const g = JSON.parse(readFileSync(join(REPO, "data/golden/v1/dataset_index.json"), "utf8"));
   ex.exhibitions.push(...g.exhibitions);
   const dir = mkdtempSync(join(tmpdir(), "cmp-"));
   writeFileSync(join(dir, "index.json"), JSON.stringify(ex));
@@ -40,7 +40,7 @@ test("comparison: same metrics for every selected edition; no package -> 資料�
   const withData = v.columns.filter((c) => c.dataset);
   expect(withData.length).toBe(2);
   const py = JSON.parse(execFileSync("python3", [join(REPO, "skills/exhibitiq/scripts/exhibitiq_tools.py"), "compare",
-    ...withData.map((c) => join(REPO, eds.find((e) => e.editionId === c.editionId)!.latest!.datasetId.startsWith("golden") ? "data/samples/golden/v1/package" : "schemas/v1/examples/package"))], { encoding: "utf8" }));
+    ...withData.map((c) => join(REPO, eds.find((e) => e.editionId === c.editionId)!.latest!.datasetId.startsWith("golden") ? "data/golden/v1/package" : "schemas/v1/examples/package"))], { encoding: "utf8" }));
   for (const col of withData) {
     const p = py.packages.find((x: { dataset_id: string }) => x.dataset_id === col.dataset!.datasetId);
     for (const [term, k] of Object.entries(col.keywords)) expect(k.count, term).toBe(p.keywords[term].count);

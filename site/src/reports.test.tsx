@@ -14,7 +14,7 @@ import type { Bundle } from "./data/types";
 
 vi.mock("echarts", () => ({ init: () => ({ setOption() {}, on() {}, resize() {}, dispose() {} }) }));
 
-const G = join(REPO, "data", "samples", "golden", "v1");
+const G = join(REPO, "data", "golden", "v1");
 const EX = join(REPO, "schemas", "v1", "examples");
 const cases = [
   ["example (draft.5, no analysis_config)", undefined, join(EX, "analysis", "analysis_result.example.json"), join(EX, "package")],

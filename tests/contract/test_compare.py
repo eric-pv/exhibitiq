@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT / "skills" / "exhibitiq" / "scripts"))
 import profile_tools as pt  # noqa: E402
 
 EX = ROOT / "schemas" / "v1" / "examples" / "package"
-G = ROOT / "data" / "samples" / "golden" / "v1" / "package"
+G = ROOT / "data" / "golden" / "v1" / "package"
 
 
 def test_two_different_exhibitions_compare_without_trend_claim():
