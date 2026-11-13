@@ -1,0 +1,462 @@
+{
+ "diff": {
+  "changes": [
+   {
+    "change_type": "modified",
+    "entity_id": "co_01JFCA00000000000000000003",
+    "entity_type": "company",
+    "field_changes": [
+     {
+      "after": "co_01JFCA00000000000000000001",
+      "before": null,
+      "field": "merged_into"
+     },
+     {
+      "after": "合成測試資料（synthetic）：所有名稱、網址與數字皆為虛構，不代表任何真實展覽或企業。 合成範例：示範兩筆紀錄確認為同一企業。",
+      "before": "合成測試資料（synthetic）：所有名稱、網址與數字皆為虛構，不代表任何真實展覽或企業。",
+      "field": "notes"
+     },
+     {
+      "after": "merged",
+      "before": "active",
+      "field": "status"
+     }
+    ],
+    "source_ids": [
+     "src_01JFSA00000000000000000001"
+    ]
+   },
+   {
+    "change_type": "added",
+    "entity_id": "co_01JFCA00000000000000000005",
+    "entity_type": "company",
+    "source_ids": [
+     "src_01JFSA00000000000000000003"
+    ]
+   },
+   {
+    "change_type": "modified",
+    "entity_id": "pt_01JFPA00000000000000000003",
+    "entity_type": "participation",
+    "field_changes": [
+     {
+      "after": "B-12",
+      "before": null,
+      "field": "booth"
+     }
+    ],
+    "source_ids": [
+     "src_01JFSA00000000000000000001",
+     "src_01JFSA00000000000000000003"
+    ]
+   },
+   {
+    "change_type": "removed",
+    "entity_id": "pt_01JFPA00000000000000000004",
+    "entity_type": "participation",
+    "source_ids": [
+     "src_01JFSA00000000000000000001"
+    ]
+   },
+   {
+    "change_type": "added",
+    "entity_id": "pt_01JFPA00000000000000000005",
+    "entity_type": "participation",
+    "source_ids": [
+     "src_01JFSA00000000000000000003"
+    ]
+   }
+  ],
+  "edition_id": "sample-fair-2026",
+  "kind": "diff",
+  "newer": {
+   "created_at": "2026-11-04T02:00:00Z",
+   "data_origin": "synthetic",
+   "dataset_id": "sample-fair-2026.20261104T020000Z"
+  },
+  "older": {
+   "created_at": "2026-11-04T01:00:00Z",
+   "data_origin": "synthetic",
+   "dataset_id": "sample-fair-2026.20261104T010000Z"
+  },
+  "recorded_comparison": {
+   "only_recomputed": [],
+   "only_recorded": []
+  },
+  "summary": {
+   "company": {
+    "added": 1,
+    "modified": 1,
+    "removed": 0
+   },
+   "participation": {
+    "added": 1,
+    "modified": 1,
+    "removed": 1
+   }
+  },
+  "version": 1
+ },
+ "search_alias": {
+  "datasets": [
+   "demo-trade-show-2025.20261104T030000Z",
+   "sample-fair-2026.20261104T020000Z"
+  ],
+  "kind": "search",
+  "query": {
+   "country": null,
+   "exhibition_id": null,
+   "listing_status": null,
+   "text": "SynOptics",
+   "year": null
+  },
+  "results": [
+   {
+    "company_id": "co_01JFCA00000000000000000001",
+    "country": "ZZ",
+    "matched_on": [
+     {
+      "field": "alias",
+      "value": "SynOptics"
+     }
+    ],
+    "name": "Synthetic Optics Ltd.",
+    "participations": [
+     {
+      "booth": "A-01",
+      "data_origin": "synthetic",
+      "dataset_id": "sample-fair-2026.20261104T020000Z",
+      "edition_id": "sample-fair-2026",
+      "edition_year": 2026,
+      "exhibition_id": "sample-fair",
+      "exhibitor_name_as_listed": "SYNTHETIC OPTICS LTD",
+      "hall": "1",
+      "listing_status": "listed",
+      "participation_id": "pt_01JFPA00000000000000000001",
+      "source_ids": [
+       "src_01JFSA00000000000000000001"
+      ]
+     }
+    ],
+    "status": "active",
+    "website": "https://www.example.org/synoptics/"
+   }
+  ],
+  "skipped": [],
+  "version": 1
+ },
+ "search_all": {
+  "datasets": [
+   "demo-trade-show-2025.20261104T030000Z",
+   "sample-fair-2026.20261104T020000Z"
+  ],
+  "kind": "search",
+  "query": {
+   "country": null,
+   "exhibition_id": null,
+   "listing_status": null,
+   "text": null,
+   "year": null
+  },
+  "results": [
+   {
+    "company_id": "co_01JFCB00000000000000000001",
+    "matched_on": [
+     {
+      "field": "*",
+      "value": ""
+     }
+    ],
+    "name": "Alpha Demo Co",
+    "participations": [
+     {
+      "data_origin": "synthetic",
+      "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+      "edition_id": "demo-trade-show-2025",
+      "edition_year": 2025,
+      "exhibition_id": "demo-trade-show",
+      "exhibitor_name_as_listed": "Alpha Demo Co",
+      "listing_status": "listed",
+      "participation_id": "pt_01JFPB00000000000000000001",
+      "source_ids": [
+       "src_01JFSB00000000000000000001"
+      ]
+     }
+    ],
+    "status": "active"
+   },
+   {
+    "company_id": "co_01JFCB00000000000000000002",
+    "matched_on": [
+     {
+      "field": "*",
+      "value": ""
+     }
+    ],
+    "name": "Beta Demo Trading",
+    "participations": [
+     {
+      "data_origin": "synthetic",
+      "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+      "edition_id": "demo-trade-show-2025",
+      "edition_year": 2025,
+      "exhibition_id": "demo-trade-show",
+      "exhibitor_name_as_listed": "Beta Demo Trading",
+      "listing_status": "listed",
+      "participation_id": "pt_01JFPB00000000000000000002",
+      "source_ids": [
+       "src_01JFSB00000000000000000001"
+      ]
+     }
+    ],
+    "status": "active"
+   },
+   {
+    "company_id": "co_01JFCA00000000000000000003",
+    "country": "ZZ",
+    "matched_on": [
+     {
+      "field": "*",
+      "value": ""
+     }
+    ],
+    "merged_into": "co_01JFCA00000000000000000001",
+    "name": "Dummy Sensors Inc.",
+    "participations": [
+     {
+      "booth": "B-12",
+      "data_origin": "synthetic",
+      "dataset_id": "sample-fair-2026.20261104T020000Z",
+      "edition_id": "sample-fair-2026",
+      "edition_year": 2026,
+      "exhibition_id": "sample-fair",
+      "exhibitor_name_as_listed": "Dummy Sensors Inc.",
+      "hall": "2",
+      "listing_status": "listed",
+      "participation_id": "pt_01JFPA00000000000000000003",
+      "source_ids": [
+       "src_01JFSA00000000000000000001",
+       "src_01JFSA00000000000000000003"
+      ]
+     }
+    ],
+    "status": "merged"
+   },
+   {
+    "company_id": "co_01JFCB00000000000000000003",
+    "matched_on": [
+     {
+      "field": "*",
+      "value": ""
+     }
+    ],
+    "name": "Gamma Demo Works",
+    "participations": [
+     {
+      "data_origin": "synthetic",
+      "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+      "edition_id": "demo-trade-show-2025",
+      "edition_year": 2025,
+      "exhibition_id": "demo-trade-show",
+      "exhibitor_name_as_listed": "Gamma Demo Works",
+      "listing_status": "listed",
+      "participation_id": "pt_01JFPB00000000000000000003",
+      "source_ids": [
+       "src_01JFSB00000000000000000001"
+      ]
+     }
+    ],
+    "status": "active"
+   },
+   {
+    "company_id": "co_01JFCA00000000000000000005",
+    "country": "ZZ",
+    "matched_on": [
+     {
+      "field": "*",
+      "value": ""
+     }
+    ],
+    "name": "Sample Cyber Range LLC",
+    "participations": [
+     {
+      "booth": "C-03",
+      "data_origin": "synthetic",
+      "dataset_id": "sample-fair-2026.20261104T020000Z",
+      "edition_id": "sample-fair-2026",
+      "edition_year": 2026,
+      "exhibition_id": "sample-fair",
+      "exhibitor_name_as_listed": "Sample Cyber Range LLC",
+      "hall": "3",
+      "listing_status": "listed",
+      "participation_id": "pt_01JFPA00000000000000000005",
+      "source_ids": [
+       "src_01JFSA00000000000000000003"
+      ]
+     }
+    ],
+    "status": "active"
+   },
+   {
+    "company_id": "co_01JFCA00000000000000000002",
+    "country": "ZZ",
+    "matched_on": [
+     {
+      "field": "*",
+      "value": ""
+     }
+    ],
+    "name": "Sample Mobility Works",
+    "participations": [
+     {
+      "booth": "A-02",
+      "data_origin": "synthetic",
+      "dataset_id": "sample-fair-2026.20261104T020000Z",
+      "edition_id": "sample-fair-2026",
+      "edition_year": 2026,
+      "exhibition_id": "sample-fair",
+      "exhibitor_name_as_listed": "Sample Mobility Works",
+      "hall": "1",
+      "listing_status": "listed",
+      "participation_id": "pt_01JFPA00000000000000000002",
+      "source_ids": [
+       "src_01JFSA00000000000000000001"
+      ]
+     }
+    ],
+    "status": "active"
+   },
+   {
+    "company_id": "co_01JFCA00000000000000000001",
+    "country": "ZZ",
+    "matched_on": [
+     {
+      "field": "*",
+      "value": ""
+     }
+    ],
+    "name": "Synthetic Optics Ltd.",
+    "participations": [
+     {
+      "booth": "A-01",
+      "data_origin": "synthetic",
+      "dataset_id": "sample-fair-2026.20261104T020000Z",
+      "edition_id": "sample-fair-2026",
+      "edition_year": 2026,
+      "exhibition_id": "sample-fair",
+      "exhibitor_name_as_listed": "SYNTHETIC OPTICS LTD",
+      "hall": "1",
+      "listing_status": "listed",
+      "participation_id": "pt_01JFPA00000000000000000001",
+      "source_ids": [
+       "src_01JFSA00000000000000000001"
+      ]
+     }
+    ],
+    "status": "active",
+    "website": "https://www.example.org/synoptics/"
+   },
+   {
+    "company_id": "co_01JFCA00000000000000000004",
+    "country": "ZZ",
+    "matched_on": [
+     {
+      "field": "*",
+      "value": ""
+     }
+    ],
+    "name": "Test Harness Labs",
+    "participations": [
+     {
+      "booth": "B-08",
+      "data_origin": "synthetic",
+      "dataset_id": "sample-fair-2026.20261104T020000Z",
+      "edition_id": "sample-fair-2026",
+      "edition_year": 2026,
+      "exhibition_id": "sample-fair",
+      "exhibitor_name_as_listed": "Test Harness Labs",
+      "hall": "2",
+      "listing_status": "removed",
+      "participation_id": "pt_01JFPA00000000000000000004",
+      "source_ids": [
+       "src_01JFSA00000000000000000001"
+      ]
+     }
+    ],
+    "status": "active"
+   }
+  ],
+  "skipped": [],
+  "version": 1
+ },
+ "timeline": {
+  "edition_year": 2026,
+  "exhibition_id": "sample-fair",
+  "kind": "timeline",
+  "latest_valid_dataset_id": "sample-fair-2026.20261104T020000Z",
+  "notices": [],
+  "packages": [
+   {
+    "collected_participation_count": 4,
+    "completeness_status": "partial",
+    "created_at": "2026-11-04T01:00:00Z",
+    "data_origin": "synthetic",
+    "dataset_id": "sample-fair-2026.20261104T010000Z",
+    "official_exhibitor_count": 5,
+    "path": "<repo>/data/samples/sample-fair/2026/sample-fair-2026.20261104T010000Z",
+    "previous_dataset_id": null,
+    "record_counts": {
+     "changes": 0,
+     "companies": 4,
+     "crawl_runs": 1,
+     "participations": 4,
+     "sources": 2
+    },
+    "recorded_changes": {
+     "company": {
+      "added": 0,
+      "modified": 0,
+      "removed": 0
+     },
+     "participation": {
+      "added": 0,
+      "modified": 0,
+      "removed": 0
+     }
+    },
+    "validation": "passed"
+   },
+   {
+    "collected_participation_count": 4,
+    "completeness_status": "complete",
+    "created_at": "2026-11-04T02:00:00Z",
+    "data_origin": "synthetic",
+    "dataset_id": "sample-fair-2026.20261104T020000Z",
+    "official_exhibitor_count": 4,
+    "path": "<repo>/data/samples/sample-fair/2026/sample-fair-2026.20261104T020000Z",
+    "previous_dataset_id": "sample-fair-2026.20261104T010000Z",
+    "record_counts": {
+     "changes": 5,
+     "companies": 5,
+     "crawl_runs": 2,
+     "participations": 5,
+     "sources": 3
+    },
+    "recorded_changes": {
+     "company": {
+      "added": 1,
+      "modified": 1,
+      "removed": 0
+     },
+     "participation": {
+      "added": 1,
+      "modified": 1,
+      "removed": 1
+     }
+    },
+    "validation": "passed"
+   }
+  ],
+  "version": 1
+ }
+}

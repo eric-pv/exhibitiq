@@ -1,0 +1,141 @@
+{
+ "companies": {
+  "co_01JFCA00000000000000000001": {
+   "name": "Synthetic Optics Ltd.",
+   "participations": [
+    {
+     "booth": "A-01",
+     "data_origin": "synthetic",
+     "dataset_id": "sample-fair-2026.20261104T020000Z",
+     "edition_id": "sample-fair-2026",
+     "edition_year": 2026,
+     "exhibition_id": "sample-fair",
+     "exhibitor_name_as_listed": "SYNTHETIC OPTICS LTD",
+     "hall": "1",
+     "listing_status": "listed",
+     "participation_id": "pt_01JFPA00000000000000000001"
+    }
+   ]
+  },
+  "co_01JFCA00000000000000000002": {
+   "name": "Sample Mobility Works",
+   "participations": [
+    {
+     "booth": "A-02",
+     "data_origin": "synthetic",
+     "dataset_id": "sample-fair-2026.20261104T020000Z",
+     "edition_id": "sample-fair-2026",
+     "edition_year": 2026,
+     "exhibition_id": "sample-fair",
+     "exhibitor_name_as_listed": "Sample Mobility Works",
+     "hall": "1",
+     "listing_status": "listed",
+     "participation_id": "pt_01JFPA00000000000000000002"
+    }
+   ]
+  },
+  "co_01JFCA00000000000000000003": {
+   "name": "Dummy Sensors Inc.",
+   "participations": [
+    {
+     "booth": "B-12",
+     "canonical_company_id": "co_01JFCA00000000000000000001",
+     "data_origin": "synthetic",
+     "dataset_id": "sample-fair-2026.20261104T020000Z",
+     "edition_id": "sample-fair-2026",
+     "edition_year": 2026,
+     "exhibition_id": "sample-fair",
+     "exhibitor_name_as_listed": "Dummy Sensors Inc.",
+     "hall": "2",
+     "listing_status": "listed",
+     "participation_id": "pt_01JFPA00000000000000000003"
+    }
+   ]
+  },
+  "co_01JFCA00000000000000000004": {
+   "name": "Test Harness Labs",
+   "participations": [
+    {
+     "booth": "B-08",
+     "data_origin": "synthetic",
+     "dataset_id": "sample-fair-2026.20261104T020000Z",
+     "edition_id": "sample-fair-2026",
+     "edition_year": 2026,
+     "exhibition_id": "sample-fair",
+     "exhibitor_name_as_listed": "Test Harness Labs",
+     "hall": "2",
+     "listing_status": "removed",
+     "participation_id": "pt_01JFPA00000000000000000004"
+    }
+   ]
+  },
+  "co_01JFCA00000000000000000005": {
+   "name": "Sample Cyber Range LLC",
+   "participations": [
+    {
+     "booth": "C-03",
+     "data_origin": "synthetic",
+     "dataset_id": "sample-fair-2026.20261104T020000Z",
+     "edition_id": "sample-fair-2026",
+     "edition_year": 2026,
+     "exhibition_id": "sample-fair",
+     "exhibitor_name_as_listed": "Sample Cyber Range LLC",
+     "hall": "3",
+     "listing_status": "listed",
+     "participation_id": "pt_01JFPA00000000000000000005"
+    }
+   ]
+  },
+  "co_01JFCB00000000000000000001": {
+   "name": "Alpha Demo Co",
+   "participations": [
+    {
+     "data_origin": "synthetic",
+     "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+     "edition_id": "demo-trade-show-2025",
+     "edition_year": 2025,
+     "exhibition_id": "demo-trade-show",
+     "exhibitor_name_as_listed": "Alpha Demo Co",
+     "listing_status": "listed",
+     "participation_id": "pt_01JFPB00000000000000000001"
+    }
+   ]
+  },
+  "co_01JFCB00000000000000000002": {
+   "name": "Beta Demo Trading",
+   "participations": [
+    {
+     "data_origin": "synthetic",
+     "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+     "edition_id": "demo-trade-show-2025",
+     "edition_year": 2025,
+     "exhibition_id": "demo-trade-show",
+     "exhibitor_name_as_listed": "Beta Demo Trading",
+     "listing_status": "listed",
+     "participation_id": "pt_01JFPB00000000000000000002"
+    }
+   ]
+  },
+  "co_01JFCB00000000000000000003": {
+   "name": "Gamma Demo Works",
+   "participations": [
+    {
+     "data_origin": "synthetic",
+     "dataset_id": "demo-trade-show-2025.20261104T030000Z",
+     "edition_id": "demo-trade-show-2025",
+     "edition_year": 2025,
+     "exhibition_id": "demo-trade-show",
+     "exhibitor_name_as_listed": "Gamma Demo Works",
+     "listing_status": "listed",
+     "participation_id": "pt_01JFPB00000000000000000003"
+    }
+   ]
+  }
+ },
+ "datasets": [
+  "demo-trade-show-2025.20261104T030000Z",
+  "sample-fair-2026.20261104T020000Z"
+ ],
+ "skipped": [],
+ "version": 1
+}

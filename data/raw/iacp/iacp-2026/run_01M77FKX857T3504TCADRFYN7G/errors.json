@@ -1,0 +1,8 @@
+[
+  {
+    "code": "access_blocked",
+    "message": "not fetched: disallowed by robots.txt (robots.txt unavailable: network error for https://paladindrones.io/robots.txt: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1011))",
+    "retryable": false,
+    "url": "https://paladindrones.io/"
+  }
+]

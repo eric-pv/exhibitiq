@@ -1,0 +1,78 @@
+{
+ "counts": {
+  "excluded": 1,
+  "include": 2,
+  "review": 1,
+  "unscreened": 1
+ },
+ "data_origin": "synthetic",
+ "dataset_id": "sample-fair-2026.20261104T020000Z",
+ "kind": "rule_based",
+ "note": "Rule-based preliminary screening; not an AI judgement and not a verified fact. Nothing was removed from the package.",
+ "participations": {
+  "pt_01JFPA00000000000000000001": {
+   "label": "include",
+   "matched_rules": [
+    "optics-cyber"
+   ]
+  },
+  "pt_01JFPA00000000000000000002": {
+   "label": "excluded",
+   "matched_rules": [
+    "vehicles"
+   ]
+  },
+  "pt_01JFPA00000000000000000003": {
+   "label": "unscreened",
+   "matched_rules": []
+  },
+  "pt_01JFPA00000000000000000004": {
+   "label": "review",
+   "matched_rules": [
+    "booth-b08"
+   ]
+  },
+  "pt_01JFPA00000000000000000005": {
+   "label": "include",
+   "matched_rules": [
+    "optics-cyber"
+   ]
+  }
+ },
+ "rules": [
+  {
+   "description": "",
+   "field": "categories_as_listed",
+   "id": "optics-cyber",
+   "op": "contains_any",
+   "outcome": "include",
+   "terms": [
+    "optics",
+    "cyber"
+   ]
+  },
+  {
+   "description": "",
+   "field": "categories_as_listed",
+   "id": "vehicles",
+   "op": "contains_any",
+   "outcome": "exclude",
+   "terms": [
+    "vehicles"
+   ]
+  },
+  {
+   "description": "",
+   "field": "booth",
+   "id": "booth-b08",
+   "op": "equals_any",
+   "outcome": "review",
+   "terms": [
+    "b-08"
+   ]
+  }
+ ],
+ "rules_fingerprint": "sha256:6782c244773ed862c5031052957b61d06a0b0d26e86aa0205e7b7cb896f450f2",
+ "rules_name": "regression",
+ "total": 5
+}

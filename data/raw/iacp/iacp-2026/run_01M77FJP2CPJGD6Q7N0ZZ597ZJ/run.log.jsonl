@@ -1,0 +1,8 @@
+{"adapter":"company-site","crawl_run_id":"run_01M77FJP2CPJGD6Q7N0ZZ597ZJ","event":"run_started","exhibition_id":"iacp","level":"INFO","source":"iacp-2026-milo-site","ts":"2026-11-12T08:56:49Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:56:50Z","url":"https://www.faac.com/robots.txt"}
+{"crawl_delay":null,"event":"robots","level":"INFO","message":"robots.txt rules","mode":"rules","origin":"https://www.faac.com","ts":"2026-11-12T08:56:50Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:56:52Z","url":"https://www.faac.com/milo/"}
+{"count":1,"event":"records_extracted","level":"INFO","source_id":"src_01M77FJR9065CYJXM27XS6VCRW","ts":"2026-11-12T08:56:52Z","url":"https://www.faac.com/milo/"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:56:54Z","url":"https://www.faac.com/milo/feed/"}
+{"count":0,"event":"records_extracted","level":"INFO","source_id":"src_01M77FJTCH8XWX6JEF4GSFQ3V4","ts":"2026-11-12T08:56:54Z","url":"https://www.faac.com/milo/feed/"}
+{"error_count":0,"event":"run_finished","level":"INFO","records_extracted":1,"requests_attempted":3,"requests_succeeded":3,"status":"succeeded","ts":"2026-11-12T08:56:54Z"}

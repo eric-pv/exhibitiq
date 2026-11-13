@@ -1,0 +1,4 @@
+{"adapter":"pdf-layout-table","crawl_run_id":"run_01M727Z9TV8A01MY3X2QWRZJ9Q","event":"run_started","exhibition_id":"dsa","level":"INFO","source":"dsa-2026-participating-companies-pdf","ts":"2026-11-10T08:07:42Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-10T08:07:42Z","url":"https://www.dsaexhibition.com/"}
+{"count":1184,"event":"records_extracted","level":"INFO","source_id":"src_01M727Z9TXFH56F0RY7Z3PH14A","ts":"2026-11-10T08:07:44Z","url":"https://www.dsaexhibition.com/"}
+{"error_count":0,"event":"run_finished","level":"INFO","records_extracted":1184,"requests_attempted":1,"requests_succeeded":1,"status":"succeeded","ts":"2026-11-10T08:07:44Z"}

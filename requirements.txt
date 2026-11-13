@@ -1,0 +1,10 @@
+# ExhibitIQ 資料工程（data）Python 依賴 — P1-DATA-01
+# 只固定頂層套件；版本為 2026-11-03 在 Python 3.12.3 以 pip 實際解析所得。
+# 新增依賴時，只加入該 Issue 確實用到的套件，並同步更新 docs/data-platform/environment.md。
+jsonschema==4.26.0
+# referencing：D1-05 起驗證器直接使用（原本只是 jsonschema 的間接依賴）。
+referencing==0.37.0
+pytest==9.2.0
+# D2-04: 檔案匯入。openpyxl 讀 .xlsx；pypdf 抽取 PDF 文字層（不做 OCR）。
+openpyxl==3.1.5
+pypdf==6.21.4
