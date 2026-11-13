@@ -1,0 +1,24 @@
+{
+ "identified": "official website identified by a web search on 2026-11-12 (Issue #114 item 1A); not stated by the IACP exhibitor list",
+ "news_months": 12,
+ "news_keywords": ["training", "trainer", "simulat", "drone", "uas", "police", "law enforcement", "law-enforcement", "public safety", "public-safety",
+                   "first responder", "virtual reality", "virtual-reality", "use of force", "use-of-force", "de-escalation", "firearm", "iacp", "range"],
+ "targets": [
+  {"exhibitor_name_as_listed": "InVeris", "homepage": "https://www.inveristraining.com/", "allowed_domains": ["inveristraining.com"]},
+  {"exhibitor_name_as_listed": "MILO", "homepage": "https://www.faac.com/milo/", "allowed_domains": ["faac.com"]},
+  {"exhibitor_name_as_listed": "Operator XR", "homepage": "https://operatorxr.com/", "allowed_domains": ["operatorxr.com"]},
+  {"exhibitor_name_as_listed": "V-Armed", "homepage": "https://www.v-armed.com/", "allowed_domains": ["v-armed.com"]},
+  {"exhibitor_name_as_listed": "VirTra", "homepage": "https://www.virtra.com/", "allowed_domains": ["virtra.com"]},
+  {"exhibitor_name_as_listed": "Ti Training Corp", "homepage": "https://titraining.com/", "allowed_domains": ["titraining.com"]},
+  {"exhibitor_name_as_listed": "Theissen Training Systems", "homepage": "https://theissentraining.com/", "allowed_domains": ["theissentraining.com"]},
+  {"exhibitor_name_as_listed": "Peerless VR", "homepage": "https://www.peerlessvr.com/", "allowed_domains": ["peerlessvr.com"]},
+  {"exhibitor_name_as_listed": "Virtual Academy", "homepage": "https://www.virtualacademy.com/", "allowed_domains": ["virtualacademy.com"]},
+  {"exhibitor_name_as_listed": "DroneShield", "homepage": "https://www.droneshield.com/", "allowed_domains": ["droneshield.com"]},
+  {"exhibitor_name_as_listed": "Zephyr Drone Simulator", "homepage": "https://zephyr-sim.com/", "allowed_domains": ["zephyr-sim.com"]},
+  {"exhibitor_name_as_listed": "Paladin Drones", "homepage": "https://paladindrones.io/", "allowed_domains": ["paladindrones.io"]},
+  {"exhibitor_name_as_listed": "Rapid Drone", "homepage": "https://rapid-drone.com/", "allowed_domains": ["rapid-drone.com"]}
+ ],
+ "not_found": [
+  {"exhibitor_name_as_listed": "Scenario Trainer, Inc Smart Firearms Training Devices", "reason": "web searches for the company name and for 'Smart Firearms Training Devices' found trade-press pages about its products but no company website"}
+ ]
+}

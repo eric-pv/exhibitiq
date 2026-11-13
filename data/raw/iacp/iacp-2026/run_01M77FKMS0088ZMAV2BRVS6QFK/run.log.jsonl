@@ -1,0 +1,8 @@
+{"adapter":"company-site","crawl_run_id":"run_01M77FKMS0088ZMAV2BRVS6QFK","event":"run_started","exhibition_id":"iacp","level":"INFO","source":"iacp-2026-virtual-academy-site","ts":"2026-11-12T08:57:21Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:21Z","url":"https://www.virtualacademy.com/robots.txt"}
+{"crawl_delay":null,"event":"robots","level":"INFO","message":"robots.txt rules","mode":"rules","origin":"https://www.virtualacademy.com","ts":"2026-11-12T08:57:21Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:23Z","url":"https://www.virtualacademy.com/"}
+{"count":1,"event":"records_extracted","level":"INFO","source_id":"src_01M77FKPVBTJ9Q4JYXFN7X5168","ts":"2026-11-12T08:57:23Z","url":"https://www.virtualacademy.com/"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:25Z","url":"https://www.virtualacademy.com/blog-feed.xml"}
+{"count":3,"event":"records_extracted","level":"INFO","source_id":"src_01M77FKRR7EVF2BPNW46PQB37W","ts":"2026-11-12T08:57:25Z","url":"https://www.virtualacademy.com/blog-feed.xml"}
+{"error_count":0,"event":"run_finished","level":"INFO","records_extracted":4,"requests_attempted":3,"requests_succeeded":3,"status":"succeeded","ts":"2026-11-12T08:57:25Z"}

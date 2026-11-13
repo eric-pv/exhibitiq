@@ -1,0 +1,27 @@
+{
+  "crawl_run_id": "run_01M77FK6YNP0C107F2EJRBQ0ZG",
+  "crawler": {
+    "name": "company-site",
+    "version": "1.0.0"
+  },
+  "edition_id": "iacp-2026",
+  "error_samples": [
+    {
+      "code": "access_blocked",
+      "message": "HTTP 403 for https://www.virtra.com/",
+      "occurred_at": "2026-11-12T08:57:09Z",
+      "url": "https://www.virtra.com/"
+    }
+  ],
+  "exhibition_id": "iacp",
+  "finished_at": "2026-11-12T08:57:09Z",
+  "started_at": "2026-11-12T08:57:07Z",
+  "stats": {
+    "error_count": 1,
+    "records_extracted": 0,
+    "requests_attempted": 2,
+    "requests_succeeded": 1
+  },
+  "status": "failed",
+  "trigger": "manual"
+}

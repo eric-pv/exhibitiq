@@ -1,0 +1,27 @@
+{
+  "crawl_run_id": "run_01M77FKX857T3504TCADRFYN7G",
+  "crawler": {
+    "name": "company-site",
+    "version": "1.0.0"
+  },
+  "edition_id": "iacp-2026",
+  "error_samples": [
+    {
+      "code": "access_blocked",
+      "message": "not fetched: disallowed by robots.txt (robots.txt unavailable: network error for https://paladindrones.io/robots.txt: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1011))",
+      "occurred_at": "2026-11-12T08:57:32Z",
+      "url": "https://paladindrones.io/"
+    }
+  ],
+  "exhibition_id": "iacp",
+  "finished_at": "2026-11-12T08:57:32Z",
+  "started_at": "2026-11-12T08:57:30Z",
+  "stats": {
+    "error_count": 1,
+    "records_extracted": 0,
+    "requests_attempted": 2,
+    "requests_succeeded": 0
+  },
+  "status": "failed",
+  "trigger": "manual"
+}

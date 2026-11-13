@@ -1,0 +1,22 @@
+# IACP 2026 exhibitor list, printed from the organizer's exhibitor gallery to PDF by a person (file import).
+# Not crawled: the site's robots.txt (checked 2026-11-09) disallows /8_0/ajax for all agents and the whole site for
+# AI crawlers such as ClaudeBot. See docs/data-platform/iacp-2026-source-assessment.md.
+name = "iacp-2026-exhibitor-list-print"
+exhibition_id = "iacp"
+edition_id = "iacp-2026"
+source_type = "pdf_import"
+start_urls = ["https://iacp2026.mapyourshow.com/8_0/explore/exhibitor-gallery.cfm?featured=false"]
+allowed_domains = ["iacp2026.mapyourshow.com"]
+adapter = "printed-listing"
+
+[options]
+section_heading = '^ALL EXHIBITORS \( (?P<count>\d+) \)$'
+detail_field = "booth"
+# page furniture repeated by the browser print: event dates/place in the page header, and the site footer
+ignore_lines = [
+  '^Oct\. 24- 27$',
+  '^Orlando, FL$',
+  '^IACP 2026 Conference & Exhibition • ©2026 All Rights Reserved$',
+  '^Sitemap Help Privacy Policy$',
+  '^\|$',
+]

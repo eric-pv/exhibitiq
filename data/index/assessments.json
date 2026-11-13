@@ -1,0 +1,18 @@
+{
+ "dsa": {
+  "assessed_at": "2026-11-10T08:00:00Z",
+  "method": "file_import",
+  "name": "Defence Services Asia (DSA) Exhibition & Conference",
+  "notes": "The organizer publishes the exhibitor list as a PDF table (updated as of 6 April 2026). Imported with the pdf-layout-table adapter: 1184 rows, 1172 participations after same-name rows were merged. No total exhibitor count is stated, so completeness is unknown. The organizer's site was not crawled or checked from this environment.",
+  "report_path": "docs/data-platform/dsa-2026-source-assessment.md",
+  "status": "feasible"
+ },
+ "iacp": {
+  "assessed_at": "2026-11-09T07:00:00Z",
+  "method": "file_import",
+  "name": "IACP Conference & Exhibition",
+  "notes": "Automatic acquisition not feasible: robots.txt disallows the list data path (/8_0/ajax) for all agents and the whole site for AI crawlers. A PDF printed from the public exhibitor gallery by a person was imported; the page states 662 exhibitors and 662 were read.",
+  "report_path": "docs/data-platform/iacp-2026-source-assessment.md",
+  "status": "partially_feasible"
+ }
+}

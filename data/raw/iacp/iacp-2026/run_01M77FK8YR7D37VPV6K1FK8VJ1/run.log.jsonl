@@ -1,0 +1,10 @@
+{"adapter":"company-site","crawl_run_id":"run_01M77FK8YR7D37VPV6K1FK8VJ1","event":"run_started","exhibition_id":"iacp","level":"INFO","source":"iacp-2026-ti-training-corp-site","ts":"2026-11-12T08:57:09Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:09Z","url":"https://titraining.com/robots.txt"}
+{"crawl_delay":null,"event":"robots","level":"INFO","message":"robots.txt rules","mode":"rules","origin":"https://titraining.com","ts":"2026-11-12T08:57:09Z"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:11Z","url":"https://titraining.com/"}
+{"count":1,"event":"records_extracted","level":"INFO","source_id":"src_01M77FKB9MW1DE8PNHEC1DZK71","ts":"2026-11-12T08:57:11Z","url":"https://titraining.com/"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:15Z","url":"https://titraining.com/feed/"}
+{"count":10,"event":"records_extracted","level":"INFO","source_id":"src_01M77FKENM2QP0DGRVD0HTSCCX","ts":"2026-11-12T08:57:15Z","url":"https://titraining.com/feed/"}
+{"event":"request","http_status":200,"level":"INFO","succeeded":true,"ts":"2026-11-12T08:57:17Z","url":"https://titraining.com/web-stories/feed/"}
+{"count":4,"event":"records_extracted","level":"INFO","source_id":"src_01M77FKGHMA6XDBS0QB0TD3236","ts":"2026-11-12T08:57:17Z","url":"https://titraining.com/web-stories/feed/"}
+{"error_count":0,"event":"run_finished","level":"INFO","records_extracted":15,"requests_attempted":4,"requests_succeeded":4,"status":"succeeded","ts":"2026-11-12T08:57:17Z"}
