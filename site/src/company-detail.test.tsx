@@ -43,7 +43,7 @@ test("detail: unknown company id returns null", () => {
 });
 
 test("detail: every golden-sample company resolves all of its sources", () => {
-  const g = join(REPO, "data", "samples", "golden", "v1");
+  const g = join(REPO, "data", "golden", "v1");
   const b = buildBundle({ indexPath: join(g, "dataset_index.json"), analysesDir: join(g, "expected", "analysis") }) as Bundle;
   const ids = new Set(Object.values(b.datasets).flatMap((ds) => ds.companies.map((c) => c.companyId)));
   expect(ids.size).toBeGreaterThan(0);

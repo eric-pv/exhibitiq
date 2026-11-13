@@ -106,8 +106,8 @@ def test_every_spec_directory_has_owner(path):
         ("tests/contract/", "ai"),
         ("tests/contract/test_x.py", "ai"),
         ("tests/data/", "data"),
-        ("data/samples/golden/", "ai"),
-        ("data/samples/golden/v1/manifest.json", "ai"),
+        ("data/golden/", "ai"),
+        ("data/golden/v1/manifest.json", "ai"),
         ("data/samples/sample-fair/", "data"),
         # V2.2: test data for any exhibition lives under data/samples/<exhibition_id>/.
         ("data/samples/synthetic-expo-a/companies.csv", "data"),

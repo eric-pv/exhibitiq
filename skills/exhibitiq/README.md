@@ -36,7 +36,7 @@ python $T finalize <draft.json> <package_dir> [--no-save]          # 證據驗�
 
 ## 範例（黃金樣本，合成資料）
 ```bash
-G=data/samples/golden/v1
+G=data/golden/v1
 python $T select golden-fair --index $G/dataset_index.json
 python $T validate-analysis $G/expected/analysis/analysis_result.json $G/package
 python $T report $G/expected/analysis/analysis_result.json $G/package

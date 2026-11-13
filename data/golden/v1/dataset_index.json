@@ -15,7 +15,7 @@
         "method": "file_import",
         "status": "partially_feasible",
         "assessed_at": "2026-11-03T08:00:00Z",
-        "report_path": "data/samples/golden/v1/README.md",
+        "report_path": "data/golden/v1/README.md",
         "notes": "合成：只有可匯入的名單檔，官方筆數未公布。"
       },
       "editions": [
@@ -37,7 +37,7 @@
               "dataset_id": "golden-fair-2025.20261104T000000Z",
               "location": {
                 "storage": "git",
-                "locator": "data/samples/golden/v1/package"
+                "locator": "data/golden/v1/package"
               },
               "created_at": "2026-11-04T00:00:00Z",
               "data_origin": "synthetic",

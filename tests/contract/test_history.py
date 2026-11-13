@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "skills" / "exhibitiq" / "scripts"))
 import profile_tools as pt  # noqa: E402
 
-G = ROOT / "data" / "samples" / "golden" / "v1" / "package"
+G = ROOT / "data" / "golden" / "v1" / "package"
 EX = ROOT / "schemas" / "v1" / "examples" / "package"
 TOOLS = ROOT / "skills" / "exhibitiq" / "scripts" / "exhibitiq_tools.py"
 

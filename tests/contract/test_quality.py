@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "skills" / "exhibitiq" / "scripts"))
 import quality_check as qc  # noqa: E402
 
-G = ROOT / "data" / "samples" / "golden" / "v1"
+G = ROOT / "data" / "golden" / "v1"
 A = json.loads((G / "expected" / "analysis" / "analysis_result.json").read_text(encoding="utf-8"))
 M = json.loads((G / "package" / "manifest.json").read_text(encoding="utf-8"))
 TOOLS = ROOT / "skills" / "exhibitiq" / "scripts" / "exhibitiq_tools.py"
