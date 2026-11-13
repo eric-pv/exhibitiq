@@ -6,7 +6,7 @@ import { HashRouter } from "react-router-dom";
 import App from "./App";
 import { antdTheme } from "./theme/tokens";
 import "./theme/print.css";
-import favicon from "./assets/brand/exhibitiq-icon-dark.svg";
+import favicon from "./assets/brand/exhibitiq-icon-light.svg";
 
 // Brand icon in the browser tab (an inlined data URI, so it also works in the single-file build).
 const icon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
