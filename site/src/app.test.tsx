@@ -65,11 +65,14 @@ describe("status components", () => {
     expect(screen.getByText(/已取得 5 ／ 官方公布 未知/)).toBeTruthy();
   });
 
-  test("synthetic data shows the banner; collected data does not", () => {
-    const { unmount } = wrap(<DataOriginBanner origin="synthetic" />);
-    expect(screen.getByTestId("data-origin-banner")).toBeTruthy();
-    unmount();
-    wrap(<DataOriginBanner origin="collected" />);
+  test("every page states its data origin: synthetic warning, collected info; nothing when there is no data", () => {
+    const a = wrap(<DataOriginBanner origin="synthetic" />);
+    expect(screen.getByTestId("data-origin-banner").getAttribute("data-origin")).toBe("synthetic");
+    a.unmount();
+    const b = wrap(<DataOriginBanner origin="collected" />);
+    expect(screen.getByTestId("data-origin-banner").getAttribute("data-origin")).toBe("collected");
+    b.unmount();
+    wrap(<DataOriginBanner origin="none" />);
     expect(screen.queryByTestId("data-origin-banner")).toBeNull();
   });
 });
