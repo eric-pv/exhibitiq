@@ -229,5 +229,6 @@ export const t = {
   origin: {
     synthetic: "合成資料：畫面上的展覽、企業與數字都是虛構的測試資料，不代表任何真實展覽或企業。",
     collected: "真實資料",
+    collectedBanner: "真實資料：來自公開來源或使用者上傳的名單；資料不完整時，各頁會標示完整度。AI 推論一律另外標示。",
   },
 } as const;

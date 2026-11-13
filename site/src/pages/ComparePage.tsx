@@ -50,7 +50,7 @@ export function ComparePage() {
       <PageHeader title={t.nav.exhibitionIntel} />
       <DataOriginBanner origin={bundle.dataOrigin} />
       <Space wrap style={{ margin: `${space.md}px 0` }}>
-        <Select mode="multiple" style={{ minWidth: 320 }} value={selected} placeholder={c.pick} data-testid="compare-select"
+        <Select mode="multiple" maxTagCount="responsive" style={{ minWidth: 320, maxWidth: "100%" }} value={selected} placeholder={c.pick} data-testid="compare-select"
           options={all.map((e) => ({ value: e.editionId, label: `${e.exhibitionName}（${e.year}）${e.latest ? "" : `｜${c.noPackage}`}` }))}
           onChange={(vals: string[]) => set("e", vals.join(","))} />
         <Select style={{ minWidth: 220 }} value={profileId ?? undefined} placeholder={c.profile} data-testid="compare-profile"

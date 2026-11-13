@@ -11,6 +11,8 @@ import { CompletenessIndicator } from "./status/CompletenessIndicator";
 import { SourceRefs, shortTime } from "./status/SourceRef";
 
 const o = t.opportunities;
+/** Large exhibitions: the report (web and PDF) details the top N scores; the full ranking stays on the opportunities page. */
+export const REPORT_TOP = 20;
 
 /**
  * The single report renderer (DEVELOPMENT_PLAN §3, W3-04). Web and PDF (print) use this component and the same
@@ -105,7 +107,8 @@ export function ReportViewer({ view, b = bundle, showCost = true }: { view: Oppo
     ),
     scores: () => view.ranking.length > 0 && (
       <Space direction="vertical" style={{ width: "100%" }}>
-        {view.ranking.map((r) => (
+        {view.ranking.length > REPORT_TOP && <Typography.Text type="secondary" data-testid="report-top-note">{`列出前 ${REPORT_TOP} 名的評分拆解；全部 ${view.ranking.length} 家請見「商機分析與評分」頁或匯出 CSV。`}</Typography.Text>}
+        {view.ranking.slice(0, REPORT_TOP).map((r) => (
           <div key={r.key} className="report-avoid-break">
             <Space wrap><Typography.Text strong>第 {r.rank ?? "—"} 名：{r.companyName}</Typography.Text><ScoreBar total={r.total} max={r.max} /><ClaimBadge kind="ai_inferred" /></Space>
             <ScoreBreakdown score={r.score} view={view} />
