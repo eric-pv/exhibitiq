@@ -34,6 +34,7 @@ def test_prepare_fills_every_deterministic_field_and_a_compact_brief(tmp_path):
     assert len(brief["companies_in_detail"]) == 2 and len(brief["other_companies"]) == r["companies"] - 2
     cited = {s for c in brief["companies_in_detail"] for p in c["listed_as"] for s in p["source_ids"]}
     assert cited <= set(brief["sources"])  # every source the brief shows is described
+    assert all({"description", "description_source_ids", "news"} <= set(c) for c in brief["companies_in_detail"])
     assert r["estimate"]["brief_tokens"] > 0 and r["estimate"]["skill_instructions_tokens"] > 1000
 
 
