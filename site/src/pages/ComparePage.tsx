@@ -84,7 +84,7 @@ function HistorySection(props: { profileId: string | null; exhibitionId: string 
   return (
     <Card title={h.title} data-testid="history" style={{ marginTop: space.md }}>
       <Space direction="vertical" size={space.md} style={{ width: "100%" }}>
-        <Select style={{ minWidth: 260 }} value={id ?? undefined} placeholder={h.exhibition} data-testid="history-select"
+        <Select style={{ minWidth: 260, maxWidth: "100%" }} value={id ?? undefined} placeholder={h.exhibition} data-testid="history-select"
           options={exhibitions.map((e) => ({ value: e.exhibitionId, label: e.name }))} onChange={props.onPick} />
         {!v || v.status === "insufficient" ? <EmptyState message={h.insufficient} /> : (
           <>
