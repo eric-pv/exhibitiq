@@ -1,4 +1,4 @@
-import logo from "../../assets/brand/exhibitiq-horizontal-light.svg";
+import logo from "../../assets/brand/exhibitiq-horizontal-dark.svg";
 import { Grid, Layout, Menu, Typography } from "antd";
 import { useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -24,12 +24,12 @@ export function AppLayout({ banner, children }: { banner?: ReactNode; children: 
         collapsedWidth={0}
         collapsed={isCollapsed}
         onCollapse={(c) => setCollapsed(c)}
-        theme="light"
+        theme="dark"
         // On mobile the menu overlays the page instead of squeezing the content.
         style={
           isMobile
-            ? { borderRight: `1px solid ${color.border}`, position: "fixed", top: 0, left: 0, height: "100vh", zIndex: 1000 }
-            : { borderRight: `1px solid ${color.border}` }
+            ? { borderRight: `1px solid ${color.navNavy}`, position: "fixed", top: 0, left: 0, height: "100vh", zIndex: 1000 }
+            : { borderRight: `1px solid ${color.navNavy}` }
         }
         zeroWidthTriggerStyle={{ top: space.sm }}
         data-testid="side-nav"
@@ -38,9 +38,10 @@ export function AppLayout({ banner, children }: { banner?: ReactNode; children: 
         <div style={{ display: isCollapsed ? "none" : "block" }}>
         <div style={{ padding: space.md }}>
           <img src={logo} alt={t.appName} data-testid="brand-logo" style={{ height: 46, display: "block", marginLeft: -6, marginBottom: space.xs }} />
-          <Typography.Text type="secondary">{t.appSubtitle}</Typography.Text>
+          <Typography.Text style={{ color: color.navText }}>{t.appSubtitle}</Typography.Text>
         </div>
         <Menu
+          theme="dark"
           mode="inline"
           selectedKeys={current ? [current.key] : []}
           items={NAV_ITEMS.map((n) => ({ key: n.key, icon: n.icon, label: n.label }))}

@@ -20,6 +20,11 @@ export const color = {
   info: "#1565C0",
   neutral: "#616161",
   inference: "#6A1B9A", // AI inference — deliberately distinct from "verified"
+  // side menu: the navy of the dark logo (exhibitiq-horizontal-dark.svg), Eric 2026-11-13
+  navNavy: "#10243B",
+  navNavySelected: "#1F3A5C",
+  navText: "#C9D4E3",
+  navTextActive: "#FFFFFF",
 } as const;
 
 export const space = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 } as const;
@@ -50,8 +55,10 @@ export const antdTheme: ThemeConfig = {
       '-apple-system, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Roboto, "Helvetica Neue", Arial, sans-serif',
   },
   components: {
-    Layout: { headerBg: color.surface, siderBg: color.surface, headerHeight: layout.headerHeight, headerPadding: `0 ${space.md}px` },
-    Menu: { itemSelectedBg: color.brandSoft, itemSelectedColor: color.brand, itemHeight: 44, fontSize: fontSize.base },
+    Layout: { headerBg: color.surface, siderBg: color.navNavy, triggerBg: color.navNavy, headerHeight: layout.headerHeight, headerPadding: `0 ${space.md}px` },
+    Menu: { itemSelectedBg: color.brandSoft, itemSelectedColor: color.brand, itemHeight: 44, fontSize: fontSize.base,
+      darkItemBg: color.navNavy, darkSubMenuItemBg: color.navNavy, darkItemSelectedBg: color.navNavySelected,
+      darkItemColor: color.navText, darkItemHoverColor: color.navTextActive, darkItemSelectedColor: color.navTextActive },
     Table: { cellPaddingBlock: 14 },
     Card: { headerFontSize: fontSize.lg },
   },
