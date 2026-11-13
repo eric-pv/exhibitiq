@@ -1,0 +1,539 @@
+"""ExhibitIQ Skill helper (A2-03). Deterministic I/O around the analysis; no AI here.
+
+Usage (from the repo root):
+  python skills/exhibitiq/scripts/exhibitiq_tools.py list   [--index PATH]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py select  EXHIBITION_ID [YEAR] [--index PATH]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py check-all [--index PATH]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py validate-package PACKAGE_DIR
+  python skills/exhibitiq/scripts/exhibitiq_tools.py validate-analysis ANALYSIS_JSON PACKAGE_DIR
+  python skills/exhibitiq/scripts/exhibitiq_tools.py save-analysis ANALYSIS_JSON PACKAGE_DIR
+  python skills/exhibitiq/scripts/exhibitiq_tools.py report ANALYSIS_JSON PACKAGE_DIR > report.md
+  python skills/exhibitiq/scripts/exhibitiq_tools.py trend EXHIBITION_ID [--profile ID] [--index PATH]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py prepare EXHIBITION_ID [YEAR] [--profile ID] [--top N]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py finalize ANALYSIS_JSON PACKAGE_DIR [--no-save]
+  python skills/exhibitiq/scripts/exhibitiq_tools.py quality ANALYSIS_JSON PACKAGE_DIR
+  python skills/exhibitiq/scripts/exhibitiq_tools.py validate-known KNOWN_CSV
+  python skills/exhibitiq/scripts/exhibitiq_tools.py benchmark KNOWN_CSV PACKAGE_DIR [--profile ID]
+
+Package validation uses data engineering's `etl.validate` when it is importable
+(after phase integration). Until then it falls back to the contract reference
+checks in tests/contract and says so in its output. Analysis validation uses
+evidence_check.py (A2-11): contract rules AR1-AR9 plus evidence rules EV1-EV7.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "tests" / "contract"))
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+REAL_INDEX = ROOT / "data" / "index" / "datasets.json"
+EXAMPLE_INDEX = ROOT / "schemas" / "v1" / "examples" / "index" / "dataset_index.example.json"
+
+
+def default_index() -> Path:
+    return REAL_INDEX if REAL_INDEX.exists() else EXAMPLE_INDEX
+
+
+def load(p: Path) -> dict:
+    return json.loads(Path(p).read_text(encoding="utf-8"))
+
+
+def list_exhibitions(index_path: Path) -> list[dict]:
+    idx = load(index_path)
+    return [{"exhibition_id": e["exhibition_id"], "name": e.get("name_zh_hant") or e["name"],
+             "acquisition": e["acquisition"]["status"],
+             "editions": [{"year": ed["year"], "latest_dataset_id": ed["latest_dataset_id"]} for ed in e["editions"]]}
+            for e in idx["exhibitions"]]
+
+
+def select_package(index_path: Path, exhibition_id: str, year: int | None = None) -> dict:
+    """Latest validated package for an exhibition (and year). Raises with a clear reason otherwise."""
+    idx = load(index_path)
+    ex = next((e for e in idx["exhibitions"] if e["exhibition_id"] == exhibition_id), None)
+    if ex is None:
+        raise LookupError(f"{exhibition_id} is not in the dataset index (not registered/accepted)")
+    eds = [ed for ed in ex["editions"] if year is None or ed["year"] == year]
+    eds = [ed for ed in sorted(eds, key=lambda e: e["year"], reverse=True) if ed["latest_dataset_id"]]
+    if not eds:
+        why = ex["acquisition"].get("notes") or ex["acquisition"]["status"]
+        raise LookupError(f"{exhibition_id}: no validated package available ({why})")
+    ed = eds[0]
+    ds = next(d for d in ed["datasets"] if d["dataset_id"] == ed["latest_dataset_id"])
+    if ds["location"]["storage"] != "git":
+        raise LookupError(f"{ds['dataset_id']}: storage {ds['location']['storage']} is not readable here")
+    return {"dataset_id": ds["dataset_id"], "edition_id": ed["edition_id"], "package_dir": str(ROOT / ds["location"]["locator"]),
+            "content_hash": ds["content_hash"], "data_origin": ds["data_origin"], "completeness_status": ds["completeness_status"]}
+
+
+def edition_packages(index_path: Path, exhibition_id: str) -> list[dict]:
+    """A3-04: the latest validated package of EVERY edition of one exhibition (oldest year first), for `trend`."""
+    idx = load(index_path)
+    ex = next((e for e in idx["exhibitions"] if e["exhibition_id"] == exhibition_id), None)
+    if ex is None:
+        raise LookupError(f"{exhibition_id} is not in the dataset index (not registered/accepted)")
+    out = []
+    for ed in sorted(ex["editions"], key=lambda e: e["year"]):
+        if ed["latest_dataset_id"]:
+            out.append(select_package(index_path, exhibition_id, ed["year"]))
+    if not out:
+        why = ex["acquisition"].get("notes") or ex["acquisition"]["status"]
+        raise LookupError(f"{exhibition_id}: no validated package available ({why})")
+    return out
+
+
+def validate_package(package_dir: Path) -> dict:
+    try:
+        from etl.validate import validate_package as production  # data engineering (D1-05)
+    except ImportError:
+        import package_check
+        errors = package_check.check_package(Path(package_dir))
+        return {"validator": "tests/contract/package_check (fallback: etl.validate not available on this branch)",
+                "ok": not errors, "errors": errors}
+    report = production(Path(package_dir))  # etl.validate.Report: .ok, .findings (str(finding) = "Rn ...: message")
+    return {"validator": "etl.validate", "ok": report.ok, "errors": [str(f) for f in report.findings]}
+
+
+def check_all(index_path: Path) -> list[dict]:
+    """A2-04: batch-check every latest package in the index: availability, schema version, hash, validation."""
+    accepted = set(load(ROOT / "schemas" / "v1" / "COMPATIBILITY.json")["accepted"])
+    rows = []
+    for e in load(index_path)["exhibitions"]:
+        for ed in e["editions"]:
+            row = {"edition_id": ed["edition_id"], "dataset_id": ed["latest_dataset_id"], "ok": False, "problems": []}
+            if not ed["latest_dataset_id"]:
+                la = ed.get("last_acquisition") or {}
+                row["problems"].append(f"no validated package (last acquisition: {la.get('status', 'none')})")
+                rows.append(row)
+                continue
+            try:
+                sel = select_package(index_path, e["exhibition_id"], ed["year"])
+            except LookupError as err:
+                row["problems"].append(str(err)); rows.append(row); continue
+            m = load(Path(sel["package_dir"]) / "manifest.json")
+            if m.get("schema_version") not in accepted:
+                row["problems"].append(f"schema_version {m.get('schema_version')} not in accepted {sorted(accepted)}")
+            if m.get("content_hash") != sel["content_hash"]:
+                row["problems"].append("content_hash differs from the dataset index")
+            v = validate_package(Path(sel["package_dir"]))
+            row["problems"] += v["errors"]
+            row["validator"] = v["validator"]
+            row["ok"] = not row["problems"]
+            rows.append(row)
+    return rows
+
+
+def classify(package_dir: Path, profile=None) -> dict:
+    """A2-06/A2-16: keyword candidates per company from an analysis profile (default: default-library)."""
+    import profile_tools
+    return {k: {"terms": v["terms"], "source_ids": v["source_ids"]} for k, v in profile_tools.match(package_dir, profile).items()}
+
+
+def relate(package_dir: Path, profile=None, knowledge_dir: Path | None = None) -> dict:
+    """A2-08/A2-16: multi-label relationship candidates from an analysis profile."""
+    import profile_tools
+    return profile_tools.relate(package_dir, profile, knowledge_dir)
+
+
+def score(package_dir: Path, model_path: Path | None = None) -> list[dict]:
+    """A2-07: deterministic opportunity scores (analysis_result `scores` items).
+    Factors without evidence are insufficient_data with 0 points — never estimated."""
+    model = load(model_path or ROOT / "knowledge" / "scoring" / "opportunity@1.json")
+    cand = classify(package_dir)
+    parts = [json.loads(l) for l in (Path(package_dir) / "participations.jsonl").read_text(encoding="utf-8").splitlines()]
+    companies = sorted({p["company_id"] for p in parts})
+    scores = []
+    for cid in companies:
+        ps = [p for p in parts if p["company_id"] == cid]
+        listed = [p for p in ps if p["listing_status"] == "listed"]
+        booth = [p for p in listed if p.get("booth")]
+        hits = [x for x in cand.get(cid, {}).get("terms", []) if x in model["target_terms"]]
+        factors = []
+        for f in model["factors"]:
+            fid, mx = f["factor_id"], f["max_points"]
+            if fid == "domain_fit" and hits:
+                factors.append({"factor_id": fid, "label": f["label"], "status": "scored", "points": min(mx, 10 * len(hits)), "max_points": mx,
+                                "evidence_source_ids": cand[cid]["source_ids"], "rationale": "符合目標分類：" + "、".join(hits)})
+            elif fid == "presence" and listed:
+                factors.append({"factor_id": fid, "label": f["label"], "status": "scored", "points": mx, "max_points": mx,
+                                "evidence_source_ids": sorted({s for p in listed for s in p["source_ids"]}), "rationale": "目前列於參展名單。"})
+            elif fid == "booth_known" and booth:
+                factors.append({"factor_id": fid, "label": f["label"], "status": "scored", "points": mx, "max_points": mx,
+                                "evidence_source_ids": sorted({s for p in booth for s in p["source_ids"]}), "rationale": f"展位 {booth[0]['booth']}。"})
+            else:
+                factors.append({"factor_id": fid, "label": f["label"], "status": "insufficient_data", "points": 0, "max_points": mx,
+                                "rationale": "沒有足夠證據，不計分。"})
+        scores.append({"subject": {"entity_type": "company", "entity_id": cid}, "score_model_id": model["score_model_id"], "factors": factors,
+                       "total_points": sum(f["points"] for f in factors), "max_total_points": sum(f["max_points"] for f in factors)})
+    scores.sort(key=lambda s: (-s["total_points"], s["subject"]["entity_id"]))
+    for i, s in enumerate(scores, 1):
+        s["rank"] = i
+        s["score_id"] = f"sc-{i:03d}"
+    return scores
+
+
+def validate_analysis(analysis_path: Path, package_dir: Path) -> dict:
+    import evidence_check
+    import knowledge_check
+    a = load(analysis_path)
+    errors = evidence_check.validate(a, Path(package_dir))
+    errors += knowledge_check.check_analysis_products(a, ROOT / "knowledge")
+    return {"validator": "skills/exhibitiq evidence_check (AR1-AR9 + EV1-EV7) + knowledge_check", "ok": not errors, "errors": errors}
+
+
+ANALYSIS_ROOT = ROOT / "reports" / "analysis"
+REVIEW_FIELDS = {"review_status", "reviewed_by", "reviewed_at"}
+
+
+def save_analysis(analysis_path: Path, package_dir: Path, out_root: Path | None = None) -> dict:
+    """Versioned save (A2-14): reports/analysis/<input_dataset_id>/<analysis_id>.json.
+
+    Only validated results are written. A saved result is immutable: re-analysis needs a new
+    analysis_id; the only allowed change to an existing file is the human review fields.
+    """
+    out_root = out_root or ANALYSIS_ROOT
+    v = validate_analysis(analysis_path, package_dir)
+    if not v["ok"]:
+        return {"ok": False, "path": None, "action": "rejected", "errors": v["errors"]}
+    a = load(analysis_path)
+    target = out_root / a["input_dataset_id"] / f"{a['analysis_id']}.json"
+    if target.exists():
+        old = load(target)
+        if old == a:
+            return {"ok": True, "path": str(target), "action": "unchanged", "errors": []}
+        changed = {k for k in set(old) | set(a) if old.get(k) != a.get(k)}
+        if not changed <= REVIEW_FIELDS:
+            return {"ok": False, "path": str(target), "action": "rejected",
+                    "errors": [f"{target.name} already exists; saved analyses are immutable (changed: {sorted(changed)}). Re-analysis needs a new analysis_id."]}
+        action = "review_updated"
+    else:
+        if a["review_status"] != "draft":
+            return {"ok": False, "path": None, "action": "rejected", "errors": ["a new analysis must start as review_status=draft"]}
+        others = list((out_root).glob(f"*/{a['analysis_id']}.json")) if out_root.exists() else []
+        if others:
+            return {"ok": False, "path": None, "action": "rejected", "errors": [f"analysis_id already used in {others[0]}"]}
+        action = "created"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(a, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return {"ok": True, "path": str(target), "action": action, "errors": []}
+
+
+CLAIM = {"fact": "事實", "inference": "AI 推論", "unknown": "資料不足"}
+LEVEL = {"low": "低", "medium": "中", "high": "高"}
+REL = {"potential_customer": "潛在客戶", "competitor": "競爭對手", "partner": "合作夥伴", "channel": "通路", "unrelated": "不相關", "unknown": "未知"}
+REVIEW = {"draft": "未審核（draft）", "human_reviewed": "已人工審核", "approved": "已核准", "rejected": "已退回"}
+TEMPLATES = Path(__file__).resolve().parents[1] / "templates" / "report-templates.json"
+
+
+def _jsonl(p: Path) -> list[dict]:
+    return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()] if p.exists() else []
+
+
+COMPLETENESS = {"complete": "完整", "partial": "不完整", "unknown": "未知"}
+
+
+def key_figure_lines(a: dict, package_dir: Path) -> list[str]:
+    """A3-02 數據摘要: deterministic figures of one analysis and its package. The Dashboard's keyFigures()
+    (site/src/data/repository.ts) produces the same lines; reports.test.tsx checks they are identical."""
+    pkg = Path(package_dir)
+    m = load(pkg / "manifest.json")
+    companies = _jsonl(pkg / "companies.jsonl")
+    parts = _jsonl(pkg / "participations.jsonl")
+    off = m["completeness"]["official_exhibitor_count"]
+    countries: dict[str, int] = {}
+    for c in companies:
+        k = c.get("country") or "未知"
+        countries[k] = countries.get(k, 0) + 1
+    top = sorted(countries.items(), key=lambda x: (-x[1], x[0]))[:5]
+    rels: dict[str, int] = {}
+    for r in a.get("relationships", []):
+        rels[r["relationship_type"]] = rels.get(r["relationship_type"], 0) + 1
+    pri = {k: sum(1 for r in a.get("recommendations", []) if r["priority"] == k) for k in ("high", "medium", "low")}
+    scored = [s for s in a.get("scores", []) if s["subject"]["entity_type"] == "company"]
+    best = max(scored, key=lambda s: s["total_points"]) if scored else None
+    lines = [
+        f"已取得企業：{len(companies)} 家（完整度：{COMPLETENESS.get(m['completeness_status'], m['completeness_status'])}；官方公布參展商：{'未知' if off is None else off}）",
+        "主要國家／地區（只計已取得企業）：" + ("、".join(f"{k} {v}" for k, v in top) or "無"),
+        f"列於名單的參展紀錄：{sum(1 for p in parts if p.get('listing_status') == 'listed')} 筆",
+        "關係候選（AI 推論）：" + ("、".join(f"{REL.get(k, k)} {v}" for k, v in sorted(rels.items(), key=lambda x: (-x[1], x[0]))) or "無"),
+        "建議（AI 推論）：" + "、".join(f"優先度{LEVEL[k]} {v}" for k, v in pri.items()),
+        f"已評分企業（AI 推論）：{len(scored)} 家" + (f"；最高 {best['total_points']}／{best['max_total_points']} 分" if best else ""),
+    ]
+    if m["completeness_status"] != "complete":
+        lines.append("資料不完整：以上數字只代表實際取得的部分，不計算比例")
+    return [f"- {x}" for x in lines]
+
+
+def render_report(analysis_path: Path, package_dir: Path, show_cost: bool = True) -> str:
+    """Markdown report (A2-12/A2-13) built ONLY from a validated analysis JSON (+ names and source details from its package).
+
+    Sections and their order come from templates/report-templates.json for the analysis_type. An analysis
+    that fails validation is not rendered (LookupError), so an unvalidated report cannot be published.
+    """
+    v = validate_analysis(analysis_path, package_dir)
+    if not v["ok"]:
+        raise LookupError("analysis failed validation; no report: " + "; ".join(v["errors"][:5]))
+    pkg = Path(package_dir)
+    a, m, tpl = load(analysis_path), load(pkg / "manifest.json"), load(TEMPLATES)
+    srcs = {r["source_id"]: r for r in _jsonl(pkg / "sources.jsonl")}
+    names = {r["company_id"]: r["name"] for r in _jsonl(pkg / "companies.jsonl")}
+    ex = load(pkg / "exhibition.json") if (pkg / "exhibition.json").exists() else {}
+    claims = {c["claim_id"]: c for c in a["conclusions"]}
+    unc = {u["uncertainty_id"]: u for u in a.get("uncertainties", [])}
+    num = {sid: i for i, sid in enumerate(a["evidence_source_ids"], 1)}
+    cite = lambda ids: "".join(f"[{num[i]}]" for i in ids if i in num) or "—"
+    who = lambda e: names.get(e["entity_id"], e["entity_id"]) if e["entity_type"] == "company" else e["entity_id"]
+    t = tpl["types"][a["analysis_type"]]
+    titles = tpl["section_titles"]
+
+    def header():
+        exname = ex.get("name_zh_hant") or ex.get("name") or m["exhibition_id"]
+        return [f"- 報告類型：{t['label']}",
+                f"- 展覽：{exname}｜屆次：{m.get('edition_year', m['edition_id'])}",
+                f"- 資料包：`{a['input_dataset_id']}`（`{a['input_hash']}`）",
+                f"- Skill：{a['skill_version']}｜產生時間：{a['generated_at']}",
+                f"- **審核狀態：{REVIEW.get(a['review_status'], a['review_status'])}**"]
+
+    MODE = {"bxr_opportunity": "A. BXR 商機分析", "industry_research": "B. 產業與技術研究", "competitor_research": "C. 競爭對手研究"}
+    BXR = {"not_used": "未使用", "draft": "使用待審核產品卡（產品資料未核定）", "approved": "使用已核定產品卡", "mixed": "部分產品卡未核定（產品資料未核定）"}
+
+    def analysis_config():
+        cfg = a.get("analysis_config")
+        if not cfg:
+            return ["- 這份分析結果是舊版格式，沒有記錄分析設定。"]
+        kws = "、".join(k["label"] for k in cfg["keywords_snapshot"]) or "（無）"
+        out = [f"- 分析模式：{MODE[cfg['mode']]}",
+               f"- 分析主題：`{cfg['profile_id']}` 版本 {cfg['profile_version']}（`{cfg['profile_hash']}`）",
+               f"- 評分模型：{cfg.get('score_model_id') or '不評分'}",
+               f"- BXR 產品卡：{BXR.get(cfg.get('bxr_products_status', 'not_used'), cfg.get('bxr_products_status'))}",
+               f"- 啟用的關鍵字（{len(cfg['keywords_snapshot'])}）：{kws}",
+               "- 關鍵字命中只是候選訊號，不代表已確認的事實或商業關係。"]
+        return out
+
+    def data_status():
+        comp = m["completeness"]
+        off = "未知" if comp["official_exhibitor_count"] is None else comp["official_exhibitor_count"]
+        out = [f"- 資料類型：**{'合成資料（synthetic）：內容為虛構，不代表任何真實展覽或企業' if a['data_origin'] == 'synthetic' else '真實資料'}**",
+               f"- 完整度：{m['completeness_status']}（已取得 {comp['collected_participation_count']}／官方公布 {off}）"]
+        if m["completeness_status"] != "complete":
+            out.append("- ⚠️ 資料不完整，結論與排名可能遺漏。")
+        if a.get("analysis_config", {}).get("bxr_products_status") in {"draft", "mixed"}:
+            out.append("- ⚠️ 產品資料未核定：使用的 BXR 產品卡尚待 Eric 審核，只有名稱與功能定位，不代表正式規格。")
+        return out
+
+    def key_figures():
+        # A3-02: figures computed from the package and the analysis only (same lines as ReportViewer's keyFigures)
+        return key_figure_lines(a, pkg)
+
+    def summary():
+        return [a["summary"]] if a.get("summary") else []
+
+    def conclusions():
+        out = []
+        for c in a["conclusions"]:
+            extra = f"（信心：{LEVEL[c['confidence']]}；理由：{c.get('rationale', '')}）" if c["claim_type"] == "inference" else ""
+            missing = f"（缺少：{c['missing_data']}）" if c["claim_type"] == "unknown" else ""
+            out.append(f"- **[{CLAIM[c['claim_type']]}]** {c['statement']}{extra}{missing}　來源：{cite(c.get('evidence_source_ids', []))}")
+        return out
+
+    def scores():
+        out = []
+        for s in sorted(a.get("scores", []), key=lambda s: s["rank"]):
+            out += [f"### 第 {s['rank']} 名：{who(s['subject'])}　{s['total_points']}／{s['max_total_points']}（{s['score_model_id']}，AI 推論）", "",
+                    "| 因子 | 得分 | 理由 | 來源 |", "|---|---|---|---|"]
+            for f in s["factors"]:
+                st = f"資料不足，不計分（0／{f['max_points']}）" if f["status"] == "insufficient_data" else f"{f['points']}／{f['max_points']}"
+                out.append(f"| {f['label']} | {st} | {f.get('rationale', '')} | {cite(f.get('evidence_source_ids', []))} |")
+            out.append("")
+        return out
+
+    def relationships():
+        return [f"- {names.get(r['company_id'], r['company_id'])}：**{REL[r['relationship_type']]}**（AI 推論"
+                + (f"，信心：{LEVEL[r['confidence']]}" if r.get("confidence") else "") + f"）{r.get('rationale', '')}　來源：{cite(r.get('evidence_source_ids', []))}"
+                for r in a.get("relationships", [])]
+
+    def recommendations():
+        out = []
+        for r in a["recommendations"]:
+            out.append(f"- **[優先度：{LEVEL[r['priority']]}]** {r['statement']}（AI 推論）")
+            out.append(f"  - 理由：{r['rationale']}")
+            if r.get("assumptions"):
+                out.append(f"  - 前提：{'；'.join(r['assumptions'])}")
+            out.append(f"  - 依據結論：{'；'.join(claims[c]['statement'] for c in r['based_on_claim_ids'])}")
+            if r.get("uncertainty_ids"):
+                out.append(f"  - 不確定性：{'；'.join(unc[u]['description'] for u in r['uncertainty_ids'])}")
+            out.append(f"  - 來源：{cite(r.get('evidence_source_ids', []))}")
+        return out
+
+    def uncertainties():
+        return [f"- [影響：{LEVEL[u['impact']]}] {u['description']}" for u in a.get("uncertainties", [])]
+
+    def sources():
+        out = ["| # | source_id | 類型 | 網址 | 取得時間 | 快照雜湊 |", "|---|---|---|---|---|---|"]
+        for sid, i in num.items():
+            r = srcs[sid]
+            out.append(f"| [{i}] | `{sid}` | {r['source_type']} | {r.get('url', '—')} | {r['retrieved_at']} | `{r['content_sha256']}` |")
+        return out
+
+    def appendix():
+        mdl = a.get("model")
+        out = [f"- Schema 版本：{a['schema_version']}",
+               f"- Skill 版本：{a['skill_version']}",
+               f"- 模型：{' '.join(x for x in [mdl.get('provider'), mdl['name'], mdl.get('version')] if x) if mdl else '未記錄'}",
+               f"- 知識庫版本：{a.get('knowledge_version') or '未記錄'}",
+               f"- 報告版型：{tpl['version']}",
+               f"- 輸入資料包：`{a['input_dataset_id']}`（`{a['input_hash']}`）"]
+        out += [f"- 其他輸入資料包：`{x['dataset_id']}`（`{x['content_hash']}`）" for x in a.get("additional_inputs", [])]
+        cfg = a.get("analysis_config")
+        out.append(f"- 分析設定：`{cfg['profile_id']}` v{cfg['profile_version']}（`{cfg['profile_hash']}`）" if cfg else "- 分析設定：未記錄（舊版格式）")
+        if show_cost:  # Eric 2026-11-05: shown in the competition, hidden in production (--hide-cost)
+            c = a.get("cost")
+            if not c or not c["recorded"]:
+                out.append("- 分析成本：未記錄")
+            else:
+                parts = []
+                if "input_tokens" in c:
+                    parts.append(f"輸入 {c['input_tokens']:,} tokens、輸出 {c['output_tokens']:,} tokens")
+                if "amount" in c:
+                    parts.append(f"{c['amount']} {c['currency']}")
+                out.append(f"- 分析成本：{'；'.join(parts)}（{c.get('measured_by', '實際量測')}）")
+        out.append(f"- 分析 ID：`{a['analysis_id']}`｜審核：{REVIEW.get(a['review_status'], a['review_status'])}")
+        return out
+
+    fns = {"header": header, "analysis_config": analysis_config, "appendix": appendix, "data_status": data_status, "key_figures": key_figures, "summary": summary, "conclusions": conclusions, "scores": scores,
+           "relationships": relationships, "recommendations": recommendations, "uncertainties": uncertainties, "sources": sources}
+    # never drop content: a section that has data is rendered even if the template does not list it
+    order = list(t["sections"])
+    for sec, key in (("scores", "scores"), ("relationships", "relationships")):
+        if a.get(key) and sec not in order:
+            order.insert(order.index("recommendations"), sec)
+    out = [f"# {a['title']}", ""]
+    for sec in order:
+        body = fns[sec]()
+        out += [f"## {titles[sec]}", ""] + (body or ["無"]) + [""]
+    return "\n".join(out).rstrip("\n") + "\n"
+
+
+def main(argv: list[str] | None = None) -> int:
+    p = argparse.ArgumentParser(prog="exhibitiq_tools")
+    sub = p.add_subparsers(dest="cmd", required=True)
+    for name in ("list", "select"):
+        sp = sub.add_parser(name)
+        if name == "select":
+            sp.add_argument("exhibition_id")
+            sp.add_argument("year", nargs="?", type=int)
+        sp.add_argument("--index", type=Path, default=None)
+    sub.add_parser("validate-package").add_argument("package_dir", type=Path)
+    sub.add_parser("check-all").add_argument("--index", type=Path, default=None)
+    for name in ("classify", "score", "relate"):
+        sp = sub.add_parser(name)
+        sp.add_argument("package_dir", type=Path)
+        sp.add_argument("--profile", default=None, help="analysis profile id or path (knowledge/analysis-profiles/)")
+    sub.add_parser("config").add_argument("profile")
+    sp = sub.add_parser("value")
+    sp.add_argument("package_dir", type=Path)
+    sp.add_argument("--profile", default=None)
+    sp = sub.add_parser("compare")
+    sp.add_argument("package_dirs", type=Path, nargs="+")
+    sp.add_argument("--profile", default=None)
+    sp = sub.add_parser("prepare")
+    sp.add_argument("exhibition_id")
+    sp.add_argument("year", nargs="?", type=int)
+    sp.add_argument("--profile", default=None)
+    sp.add_argument("--top", type=int, default=40, help="companies sent to Claude in detail (the rest as one line each)")
+    sp.add_argument("--index", type=Path, default=None)
+    sp = sub.add_parser("finalize")
+    sp.add_argument("analysis", type=Path)
+    sp.add_argument("package_dir", type=Path)
+    sp.add_argument("--no-save", action="store_true", help="validate and render only (no write to reports/analysis/)")
+    sp = sub.add_parser("quality")
+    sp.add_argument("analysis", type=Path)
+    sp.add_argument("package_dir", type=Path)
+    sub.add_parser("validate-known").add_argument("known_csv", type=Path)
+    sp = sub.add_parser("benchmark")
+    sp.add_argument("known_csv", type=Path)
+    sp.add_argument("package_dir", type=Path)
+    sp.add_argument("--profile", default=None)
+    sp = sub.add_parser("trend")
+    sp.add_argument("exhibition_id")
+    sp.add_argument("--profile", default=None)
+    sp.add_argument("--index", type=Path, default=None)
+    for name in ("validate-analysis", "report", "save-analysis"):
+        sp = sub.add_parser(name)
+        sp.add_argument("analysis", type=Path)
+        sp.add_argument("package_dir", type=Path)
+        if name == "report":
+            sp.add_argument("--hide-cost", action="store_true", help="omit the analysis cost (production reports)")
+    a = p.parse_args(argv)
+    idx = getattr(a, "index", None) or default_index()
+    try:
+        if a.cmd == "list":
+            print(json.dumps(list_exhibitions(idx), ensure_ascii=False, indent=2))
+        elif a.cmd == "select":
+            print(json.dumps(select_package(idx, a.exhibition_id, a.year), ensure_ascii=False, indent=2))
+        elif a.cmd == "check-all":
+            rows = check_all(idx); print(json.dumps(rows, ensure_ascii=False, indent=2))
+            return 0 if all(r["ok"] for r in rows if r["dataset_id"]) else 1
+        elif a.cmd == "score":
+            if a.profile:
+                import profile_tools
+                print(json.dumps(profile_tools.score(a.package_dir, a.profile), ensure_ascii=False, indent=2))
+            else:  # legacy opportunity@1 draft (kept for comparison until Eric approves a model)
+                print(json.dumps(score(a.package_dir), ensure_ascii=False, indent=2))
+        elif a.cmd == "value":
+            import profile_tools
+            print(json.dumps(profile_tools.exhibition_value(a.package_dir, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "compare":
+            import profile_tools
+            print(json.dumps(profile_tools.compare(a.package_dirs, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "prepare":
+            import session_tools
+            print(json.dumps(session_tools.prepare(a.exhibition_id, a.year, a.profile, a.top, idx), ensure_ascii=False, indent=2))
+        elif a.cmd == "finalize":
+            import session_tools
+            r = session_tools.finalize(a.analysis, a.package_dir, save=not a.no_save)
+            print(json.dumps(r, ensure_ascii=False, indent=2))
+            return 0 if r["ok"] else 1
+        elif a.cmd == "quality":
+            import quality_check
+            print(json.dumps(quality_check.quality_report(a.analysis, a.package_dir), ensure_ascii=False, indent=2))
+        elif a.cmd == "validate-known":
+            import profile_tools
+            rows, errors = profile_tools.load_known(a.known_csv)
+            print(json.dumps({"ok": not errors, "rows": len(rows), "errors": errors}, ensure_ascii=False, indent=2))
+            return 0 if not errors else 1
+        elif a.cmd == "benchmark":
+            import profile_tools
+            print(json.dumps(profile_tools.benchmark(a.known_csv, a.package_dir, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "trend":
+            import profile_tools
+            dirs = [Path(x["package_dir"]) for x in edition_packages(idx, a.exhibition_id)]
+            print(json.dumps(profile_tools.history(dirs, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "config":
+            import profile_tools
+            print(json.dumps(profile_tools.analysis_config(a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "relate":
+            print(json.dumps(relate(a.package_dir, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "classify":
+            print(json.dumps(classify(a.package_dir, a.profile), ensure_ascii=False, indent=2))
+        elif a.cmd == "validate-package":
+            r = validate_package(a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
+        elif a.cmd == "validate-analysis":
+            r = validate_analysis(a.analysis, a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
+        elif a.cmd == "save-analysis":
+            r = save_analysis(a.analysis, a.package_dir); print(json.dumps(r, ensure_ascii=False, indent=2)); return 0 if r["ok"] else 1
+        elif a.cmd == "report":
+            sys.stdout.write(render_report(a.analysis, a.package_dir, show_cost=not a.hide_cost))
+    except (LookupError, ValueError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0-draft.6",
+  "product_id": "bxr-javelin-simulator",
+  "name": "標槍模擬器",
+  "summary": "初始功能定位：武器操作與模擬訓練。",
+  "applications": [
+    "application.training"
+  ],
+  "sources": [
+    {
+      "title": "Eric 提供之 BXR 產品名稱與初始功能定位清單（ExhibitIQ 需求修訂，對話紀錄）",
+      "provided_by": "Eric",
+      "provided_at": "2026-11-04"
+    }
+  ],
+  "approval_status": "approved",
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定目前內容（產品名稱與初始功能定位）；不含任何規格數值，正式型錄之後補充。不得據此推論射程、精度、效能、尺寸、重量、相容性或其他數值。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
+}

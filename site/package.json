@@ -1,0 +1,49 @@
+{
+  "name": "exhibitiq-dashboard",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "ExhibitIQ Web Dashboard (static SPA). Owner: ai. See docs/DEVELOPMENT_PLAN.md \u00a73.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "build:single": "npm run typecheck && vite build --mode single",
+    "preview": "vite preview --port 4173 --strictPort",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "bundle": "node scripts/build-bundle.mjs",
+    "pretypecheck": "npm run -s bundle",
+    "pretest": "npm run -s bundle",
+    "prebuild": "npm run -s bundle",
+    "security": "node scripts/security-check.mjs",
+    "pages:check": "node scripts/pages-check.mjs"
+  },
+  "dependencies": {
+    "@ant-design/icons": "5.6.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "antd": "5.29.3",
+    "echarts": "5.6.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
+    "@types/node": "22.20.5",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "4.7.0",
+    "jsdom": "25.0.1",
+    "typescript": "5.9.3",
+    "vite": "6.4.5",
+    "vite-plugin-singlefile": "2.3.4",
+    "vitest": "3.2.7"
+  }
+}

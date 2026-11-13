@@ -1,0 +1,13 @@
+{
+  "score_model_id": "opportunity@1",
+  "approval_status": "draft",
+  "notes": "A2-07 草稿，待 Eric 核定。因子與配分可調整；改動時遞增版本（opportunity@2），不得改寫已發布的分析。",
+  "target_terms": ["technology.simulation", "technology.xr", "application.training", "application.wargaming", "capability.scenario-training", "capability.immersive-simulation", "industry.defense", "industry.security"],
+  "factors": [
+    {"factor_id": "domain_fit", "label": "業務領域適配", "max_points": 40, "method": "keyword candidates (classify) overlapping target_terms: 10 points per matched term, capped"},
+    {"factor_id": "product_fit", "label": "BXR 產品適配", "max_points": 20, "method": "needs approved BXR product cards (A2-05); insufficient_data until then"},
+    {"factor_id": "presence", "label": "目前列於參展名單", "max_points": 10, "method": "listing_status listed"},
+    {"factor_id": "booth_known", "label": "展位已公布", "max_points": 10, "method": "participation.booth present"},
+    {"factor_id": "contact_signal", "label": "合作或採購訊號", "max_points": 20, "method": "requires reading sources (Skill inference); insufficient_data in the deterministic pass"}
+  ]
+}

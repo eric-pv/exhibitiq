@@ -17,7 +17,7 @@
 
 「唯一負責人」是唯一可以在自己的開發主線上建立、修改、刪除該路徑內容的角色。另一方**可以閱讀與引用**，但不得修改；需要變更時依第 3 節提出。
 
-規則：**比對時以最長（最具體）的路徑為準。** 例如 `data/samples/golden/` 歸 `ai`，即使 `data/` 歸 `data`。
+規則：**比對時以最長（最具體）的路徑為準。** 例如 `data/golden/` 歸 `ai`，即使 `data/` 歸 `data`。
 
 | 路徑 | 唯一負責人 | 內容 | 備註 |
 |---|---|---|---|
@@ -34,8 +34,8 @@
 | `etl/` | data | 清洗、去重、品質檢查、**資料驗證程式** | 驗證程式讀取 `schemas/`，不得另行定義契約 |
 | `data/` | data | `raw/`、`normalized/`、`packages/`、`history/` 等資料產物 | Raw evidence 不可變更 |
 | `data/registry/` | data | 展覽名冊：`<exhibition_id>/registration.json`（格式由 ai 的 `exhibition_registration.schema.json` 定義）與該展覽的其他資料 | Eric 於 2026-11-04 決定位置（A1-10） |
-| `data/samples/golden/` | ai | 整合測試用的黃金樣本（預期輸入／輸出） | 合成資料，須明確標示 |
-| `data/samples/` | data | 各展覽的公開或合成測試資料，依 `data/samples/<exhibition_id>/` 分目錄 | 合成資料須明確標示；`golden/` 例外（見上一列） |
+| `data/golden/` | ai | 整合測試用的黃金樣本（預期輸入／輸出） | 合成資料，須明確標示 |
+| `data/samples/` | data | 各展覽的公開或合成測試資料，依 `data/samples/<exhibition_id>/` 分目錄 | 合成資料須明確標示；ai 的黃金樣本已移到 `data/golden/`（2026-11-13，避免被資料端的樣本掃描當成資料包） |
 | `knowledge/` | ai | BXR 產品知識庫與分析分類架構 | 只收錄經專案負責人確認的產品資料 |
 | `skills/exhibitiq/` | ai | Claude Code Skill、references、scripts | |
 | `reports/` | ai | 分析結果與報告 | |
@@ -69,7 +69,7 @@
 - `schemas/`
 - 舊版編號規範檔的刪除：`01_ExhibitIQ_專案總規範.md`、`02_CLAUDE.md`、`03_雙方ChatGPT_工作指令模板.md`、`04_階段整合_ChatGPT指令模板.md`、`05_工作流程與驗收檢查表.md`（內容已原封不動移至 `docs/`）
 
-**不同步：** `tests/contract/`、`data/samples/golden/`、`knowledge/`、`skills/`、`reports/`、`site/` 及任何 `ai` 的功能程式。這些等階段整合時才進入對方分支。
+**不同步：** `tests/contract/`、`data/golden/`、`knowledge/`、`skills/`、`reports/`、`site/` 及任何 `ai` 的功能程式。這些等階段整合時才進入對方分支。
 
 ### 4.3 程序
 

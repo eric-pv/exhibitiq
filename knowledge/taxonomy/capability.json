@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0-draft.5",
+  "dimension": "capability",
+  "approval_status": "approved",
+  "terms": [
+    {
+      "term_id": "capability.scenario-training",
+      "label": "情境訓練",
+      "synonyms": [
+        "Scenario",
+        "情境"
+      ]
+    },
+    {
+      "term_id": "capability.immersive-simulation",
+      "label": "沉浸式模擬",
+      "synonyms": [
+        "Immersive",
+        "沉浸"
+      ]
+    },
+    {
+      "term_id": "capability.data-analytics",
+      "label": "資料分析",
+      "synonyms": [
+        "Analytics",
+        "Data",
+        "分析"
+      ]
+    },
+    {
+      "term_id": "capability.system-integration",
+      "label": "系統整合",
+      "synonyms": [
+        "Integration",
+        "Integrator",
+        "整合"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-05",
+  "notes": "Eric 於 2026-11-05 核定為起始分類詞；使用者可在「分析設定」以分析主題新增或修改關鍵字，不受此限。",
+  "approved_by": "Eric",
+  "approved_at": "2026-11-05"
+}

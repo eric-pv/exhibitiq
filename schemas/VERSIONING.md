@@ -93,7 +93,7 @@
    - 修改 `schemas/v<MAJOR>/` 內的 Schema 檔
    - 更新 `VERSION`
    - 在 [`CHANGELOG.md`](CHANGELOG.md) 新增紀錄
-   - 更新 `data/samples/golden/` 與 `tests/contract/`，並在雲端通過測試
+   - 更新 `data/golden/` 與 `tests/contract/`，並在雲端通過測試
    - PR base=`dev/ai-intelligence`，由專案負責人合併
 4. **同步：** 依 [`module-boundaries.md`](../docs/architecture/module-boundaries.md) 第 4 節把 `schemas/` 同步到 `dev/data-platform`，由同事合併同步 PR。
 5. **跟進（`data`）：** 同事在自己的功能分支更新驗證程式、生產端程式與 `data/samples/<exhibition_id>/`，PR base=`dev/data-platform`，自行合併。
